@@ -34,14 +34,13 @@ uses
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
-  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus;
+  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes;
 
 type
   TfrmFlickr = class(TForm)
     IdHTTP1: TIdHTTP;
     IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
     XMLDocument1: TXMLDocument;
-    Chart1: TChart;
     Panel1: TPanel;
     btnLoad: TButton;
     btnSave: TButton;
@@ -50,21 +49,25 @@ type
     Label3: TLabel;
     Edit1: TEdit;
     Panel2: TPanel;
-    Label2: TLabel;
-    batchUpdate: TButton;
     listPhotos: TListView;
-    photoId: TEdit;
-    btnAdd: TButton;
     Splitter1: TSplitter;
-    Series1: TLineSeries;
     Panel3: TPanel;
     ProgressBar1: TProgressBar;
     rbViews: TRadioButton;
     rbLikes: TRadioButton;
     rbComments: TRadioButton;
-    Label4: TLabel;
+    Panel4: TPanel;
+    Chart2: TChart;
+    Chart1: TChart;
+    Series1: TLineSeries;
     Series2: TLineSeries;
     Series3: TLineSeries;
+    Series4: TBarSeries;
+    Panel5: TPanel;
+    Label2: TLabel;
+    photoId: TEdit;
+    btnAdd: TButton;
+    batchUpdate: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -73,10 +76,16 @@ type
     procedure listPhotosItemChecked(Sender: TObject; Item: TListItem);
     procedure FormDestroy(Sender: TObject);
     function isInSeries(id : string) : Boolean;
+    procedure listPhotosCustomDrawSubItem(Sender: TCustomListView;
+      Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+      var DefaultDraw: Boolean);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
     procedure RequestInformation_REST_Flickr(id: string);
+    procedure UpdateCounts;
+    procedure UpdateTotals;
+    procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: integer);
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -96,10 +105,6 @@ uses
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: integer;
-  Item: TListItem;
-  totalViews, totalViewsacc : integer;
-  totalLikes, totalLikesacc : Integer;
-  totalComments, totalCommentsacc : Integer;
 begin
   ProgressBar1.Visible := true;
   ProgressBar1.Min := 0;
@@ -111,7 +116,17 @@ begin
     RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
   end;
   ProgressBar1.Visible := false;
+  UpdateTotals();
+end;
 
+procedure TfrmFlickr.UpdateTotals();
+var
+  i: integer;
+  Item: TListItem;
+  totalViews, totalViewsacc : integer;
+  totalLikes, totalLikesacc : Integer;
+  totalComments, totalCommentsacc : Integer;
+begin
   totalViewsacc := 0;
   totalLikesacc := 0;
   totalCommentsacc := 0;
@@ -128,8 +143,7 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
   end;
 
-  Label4.Caption := 'Total: Likes: ' + IntToStr(totalLikesacc) + ' Views: ' + IntToStr(totalViewsacc) + ' Comments: ' + IntToStr(totalCommentsacc);
-
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
 end;
 
 function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -206,6 +220,7 @@ begin
     Item.SubItems.Add(likes);
     Item.SubItems.Add(comments);
     Item.SubItems.Add(DateToStr(Date));
+    Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
   end
   else
   begin
@@ -216,6 +231,7 @@ begin
     itemExisting.SubItems.Add(likes);
     itemExisting.SubItems.Add(comments);
     itemExisting.SubItems.Add(DateToStr(Date));
+    itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
   end;
 end;
 
@@ -223,6 +239,7 @@ procedure TfrmFlickr.btnAddClick(Sender: TObject);
 begin
   RequestInformation_REST_Flickr(photoId.text);
   photoId.text := '';
+  UpdateTotals();
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
@@ -238,6 +255,13 @@ begin
 end;
 
 procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
+begin
+  apikey.text := repository.apikey;
+  listPhotos.Clear;
+  UpdateCounts();
+end;
+
+procedure TfrmFlickr.UpdateCounts();
 var
   i: integer;
   Item: TListItem;
@@ -245,9 +269,6 @@ var
   totalLikes, totalLikesacc : Integer;
   totalComments, totalCommentsacc : Integer;
 begin
-  apikey.text := repository.apikey;
-  listPhotos.Clear;
-
   totalViewsacc := 0;
   totalLikesacc := 0;
   totalCommentsacc := 0;
@@ -266,9 +287,42 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
+    Item.SubItems.Add(FormatFloat('0.##%', (totalLikes/totalViews)*100.0));
   end;
 
-  Label4.Caption := 'Total: Likes: ' + IntToStr(totalLikesacc) + ' Views: ' + IntToStr(totalViewsacc) + ' Comments: ' + IntToStr(totalCommentsacc);
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+end;
+
+procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos : integer);
+var
+  Series : TBarSeries;
+  color : TColor;
+begin
+  if chart2.SeriesList.Count = 1 then
+    chart2.RemoveAllSeries;
+
+  Series := TBarSeries.Create(Chart2);
+  Series.Marks.Arrow.Visible := True;
+  Series.Marks.Callout.Brush.Color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.DrawEvery := 10;
+  Series.Marks.Shadow.Color := 8487297;
+  //Series.Marks.Visible := true;
+  Series.SeriesColor := 10708548;
+  //Series.Stairs := true;
+  Series.XValues.DateTime := True;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := Chart2;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  Series.AddBar(totalViews, 'Views', color);
+  Series.AddBar(totalLikes, 'Likes', color);
+  Series.AddBar(totalComments, 'Comments', color);
+  Series.AddBar(totalPhotos, 'Photos', color);
+  chart2.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
@@ -301,6 +355,39 @@ begin
     inc(i);
   end;
   Result := found;
+end;
+
+procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView;
+  Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+  var DefaultDraw: Boolean);
+var
+  Color, Color2: TColor;
+begin
+  Color := Sender.Canvas.Font.Color;
+  Color2 := Sender.Canvas.Brush.Color;
+  if SubItem = 1 then
+  begin
+    if ((Item.SubItems.Strings[1].ToInteger >= 1000) and (Item.SubItems.Strings[1].ToInteger < 2000)) then
+    begin
+      Sender.Canvas.Font.Color := clBlue;
+      Sender.Canvas.Brush.Color := Color2;
+    end;
+    if ((Item.SubItems.Strings[1].ToInteger >= 2000) and (Item.SubItems.Strings[1].ToInteger < 4000)) then
+    begin
+      Sender.Canvas.Font.Color := clGreen;
+      Sender.Canvas.Brush.Color := Color2;
+    end;
+    if ((Item.SubItems.Strings[1].ToInteger >= 4000)) then
+    begin
+      Sender.Canvas.Font.Color := clRed;
+      Sender.Canvas.Brush.Color := Color2;
+    end;
+  end
+  else
+  begin
+    Sender.Canvas.Font.Color := Color;
+    Sender.Canvas.Brush.Color := Color2;
+  end;
 end;
 
 procedure TfrmFlickr.listPhotosItemChecked(Sender: TObject; Item: TListItem);
