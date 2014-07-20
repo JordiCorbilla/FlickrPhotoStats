@@ -23,4 +23,16 @@ The following information will be saved:
 
 Each value is saved and stored over time so the took can display the trend of a particular photo.
 
+Code convention:
+- > 1000 < 2000 views: blue.
+- > 2000 < 4000 views: green.
+- > 4000 views: red.
+ 
 Use Batch Update to easily update all the values and keep a good track record of your flickr pool.
+
+Lates version of the binary can be found here:
+https://app.box.com/s/8pfnja1qti9rwa9sk2fi
+
+Source code is available here.
+
+Developed under Delphi XE6.
