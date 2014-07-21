@@ -220,6 +220,8 @@ begin
     Item.SubItems.Add(likes);
     Item.SubItems.Add(comments);
     Item.SubItems.Add(DateToStr(Date));
+    if views = '0' then
+      views := '1';
     Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
   end
   else
@@ -231,6 +233,8 @@ begin
     itemExisting.SubItems.Add(likes);
     itemExisting.SubItems.Add(comments);
     itemExisting.SubItems.Add(DateToStr(Date));
+    if views = '0' then
+      views := '1';
     itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
   end;
 end;
@@ -287,6 +291,8 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
+    if totalViews = 0 then
+      totalViews := 1;
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes/totalViews)*100.0));
   end;
 
