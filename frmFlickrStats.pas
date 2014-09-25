@@ -34,7 +34,7 @@ uses
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
-  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes;
+  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals;
 
 type
   TfrmFlickr = class(TForm)
@@ -56,18 +56,29 @@ type
     rbViews: TRadioButton;
     rbLikes: TRadioButton;
     rbComments: TRadioButton;
-    Panel4: TPanel;
-    Chart2: TChart;
-    Chart1: TChart;
-    Series1: TLineSeries;
-    Series2: TLineSeries;
-    Series3: TLineSeries;
-    Series4: TBarSeries;
     Panel5: TPanel;
     Label2: TLabel;
     photoId: TEdit;
     btnAdd: TButton;
     batchUpdate: TButton;
+    PageControl1: TPageControl;
+    Statistics: TTabSheet;
+    Panel4: TPanel;
+    Chart2: TChart;
+    Series4: TBarSeries;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    Globals: TTabSheet;
+    Process: TLabel;
+    ChartComments: TChart;
+    LineSeries1: TLineSeries;
+    ChartViews: TChart;
+    LineSeries4: TLineSeries;
+    ChartLikes: TChart;
+    LineSeries7: TLineSeries;
+    Memo1: TMemo;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -86,9 +97,11 @@ type
     procedure UpdateCounts;
     procedure UpdateTotals;
     procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: integer);
+    procedure UpdateGlobals();
     { Private declarations }
   public
     repository: IFlickrRepository;
+    globalsRepository : IFlickrGlobals;
     CheckedSeries : TStringList;
   end;
 
@@ -107,15 +120,18 @@ var
   i: integer;
 begin
   ProgressBar1.Visible := true;
+  Process.Visible := true;
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
+    Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
     ProgressBar1.position := i;
     Application.ProcessMessages;
     RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
   end;
   ProgressBar1.Visible := false;
+  Process.Visible := false;
   UpdateTotals();
 end;
 
@@ -126,6 +142,7 @@ var
   totalViews, totalViewsacc : integer;
   totalLikes, totalLikesacc : Integer;
   totalComments, totalCommentsacc : Integer;
+  stat : IStat;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -143,7 +160,11 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
   end;
 
+  stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
+  globalsRepository.AddGlobals(stat);
+
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateGlobals();
 end;
 
 function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -255,6 +276,13 @@ begin
   end;
   repository.load('flickrRepository.xml');
 
+  if Assigned(globalsRepository) then
+  begin
+    globalsRepository := nil;
+    globalsRepository := TFlickrGlobals.Create();
+  end;
+  globalsRepository.load('flickrRepositoryGlobal.xml');
+
   LoadForms(repository);
 end;
 
@@ -297,6 +325,113 @@ begin
   end;
 
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateGlobals();
+end;
+
+procedure TfrmFlickr.UpdateGlobals;
+var
+  Series : TLineSeries;
+  color : TColor;
+  i : integer;
+begin
+  if chartViews.SeriesList.Count = 1 then
+    chartViews.RemoveAllSeries;
+
+  Series := TLineSeries.Create(chartViews);
+  Series.Marks.Arrow.Visible := True;
+  Series.Marks.Callout.Brush.Color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.DrawEvery := 10;
+  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Visible := true;
+  Series.SeriesColor := 10708548;
+  Series.LinePen.Width := 1;
+  Series.LinePen.Color := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Style := psRectangle;
+  Series.Pointer.Brush.Gradient.EndColor := 10708548;
+  Series.Pointer.Gradient.EndColor := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Visible := False;
+  Series.XValues.DateTime := True;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := chartViews;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to globalsRepository.Globals.Count-1 do
+  begin
+    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].views, '', color);
+  end;
+  chartViews.AddSeries(Series);
+
+  if chartLikes.SeriesList.Count = 1 then
+    chartLikes.RemoveAllSeries;
+
+  Series := TLineSeries.Create(chartLikes);
+  Series.Marks.Arrow.Visible := True;
+  Series.Marks.Callout.Brush.Color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.DrawEvery := 10;
+  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Visible := true;
+  Series.SeriesColor := 10708548;
+  Series.LinePen.Width := 1;
+  Series.LinePen.Color := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Style := psRectangle;
+  Series.Pointer.Brush.Gradient.EndColor := 10708548;
+  Series.Pointer.Gradient.EndColor := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Visible := False;
+  Series.XValues.DateTime := True;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := chartLikes;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to globalsRepository.Globals.Count-1 do
+  begin
+    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].likes, '', color);
+  end;
+  chartLikes.AddSeries(Series);
+
+  if chartComments.SeriesList.Count = 1 then
+    chartComments.RemoveAllSeries;
+
+  Series := TLineSeries.Create(chartComments);
+  Series.Marks.Arrow.Visible := True;
+  Series.Marks.Callout.Brush.Color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.DrawEvery := 10;
+  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Visible := true;
+  Series.SeriesColor := 10708548;
+  Series.LinePen.Width := 1;
+  Series.LinePen.Color := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Style := psRectangle;
+  Series.Pointer.Brush.Gradient.EndColor := 10708548;
+  Series.Pointer.Gradient.EndColor := 10708548;
+  Series.Pointer.InflateMargins := True;
+  Series.Pointer.Visible := False;
+  Series.XValues.DateTime := True;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := chartComments;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to globalsRepository.Globals.Count-1 do
+  begin
+    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].numComments, '', color);
+  end;
+  chartComments.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos : integer);
@@ -334,18 +469,22 @@ end;
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
   repository.save(apikey.text, 'flickrRepository.xml');
+  globalsRepository.save('flickrRepositoryGlobal.xml');
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
   repository := TFlickrRepository.Create();
+  globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
+  Process.Visible := false;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(CheckedSeries);
   repository := nil;
+  globalsRepository := nil;
 end;
 
 function TfrmFlickr.isInSeries(id: string): Boolean;

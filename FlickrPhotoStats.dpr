@@ -8,7 +8,9 @@ uses
   flickr.stats in 'flickr.stats.pas',
   flickr.rest in 'flickr.rest.pas',
   Vcl.Themes,
-  Vcl.Styles;
+  Vcl.Styles,
+  flickr.globals in 'flickr.globals.pas',
+  flickr.top.stats in 'flickr.top.stats.pas';
 
 {$R *.res}
 

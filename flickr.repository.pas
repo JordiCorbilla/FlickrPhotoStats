@@ -72,7 +72,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Dialogs;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -142,6 +142,8 @@ var
   iXMLRootNode, iNode: IXMLNode;
   photo: IPhoto;
 begin
+  if fileExists(ExtractFilePath(ParamStr(0)) + FileName) then
+  begin
   Document := TXMLDocument.Create(nil);
   try
     Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
@@ -159,6 +161,9 @@ begin
   finally
     Document := nil;
   end;
+  end
+  else
+    ShowMessage('File does not exists in location: ' + ExtractFilePath(ParamStr(0)) + FileName);
 end;
 
 procedure TFlickrRepository.Save(ApiKey: string; FileName: string);

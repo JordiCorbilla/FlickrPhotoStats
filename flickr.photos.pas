@@ -101,7 +101,7 @@ begin
     FStats.Add(stat)
   else
     existing.Copy(stat);
-  result := (existing = nil)
+  result := (existing = nil);
 end;
 
 constructor TPhoto.Create(Id: string; Title: string);
