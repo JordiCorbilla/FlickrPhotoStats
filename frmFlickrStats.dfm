@@ -900,11 +900,8 @@ object frmFlickr: TfrmFlickr
         Height = 153
         Align = alClient
         ReadOnly = True
+        ScrollBars = ssVertical
         TabOrder = 3
-        ExplicitLeft = 136
-        ExplicitTop = 536
-        ExplicitWidth = 185
-        ExplicitHeight = 89
       end
     end
   end

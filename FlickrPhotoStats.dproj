@@ -83,13 +83,14 @@
         <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_MajorVer>3</VerInfo_MajorVer>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v3.0;FileVersion=3.0.0.0;InternalName=Flickr Photo Stats v3.0;LegalCopyright=Jordi Corbilla;LegalTrademarks=Flickr Photo Stats v3.0;OriginalFilename=Flickr Photo Stats v3.0;ProductName=Flickr Photo Stats v3.0;ProductVersion=3.0.0.0;Comments=Flickr Photo Stats v3.0</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats;FileVersion=1.0.0.1;InternalName=Flickr Photo Stats;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats;ProductName=Flickr Photo Stats;ProductVersion=1.0.0.1;Comments=Flickr Photo Stats</VerInfo_Keys>
-        <VerInfo_Build>1</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v3.0;FileVersion=3.0.0.0;InternalName=Flickr Photo Stats v3.0;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v3.0;ProductName=Flickr Photo Stats v3.0;ProductVersion=3.0.0.0;Comments=Flickr Photo Stats v3.0</VerInfo_Keys>
+        <VerInfo_MajorVer>3</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

@@ -98,6 +98,7 @@ type
     procedure UpdateTotals;
     procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: integer);
     procedure UpdateGlobals();
+    procedure LoadHallOfFame(repository: IFlickrRepository);
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -111,7 +112,7 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats;
 
 {$R *.dfm}
 
@@ -133,6 +134,7 @@ begin
   ProgressBar1.Visible := false;
   Process.Visible := false;
   UpdateTotals();
+  LoadHallOfFame(repository);
 end;
 
 procedure TfrmFlickr.UpdateTotals();
@@ -284,6 +286,20 @@ begin
   globalsRepository.load('flickrRepositoryGlobal.xml');
 
   LoadForms(repository);
+
+  LoadHallOfFame(repository);
+end;
+
+procedure TfrmFlickr.LoadHallOfFame(repository : IFlickrRepository);
+var
+  topStats : TTopStats;
+begin
+  topStats := TTopStats.Create(repository);
+  memo1.Lines.Clear;
+  memo1.Lines.Add(topStats.GetTopXNumberOfViews(20));
+  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(20));
+  memo1.Lines.Add(topStats.GetTopXNumberOfComments(20));
+  topStats.Free;
 end;
 
 procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
