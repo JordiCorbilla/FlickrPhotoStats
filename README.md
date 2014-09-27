@@ -31,7 +31,9 @@ Code convention:
 Use Batch Update to easily update all the values and keep a good track record of your flickr pool.
 
 Lates version of the binary can be found here:
-https://app.box.com/s/8pfnja1qti9rwa9sk2fi
+
+FlickrPhotoStats(x86) v3.0. (https://app.box.com/s/v3xdczujjdm1b85kcs8k)
+FlickrPhotoStats(x64) v3.0. (https://app.box.com/s/1i67o9g6krr0398kprk1)
 
 Source code is available here.
 
