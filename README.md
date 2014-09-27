@@ -11,7 +11,7 @@ Once obtained, you can load your list or start a new one using the Api Key.
 
 Example of the app:
 
-![](http://2.bp.blogspot.com/-P-8fTEFrcWs/U8wzBhreGDI/AAAAAAAAEd0/oCIMxqWguuk/s1600/v2.png)
+![](http://2.bp.blogspot.com/-u9e9JX1v6Sc/VCabY59YGtI/AAAAAAAAEk8/Qm6ttjVHK7M/s1600/Example.png)
 
 It will keep a list of all the photos you add to keep track of them automatically.
 The following information will be saved:
