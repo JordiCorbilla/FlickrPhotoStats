@@ -100,7 +100,7 @@ begin
     description := description + PhotosSorted[i].Id + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
-  IPhotoComparer := nil;
+  //IPhotoComparer := nil;
   result := description;
 end;
 
@@ -127,7 +127,7 @@ begin
     description := description + PhotosSorted[i].Id + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
-  IPhotoComparer := nil;
+  //IPhotoComparer := nil;
   result := description;
 end;
 
@@ -154,7 +154,7 @@ begin
     description := description + PhotosSorted[i].Id + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
-  IPhotoComparer := nil;
+  //IPhotoComparer := nil;
   result := description;
 end;
 

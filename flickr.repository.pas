@@ -36,25 +36,31 @@ type
   IFlickrRepository = interface
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
+    procedure SetUserId(value: string);
+    function GetUserId(): string;
     procedure AddPhoto(photo: IPhoto);
     function GetPhotos(): TList<IPhoto>;
     procedure SetPhotos(value: TList<IPhoto>);
     function GetPhoto(id: string): IPhoto;
-    procedure Save(ApiKey: string; FileName: string);
+    procedure Save(ApiKey: string; UserId: string; FileName: string);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
+    property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
   end;
 
   TFlickrRepository = class(TInterfacedObject, IFlickrRepository)
   private
     FApiKey: String;
+    FUserId : String;
     FPhotos: TList<IPhoto>;
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
     function GetPhotos(): TList<IPhoto>;
     procedure SetPhotos(value: TList<IPhoto>);
+    procedure SetUserId(value: string);
+    function GetUserId(): string;
   public
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
@@ -62,8 +68,9 @@ type
     constructor Create();
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
-    procedure Save(ApiKey: string; FileName: string);
+    procedure Save(ApiKey: string; UserId: string; FileName: string);
     property ApiKey: string read GetApiKey write SetApiKey;
+    property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
   end;
 
@@ -136,6 +143,11 @@ begin
   Result := FPhotos;
 end;
 
+function TFlickrRepository.GetUserId: string;
+begin
+  Result := FUserId;
+end;
+
 procedure TFlickrRepository.Load(FileName: string);
 var
   Document: IXMLDocument;
@@ -149,6 +161,12 @@ begin
     Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
     iXMLRootNode := Document.ChildNodes.first;
     Self.FApiKey := iXMLRootNode.attributes['ApiKey'];
+
+    try
+      Self.FUserId := iXMLRootNode.attributes['UserId'];
+    except
+      Self.FUserId := '';
+    end;
 
     iNode := iXMLRootNode.ChildNodes.first;
     while iNode <> nil do
@@ -166,7 +184,7 @@ begin
     ShowMessage('File does not exists in location: ' + ExtractFilePath(ParamStr(0)) + FileName);
 end;
 
-procedure TFlickrRepository.Save(ApiKey: string; FileName: string);
+procedure TFlickrRepository.Save(ApiKey: string; UserId: string; FileName: string);
 var
   XMLDoc: TXMLDocument;
   iNode: IXMLNode;
@@ -177,6 +195,7 @@ begin
   XMLDoc.Active := true;
   iNode := XMLDoc.AddChild('FlickrRepository');
   iNode.attributes['ApiKey'] := ApiKey;
+  iNode.attributes['UserId'] := UserId;
 
   for i := 0 to FPhotos.count - 1 do
   begin
@@ -193,6 +212,11 @@ end;
 procedure TFlickrRepository.SetPhotos(value: TList<IPhoto>);
 begin
   FPhotos := value;
+end;
+
+procedure TFlickrRepository.SetUserId(value: string);
+begin
+  FUserId := value;
 end;
 
 end.

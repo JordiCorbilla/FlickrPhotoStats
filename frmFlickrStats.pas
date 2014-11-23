@@ -34,7 +34,8 @@ uses
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
-  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals;
+  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals,
+  Vcl.ImgList, Vcl.Buttons;
 
 type
   TfrmFlickr = class(TForm)
@@ -79,6 +80,17 @@ type
     ChartLikes: TChart;
     LineSeries7: TLineSeries;
     Memo1: TMemo;
+    ImageList1: TImageList;
+    TabSheet1: TTabSheet;
+    Panel6: TPanel;
+    btnGetList: TButton;
+    Label4: TLabel;
+    edtUserId: TEdit;
+    listPhotosUser: TListView;
+    Panel7: TPanel;
+    btnAddItems: TButton;
+    lblfetching: TLabel;
+    progressfetching: TProgressBar;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -90,6 +102,9 @@ type
     procedure listPhotosCustomDrawSubItem(Sender: TCustomListView;
       Item: TListItem; SubItem: Integer; State: TCustomDrawState;
       var DefaultDraw: Boolean);
+    procedure btnGetListClick(Sender: TObject);
+    procedure apikeyChange(Sender: TObject);
+    procedure btnAddItemsClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -116,11 +131,25 @@ uses
 
 {$R *.dfm}
 
+procedure TfrmFlickr.apikeyChange(Sender: TObject);
+begin
+  btnSave.Enabled := true;
+end;
+
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: integer;
 begin
+  if apikey.Text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+  batchUpdate.enabled := false;
+  btnGetList.enabled := false;
   ProgressBar1.Visible := true;
+  photoId.Enabled := false;
+  btnAdd.Enabled := false;
   Process.Visible := true;
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
@@ -135,6 +164,11 @@ begin
   Process.Visible := false;
   UpdateTotals();
   LoadHallOfFame(repository);
+  btnSave.Enabled := true;
+  photoId.Enabled := true;
+  btnAdd.Enabled := true;
+  btnGetList.Enabled := true;
+  batchUpdate.enabled := false;
 end;
 
 procedure TfrmFlickr.UpdateTotals();
@@ -264,9 +298,16 @@ end;
 
 procedure TfrmFlickr.btnAddClick(Sender: TObject);
 begin
+  if apikey.Text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+
   RequestInformation_REST_Flickr(photoId.text);
   photoId.text := '';
   UpdateTotals();
+  btnSave.Enabled := true;
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
@@ -296,15 +337,20 @@ var
 begin
   topStats := TTopStats.Create(repository);
   memo1.Lines.Clear;
-  memo1.Lines.Add(topStats.GetTopXNumberOfViews(20));
-  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(20));
-  memo1.Lines.Add(topStats.GetTopXNumberOfComments(20));
+  memo1.Lines.Add('************************************');
+  memo1.Lines.Add('************ HALL OF FAME **********');
+  memo1.Lines.Add('************************************');
+
+  memo1.Lines.Add(topStats.GetTopXNumberOfViews(50));
+  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(50));
+  memo1.Lines.Add(topStats.GetTopXNumberOfComments(50));
   topStats.Free;
 end;
 
 procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
 begin
   apikey.text := repository.apikey;
+  edtUserId.Text := repository.UserId;
   listPhotos.Clear;
   UpdateCounts();
 end;
@@ -484,8 +530,143 @@ end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, 'flickrRepository.xml');
+  repository.save(apikey.text, edtUserId.text, 'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
+  btnSave.Enabled := false;
+end;
+
+procedure TfrmFlickr.btnGetListClick(Sender: TObject);
+var
+  Item: TListItem;
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  pages, title, id, ispublic, total: string;
+  numPages, numTotal : integer;
+  i: Integer;
+begin
+  if apikey.Text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+  if edtUserId.Text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+  btnLoad.Enabled := false;
+  btnAdd.Enabled := false;
+  btnAddItems.Enabled := false;
+  batchUpdate.Enabled := false;
+  listPhotosUser.Visible := false;
+  lblfetching.visible := true;
+  progressfetching.visible := true;
+  Application.ProcessMessages;
+  response := IdHTTP1.Get(TFlickrRest.new().getPhotos(apikey.text, edtUserId.Text, '1', '500'));
+  XMLDocument1.LoadFromXML(response);
+  iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
+  iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+  iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photos>
+  pages := iXMLRootNode3.attributes['pages'];
+  total := iXMLRootNode3.attributes['total'];
+  iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photo>
+  listPhotosUser.Clear;
+  numTotal := total.ToInteger();
+  progressfetching.Max := numTotal;
+  progressfetching.position := 0;
+  while iXMLRootNode4 <> nil do
+  begin
+    if iXMLRootNode4.NodeName = 'photo' then
+    begin
+      id := iXMLRootNode4.attributes['id'];
+      ispublic := iXMLRootNode4.attributes['ispublic'];
+      title := iXMLRootNode4.attributes['title'];
+      if ispublic = '1' then
+      begin
+        Item := listPhotosUser.Items.Add;
+        Item.Caption := id;
+        Item.SubItems.Add(title);
+      end;
+    end;
+    progressfetching.position := progressfetching.position + 1;
+    Application.ProcessMessages;
+    iXMLRootNode4 := iXMLRootNode4.NextSibling;
+  end;
+
+  //Load the remaining pages
+  numPages := pages.ToInteger;
+  for i := 2 to numpages do
+  begin
+    response := IdHTTP1.Get(TFlickrRest.new().getPhotos(apikey.text, edtUserId.Text, i.ToString, '500'));
+    XMLDocument1.LoadFromXML(response);
+    iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
+    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photos>
+    pages := iXMLRootNode3.attributes['pages'];
+    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photo>
+    while iXMLRootNode4 <> nil do
+    begin
+      if iXMLRootNode4.NodeName = 'photo' then
+      begin
+        id := iXMLRootNode4.attributes['id'];
+        ispublic := iXMLRootNode4.attributes['ispublic'];
+        title := iXMLRootNode4.attributes['title'];
+        if ispublic = '1' then
+        begin
+          Item := listPhotosUser.Items.Add;
+          Item.Caption := id;
+          Item.SubItems.Add(title);
+        end;
+      end;
+      progressfetching.position := progressfetching.position + 1;
+      Application.ProcessMessages;
+      iXMLRootNode4 := iXMLRootNode4.NextSibling;
+    end;
+  end;
+  btnLoad.Enabled := true;
+  btnAdd.Enabled := true;
+  batchUpdate.Enabled := true;
+  btnAddItems.Enabled := true;
+  lblfetching.visible := false;
+  progressfetching.visible := false;
+  listPhotosUser.Visible := true;
+end;
+
+procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
+var
+  i : integer;
+  item : TListItem;
+begin
+  btnAddItems.enabled := false;
+  ProgressBar1.Visible := true;
+  photoId.Enabled := false;
+  btnAdd.Enabled := false;
+  batchUpdate.Enabled := false;
+  Process.Visible := true;
+  ProgressBar1.Min := 0;
+  ProgressBar1.Max := listPhotos.Items.Count;
+  for i := 0 to listPhotosuser.Items.Count - 1 do
+  begin
+    Process.Caption := 'Processing image: ' + listPhotosuser.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotosuser.Items.Count.ToString;
+    ProgressBar1.position := i;
+    Application.ProcessMessages;
+
+    if not ExistPhotoInList(listPhotosuser.Items[i].Caption, item)  then
+    begin
+      photoId.Text := listPhotosuser.Items[i].Caption;
+      btnAddClick(sender);
+    end;
+  end;
+  photoId.Text := '';
+  ProgressBar1.Visible := false;
+  Process.Visible := false;
+  UpdateTotals();
+  LoadHallOfFame(repository);
+  btnSave.Enabled := true;
+  batchUpdate.Enabled := true;
+  photoId.Enabled := true;
+  btnAdd.Enabled := true;
+  btnAddItems.enabled := true;
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
@@ -528,17 +709,27 @@ begin
   Color2 := Sender.Canvas.Brush.Color;
   if SubItem = 1 then
   begin
-    if ((Item.SubItems.Strings[1].ToInteger >= 1000) and (Item.SubItems.Strings[1].ToInteger < 2000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 1000) and (Item.SubItems.Strings[1].ToInteger < 3000)) then
     begin
       Sender.Canvas.Font.Color := clBlue;
       Sender.Canvas.Brush.Color := Color2;
     end;
-    if ((Item.SubItems.Strings[1].ToInteger >= 2000) and (Item.SubItems.Strings[1].ToInteger < 4000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 3000) and (Item.SubItems.Strings[1].ToInteger < 5000)) then
     begin
       Sender.Canvas.Font.Color := clGreen;
       Sender.Canvas.Brush.Color := Color2;
     end;
-    if ((Item.SubItems.Strings[1].ToInteger >= 4000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 5000) and (Item.SubItems.Strings[1].ToInteger < 8000)) then
+    begin
+      Sender.Canvas.Font.Color := clOlive;
+      Sender.Canvas.Brush.Color := Color2;
+    end;
+    if ((Item.SubItems.Strings[1].ToInteger >= 8000) and (Item.SubItems.Strings[1].ToInteger < 10000)) then
+    begin
+      Sender.Canvas.Font.Color := clFuchsia;
+      Sender.Canvas.Brush.Color := Color2;
+    end;
+    if ((Item.SubItems.Strings[1].ToInteger >= 10000)) then
     begin
       Sender.Canvas.Font.Color := clRed;
       Sender.Canvas.Brush.Color := Color2;

@@ -33,6 +33,7 @@ type
   IFlickrRest = interface
     function getFavorites(api_key: string; photo_id: string): string;
     function getInfo(api_key: string; photo_id: string): string;
+    function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
   end;
 
   TFlickrRest = class(TInterfacedObject, IFlickrRest)
@@ -40,6 +41,7 @@ type
   public
     function getFavorites(api_key: string; photo_id: string): string;
     function getInfo(api_key: string; photo_id: string): string;
+    function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
     class function New(): IFlickrRest;
   end;
 
@@ -55,6 +57,11 @@ end;
 function TFlickrRest.getInfo(api_key, photo_id: string): string;
 begin
   Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=' + api_key + '&photo_id=' + photo_id;
+end;
+
+function TFlickrRest.getPhotos(api_key, user_id, page, per_page: string): string;
+begin
+  Result := 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + api_key + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
 end;
 
 class function TFlickrRest.New: IFlickrRest;
