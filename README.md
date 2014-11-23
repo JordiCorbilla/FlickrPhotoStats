@@ -24,9 +24,11 @@ The following information will be saved:
 Each value is saved and stored over time so the took can display the trend of a particular photo.
 
 Code convention:
-- > 1000 < 2000 views: blue.
-- > 2000 < 4000 views: green.
-- > 4000 views: red.
+- > 1000 < 3000 views: blue.
+- > 3000 < 5000 views: green.
+- > 5000 < 8000 views: Olive.
+- > 8000 < 10000 views: Fuchsia. 
+- > 10000 views: red.
  
 Use Batch Update to easily update all the values and keep a good track record of your flickr pool.
 
@@ -35,6 +37,14 @@ Lates version of the binary can be found here:
 - FlickrPhotoStats(x86) v3.0. (https://app.box.com/s/v3xdczujjdm1b85kcs8k)
 - FlickrPhotoStats(x64) v3.0. (https://app.box.com/s/1i67o9g6krr0398kprk1)
 
+New versions of the application (beta):
+
+- FlickrPhotoStats(x86) v3.1. (https://app.box.com/s/djm6lei8rli3pkfa1fy3)
+- FlickrPhotoStats(x64) v3.1. (https://app.box.com/s/w24hr4cq8nkh9c22z4iw)
+
+Features for version 3.1:
+- Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
+
 Source code is available here.
 
-Developed under Delphi XE6.
+Developed with Delphi XE6.
