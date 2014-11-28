@@ -97,7 +97,7 @@ begin
   description := 'Top ' + num.ToString + ' images with most Comments: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
+    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;
@@ -124,7 +124,7 @@ begin
   description := 'Top ' + num.ToString + ' images with most likes: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
+    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;
@@ -151,7 +151,7 @@ begin
   description := 'Top ' + num.ToString + ' images with most Views: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
+    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;

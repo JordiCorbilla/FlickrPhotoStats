@@ -35,7 +35,8 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals,
-  Vcl.ImgList, Vcl.Buttons;
+  Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
+  Vcl.ActnList;
 
 type
   TfrmFlickr = class(TForm)
@@ -91,6 +92,8 @@ type
     btnAddItems: TButton;
     lblfetching: TLabel;
     progressfetching: TProgressBar;
+    Taskbar1: TTaskbar;
+    ActionList1: TActionList;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -151,12 +154,16 @@ begin
   photoId.Enabled := false;
   btnAdd.Enabled := false;
   Process.Visible := true;
+  taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  taskbar1.ProgressMaxValue := listPhotos.Items.Count;
+
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
     Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
     ProgressBar1.position := i;
+    taskbar1.ProgressValue := i;
     Application.ProcessMessages;
     RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
   end;
@@ -167,6 +174,7 @@ begin
   btnSave.Enabled := true;
   photoId.Enabled := true;
   btnAdd.Enabled := true;
+  taskbar1.ProgressValue := 0;
   btnGetList.Enabled := true;
   batchUpdate.enabled := false;
 end;
@@ -573,6 +581,8 @@ begin
   listPhotosUser.Clear;
   numTotal := total.ToInteger();
   progressfetching.Max := numTotal;
+  taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  taskbar1.ProgressMaxValue := numTotal;
   progressfetching.position := 0;
   while iXMLRootNode4 <> nil do
   begin
@@ -589,6 +599,7 @@ begin
       end;
     end;
     progressfetching.position := progressfetching.position + 1;
+    taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
@@ -619,6 +630,7 @@ begin
         end;
       end;
       progressfetching.position := progressfetching.position + 1;
+      taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -629,6 +641,7 @@ begin
   btnAddItems.Enabled := true;
   lblfetching.visible := false;
   progressfetching.visible := false;
+  taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
 end;
 

@@ -457,8 +457,6 @@ object frmFlickr: TfrmFlickr
       ViewStyle = vsReport
       OnCustomDrawSubItem = listPhotosCustomDrawSubItem
       OnItemChecked = listPhotosItemChecked
-      ExplicitLeft = -4
-      ExplicitTop = 39
     end
     object Panel5: TPanel
       Left = 1
@@ -997,10 +995,6 @@ object frmFlickr: TfrmFlickr
         Height = 51
         Align = alClient
         TabOrder = 2
-        ExplicitLeft = 48
-        ExplicitTop = 584
-        ExplicitWidth = 185
-        ExplicitHeight = 41
         object btnAddItems: TButton
           Left = 2
           Top = 14
@@ -1054,7 +1048,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 168
     Bitmap = {
-      494C01010700D800100110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010700D800140110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000002000000001002000000000000020
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000C5600DFFC96511FF00000000000000000000
@@ -1324,5 +1318,18 @@ object frmFlickr: TfrmFlickr
       80030000000080818003000000008001800300000000C003FE07000000008007
       FE070000FFFF800FFFFF8001FFFFFFFF00000000000000000000000000000000
       000000000000}
+  end
+  object Taskbar1: TTaskbar
+    TaskBarButtons = <
+      item
+      end>
+    ProgressState = Normal
+    TabProperties = []
+    Left = 216
+    Top = 168
+  end
+  object ActionList1: TActionList
+    Left = 328
+    Top = 169
   end
 end
