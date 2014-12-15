@@ -34,6 +34,7 @@ type
     function getFavorites(api_key: string; photo_id: string): string;
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; api_sig : string): string;
   end;
 
   TFlickrRest = class(TInterfacedObject, IFlickrRest)
@@ -42,6 +43,7 @@ type
     function getFavorites(api_key: string; photo_id: string): string;
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; api_sig : string): string;
     class function New(): IFlickrRest;
   end;
 
@@ -52,6 +54,11 @@ implementation
 function TFlickrRest.getFavorites(api_key, photo_id: string): string;
 begin
   Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getFavorites&api_key=' + api_key + '&photo_id=' + photo_id;
+end;
+
+function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string; api_sig : string): string;
+begin
+  Result := 'https://api.flickr.com/services/rest/?method=flickr.groups.pools.getGroups&api_key=' + api_key + '&page=' + page + '&per_page=' + per_page + '&format=rest&auth_token=' +auth_token + '&api_sig=' + api_sig;
 end;
 
 function TFlickrRest.getInfo(api_key, photo_id: string): string;

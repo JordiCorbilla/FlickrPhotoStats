@@ -36,7 +36,7 @@ uses
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
-  Vcl.ActnList;
+  Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal;
 
 type
   TfrmFlickr = class(TForm)
@@ -94,6 +94,26 @@ type
     progressfetching: TProgressBar;
     Taskbar1: TTaskbar;
     ActionList1: TActionList;
+    TabSheet2: TTabSheet;
+    Panel8: TPanel;
+    lblfetchinggroup: TLabel;
+    btnGetGroups: TButton;
+    progressfetchinggroups: TProgressBar;
+    listGroups: TListView;
+    Label5: TLabel;
+    edtAuthToken: TEdit;
+    Label6: TLabel;
+    edtApiSig: TEdit;
+    Label7: TLabel;
+    Edit2: TEdit;
+    Label8: TLabel;
+    secret: TEdit;
+    Authenticate: TButton;
+    Splitter2: TSplitter;
+    TabSheet3: TTabSheet;
+    edtMax: TEdit;
+    Label9: TLabel;
+    btnExcel: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -108,6 +128,9 @@ type
     procedure btnGetListClick(Sender: TObject);
     procedure apikeyChange(Sender: TObject);
     procedure btnAddItemsClick(Sender: TObject);
+    procedure btnGetGroupsClick(Sender: TObject);
+    procedure AuthenticateClick(Sender: TObject);
+    procedure btnExcelClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -117,6 +140,8 @@ type
     procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: integer);
     procedure UpdateGlobals();
     procedure LoadHallOfFame(repository: IFlickrRepository);
+    function MD5(apikey, secret: string): string;
+    function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -130,13 +155,18 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj;
 
 {$R *.dfm}
 
 procedure TfrmFlickr.apikeyChange(Sender: TObject);
 begin
   btnSave.Enabled := true;
+end;
+
+procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
+begin
+//oauthr authentication
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
@@ -342,6 +372,7 @@ end;
 procedure TfrmFlickr.LoadHallOfFame(repository : IFlickrRepository);
 var
   topStats : TTopStats;
+  maxValues : string;
 begin
   topStats := TTopStats.Create(repository);
   memo1.Lines.Clear;
@@ -349,9 +380,10 @@ begin
   memo1.Lines.Add('************ HALL OF FAME **********');
   memo1.Lines.Add('************************************');
 
-  memo1.Lines.Add(topStats.GetTopXNumberOfViews(50));
-  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(50));
-  memo1.Lines.Add(topStats.GetTopXNumberOfComments(50));
+  maxValues := edtMax.Text;
+  memo1.Lines.Add(topStats.GetTopXNumberOfViews(maxValues.ToInteger()));
+  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(maxValues.ToInteger()));
+  memo1.Lines.Add(topStats.GetTopXNumberOfComments(maxValues.ToInteger()));
   topStats.Free;
 end;
 
@@ -359,6 +391,8 @@ procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
 begin
   apikey.text := repository.apikey;
   edtUserId.Text := repository.UserId;
+  edtAuthToken.text := repository.Auth_token;
+  edtApiSig.text := repository.Api_Sig;
   listPhotos.Clear;
   UpdateCounts();
 end;
@@ -538,9 +572,141 @@ end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, edtUserId.text, 'flickrRepository.xml');
+  repository.save(apikey.text, edtUserId.text, edtAuthtoken.text, edtApisig.text, 'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
   btnSave.Enabled := false;
+end;
+
+
+//returns MD5 has for a file
+function TfrmFlickr.MD5(apikey : string; secret : string): string;
+var
+  idmd5: TIdHashMessageDigest5;
+  fs: TFileStream;
+  hash: T4x4LongWordRecord;
+begin
+  idmd5 := TIdHashMessageDigest5.Create;
+  try
+    Result := idmd5.HashStringAsHex(secret +'api_key'+apikey+'permswrite',IndyTextEncoding_OSDefault());
+  finally
+    idmd5.Free;
+  end;
+end;
+
+procedure TfrmFlickr.btnGetGroupsClick(Sender: TObject);
+var
+  Item: TListItem;
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  pages, title, id, ismember, total: string;
+  numPages, numTotal : integer;
+  i: Integer;
+begin
+  edtapisig.Text := MD5(apikey.Text, secret.text);
+  exit;
+
+
+  if apikey.Text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+  if edtUserId.Text = '' then
+  begin
+    showmessage('User ID key can''t be empty');
+    exit;
+  end;
+  if edtAuthToken.Text = '' then
+  begin
+    showmessage('Authorisation token key can''t be empty');
+    exit;
+  end;
+  if edtApiSig.Text = '' then
+  begin
+    showmessage('Api signature key can''t be empty');
+    exit;
+  end;
+  btnLoad.Enabled := false;
+  btnAdd.Enabled := false;
+  btnAddItems.Enabled := false;
+  batchUpdate.Enabled := false;
+  listGroups.Visible := false;
+  lblfetchingGroup.visible := true;
+  progressfetchinggroups.visible := true;
+  Application.ProcessMessages;
+  response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, '1', '500', edtAuthToken.Text, edtApiSig.text));
+  XMLDocument1.LoadFromXML(response);
+  iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
+  iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+  iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
+  pages := iXMLRootNode3.attributes['page'];
+  total := iXMLRootNode3.attributes['pages'];
+  iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
+  listGroups.Clear;
+  numTotal := total.ToInteger();
+  progressfetchinggroups.Max := numTotal;
+  taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  taskbar1.ProgressMaxValue := numTotal;
+  progressfetchinggroups.position := 0;
+  while iXMLRootNode4 <> nil do
+  begin
+    if iXMLRootNode4.NodeName = 'group' then
+    begin
+      id := iXMLRootNode4.attributes['id'];
+      ismember := iXMLRootNode4.attributes['member'];
+      title := iXMLRootNode4.attributes['name'];
+      if ismember = '1' then
+      begin
+        Item := listGroups.Items.Add;
+        Item.Caption := id;
+        Item.SubItems.Add(title);
+      end;
+    end;
+    progressfetchinggroups.position := progressfetchinggroups.position + 1;
+    taskbar1.ProgressValue := progressfetchinggroups.position;
+    Application.ProcessMessages;
+    iXMLRootNode4 := iXMLRootNode4.NextSibling;
+  end;
+
+  //Load the remaining pages
+  numPages := total.ToInteger;
+  for i := 2 to numpages do
+  begin
+    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', edtAuthToken.Text, edtApiSig.text));
+    XMLDocument1.LoadFromXML(response);
+    iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
+    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
+    pages := iXMLRootNode3.attributes['page'];
+    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
+    while iXMLRootNode4 <> nil do
+    begin
+      if iXMLRootNode4.NodeName = 'photo' then
+      begin
+        id := iXMLRootNode4.attributes['id'];
+        ismember := iXMLRootNode4.attributes['member'];
+        title := iXMLRootNode4.attributes['name'];
+        if ismember = '1' then
+        begin
+          Item := listGroups.Items.Add;
+          Item.Caption := id;
+          Item.SubItems.Add(title);
+        end;
+      end;
+      progressfetchinggroups.position := progressfetchinggroups.position + 1;
+      taskbar1.ProgressValue := progressfetchinggroups.position;
+      Application.ProcessMessages;
+      iXMLRootNode4 := iXMLRootNode4.NextSibling;
+    end;
+  end;
+  btnLoad.Enabled := true;
+  btnAdd.Enabled := true;
+  batchUpdate.Enabled := true;
+  btnAddItems.Enabled := true;
+  lblfetchingGroup.visible := false;
+  progressfetchinggroups.visible := false;
+  taskbar1.ProgressValue := 0;
+  listGroups.Visible := true;
 end;
 
 procedure TfrmFlickr.btnGetListClick(Sender: TObject);
@@ -680,6 +846,69 @@ begin
   photoId.Enabled := true;
   btnAdd.Enabled := true;
   btnAddItems.enabled := true;
+end;
+
+function TfrmFlickr.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
+const
+  xlWBATWorksheet = -4167;
+var
+  Row: Integer;
+  ExcelOLE, Sheet: OLEVariant;
+  i: Integer;
+begin
+  // Create Excel-OLE Object
+  Result := False;
+  ExcelOLE := CreateOleObject('Excel.Application');
+  try
+    // Hide Excel
+    ExcelOLE.Visible := False;
+
+    ExcelOLE.Workbooks.Add(xlWBatWorkSheet);
+    Sheet := ExcelOLE.Workbooks[1].WorkSheets[1];
+    Sheet.Name := ASheetName;
+
+    Sheet.Cells[1, 1] := 'Id';
+    Sheet.Cells[1, 2] := 'Title';
+    Sheet.Cells[1, 3] := 'Views';
+    Sheet.Cells[1, 4] := 'Likes';
+    Sheet.Cells[1, 5] := 'Comments';
+    Sheet.Cells[1, 6] := 'Last Update';
+    Sheet.Cells[1, 7] := 'Affection';
+
+    Row := 2;
+    for i := 0 to AView.Items.Count - 1 do
+    begin
+      Sheet.Cells[Row, 1] := AView.Items.Item[i].Caption;
+      Sheet.Cells[Row, 2] := AView.Items.Item[i].SubItems[0];
+      Sheet.Cells[Row, 3] := AView.Items.Item[i].SubItems[1];
+      Sheet.Cells[Row, 4] := AView.Items.Item[i].SubItems[2];
+      Sheet.Cells[Row, 5] := AView.Items.Item[i].SubItems[3];
+      Sheet.Cells[Row, 6] := AView.Items.Item[i].SubItems[4];
+      Sheet.Cells[Row, 7] := AView.Items.Item[i].SubItems[5];
+      inc(Row);
+    end;
+
+    try
+      ExcelOLE.Workbooks[1].SaveAs(AFileName);
+      Result := True;
+    except
+
+    end;
+  finally
+    if not VarIsEmpty(ExcelOLE) then
+    begin
+      ExcelOLE.DisplayAlerts := False;
+      ExcelOLE.Quit;
+      ExcelOLE := Unassigned;
+      Sheet := Unassigned;
+    end;
+  end;
+end;
+
+procedure TfrmFlickr.btnExcelClick(Sender: TObject);
+begin
+if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
+    ShowMessage('Data saved successfully!');
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
