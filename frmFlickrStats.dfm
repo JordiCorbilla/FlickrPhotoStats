@@ -960,8 +960,128 @@ object frmFlickr: TfrmFlickr
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 3
-        ExplicitTop = 560
-        ExplicitHeight = 100
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Analytics'
+      ImageIndex = 5
+      object dailyViews: TChart
+        Left = 0
+        Top = 0
+        Width = 651
+        Height = 321
+        Legend.Visible = False
+        Title.Font.Color = clWhite
+        Title.Text.Strings = (
+          'Total Views')
+        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+        BottomAxis.Grid.Width = 0
+        BottomAxis.Grid.ZPosition = 1.000000000000000000
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelsFormat.Font.Color = clWhite
+        BottomAxis.LabelsMultiLine = True
+        BottomAxis.MinimumOffset = 16
+        BottomAxis.MinorTickCount = 16
+        BottomAxis.EndPosition = 98.000000000000000000
+        BottomAxis.PositionPercent = -1.000000000000000000
+        BottomAxis.TickLength = 2
+        BottomAxis.Ticks.Width = 0
+        BottomAxis.Title.Font.Color = clLime
+        DepthAxis.Title.Font.Color = clLime
+        DepthTopAxis.Title.Font.Color = clLime
+        LeftAxis.Grid.Width = 0
+        LeftAxis.LabelsFormat.Font.Color = clWhite
+        LeftAxis.MinorTicks.Width = 0
+        LeftAxis.Ticks.Width = 0
+        LeftAxis.TicksInner.Width = 0
+        LeftAxis.Title.Font.Color = clLime
+        RightAxis.Title.Font.Color = clLime
+        TopAxis.Title.Font.Color = clLime
+        View3D = False
+        Align = alTop
+        Color = 2763306
+        TabOrder = 0
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          7
+          15
+          7)
+        ColorPaletteIndex = 13
+        object LineSeries2: TBarSeries
+          BarBrush.BackColor = clDefault
+          BarPen.Color = 10708548
+          Marks.Shadow.Color = 8487297
+          Marks.Visible = False
+          Marks.Callout.Length = 8
+          Marks.DrawEvery = 10
+          Title = 'Flickr Stats'
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+      end
+      object dailyLikes: TChart
+        Left = 0
+        Top = 321
+        Width = 651
+        Height = 321
+        Legend.Visible = False
+        Title.Font.Color = clWhite
+        Title.Text.Strings = (
+          'Total Likes')
+        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+        BottomAxis.Grid.Width = 0
+        BottomAxis.Grid.ZPosition = 1.000000000000000000
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelsFormat.Font.Color = clWhite
+        BottomAxis.LabelsMultiLine = True
+        BottomAxis.MinimumOffset = 16
+        BottomAxis.MinorTickCount = 16
+        BottomAxis.EndPosition = 98.000000000000000000
+        BottomAxis.PositionPercent = -1.000000000000000000
+        BottomAxis.TickLength = 2
+        BottomAxis.Ticks.Width = 0
+        BottomAxis.Title.Font.Color = clLime
+        DepthAxis.Title.Font.Color = clLime
+        DepthTopAxis.Title.Font.Color = clLime
+        LeftAxis.Grid.Width = 0
+        LeftAxis.LabelsFormat.Font.Color = clWhite
+        LeftAxis.MinorTicks.Width = 0
+        LeftAxis.Ticks.Width = 0
+        LeftAxis.TicksInner.Width = 0
+        LeftAxis.Title.Font.Color = clLime
+        RightAxis.Title.Font.Color = clLime
+        TopAxis.Title.Font.Color = clLime
+        View3D = False
+        Align = alTop
+        Color = 2763306
+        TabOrder = 1
+        ExplicitLeft = 3
+        ExplicitTop = 376
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          7
+          15
+          7)
+        ColorPaletteIndex = 13
+        object BarSeries1: TBarSeries
+          BarBrush.BackColor = clDefault
+          BarPen.Color = 10708548
+          Marks.Shadow.Color = 8487297
+          Marks.Visible = False
+          Marks.Callout.Length = 8
+          Marks.DrawEvery = 10
+          Title = 'Flickr Stats'
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
       end
     end
     object TabSheet1: TTabSheet
@@ -1263,7 +1383,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010900D800400110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900D800480110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
