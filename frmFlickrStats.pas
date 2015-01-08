@@ -162,7 +162,7 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth;
 
 {$R *.dfm}
 
@@ -172,8 +172,19 @@ begin
 end;
 
 procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
+var
+  OAuthUrl : string;
+  response : string;
 begin
 //oauthr authentication
+  OAuthUrl := TOAuth.New(apikey.text, secret.text).GenerateRequestTokenQuery();
+
+  //Example successful response
+  //oauth_callback_confirmed=true&
+  //oauth_token=72157650113637896-43aba062d96def83&
+  //oauth_token_secret=153e53c592649722
+  response := IdHTTP1.Get(OAuthUrl);
+
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);

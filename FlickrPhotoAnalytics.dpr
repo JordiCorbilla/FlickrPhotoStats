@@ -10,7 +10,8 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   flickr.globals in 'flickr.globals.pas',
-  flickr.top.stats in 'flickr.top.stats.pas';
+  flickr.top.stats in 'flickr.top.stats.pas',
+  flickr.oauth in 'flickr.oauth.pas';
 
 {$R *.res}
 
