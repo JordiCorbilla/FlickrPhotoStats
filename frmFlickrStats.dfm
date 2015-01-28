@@ -612,7 +612,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 659
     Height = 688
-    ActivePage = Statistics
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -756,6 +756,10 @@ object frmFlickr: TfrmFlickr
     object Globals: TTabSheet
       Caption = 'Globals'
       ImageIndex = 1
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter2: TSplitter
         Left = 0
         Top = 507
@@ -965,6 +969,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet4: TTabSheet
       Caption = 'Analytics'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object dailyViews: TChart
         Left = 0
         Top = 0
@@ -1085,6 +1093,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet1: TTabSheet
       Caption = 'Get list of photos'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel6: TPanel
         Left = 0
         Top = 0
@@ -1189,6 +1201,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet2: TTabSheet
       Caption = 'Get groups'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel8: TPanel
         Left = 0
         Top = 0
@@ -1381,7 +1397,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010900D8004C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010900D800500110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
