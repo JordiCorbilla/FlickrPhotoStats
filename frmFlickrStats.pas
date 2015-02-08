@@ -36,7 +36,7 @@ uses
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
-  Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal;
+  Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw;
 
 type
   TfrmFlickr = class(TForm)
@@ -46,10 +46,6 @@ type
     Panel1: TPanel;
     btnLoad: TButton;
     btnSave: TButton;
-    Label1: TLabel;
-    apikey: TEdit;
-    Label3: TLabel;
-    Edit1: TEdit;
     Panel2: TPanel;
     listPhotos: TListView;
     Splitter1: TSplitter;
@@ -80,7 +76,6 @@ type
     LineSeries4: TLineSeries;
     ChartLikes: TChart;
     LineSeries7: TLineSeries;
-    Memo1: TMemo;
     ImageList1: TImageList;
     TabSheet1: TTabSheet;
     Panel6: TPanel;
@@ -106,10 +101,7 @@ type
     edtApiSig: TEdit;
     Label7: TLabel;
     Edit2: TEdit;
-    Label8: TLabel;
-    secret: TEdit;
     Authenticate: TButton;
-    Splitter2: TSplitter;
     TabSheet3: TTabSheet;
     edtMax: TEdit;
     Label9: TLabel;
@@ -119,6 +111,19 @@ type
     LineSeries2: TBarSeries;
     dailyLikes: TChart;
     BarSeries1: TBarSeries;
+    Label3: TLabel;
+    Edit1: TEdit;
+    Label1: TLabel;
+    apikey: TEdit;
+    Label8: TLabel;
+    secret: TEdit;
+    TabSheet5: TTabSheet;
+    mLogs: TMemo;
+    TabSheet6: TTabSheet;
+    Memo1: TMemo;
+    Authentication: TTabSheet;
+    WebBrowser1: TWebBrowser;
+    btnGetToken: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -136,6 +141,7 @@ type
     procedure btnGetGroupsClick(Sender: TObject);
     procedure AuthenticateClick(Sender: TObject);
     procedure btnExcelClick(Sender: TObject);
+    procedure btnGetTokenClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -149,11 +155,13 @@ type
     function MD5(apikey, secret: string): string;
     function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
     function getTotalGroupCounts: integer;
+    procedure Log(s: string);
     { Private declarations }
   public
     repository: IFlickrRepository;
     globalsRepository : IFlickrGlobals;
     CheckedSeries : TStringList;
+    userToken : string;
   end;
 
 var
@@ -162,7 +170,7 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth, StrUtils;
 
 {$R *.dfm}
 
@@ -175,16 +183,70 @@ procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
 var
   OAuthUrl : string;
   response : string;
+  oauth_callback_confirmed : string;
+  oauth_token : string;
+  oauth_token_secret : string;
 begin
-//oauthr authentication
+  //apikey.text 0edf6f13dc6309c822b59ae8bb783df6
+  //secret.text b9e217d1c0333300
+  if apikey.text = '' then
+  begin
+    showmessage('Api key can''t be empty');
+    exit;
+  end;
+  if secret.text = '' then
+  begin
+    showmessage('Secret key can''t be empty');
+    exit;
+  end;
+  btnGetToken.Visible := false;
+  Log('authentication started');
+  //oauthr authentication
+  Log('Generating request token query for ' + apikey.text + ' ' + secret.text);
   OAuthUrl := TOAuth.New(apikey.text, secret.text).GenerateRequestTokenQuery();
-
   //Example successful response
   //oauth_callback_confirmed=true&
   //oauth_token=72157650113637896-43aba062d96def83&
   //oauth_token_secret=153e53c592649722
+  Log('Calling OAuth URL ' + OAuthUrl);
   response := IdHTTP1.Get(OAuthUrl);
+  Log('OAuth URL response ' + response);
 
+  //Parsing response
+  Log('Parsing response');
+  //oauth_callback_confirmed=true&oauth_token=72157650113637896-43aba062d96def83&oauth_token_secret=153e53c592649722
+  response := response.Replace('oauth_callback_confirmed', '');
+  response := response.Replace('oauth_token', '');
+  response := response.Replace('_secret', '');
+  //=true&=72157650113637896-43aba062d96def83&=153e53c592649722
+  oauth_callback_confirmed := AnsiLeftStr(response, AnsiPos('&', response));
+  //=true&
+  response := AnsiRightStr(response, length(Response)-length(oauth_callback_confirmed));
+  //=72157650113637896-43aba062d96def83&=153e53c592649722
+  oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
+  //=72157650113637896-43aba062d96def83&
+  response := AnsiRightStr(response, length(Response)-length(oauth_token));
+  //=153e53c592649722
+  oauth_token_secret := response;
+
+  //Clean the parameters
+  oauth_callback_confirmed := oauth_callback_confirmed.Replace('=', '').Replace('&', '');
+  oauth_token := oauth_token.Replace('=', '').Replace('&', '');
+  oauth_token_secret := oauth_token_secret.Replace('=', '').Replace('&', '');
+  Log('oauth_callback_confirmed= ' + oauth_callback_confirmed);
+  Log('oauth_token= ' + oauth_token);
+  Log('oauth_token_secret= ' + oauth_token_secret);
+
+  PageControl1.ActivePage := Authentication;
+  Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=read');
+  webbrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=read');
+  showMessage('Authorise the application in the browser and once you get the example page, press Get token button');
+  btnGetToken.Visible := true;
+end;
+
+procedure TfrmFlickr.Log(s : string);
+begin
+  mlogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
@@ -411,6 +473,7 @@ end;
 procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
 begin
   apikey.text := repository.apikey;
+  secret.Text := repository.Secret;
   edtUserId.Text := repository.UserId;
   edtAuthToken.text := repository.Auth_token;
   edtApiSig.text := repository.Api_Sig;
@@ -657,11 +720,10 @@ end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, edtUserId.text, edtAuthtoken.text, edtApisig.text, 'flickrRepository.xml');
+  repository.save(apikey.text, secret.text, edtUserId.text, edtAuthtoken.text, edtApisig.text, 'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
   btnSave.Enabled := false;
 end;
-
 
 //returns MD5 has for a file
 function TfrmFlickr.MD5(apikey : string; secret : string): string;
@@ -687,7 +749,6 @@ var
 begin
   edtapisig.Text := MD5(apikey.Text, secret.text);
   exit;
-
 
   if apikey.Text = '' then
   begin
@@ -972,6 +1033,35 @@ begin
   listPhotosUser.Visible := true;
 end;
 
+procedure TfrmFlickr.btnGetTokenClick(Sender: TObject);
+var
+  response : string;
+  oauth_token : string;
+  oauth_verifier : string;
+begin
+  //'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
+  response :=  WebBrowser1.LocationURL;
+  Log('response url ' + response);
+  response := response.Replace('http://www.example.com/?', '');
+  response := response.Replace('oauth_token', '');
+  response := response.Replace('oauth_verifier', '');
+
+  //'=72157648370759854-32e3740fbaef246b&=d46f58e4a5780b25'
+  oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
+  //=72157648370759854-32e3740fbaef246b&
+  response := AnsiRightStr(response, length(Response)-length(oauth_token));
+  //=d46f58e4a5780b25
+  oauth_verifier := response;
+
+  //Clean the parameters
+  oauth_token := oauth_token.Replace('=', '').Replace('&', '');
+  oauth_verifier := oauth_verifier.Replace('=', '').Replace('&', '');
+  Log('oauth_token= ' + oauth_token);
+  Log('oauth_verifier= ' + oauth_verifier);
+  userToken := oauth_token;
+  showMessage('Congratulations, application authenticated with token ' + oauth_token);
+end;
+
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
 var
   i : integer;
@@ -1078,6 +1168,7 @@ begin
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
+  Pagecontrol1.ActivePage := Statistics;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);
