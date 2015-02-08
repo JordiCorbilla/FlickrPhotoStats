@@ -95,12 +95,6 @@ type
     btnGetGroups: TButton;
     progressfetchinggroups: TProgressBar;
     listGroups: TListView;
-    Label5: TLabel;
-    edtAuthToken: TEdit;
-    Label6: TLabel;
-    edtApiSig: TEdit;
-    Label7: TLabel;
-    Edit2: TEdit;
     Authenticate: TButton;
     TabSheet3: TTabSheet;
     edtMax: TEdit;
@@ -162,6 +156,7 @@ type
     globalsRepository : IFlickrGlobals;
     CheckedSeries : TStringList;
     userToken : string;
+    userTokenSecret : string;
   end;
 
 var
@@ -170,7 +165,7 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth, StrUtils;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth, StrUtils, flickr.access.token;
 
 {$R *.dfm}
 
@@ -236,6 +231,8 @@ begin
   Log('oauth_callback_confirmed= ' + oauth_callback_confirmed);
   Log('oauth_token= ' + oauth_token);
   Log('oauth_token_secret= ' + oauth_token_secret);
+
+  userTokenSecret := oauth_token_secret;
 
   PageControl1.ActivePage := Authentication;
   Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=read');
@@ -475,8 +472,6 @@ begin
   apikey.text := repository.apikey;
   secret.Text := repository.Secret;
   edtUserId.Text := repository.UserId;
-  edtAuthToken.text := repository.Auth_token;
-  edtApiSig.text := repository.Api_Sig;
   listPhotos.Clear;
   UpdateCounts();
 end;
@@ -720,7 +715,7 @@ end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, secret.text, edtUserId.text, edtAuthtoken.text, edtApisig.text, 'flickrRepository.xml');
+  repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
   btnSave.Enabled := false;
 end;
@@ -747,9 +742,6 @@ var
   numPages, numTotal : integer;
   i: Integer;
 begin
-  edtapisig.Text := MD5(apikey.Text, secret.text);
-  exit;
-
   if apikey.Text = '' then
   begin
     showmessage('Api key can''t be empty');
@@ -760,16 +752,6 @@ begin
     showmessage('User ID key can''t be empty');
     exit;
   end;
-  if edtAuthToken.Text = '' then
-  begin
-    showmessage('Authorisation token key can''t be empty');
-    exit;
-  end;
-  if edtApiSig.Text = '' then
-  begin
-    showmessage('Api signature key can''t be empty');
-    exit;
-  end;
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
   btnAddItems.Enabled := false;
@@ -778,7 +760,7 @@ begin
   lblfetchingGroup.visible := true;
   progressfetchinggroups.visible := true;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, '1', '500', edtAuthToken.Text, edtApiSig.text));
+  response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, '1', '500', userToken));
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -816,7 +798,7 @@ begin
   numPages := total.ToInteger;
   for i := 2 to numpages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', edtAuthToken.Text, edtApiSig.text));
+    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', userToken));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1038,6 +1020,7 @@ var
   response : string;
   oauth_token : string;
   oauth_verifier : string;
+  OAccessTokenUrl : string;
 begin
   //'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
   response :=  WebBrowser1.LocationURL;
@@ -1058,6 +1041,20 @@ begin
   oauth_verifier := oauth_verifier.Replace('=', '').Replace('&', '');
   Log('oauth_token= ' + oauth_token);
   Log('oauth_verifier= ' + oauth_verifier);
+
+  //Now we have the request token
+  //we need to exchange it for an Access token
+  OAccessTokenUrl := TAccessToken.New(oauth_verifier, apikey.text, oauth_token, secret.Text, userTokenSecret).GenerateRequestAccessToken();
+  Log('Calling OAuth URL ' + OAccessTokenUrl);
+  response := IdHTTP1.Get(OAccessTokenUrl);
+  Log('OAuth URL response ' + response);
+
+  //Example response
+  //fullname=Jordi%20Corbilla&
+  //oauth_token=72157639942921845-e4f73de08dc774e6&
+  //oauth_token_secret=3eefb68a488fbb63&
+  //user_nsid=96100496%40N05&
+  //username=Jordi%20Corbilla%20Photography
   userToken := oauth_token;
   showMessage('Congratulations, application authenticated with token ' + oauth_token);
 end;

@@ -36,10 +36,6 @@ type
   IFlickrRepository = interface
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
-    procedure SetAuth_token(value: string);
-    function GetAuth_token(): string;
-    procedure SetApi_sig(value: string);
-    function GetApi_sig(): string;
     procedure SetUserId(value: string);
     function GetUserId(): string;
     procedure AddPhoto(photo: IPhoto);
@@ -48,12 +44,10 @@ type
     function GetPhoto(id: string): IPhoto;
     procedure SetSecret(value: string);
     function GetSecret(): string;
-    procedure Save(ApiKey: string; Secret: string; UserId: string; auth_token: string; api_sig : string; FileName: string);
+    procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
-    property Auth_token: string read GetAuth_token write SetAuth_token;
-    property Api_sig: string read GetApi_sig write SetApi_sig;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
     property Secret: string read GetSecret write SetSecret;
@@ -63,8 +57,6 @@ type
   private
     FApiKey: String;
     FUserId : String;
-    FAuth_token : String;
-    FApi_sig : String;
     FPhotos: TList<IPhoto>;
     FSecret: String;
     procedure SetApiKey(value: string);
@@ -73,10 +65,6 @@ type
     procedure SetPhotos(value: TList<IPhoto>);
     procedure SetUserId(value: string);
     function GetUserId(): string;
-    procedure SetAuth_token(value: string);
-    function GetAuth_token(): string;
-    procedure SetApi_sig(value: string);
-    function GetApi_sig(): string;
     procedure SetSecret(value: string);
     function GetSecret(): string;
   public
@@ -86,11 +74,9 @@ type
     constructor Create();
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
-    procedure Save(ApiKey: string; Secret: string; UserId: string; auth_token: string; api_sig : string; FileName: string);
+    procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
-    property Auth_token: string read GetAuth_token write SetAuth_token;
-    property Api_sig: string read GetApi_sig write SetApi_sig;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
   end;
 
@@ -137,16 +123,6 @@ end;
 function TFlickrRepository.GetApiKey: string;
 begin
   Result := FApiKey;
-end;
-
-function TFlickrRepository.GetApi_sig: string;
-begin
-  Result := FApi_sig;
-end;
-
-function TFlickrRepository.GetAuth_token: string;
-begin
-  Result := FAuth_token;
 end;
 
 function TFlickrRepository.GetPhoto(id: string): IPhoto;
@@ -204,18 +180,6 @@ begin
     end;
 
     try
-      Self.FAuth_token := iXMLRootNode.attributes['Auth_token'];
-    except
-      Self.FAuth_token := '';
-    end;
-
-    try
-      Self.FApi_sig := iXMLRootNode.attributes['Api_sig'];
-    except
-      Self.FApi_sig := '';
-    end;
-
-    try
       Self.FSecret := iXMLRootNode.attributes['Secret'];
     except
       Self.FSecret := '';
@@ -237,7 +201,7 @@ begin
     ShowMessage('File does not exists in location: ' + ExtractFilePath(ParamStr(0)) + FileName);
 end;
 
-procedure TFlickrRepository.Save(ApiKey: string; Secret: string; UserId: string; auth_token: string; api_sig : string; FileName: string);
+procedure TFlickrRepository.Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
 var
   XMLDoc: TXMLDocument;
   iNode: IXMLNode;
@@ -249,8 +213,6 @@ begin
   iNode := XMLDoc.AddChild('FlickrRepository');
   iNode.attributes['ApiKey'] := ApiKey;
   iNode.attributes['UserId'] := UserId;
-  iNode.attributes['auth_token'] := auth_token;
-  iNode.attributes['api_sig'] := api_sig;
   iNode.attributes['Secret'] := Secret;
 
   for i := 0 to FPhotos.count - 1 do
@@ -263,16 +225,6 @@ end;
 procedure TFlickrRepository.SetApiKey(value: string);
 begin
   FApiKey := value;
-end;
-
-procedure TFlickrRepository.SetApi_sig(value: string);
-begin
-  FApi_sig := value;
-end;
-
-procedure TFlickrRepository.SetAuth_token(value: string);
-begin
-  FAuth_token := value;
 end;
 
 procedure TFlickrRepository.SetPhotos(value: TList<IPhoto>);

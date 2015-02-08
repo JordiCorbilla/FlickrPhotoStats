@@ -1142,62 +1142,20 @@ object frmFlickr: TfrmFlickr
         Left = 0
         Top = 0
         Width = 651
-        Height = 121
+        Height = 33
         Align = alTop
         TabOrder = 0
         object lblfetchinggroup: TLabel
           Left = 117
-          Top = 95
+          Top = 6
           Width = 68
           Height = 13
           Caption = 'fetching data:'
           Visible = False
         end
-        object Label5: TLabel
-          Left = 229
-          Top = 44
-          Width = 116
-          Height = 13
-          Caption = 'Authorisation token:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label6: TLabel
-          Left = 229
-          Top = 67
-          Width = 78
-          Height = 13
-          Caption = 'Api signature:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label7: TLabel
-          Left = 2
-          Top = 4
-          Width = 195
-          Height = 39
-          Caption = 
-            'Go to the following url and click on "call method" to obtain the' +
-            ' auth_token and api_sig'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-          WordWrap = True
-        end
         object btnGetGroups: TButton
           Left = 2
-          Top = 90
+          Top = 1
           Width = 99
           Height = 25
           Caption = 'Get entire list'
@@ -1209,43 +1167,16 @@ object frmFlickr: TfrmFlickr
         end
         object progressfetchinggroups: TProgressBar
           Left = 191
-          Top = 93
+          Top = 4
           Width = 448
           Height = 17
           TabOrder = 1
           Visible = False
         end
-        object edtAuthToken: TEdit
-          Left = 356
-          Top = 41
-          Width = 255
-          Height = 21
-          TabOrder = 2
-          OnChange = apikeyChange
-        end
-        object edtApiSig: TEdit
-          Left = 356
-          Top = 64
-          Width = 255
-          Height = 21
-          TabOrder = 3
-          OnChange = apikeyChange
-        end
-        object Edit2: TEdit
-          Left = 229
-          Top = 14
-          Width = 382
-          Height = 21
-          Color = clMoneyGreen
-          TabOrder = 4
-          Text = 
-            'https://www.flickr.com/services/api/explore/flickr.groups.pools.' +
-            'getGroups'
-        end
       end
       object listGroups: TListView
         Left = 0
-        Top = 121
+        Top = 33
         Width = 651
         Height = 521
         Align = alTop
@@ -1265,6 +1196,7 @@ object frmFlickr: TfrmFlickr
         TabOrder = 1
         ViewStyle = vsReport
         OnItemChecked = listPhotosItemChecked
+        ExplicitTop = 121
       end
     end
     object TabSheet3: TTabSheet

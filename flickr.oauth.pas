@@ -45,12 +45,6 @@ type
     function GetSecret() : string;
     procedure SetApiKey(const Value: string);
     procedure SetSecret(const Value: string);
-    function getOAuthSignature(encodedURL : string; consumerTokenSecret : string): string;
-    function DateTimeToUnixEpoch(date: TDateTime): Longint;
-    function getTimeStamp: string;
-    function getOAuthNonce(timeStamp: string): string;
-    function Base64Encode(const Input: TIdBytes): string;
-    function EncryptHMACSha1(Input, AKey: string): TIdBytes;
   public
     property ApiKey : string read GetApiKey write SetApiKey;
     property Secret : string read GetSecret write SetSecret;
@@ -74,12 +68,11 @@ const
     HMACSHA1SignatureType = 'HMAC-SHA1';
     PlainTextSignatureType = 'PLAINTEXT';
     RSASHA1SignatureType = 'RSA-SHA1';
-    UnixDateTimeStamps : TDateTime = 25569; //25569, which is the number of days between 1 January 1900 and 1 January 1970
 
 implementation
 
 uses
-   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp;
+   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, flickr.signature;
 
 { TOauth }
 
@@ -124,10 +117,10 @@ begin
   baseURL := 'https://www.flickr.com/services/oauth/request_token';
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
-  timeStamp := getTimeStamp();
+  timeStamp := TSignature.getTimeStamp();
   paramURL := OAuthCallbackKey+'=' + OAuthCallback;
   paramURL := paramURL + '&'+OAuthConsumerKeyKey+'=' + GetApiKey();
-  paramURL := paramURL + '&'+OAuthNonceKey+'=' + getOAuthNonce(timeStamp);
+  paramURL := paramURL + '&'+OAuthNonceKey+'=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&'+OAuthSignatureMethodKey+'=' + HMACSHA1SignatureType;
   paramURL := paramURL + '&'+OAuthTimestampKey+'=' + timeStamp;
   paramURL := paramURL + '&'+OAuthVersionKey+'=' + OAuthVersion;
@@ -154,11 +147,11 @@ begin
   returnURL := 'https://www.flickr.com/services/oauth/request_token';
   returnURL := returnURL + '?'+OAuthCallbackKey+'=' + OAuthCallback;
   returnURL := returnURL + '&'+OAuthConsumerKeyKey+'=' + GetApiKey();
-  returnURL := returnURL + '&'+OAuthNonceKey+'=' + getOAuthNonce(timeStamp);
+  returnURL := returnURL + '&'+OAuthNonceKey+'=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&'+OAuthSignatureMethodKey+'=' + HMACSHA1SignatureType;
   returnURL := returnURL + '&'+OAuthTimestampKey+'=' + timeStamp;
   returnURL := returnURL + '&'+OAuthVersionKey+'=' + OAuthVersion;
-  returnURL := returnURL + '&'+OAuthSignatureKey+'=' + getOAuthSignature(encodedURL, ConsumerSecret);
+  returnURL := returnURL + '&'+OAuthSignatureKey+'=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
 
   //Example returnURL
   //https://www.flickr.com/services/oauth/request_token?
@@ -171,49 +164,6 @@ begin
   //oauth_signature=4L7C8QdsvykGqhTYw7Q%2F%2Bx5g9WI%3D
 
   result := returnURL;
-end;
-
-function TOAuth.getTimeStamp: string;
-begin
-  Result := IntToStr(DateTimeToUnixEpoch(Now));
-end;
-
-function TOAuth.DateTimeToUnixEpoch(date: TDateTime): Longint;
-var
-  timeZone: TTimeZoneInformation;
-begin
-  GetTimeZoneInformation(timeZone);
-  date := date + (timeZone.Bias / 1440);
-  Result := Trunc((date - UnixDateTimeStamps) * 86400);
-end;
-
-function TOAuth.getOAuthNonce(timeStamp : string): string;
-var
-  md5: TIdHashMessageDigest;
-begin
-  md5 := TIdHashMessageDigest5.Create;
-  Result := md5.HashStringAsHex(timeStamp);
-  md5.Free;
-end;
-
-function TOAuth.Base64Encode(const Input: TIdBytes): string;
-begin
-  result := String(HTTPEncode(AnsiString(TIdEncoderMIME.EncodeBytes(Input))));
-end;
-
-function TOAuth.EncryptHMACSha1(Input, AKey: string): TIdBytes;
-var
-  hmacSha1 : TIdHMACSHA1;
-begin
-  hmacSha1 := TIdHMACSHA1.Create;
-  hmacSha1.Key := IndyTextEncoding_UTF8.GetBytes(AKey);
-  Result := hmacSha1.HashValue(IndyTextEncoding_UTF8.GetBytes(Input));
-  hmacSha1.Free;
-end;
-
-function TOAuth.getOAuthSignature(encodedURL : string; consumerTokenSecret : string): string;
-begin
-  Result := Base64Encode(EncryptHMACSha1(encodedURL, consumerTokenSecret));
 end;
 
 end.

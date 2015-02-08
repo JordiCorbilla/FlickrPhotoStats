@@ -11,7 +11,9 @@ uses
   Vcl.Styles,
   flickr.globals in 'flickr.globals.pas',
   flickr.top.stats in 'flickr.top.stats.pas',
-  flickr.oauth in 'flickr.oauth.pas';
+  flickr.oauth in 'flickr.oauth.pas',
+  flickr.signature in 'flickr.signature.pas',
+  flickr.access.token in 'flickr.access.token.pas';
 
 {$R *.res}
 
