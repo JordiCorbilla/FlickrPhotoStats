@@ -739,7 +739,6 @@ object frmFlickr: TfrmFlickr
         Align = alBottom
         Color = 2763306
         TabOrder = 0
-        ExplicitTop = 338
         DefaultCanvas = 'TGDIPlusCanvas'
         PrintMargins = (
           15
@@ -800,7 +799,6 @@ object frmFlickr: TfrmFlickr
         Align = alClient
         Color = 2763306
         TabOrder = 1
-        ExplicitHeight = 169
         DefaultCanvas = 'TGDIPlusCanvas'
         PrintMargins = (
           15
@@ -861,7 +859,6 @@ object frmFlickr: TfrmFlickr
         Align = alBottom
         Color = 2763306
         TabOrder = 2
-        ExplicitTop = 169
         DefaultCanvas = 'TGDIPlusCanvas'
         PrintMargins = (
           15
@@ -890,8 +887,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet6: TTabSheet
       Caption = 'Hall of Fame'
       ImageIndex = 7
-      ExplicitLeft = -4
-      ExplicitTop = 28
       object Memo1: TMemo
         Left = 0
         Top = 0
@@ -907,8 +902,6 @@ object frmFlickr: TfrmFlickr
         ReadOnly = True
         ScrollBars = ssVertical
         TabOrder = 0
-        ExplicitTop = 510
-        ExplicitHeight = 150
       end
     end
     object TabSheet4: TTabSheet
@@ -1196,7 +1189,6 @@ object frmFlickr: TfrmFlickr
         TabOrder = 1
         ViewStyle = vsReport
         OnItemChecked = listPhotosItemChecked
-        ExplicitTop = 121
       end
     end
     object TabSheet3: TTabSheet
@@ -1365,7 +1357,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010A00D800640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D800680110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

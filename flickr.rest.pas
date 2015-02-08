@@ -35,7 +35,7 @@ type
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
     function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string): string;
   end;
 
   TFlickrRest = class(TInterfacedObject, IFlickrRest)
@@ -45,11 +45,14 @@ type
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
     function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string): string;
     class function New(): IFlickrRest;
   end;
 
 implementation
+
+uses
+  flickr.signature;
 
 { TFlickrRest }
 
@@ -58,9 +61,29 @@ begin
   Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getFavorites&api_key=' + api_key + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string): string;
+function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string; secret : string): string;
+var
+  url : string;
+  signature : string;
 begin
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.groups.pools.getGroups&api_key=' + api_key + '&page=' + page + '&per_page=' + per_page + '&format=rest&auth_token=' +auth_token + '&api_sig=' + '';
+  //Generate signature
+  url := secret +'api_key'+api_key+ 'auth_token' +auth_token;
+  url := url + 'formatrest';
+  url := url + 'methodflickr.groups.pools.getgroups';
+  url := url + 'page' + page + 'per_page' + per_page;
+  signature := TSignature.api_sig(url);
+
+  //Example
+  //https://api.flickr.com/services/rest/?
+  //method=flickr.groups.pools.getgroups&
+  //api_key=0edf6f13dc6309c822b59ae8bb783df6&
+  //page=1&
+  //per_page=500&
+  //format=rest&
+  //auth_token=72157639942921845-e4f73de08dc774e6&
+  //api_sig=477fdb1c77194a6e185e0fd99da04868
+
+  Result := 'https://api.flickr.com/services/rest/?method=flickr.groups.pools.getGroups&api_key=' + api_key + '&page=' + page + '&per_page=' + per_page + '&format=rest&auth_token=' +auth_token + '&api_sig=' + signature;
 end;
 
 function TFlickrRest.getInfo(api_key, photo_id: string): string;

@@ -97,8 +97,8 @@ begin
   //Generate request access token needs to generate:
 
   //https://www.flickr.com/services/oauth/access_token
-  //&oauth_consumer_key=653e7a6ecc1d528c516cc8f92cf98611
-  //?oauth_nonce=37026218
+  //?oauth_consumer_key=653e7a6ecc1d528c516cc8f92cf98611
+  //&oauth_nonce=37026218
   //&oauth_signature_method=HMAC-SHA1
   //&oauth_timestamp=1305586309
   //&oauth_token=72157626737672178-022bbd2f4c2f3432

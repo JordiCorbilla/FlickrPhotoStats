@@ -40,6 +40,7 @@ type
     class function Base64Encode(const Input: TIdBytes): string; static;
     class function EncryptHMACSha1(Input, AKey: string): TIdBytes; static;
     class function getOAuthSignature(encodedURL, consumerTokenSecret: string): string; static;
+    class function api_sig(url : string): string;
   end;
 
 const
@@ -70,6 +71,18 @@ begin
   md5 := TIdHashMessageDigest5.Create;
   Result := md5.HashStringAsHex(timeStamp);
   md5.Free;
+end;
+
+class function TSignature.api_sig(url: string): string;
+var
+  idmd5: TIdHashMessageDigest5;
+begin
+  idmd5 := TIdHashMessageDigest5.Create;
+  try
+    Result := idmd5.HashStringAsHex(url,IndyTextEncoding_OSDefault()).ToLower;
+  finally
+    idmd5.Free;
+  end;
 end;
 
 class function TSignature.Base64Encode(const Input: TIdBytes): string;

@@ -740,6 +740,7 @@ var
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
   pages, title, id, ismember, total: string;
   numPages, numTotal : integer;
+  urlGroups : string;
   i: Integer;
 begin
   if apikey.Text = '' then
@@ -760,7 +761,8 @@ begin
   lblfetchingGroup.visible := true;
   progressfetchinggroups.visible := true;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, '1', '500', userToken));
+  urlGroups := TFlickrRest.new().getGroups(apikey.text, '1', '500', userToken, secret.Text);
+  response := IdHTTP1.Get(urlGroups);
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -798,7 +800,7 @@ begin
   numPages := total.ToInteger;
   for i := 2 to numpages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', userToken));
+    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', userToken, secret.Text));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1021,6 +1023,10 @@ var
   oauth_token : string;
   oauth_verifier : string;
   OAccessTokenUrl : string;
+  fullname : string;
+  oauth_token_secret : string;
+  user_nsid : string;
+  username : string;
 begin
   //'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
   response :=  WebBrowser1.LocationURL;
@@ -1055,6 +1061,39 @@ begin
   //oauth_token_secret=3eefb68a488fbb63&
   //user_nsid=96100496%40N05&
   //username=Jordi%20Corbilla%20Photography
+
+  response := response.Replace('fullname', '');
+  response := response.Replace('oauth_token', '');
+  response := response.Replace('_secret', '');
+  response := response.Replace('user_nsid', '');
+  response := response.Replace('username', '');
+
+  fullname := AnsiLeftStr(response, AnsiPos('&', response));
+  response := AnsiRightStr(response, length(Response)-length(fullname));
+
+  oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
+  response := AnsiRightStr(response, length(Response)-length(oauth_token));
+
+  oauth_token_secret := AnsiLeftStr(response, AnsiPos('&', response));
+  response := AnsiRightStr(response, length(Response)-length(oauth_token_secret));
+
+  user_nsid := AnsiLeftStr(response, AnsiPos('&', response));
+  response := AnsiRightStr(response, length(Response)-length(user_nsid));
+
+  username := response;
+
+  fullname := fullname.Replace('=', '').Replace('&', '');
+  oauth_token := oauth_token.Replace('=', '').Replace('&', '');
+  oauth_token_secret := oauth_token_secret.Replace('=', '').Replace('&', '');
+  user_nsid := user_nsid.Replace('=', '').Replace('&', '');
+  username := username.Replace('=', '').Replace('&', '');
+
+  Log('fullname= ' + fullname);
+  Log('oauth_token= ' + oauth_token);
+  Log('oauth_token_secret= ' + oauth_token_secret);
+  Log('user_nsid= ' + user_nsid);
+  Log('username= ' + username);
+
   userToken := oauth_token;
   showMessage('Congratulations, application authenticated with token ' + oauth_token);
 end;
