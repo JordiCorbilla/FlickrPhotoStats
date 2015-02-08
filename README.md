@@ -3,6 +3,8 @@ FlickrPhotoStats
 
 Flickr Photo stats provides the ability to request information from your Flickr pool using the REST API.
 
+License: GNU General Public License.
+
 The app only needs a valid API Key that can be requested in here:
 
 https://www.flickr.com/services/api/explore/flickr.test.echo.
