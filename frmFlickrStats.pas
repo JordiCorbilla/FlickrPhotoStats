@@ -33,8 +33,10 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
-  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.repository,
-  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus, System.UITypes, flickr.globals,
+  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls,
+  flickr.repository,
+  ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus,
+  System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw;
 
@@ -68,7 +70,7 @@ type
     Series1: TLineSeries;
     Series2: TLineSeries;
     Series3: TLineSeries;
-    Globals: TTabSheet;
+    globals: TTabSheet;
     Process: TLabel;
     ChartComments: TChart;
     LineSeries1: TLineSeries;
@@ -125,7 +127,7 @@ type
     procedure btnLoadClick(Sender: TObject);
     procedure listPhotosItemChecked(Sender: TObject; Item: TListItem);
     procedure FormDestroy(Sender: TObject);
-    function isInSeries(id : string) : Boolean;
+    function isInSeries(id: string): Boolean;
     procedure listPhotosCustomDrawSubItem(Sender: TCustomListView;
       Item: TListItem; SubItem: Integer; State: TCustomDrawState;
       var DefaultDraw: Boolean);
@@ -142,21 +144,23 @@ type
     procedure RequestInformation_REST_Flickr(id: string);
     procedure UpdateCounts;
     procedure UpdateTotals;
-    procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: integer);
+    procedure UpdateChart(totalViews, totalLikes, totalComments,
+      totalPhotos: Integer);
     procedure UpdateGlobals();
     procedure UpdateAnalytics();
     procedure LoadHallOfFame(repository: IFlickrRepository);
     function MD5(apikey, secret: string): string;
-    function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
-    function getTotalGroupCounts: integer;
+    function SaveToExcel(AView: TListView;
+      ASheetName, AFileName: string): Boolean;
+    function getTotalGroupCounts: Integer;
     procedure Log(s: string);
     { Private declarations }
   public
     repository: IFlickrRepository;
-    globalsRepository : IFlickrGlobals;
-    CheckedSeries : TStringList;
-    userToken : string;
-    userTokenSecret : string;
+    globalsRepository: IFlickrGlobals;
+    CheckedSeries: TStringList;
+    userToken: string;
+    userTokenSecret: string;
   end;
 
 var
@@ -165,7 +169,9 @@ var
 implementation
 
 uses
-  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj, flickr.oauth, StrUtils, flickr.access.token;
+  flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
+  flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
+  System.SyncObjs;
 
 {$R *.dfm}
 
@@ -176,14 +182,14 @@ end;
 
 procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
 var
-  OAuthUrl : string;
-  response : string;
-  oauth_callback_confirmed : string;
-  oauth_token : string;
-  oauth_token_secret : string;
+  OAuthUrl: string;
+  response: string;
+  oauth_callback_confirmed: string;
+  oauth_token: string;
+  oauth_token_secret: string;
 begin
-  //apikey.text 0edf6f13dc6309c822b59ae8bb783df6
-  //secret.text b9e217d1c0333300
+  // apikey.text 0edf6f13dc6309c822b59ae8bb783df6
+  // secret.text b9e217d1c0333300
   if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
@@ -196,36 +202,38 @@ begin
   end;
   btnGetToken.Visible := false;
   Log('authentication started');
-  //oauthr authentication
+  // oauthr authentication
   Log('Generating request token query for ' + apikey.text + ' ' + secret.text);
   OAuthUrl := TOAuth.New(apikey.text, secret.text).GenerateRequestTokenQuery();
-  //Example successful response
-  //oauth_callback_confirmed=true&
-  //oauth_token=72157650113637896-43aba062d96def83&
-  //oauth_token_secret=153e53c592649722
+  // Example successful response
+  // oauth_callback_confirmed=true&
+  // oauth_token=72157650113637896-43aba062d96def83&
+  // oauth_token_secret=153e53c592649722
   Log('Calling OAuth URL ' + OAuthUrl);
   response := IdHTTP1.Get(OAuthUrl);
   Log('OAuth URL response ' + response);
 
-  //Parsing response
+  // Parsing response
   Log('Parsing response');
-  //oauth_callback_confirmed=true&oauth_token=72157650113637896-43aba062d96def83&oauth_token_secret=153e53c592649722
+  // oauth_callback_confirmed=true&oauth_token=72157650113637896-43aba062d96def83&oauth_token_secret=153e53c592649722
   response := response.Replace('oauth_callback_confirmed', '');
   response := response.Replace('oauth_token', '');
   response := response.Replace('_secret', '');
-  //=true&=72157650113637896-43aba062d96def83&=153e53c592649722
+  // =true&=72157650113637896-43aba062d96def83&=153e53c592649722
   oauth_callback_confirmed := AnsiLeftStr(response, AnsiPos('&', response));
-  //=true&
-  response := AnsiRightStr(response, length(Response)-length(oauth_callback_confirmed));
-  //=72157650113637896-43aba062d96def83&=153e53c592649722
+  // =true&
+  response := AnsiRightStr(response, length(response) -
+    length(oauth_callback_confirmed));
+  // =72157650113637896-43aba062d96def83&=153e53c592649722
   oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
-  //=72157650113637896-43aba062d96def83&
-  response := AnsiRightStr(response, length(Response)-length(oauth_token));
-  //=153e53c592649722
+  // =72157650113637896-43aba062d96def83&
+  response := AnsiRightStr(response, length(response) - length(oauth_token));
+  // =153e53c592649722
   oauth_token_secret := response;
 
-  //Clean the parameters
-  oauth_callback_confirmed := oauth_callback_confirmed.Replace('=', '').Replace('&', '');
+  // Clean the parameters
+  oauth_callback_confirmed := oauth_callback_confirmed.Replace('=', '')
+    .Replace('&', '');
   oauth_token := oauth_token.Replace('=', '').Replace('&', '');
   oauth_token_secret := oauth_token_secret.Replace('=', '').Replace('&', '');
   Log('oauth_callback_confirmed= ' + oauth_callback_confirmed);
@@ -235,45 +243,63 @@ begin
   userTokenSecret := oauth_token_secret;
 
   PageControl1.ActivePage := Authentication;
-  Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=read');
-  webbrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=read');
-  showMessage('Authorise the application in the browser and once you get the example page, press Get token button');
+  Log('Navigating to ' +
+    'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token
+    + '&perms=read');
+  WebBrowser1.Navigate
+    ('https://www.flickr.com/services/oauth/authorize?oauth_token=' +
+    oauth_token + '&perms=read');
+  showmessage
+    ('Authorise the application in the browser and once you get the example page, press Get token button');
   btnGetToken.Visible := true;
 end;
 
-procedure TfrmFlickr.Log(s : string);
+procedure TfrmFlickr.Log(s: string);
 begin
-  mlogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
+  mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
-  i: integer;
+  i: Integer;
 begin
-  if apikey.Text = '' then
+  if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-  batchUpdate.enabled := false;
-  btnGetList.enabled := false;
+  batchUpdate.Enabled := false;
+  btnGetList.Enabled := false;
   ProgressBar1.Visible := true;
   photoId.Enabled := false;
   btnAdd.Enabled := false;
   Process.Visible := true;
-  taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  taskbar1.ProgressMaxValue := listPhotos.Items.Count;
+  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  Taskbar1.ProgressMaxValue := listPhotos.Items.Count;
 
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
-  for i := 0 to listPhotos.Items.Count - 1 do
-  begin
-    Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
-    ProgressBar1.position := i;
-    taskbar1.ProgressValue := i;
-    Application.ProcessMessages;
-    RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
-  end;
+  // for i := 0 to listPhotos.Items.Count - 1 do
+  // begin
+  // Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
+  // ProgressBar1.position := i;
+  // taskbar1.ProgressValue := i;
+  // Application.ProcessMessages;
+  // RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+  // end;
+
+  // Use parallel looping
+  TParallel.ForEach(0, listPhotos.Items.Count - 1,8,
+    procedure(index: Integer; threadId: Integer)
+    begin
+      Process.Caption := 'Processing image: ' + listPhotos.Items[index].Caption
+        + ' ' + index.ToString + ' out of ' + listPhotos.Items.Count.ToString;
+      ProgressBar1.position := index;
+      Taskbar1.ProgressValue := index;
+      Application.ProcessMessages;
+      RequestInformation_REST_Flickr(listPhotos.Items[index].Caption);
+    end);
+
   ProgressBar1.Visible := false;
   Process.Visible := false;
   UpdateTotals();
@@ -281,19 +307,19 @@ begin
   btnSave.Enabled := true;
   photoId.Enabled := true;
   btnAdd.Enabled := true;
-  taskbar1.ProgressValue := 0;
+  Taskbar1.ProgressValue := 0;
   btnGetList.Enabled := true;
-  batchUpdate.enabled := false;
+  batchUpdate.Enabled := false;
 end;
 
 procedure TfrmFlickr.UpdateTotals();
 var
-  i: integer;
+  i: Integer;
   Item: TListItem;
-  totalViews, totalViewsacc : integer;
-  totalLikes, totalLikesacc : Integer;
-  totalComments, totalCommentsacc : Integer;
-  stat : IStat;
+  totalViews, totalViewsacc: Integer;
+  totalLikes, totalLikesacc: Integer;
+  totalComments, totalCommentsacc: Integer;
+  stat: IStat;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -316,14 +342,15 @@ begin
   stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
   globalsRepository.AddGlobals(stat);
 
-  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc,
+    repository.photos.Count);
   UpdateGlobals();
   UpdateAnalytics();
 end;
 
 function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
 var
-  i: integer;
+  i: Integer;
   found: Boolean;
 begin
   i := 0;
@@ -346,77 +373,114 @@ var
   views, title, likes, comments: string;
   stat: IStat;
   photo, existing: IPhoto;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  xmlDocument: IXMLDocument;
 begin
-  response := IdHTTP1.Get(TFlickrRest.new().getInfo(apikey.text, id));
-  XMLDocument1.LoadFromXML(response);
-  iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
-  iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-  iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-  views := iXMLRootNode3.attributes['views'];
-  iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <owner>
-  while iXMLRootNode4 <> nil do
-  begin
-    if iXMLRootNode4.NodeName = 'title' then
-      title := iXMLRootNode4.NodeValue;
-    if iXMLRootNode4.NodeName = 'comments' then
-      comments := iXMLRootNode4.NodeValue;
-    iXMLRootNode4 := iXMLRootNode4.NextSibling;
-  end;
+  CoInitialize(nil);
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey.text, id));
+      // response := IdHTTP1.Get(TFlickrRest.new().getInfo(apikey.text, id));
+      xmlDocument.LoadFromXML(response);
+      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+      views := iXMLRootNode3.attributes['views'];
+      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <owner>
+      while iXMLRootNode4 <> nil do
+      begin
+        if iXMLRootNode4.NodeName = 'title' then
+          title := iXMLRootNode4.NodeValue;
+        if iXMLRootNode4.NodeName = 'comments' then
+          comments := iXMLRootNode4.NodeValue;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      end;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+      xmlDocument := nil;
+    end;
 
-  response := IdHTTP1.Get(TFlickrRest.new().getFavorites(apikey.text, id));
-  XMLDocument1.LoadFromXML(response);
-  iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
-  iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-  iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-  likes := iXMLRootNode3.attributes['total'];
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey.text, id));
+      // response := IdHTTP1.Get(TFlickrRest.new().getFavorites(apikey.text, id));
+      xmlDocument.LoadFromXML(response);
+      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+      likes := iXMLRootNode3.attributes['total'];
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+      xmlDocument := nil;
+    end;
 
-  photo := TPhoto.Create(id, title);
-  stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
+    photo := TPhoto.Create(id, title);
+    stat := TStat.Create(Date, StrToInt(views), StrToInt(likes),
+      StrToInt(comments));
 
-  if repository.ExistPhoto(photo, existing) then
-  begin
-    photo := existing;
-    photo.AddStats(stat);
-    photo.LastUpdate := Date;
-  end
-  else
-  begin
-    photo.AddStats(stat);
-    photo.LastUpdate := Date;
-    repository.AddPhoto(photo);
-  end;
+    if repository.ExistPhoto(photo, existing) then
+    begin
+      photo := existing;
+      photo.AddStats(stat);
+      photo.LastUpdate := Date;
+    end
+    else
+    begin
+      photo.AddStats(stat);
+      photo.LastUpdate := Date;
+      repository.AddPhoto(photo);
+    end;
 
-  if not ExistPhotoInList(id, itemExisting) then
-  begin
-    Item := listPhotos.Items.Add;
-    Item.Caption := photoId.text;
-    Item.SubItems.Add(title);
-    Item.SubItems.Add(views);
-    Item.SubItems.Add(likes);
-    Item.SubItems.Add(comments);
-    Item.SubItems.Add(DateToStr(Date));
-    if views = '0' then
-      views := '1';
-    Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
-  end
-  else
-  begin
-    itemExisting.Caption := id;
-    itemExisting.SubItems.Clear;
-    itemExisting.SubItems.Add(title);
-    itemExisting.SubItems.Add(views);
-    itemExisting.SubItems.Add(likes);
-    itemExisting.SubItems.Add(comments);
-    itemExisting.SubItems.Add(DateToStr(Date));
-    if views = '0' then
-      views := '1';
-    itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger/views.ToInteger)*100.0));
+    if not ExistPhotoInList(id, itemExisting) then
+    begin
+//      synchronize(
+//        procedure
+//        begin
+          Item := frmFlickr.listPhotos.Items.Add;
+          Item.Caption := frmFlickr.photoId.text;
+          Item.SubItems.Add(title);
+          Item.SubItems.Add(views);
+          Item.SubItems.Add(likes);
+          Item.SubItems.Add(comments);
+          Item.SubItems.Add(DateToStr(Date));
+          if views = '0' then
+            views := '1';
+          Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger)
+            * 100.0));
+//        end);
+    end
+    else
+    begin
+      itemExisting.Caption := id;
+      itemExisting.SubItems.Clear;
+      itemExisting.SubItems.Add(title);
+      itemExisting.SubItems.Add(views);
+      itemExisting.SubItems.Add(likes);
+      itemExisting.SubItems.Add(comments);
+      itemExisting.SubItems.Add(DateToStr(Date));
+      if views = '0' then
+        views := '1';
+      itemExisting.SubItems.Add(FormatFloat('0.##%',
+        (likes.ToInteger / views.ToInteger) * 100.0));
+    end;
+  finally
+    CoUninitialize;
   end;
 end;
 
 procedure TfrmFlickr.btnAddClick(Sender: TObject);
 begin
-  if apikey.Text = '' then
+  if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
@@ -449,40 +513,40 @@ begin
   LoadHallOfFame(repository);
 end;
 
-procedure TfrmFlickr.LoadHallOfFame(repository : IFlickrRepository);
+procedure TfrmFlickr.LoadHallOfFame(repository: IFlickrRepository);
 var
-  topStats : TTopStats;
-  maxValues : string;
+  topStats: TTopStats;
+  maxValues: string;
 begin
   topStats := TTopStats.Create(repository);
-  memo1.Lines.Clear;
-  memo1.Lines.Add('************************************');
-  memo1.Lines.Add('************ HALL OF FAME **********');
-  memo1.Lines.Add('************************************');
+  Memo1.Lines.Clear;
+  Memo1.Lines.Add('************************************');
+  Memo1.Lines.Add('************ HALL OF FAME **********');
+  Memo1.Lines.Add('************************************');
 
-  maxValues := edtMax.Text;
-  memo1.Lines.Add(topStats.GetTopXNumberOfViews(maxValues.ToInteger()));
-  memo1.Lines.Add(topStats.GetTopXNumberOfLikes(maxValues.ToInteger()));
-  memo1.Lines.Add(topStats.GetTopXNumberOfComments(maxValues.ToInteger()));
+  maxValues := edtMax.text;
+  Memo1.Lines.Add(topStats.GetTopXNumberOfViews(maxValues.ToInteger()));
+  Memo1.Lines.Add(topStats.GetTopXNumberOfLikes(maxValues.ToInteger()));
+  Memo1.Lines.Add(topStats.GetTopXNumberOfComments(maxValues.ToInteger()));
   topStats.Free;
 end;
 
 procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
 begin
   apikey.text := repository.apikey;
-  secret.Text := repository.Secret;
-  edtUserId.Text := repository.UserId;
+  secret.text := repository.secret;
+  edtUserId.text := repository.UserId;
   listPhotos.Clear;
   UpdateCounts();
 end;
 
 procedure TfrmFlickr.UpdateCounts();
 var
-  i: integer;
+  i: Integer;
   Item: TListItem;
-  totalViews, totalViewsacc : integer;
-  totalLikes, totalLikesacc : Integer;
-  totalComments, totalCommentsacc : Integer;
+  totalViews, totalViewsacc: Integer;
+  totalLikes, totalLikesacc: Integer;
+  totalComments, totalCommentsacc: Integer;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -504,139 +568,143 @@ begin
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
     if totalViews = 0 then
       totalViews := 1;
-    Item.SubItems.Add(FormatFloat('0.##%', (totalLikes/totalViews)*100.0));
+    Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
   end;
 
-  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc,
+    repository.photos.Count);
   UpdateGlobals();
   UpdateAnalytics();
 end;
 
 procedure TfrmFlickr.UpdateGlobals;
 var
-  Series : TLineSeries;
-  color : TColor;
-  i : integer;
+  Series: TLineSeries;
+  color: TColor;
+  i: Integer;
 begin
-  if chartViews.SeriesList.Count = 1 then
-    chartViews.RemoveAllSeries;
+  if ChartViews.SeriesList.Count = 1 then
+    ChartViews.RemoveAllSeries;
 
-  Series := TLineSeries.Create(chartViews);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series := TLineSeries.Create(ChartViews);
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := true;
   Series.SeriesColor := 10708548;
   Series.LinePen.Width := 1;
-  Series.LinePen.Color := 10708548;
-  Series.Pointer.InflateMargins := True;
+  Series.LinePen.color := 10708548;
+  Series.Pointer.InflateMargins := true;
   Series.Pointer.Style := psRectangle;
   Series.Pointer.Brush.Gradient.EndColor := 10708548;
   Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := True;
-  Series.Pointer.Visible := False;
-  Series.XValues.DateTime := True;
+  Series.Pointer.InflateMargins := true;
+  Series.Pointer.Visible := false;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
-  Series.ParentChart := chartViews;
+  Series.ParentChart := ChartViews;
   color := RGB(Random(255), Random(255), Random(255));
 
-  for i := 0 to globalsRepository.Globals.Count-1 do
+  for i := 0 to globalsRepository.globals.Count - 1 do
   begin
-    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].views, '', color);
+    Series.AddXY(globalsRepository.globals[i].Date,
+      globalsRepository.globals[i].views, '', color);
   end;
-  chartViews.AddSeries(Series);
+  ChartViews.AddSeries(Series);
 
-  if chartLikes.SeriesList.Count = 1 then
-    chartLikes.RemoveAllSeries;
+  if ChartLikes.SeriesList.Count = 1 then
+    ChartLikes.RemoveAllSeries;
 
-  Series := TLineSeries.Create(chartLikes);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series := TLineSeries.Create(ChartLikes);
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := true;
   Series.SeriesColor := 10708548;
   Series.LinePen.Width := 1;
-  Series.LinePen.Color := 10708548;
-  Series.Pointer.InflateMargins := True;
+  Series.LinePen.color := 10708548;
+  Series.Pointer.InflateMargins := true;
   Series.Pointer.Style := psRectangle;
   Series.Pointer.Brush.Gradient.EndColor := 10708548;
   Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := True;
-  Series.Pointer.Visible := False;
-  Series.XValues.DateTime := True;
+  Series.Pointer.InflateMargins := true;
+  Series.Pointer.Visible := false;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
-  Series.ParentChart := chartLikes;
+  Series.ParentChart := ChartLikes;
   color := RGB(Random(255), Random(255), Random(255));
 
-  for i := 0 to globalsRepository.Globals.Count-1 do
+  for i := 0 to globalsRepository.globals.Count - 1 do
   begin
-    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].likes, '', color);
+    Series.AddXY(globalsRepository.globals[i].Date,
+      globalsRepository.globals[i].likes, '', color);
   end;
-  chartLikes.AddSeries(Series);
+  ChartLikes.AddSeries(Series);
 
-  if chartComments.SeriesList.Count = 1 then
-    chartComments.RemoveAllSeries;
+  if ChartComments.SeriesList.Count = 1 then
+    ChartComments.RemoveAllSeries;
 
-  Series := TLineSeries.Create(chartComments);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series := TLineSeries.Create(ChartComments);
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := true;
   Series.SeriesColor := 10708548;
   Series.LinePen.Width := 1;
-  Series.LinePen.Color := 10708548;
-  Series.Pointer.InflateMargins := True;
+  Series.LinePen.color := 10708548;
+  Series.Pointer.InflateMargins := true;
   Series.Pointer.Style := psRectangle;
   Series.Pointer.Brush.Gradient.EndColor := 10708548;
   Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := True;
-  Series.Pointer.Visible := False;
-  Series.XValues.DateTime := True;
+  Series.Pointer.InflateMargins := true;
+  Series.Pointer.Visible := false;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
-  Series.ParentChart := chartComments;
+  Series.ParentChart := ChartComments;
   color := RGB(Random(255), Random(255), Random(255));
 
-  for i := 0 to globalsRepository.Globals.Count-1 do
+  for i := 0 to globalsRepository.globals.Count - 1 do
   begin
-    Series.AddXY(globalsRepository.Globals[i].Date, globalsRepository.Globals[i].numComments, '', color);
+    Series.AddXY(globalsRepository.globals[i].Date,
+      globalsRepository.globals[i].numComments, '', color);
   end;
-  chartComments.AddSeries(Series);
+  ChartComments.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.UpdateAnalytics;
 var
-  Series : TBarSeries;
-  color : TColor;
-  i : integer;
-  theDate : TDateTime;
-  views : integer;
+  Series: TBarSeries;
+  color: TColor;
+  i: Integer;
+  theDate: TDateTime;
+  views: Integer;
 begin
   if dailyViews.SeriesList.Count = 1 then
     dailyViews.RemoveAllSeries;
 
   Series := TBarSeries.Create(dailyViews);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Shadow.color := 8487297;
   Series.SeriesColor := 10708548;
-  Series.XValues.DateTime := True;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
@@ -644,10 +712,11 @@ begin
   Series.ParentChart := Chart2;
   color := RGB(Random(255), Random(255), Random(255));
 
-  for i := 1 to globalsRepository.Globals.Count-1 do
+  for i := 1 to globalsRepository.globals.Count - 1 do
   begin
-    theDate :=  globalsRepository.Globals[i].Date;
-    views :=  globalsRepository.Globals[i].views - globalsRepository.Globals[i-1].views;
+    theDate := globalsRepository.globals[i].Date;
+    views := globalsRepository.globals[i].views - globalsRepository.globals
+      [i - 1].views;
     Series.AddXY(theDate, views, '', color);
   end;
 
@@ -657,13 +726,13 @@ begin
     dailyLikes.RemoveAllSeries;
 
   Series := TBarSeries.Create(dailyLikes);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
+  Series.Marks.Shadow.color := 8487297;
   Series.SeriesColor := 10708548;
-  Series.XValues.DateTime := True;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
@@ -671,34 +740,36 @@ begin
   Series.ParentChart := Chart2;
   color := RGB(Random(255), Random(255), Random(255));
 
-  for i := 1 to globalsRepository.Globals.Count-1 do
+  for i := 1 to globalsRepository.globals.Count - 1 do
   begin
-    theDate :=  globalsRepository.Globals[i].Date;
-    views :=  globalsRepository.Globals[i].likes - globalsRepository.Globals[i-1].likes;
+    theDate := globalsRepository.globals[i].Date;
+    views := globalsRepository.globals[i].likes - globalsRepository.globals
+      [i - 1].likes;
     Series.AddXY(theDate, views, '', color);
   end;
 
   dailyLikes.AddSeries(Series);
 end;
 
-procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos : integer);
+procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments,
+  totalPhotos: Integer);
 var
-  Series : TBarSeries;
-  color : TColor;
+  Series: TBarSeries;
+  color: TColor;
 begin
-  if chart2.SeriesList.Count = 1 then
-    chart2.RemoveAllSeries;
+  if Chart2.SeriesList.Count = 1 then
+    Chart2.RemoveAllSeries;
 
   Series := TBarSeries.Create(Chart2);
-  Series.Marks.Arrow.Visible := True;
-  Series.Marks.Callout.Brush.Color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := True;
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.Color := 8487297;
-  //Series.Marks.Visible := true;
+  Series.Marks.Shadow.color := 8487297;
+  // Series.Marks.Visible := true;
   Series.SeriesColor := 10708548;
-  //Series.Stairs := true;
-  Series.XValues.DateTime := True;
+  // Series.Stairs := true;
+  Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
@@ -710,24 +781,26 @@ begin
   Series.AddBar(totalLikes, 'Likes', color);
   Series.AddBar(totalComments, 'Comments', color);
   Series.AddBar(totalPhotos, 'Photos', color);
-  chart2.AddSeries(Series);
+  Chart2.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
+  repository.save(apikey.text, secret.text, edtUserId.text,
+    'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
   btnSave.Enabled := false;
 end;
 
-//returns MD5 has for a file
-function TfrmFlickr.MD5(apikey : string; secret : string): string;
+// returns MD5 has for a file
+function TfrmFlickr.MD5(apikey: string; secret: string): string;
 var
   idmd5: TIdHashMessageDigest5;
 begin
   idmd5 := TIdHashMessageDigest5.Create;
   try
-    Result := idmd5.HashStringAsHex(secret +'api_key'+apikey+'permswrite',IndyTextEncoding_OSDefault());
+    Result := idmd5.HashStringAsHex(secret + 'api_key' + apikey + 'permswrite',
+      IndyTextEncoding_OSDefault());
   finally
     idmd5.Free;
   end;
@@ -739,16 +812,16 @@ var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
   pages, title, id, ismember, total: string;
-  numPages, numTotal : integer;
-  urlGroups : string;
+  numPages, numTotal: Integer;
+  urlGroups: string;
   i: Integer;
 begin
-  if apikey.Text = '' then
+  if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-  if edtUserId.Text = '' then
+  if edtUserId.text = '' then
   begin
     showmessage('User ID key can''t be empty');
     exit;
@@ -758,10 +831,11 @@ begin
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listGroups.Visible := false;
-  lblfetchingGroup.visible := true;
-  progressfetchinggroups.visible := true;
+  lblfetchinggroup.Visible := true;
+  progressfetchinggroups.Visible := true;
   Application.ProcessMessages;
-  urlGroups := TFlickrRest.new().getGroups(apikey.text, '1', '500', userToken, secret.Text);
+  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken,
+    secret.text);
   response := IdHTTP1.Get(urlGroups);
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
@@ -773,8 +847,8 @@ begin
   listGroups.Clear;
   numTotal := total.ToInteger();
   progressfetchinggroups.Max := numTotal;
-  taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  taskbar1.ProgressMaxValue := numTotal;
+  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  Taskbar1.ProgressMaxValue := numTotal;
   progressfetchinggroups.position := 0;
   while iXMLRootNode4 <> nil do
   begin
@@ -791,16 +865,17 @@ begin
       end;
     end;
     progressfetchinggroups.position := progressfetchinggroups.position + 1;
-    taskbar1.ProgressValue := progressfetchinggroups.position;
+    Taskbar1.ProgressValue := progressfetchinggroups.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
 
-  //Load the remaining pages
+  // Load the remaining pages
   numPages := total.ToInteger;
-  for i := 2 to numpages do
+  for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.new().getGroups(apikey.text, i.ToString, '500', userToken, secret.Text));
+    response := IdHTTP1.Get(TFlickrRest.New().getGroups(apikey.text, i.ToString,
+      '500', userToken, secret.text));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -822,7 +897,7 @@ begin
         end;
       end;
       progressfetchinggroups.position := progressfetchinggroups.position + 1;
-      taskbar1.ProgressValue := progressfetchinggroups.position;
+      Taskbar1.ProgressValue := progressfetchinggroups.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -831,30 +906,31 @@ begin
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddItems.Enabled := true;
-  lblfetchingGroup.visible := false;
-  progressfetchinggroups.visible := false;
-  taskbar1.ProgressValue := 0;
+  lblfetchinggroup.Visible := false;
+  progressfetchinggroups.Visible := false;
+  Taskbar1.ProgressValue := 0;
   listGroups.Visible := true;
 end;
 
-function TfrmFlickr.getTotalGroupCounts() : integer;
+function TfrmFlickr.getTotalGroupCounts(): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
   pages, total: string;
-  numPages, numTotal : integer;
+  numPages, numTotal: Integer;
   i: Integer;
-  totalViews : integer;
+  totalViews: Integer;
 begin
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listPhotosUser.Visible := false;
-  lblfetching.visible := true;
-  progressfetching.visible := true;
+  lblfetching.Visible := true;
+  progressfetching.Visible := true;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.new().getPhotoSets(apikey.text, edtUserId.Text, '1', '500'));
+  response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text,
+    edtUserId.text, '1', '500'));
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -865,8 +941,8 @@ begin
   listPhotosUser.Clear;
   numTotal := total.ToInteger();
   progressfetching.Max := numTotal;
-  taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  taskbar1.ProgressMaxValue := numTotal;
+  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  Taskbar1.ProgressMaxValue := numTotal;
   progressfetching.position := 0;
   totalViews := 0;
   while iXMLRootNode4 <> nil do
@@ -876,16 +952,17 @@ begin
       totalViews := totalViews + iXMLRootNode4.attributes['count_views'];
     end;
     progressfetching.position := progressfetching.position + 1;
-    taskbar1.ProgressValue := progressfetching.position;
+    Taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
 
-  //Load the remaining pages
+  // Load the remaining pages
   numPages := pages.ToInteger;
-  for i := 2 to numpages do
+  for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.new().getPhotoSets(apikey.text, edtUserId.Text, i.ToString, '500'));
+    response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text,
+      edtUserId.text, i.ToString, '500'));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -899,7 +976,7 @@ begin
         totalViews := totalViews + iXMLRootNode4.attributes['count_views'];
       end;
       progressfetching.position := progressfetching.position + 1;
-      taskbar1.ProgressValue := progressfetching.position;
+      Taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -908,11 +985,11 @@ begin
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddItems.Enabled := true;
-  lblfetching.visible := false;
-  progressfetching.visible := false;
-  taskbar1.ProgressValue := 0;
+  lblfetching.Visible := false;
+  progressfetching.Visible := false;
+  Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
-  result := totalViews;
+  Result := totalViews;
 end;
 
 procedure TfrmFlickr.btnGetListClick(Sender: TObject);
@@ -921,15 +998,15 @@ var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
   pages, title, id, ispublic, total: string;
-  numPages, numTotal : integer;
+  numPages, numTotal: Integer;
   i: Integer;
 begin
-  if apikey.Text = '' then
+  if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-  if edtUserId.Text = '' then
+  if edtUserId.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
@@ -939,10 +1016,11 @@ begin
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listPhotosUser.Visible := false;
-  lblfetching.visible := true;
-  progressfetching.visible := true;
+  lblfetching.Visible := true;
+  progressfetching.Visible := true;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.new().getPhotos(apikey.text, edtUserId.Text, '1', '500'));
+  response := IdHTTP1.Get(TFlickrRest.New().getPhotos(apikey.text,
+    edtUserId.text, '1', '500'));
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -953,8 +1031,8 @@ begin
   listPhotosUser.Clear;
   numTotal := total.ToInteger();
   progressfetching.Max := numTotal;
-  taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  taskbar1.ProgressMaxValue := numTotal;
+  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+  Taskbar1.ProgressMaxValue := numTotal;
   progressfetching.position := 0;
   while iXMLRootNode4 <> nil do
   begin
@@ -971,16 +1049,17 @@ begin
       end;
     end;
     progressfetching.position := progressfetching.position + 1;
-    taskbar1.ProgressValue := progressfetching.position;
+    Taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
 
-  //Load the remaining pages
+  // Load the remaining pages
   numPages := pages.ToInteger;
-  for i := 2 to numpages do
+  for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.new().getPhotos(apikey.text, edtUserId.Text, i.ToString, '500'));
+    response := IdHTTP1.Get(TFlickrRest.New().getPhotos(apikey.text,
+      edtUserId.text, i.ToString, '500'));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1002,7 +1081,7 @@ begin
         end;
       end;
       progressfetching.position := progressfetching.position + 1;
-      taskbar1.ProgressValue := progressfetching.position;
+      Taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -1011,56 +1090,57 @@ begin
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddItems.Enabled := true;
-  lblfetching.visible := false;
-  progressfetching.visible := false;
-  taskbar1.ProgressValue := 0;
+  lblfetching.Visible := false;
+  progressfetching.Visible := false;
+  Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
 end;
 
 procedure TfrmFlickr.btnGetTokenClick(Sender: TObject);
 var
-  response : string;
-  oauth_token : string;
-  oauth_verifier : string;
-  OAccessTokenUrl : string;
-  fullname : string;
-  oauth_token_secret : string;
-  user_nsid : string;
-  username : string;
+  response: string;
+  oauth_token: string;
+  oauth_verifier: string;
+  OAccessTokenUrl: string;
+  fullname: string;
+  oauth_token_secret: string;
+  user_nsid: string;
+  username: string;
 begin
-  //'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
-  response :=  WebBrowser1.LocationURL;
+  // 'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
+  response := WebBrowser1.LocationURL;
   Log('response url ' + response);
   response := response.Replace('http://www.example.com/?', '');
   response := response.Replace('oauth_token', '');
   response := response.Replace('oauth_verifier', '');
 
-  //'=72157648370759854-32e3740fbaef246b&=d46f58e4a5780b25'
+  // '=72157648370759854-32e3740fbaef246b&=d46f58e4a5780b25'
   oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
-  //=72157648370759854-32e3740fbaef246b&
-  response := AnsiRightStr(response, length(Response)-length(oauth_token));
-  //=d46f58e4a5780b25
+  // =72157648370759854-32e3740fbaef246b&
+  response := AnsiRightStr(response, length(response) - length(oauth_token));
+  // =d46f58e4a5780b25
   oauth_verifier := response;
 
-  //Clean the parameters
+  // Clean the parameters
   oauth_token := oauth_token.Replace('=', '').Replace('&', '');
   oauth_verifier := oauth_verifier.Replace('=', '').Replace('&', '');
   Log('oauth_token= ' + oauth_token);
   Log('oauth_verifier= ' + oauth_verifier);
 
-  //Now we have the request token
-  //we need to exchange it for an Access token
-  OAccessTokenUrl := TAccessToken.New(oauth_verifier, apikey.text, oauth_token, secret.Text, userTokenSecret).GenerateRequestAccessToken();
+  // Now we have the request token
+  // we need to exchange it for an Access token
+  OAccessTokenUrl := TAccessToken.New(oauth_verifier, apikey.text, oauth_token,
+    secret.text, userTokenSecret).GenerateRequestAccessToken();
   Log('Calling OAuth URL ' + OAccessTokenUrl);
   response := IdHTTP1.Get(OAccessTokenUrl);
   Log('OAuth URL response ' + response);
 
-  //Example response
-  //fullname=Jordi%20Corbilla&
-  //oauth_token=72157639942921845-e4f73de08dc774e6&
-  //oauth_token_secret=3eefb68a488fbb63&
-  //user_nsid=96100496%40N05&
-  //username=Jordi%20Corbilla%20Photography
+  // Example response
+  // fullname=Jordi%20Corbilla&
+  // oauth_token=72157639942921845-e4f73de08dc774e6&
+  // oauth_token_secret=3eefb68a488fbb63&
+  // user_nsid=96100496%40N05&
+  // username=Jordi%20Corbilla%20Photography
 
   response := response.Replace('fullname', '');
   response := response.Replace('oauth_token', '');
@@ -1069,16 +1149,17 @@ begin
   response := response.Replace('username', '');
 
   fullname := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(Response)-length(fullname));
+  response := AnsiRightStr(response, length(response) - length(fullname));
 
   oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(Response)-length(oauth_token));
+  response := AnsiRightStr(response, length(response) - length(oauth_token));
 
   oauth_token_secret := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(Response)-length(oauth_token_secret));
+  response := AnsiRightStr(response, length(response) -
+    length(oauth_token_secret));
 
   user_nsid := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(Response)-length(user_nsid));
+  response := AnsiRightStr(response, length(response) - length(user_nsid));
 
   username := response;
 
@@ -1095,15 +1176,16 @@ begin
   Log('username= ' + username);
 
   userToken := oauth_token;
-  showMessage('Congratulations, application authenticated with token ' + oauth_token);
+  showmessage('Congratulations, application authenticated with token ' +
+    oauth_token);
 end;
 
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
 var
-  i : integer;
-  item : TListItem;
+  i: Integer;
+  Item: TListItem;
 begin
-  btnAddItems.enabled := false;
+  btnAddItems.Enabled := false;
   ProgressBar1.Visible := true;
   photoId.Enabled := false;
   btnAdd.Enabled := false;
@@ -1111,19 +1193,20 @@ begin
   Process.Visible := true;
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
-  for i := 0 to listPhotosuser.Items.Count - 1 do
+  for i := 0 to listPhotosUser.Items.Count - 1 do
   begin
-    Process.Caption := 'Processing image: ' + listPhotosuser.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotosuser.Items.Count.ToString;
+    Process.Caption := 'Processing image: ' + listPhotosUser.Items[i].Caption +
+      ' ' + i.ToString + ' out of ' + listPhotosUser.Items.Count.ToString;
     ProgressBar1.position := i;
     Application.ProcessMessages;
 
-    if not ExistPhotoInList(listPhotosuser.Items[i].Caption, item)  then
+    if not ExistPhotoInList(listPhotosUser.Items[i].Caption, Item) then
     begin
-      photoId.Text := listPhotosuser.Items[i].Caption;
-      btnAddClick(sender);
+      photoId.text := listPhotosUser.Items[i].Caption;
+      btnAddClick(Sender);
     end;
   end;
-  photoId.Text := '';
+  photoId.text := '';
   ProgressBar1.Visible := false;
   Process.Visible := false;
   UpdateTotals();
@@ -1132,10 +1215,11 @@ begin
   batchUpdate.Enabled := true;
   photoId.Enabled := true;
   btnAdd.Enabled := true;
-  btnAddItems.enabled := true;
+  btnAddItems.Enabled := true;
 end;
 
-function TfrmFlickr.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
+function TfrmFlickr.SaveToExcel(AView: TListView;
+ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
 var
@@ -1144,13 +1228,13 @@ var
   i: Integer;
 begin
   // Create Excel-OLE Object
-  Result := False;
+  Result := false;
   ExcelOLE := CreateOleObject('Excel.Application');
   try
     // Hide Excel
-    ExcelOLE.Visible := False;
+    ExcelOLE.Visible := false;
 
-    ExcelOLE.Workbooks.Add(xlWBatWorkSheet);
+    ExcelOLE.Workbooks.Add(xlWBATWorksheet);
     Sheet := ExcelOLE.Workbooks[1].WorkSheets[1];
     Sheet.Name := ASheetName;
 
@@ -1177,14 +1261,14 @@ begin
 
     try
       ExcelOLE.Workbooks[1].SaveAs(AFileName);
-      Result := True;
+      Result := true;
     except
 
     end;
   finally
     if not VarIsEmpty(ExcelOLE) then
     begin
-      ExcelOLE.DisplayAlerts := False;
+      ExcelOLE.DisplayAlerts := false;
       ExcelOLE.Quit;
       ExcelOLE := Unassigned;
       Sheet := Unassigned;
@@ -1194,8 +1278,9 @@ end;
 
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
-if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
-    ShowMessage('Data saved successfully!');
+  if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) +
+    'FlickrAnalytics.xls') then
+    showmessage('Data saved successfully!');
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
@@ -1204,7 +1289,7 @@ begin
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
-  Pagecontrol1.ActivePage := Statistics;
+  PageControl1.ActivePage := Statistics;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);
@@ -1216,12 +1301,12 @@ end;
 
 function TfrmFlickr.isInSeries(id: string): Boolean;
 var
-  i: integer;
+  i: Integer;
   found: Boolean;
 begin
   i := 0;
   found := false;
-  while (not found) and (i < CheckedSeries.count) do
+  while (not found) and (i < CheckedSeries.Count) do
   begin
     found := CheckedSeries[i] = id;
     inc(i);
@@ -1230,45 +1315,49 @@ begin
 end;
 
 procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView;
-  Item: TListItem; SubItem: Integer; State: TCustomDrawState;
-  var DefaultDraw: Boolean);
+Item: TListItem; SubItem: Integer; State: TCustomDrawState;
+var DefaultDraw: Boolean);
 var
-  Color, Color2: TColor;
+  color, Color2: TColor;
 begin
-  Color := Sender.Canvas.Font.Color;
-  Color2 := Sender.Canvas.Brush.Color;
+  color := Sender.Canvas.Font.color;
+  Color2 := Sender.Canvas.Brush.color;
   if SubItem = 1 then
   begin
-    if ((Item.SubItems.Strings[1].ToInteger >= 1000) and (Item.SubItems.Strings[1].ToInteger < 3000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 1000) and
+      (Item.SubItems.Strings[1].ToInteger < 3000)) then
     begin
-      Sender.Canvas.Font.Color := clBlue;
-      Sender.Canvas.Brush.Color := Color2;
+      Sender.Canvas.Font.color := clBlue;
+      Sender.Canvas.Brush.color := Color2;
     end;
-    if ((Item.SubItems.Strings[1].ToInteger >= 3000) and (Item.SubItems.Strings[1].ToInteger < 5000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 3000) and
+      (Item.SubItems.Strings[1].ToInteger < 5000)) then
     begin
-      Sender.Canvas.Font.Color := clGreen;
-      Sender.Canvas.Brush.Color := Color2;
+      Sender.Canvas.Font.color := clGreen;
+      Sender.Canvas.Brush.color := Color2;
     end;
-    if ((Item.SubItems.Strings[1].ToInteger >= 5000) and (Item.SubItems.Strings[1].ToInteger < 8000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 5000) and
+      (Item.SubItems.Strings[1].ToInteger < 8000)) then
     begin
-      Sender.Canvas.Font.Color := clOlive;
-      Sender.Canvas.Brush.Color := Color2;
+      Sender.Canvas.Font.color := clOlive;
+      Sender.Canvas.Brush.color := Color2;
     end;
-    if ((Item.SubItems.Strings[1].ToInteger >= 8000) and (Item.SubItems.Strings[1].ToInteger < 10000)) then
+    if ((Item.SubItems.Strings[1].ToInteger >= 8000) and
+      (Item.SubItems.Strings[1].ToInteger < 10000)) then
     begin
-      Sender.Canvas.Font.Color := clFuchsia;
-      Sender.Canvas.Brush.Color := Color2;
+      Sender.Canvas.Font.color := clFuchsia;
+      Sender.Canvas.Brush.color := Color2;
     end;
     if ((Item.SubItems.Strings[1].ToInteger >= 10000)) then
     begin
-      Sender.Canvas.Font.Color := clRed;
-      Sender.Canvas.Brush.Color := Color2;
+      Sender.Canvas.Font.color := clRed;
+      Sender.Canvas.Brush.color := Color2;
     end;
   end
   else
   begin
-    Sender.Canvas.Font.Color := Color;
-    Sender.Canvas.Brush.Color := Color2;
+    Sender.Canvas.Font.color := color;
+    Sender.Canvas.Brush.color := Color2;
   end;
 end;
 
@@ -1277,9 +1366,9 @@ var
   id, title, views, likes, comments, LastUpdate: string;
   photo: IPhoto;
   stat: IStat;
-  i: integer;
-  Series : TLineSeries;
-  colour : TColor;
+  i: Integer;
+  Series: TLineSeries;
+  colour: TColor;
 begin
   if (Item.Checked) then
   begin
@@ -1293,25 +1382,25 @@ begin
     photo := repository.GetPhoto(id);
     if photo <> nil then
     begin
-      Series :=  TLineSeries.Create(Chart1);
-      Series.Marks.Arrow.Visible := True;
-      Series.Marks.Callout.Brush.Color := clBlack;
-      Series.Marks.Callout.Arrow.Visible := True;
+      Series := TLineSeries.Create(Chart1);
+      Series.Marks.Arrow.Visible := true;
+      Series.Marks.Callout.Brush.color := clBlack;
+      Series.Marks.Callout.Arrow.Visible := true;
       Series.Marks.DrawEvery := 10;
-      Series.Marks.Shadow.Color := 8487297;
+      Series.Marks.Shadow.color := 8487297;
       Series.Marks.Visible := true;
       Series.SeriesColor := 10708548;
-      Series.Title := id ;
-      //Series.Stairs := true;
+      Series.title := id;
+      // Series.Stairs := true;
       Series.LinePen.Width := 1;
-      Series.LinePen.Color := 10708548;
-      Series.Pointer.InflateMargins := True;
+      Series.LinePen.color := 10708548;
+      Series.Pointer.InflateMargins := true;
       Series.Pointer.Style := psRectangle;
       Series.Pointer.Brush.Gradient.EndColor := 10708548;
       Series.Pointer.Gradient.EndColor := 10708548;
-      Series.Pointer.InflateMargins := True;
-      Series.Pointer.Visible := False;
-      Series.XValues.DateTime := True;
+      Series.Pointer.InflateMargins := true;
+      Series.Pointer.Visible := false;
+      Series.XValues.DateTime := true;
       Series.XValues.Name := 'X';
       Series.XValues.Order := loAscending;
       Series.YValues.Name := 'Y';
@@ -1325,7 +1414,7 @@ begin
         if rbViews.Checked then
           Series.AddXY(stat.Date, stat.views, '', colour);
         if rbLikes.Checked then
-          Series.AddXY(stat.Date, stat.Likes, '', colour);
+          Series.AddXY(stat.Date, stat.likes, '', colour);
         if rbComments.Checked then
           Series.AddXY(stat.Date, stat.numComments, '', colour);
       end;
@@ -1338,9 +1427,9 @@ begin
     if isInSeries(id) then
     begin
       Series := nil;
-      for i := 0 to Chart1.SeriesList.Count-1 do
+      for i := 0 to Chart1.SeriesList.Count - 1 do
       begin
-        if Chart1.SeriesList[i].Title = id then
+        if Chart1.SeriesList[i].title = id then
         begin
           Series := TLineSeries(Chart1.SeriesList[i]);
           Break;
