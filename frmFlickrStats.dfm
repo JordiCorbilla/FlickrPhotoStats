@@ -615,8 +615,6 @@ object frmFlickr: TfrmFlickr
           Align = alTop
           Color = 2763306
           TabOrder = 0
-          ExplicitLeft = -2
-          ExplicitTop = -5
           DefaultCanvas = 'TGDIPlusCanvas'
           PrintMargins = (
             15
@@ -666,7 +664,6 @@ object frmFlickr: TfrmFlickr
           Align = alTop
           Color = 2763306
           TabOrder = 1
-          ExplicitHeight = 384
           DefaultCanvas = 'TGDIPlusCanvas'
           PrintMargins = (
             15
@@ -747,8 +744,6 @@ object frmFlickr: TfrmFlickr
           Align = alClient
           Color = 2763306
           TabOrder = 2
-          ExplicitLeft = -1
-          ExplicitTop = 609
           DefaultCanvas = 'TGDIPlusCanvas'
           PrintMargins = (
             15
@@ -1450,7 +1445,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010A00D8007C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D800800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

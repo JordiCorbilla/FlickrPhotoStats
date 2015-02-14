@@ -757,7 +757,7 @@ begin
   viewsTotal := 0;
   for i := 1 to globalsRepository.globals.Count - 1 do
   begin
-    theDate := globalsRepository.globals[i].Date;
+    //theDate := globalsRepository.globals[i].Date;
     viewsTotal := viewsTotal + (globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views);
   end;
 
@@ -829,7 +829,7 @@ begin
   viewsTotal := 0;
   for i := 1 to globalsRepository.globals.Count - 1 do
   begin
-    theDate := globalsRepository.globals[i].Date;
+    //theDate := globalsRepository.globals[i].Date;
     viewsTotal := viewsTotal + (globalsRepository.globals[i].likes - globalsRepository.globals[i - 1].likes);
   end;
 
