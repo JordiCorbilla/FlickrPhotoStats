@@ -120,6 +120,11 @@ type
     Authentication: TTabSheet;
     WebBrowser1: TWebBrowser;
     btnGetToken: TButton;
+    Splitter2: TSplitter;
+    statsDay: TChart;
+    BarSeries2: TBarSeries;
+    TabSheet7: TTabSheet;
+    listAlbums: TMemo;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -154,6 +159,7 @@ type
       ASheetName, AFileName: string): Boolean;
     function getTotalGroupCounts: Integer;
     procedure Log(s: string);
+    procedure UpdateSingleStats(id : string);
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -279,26 +285,26 @@ begin
 
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
-  // for i := 0 to listPhotos.Items.Count - 1 do
-  // begin
-  // Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
-  // ProgressBar1.position := i;
-  // taskbar1.ProgressValue := i;
-  // Application.ProcessMessages;
-  // RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
-  // end;
+   for i := 0 to listPhotos.Items.Count - 1 do
+   begin
+     Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' +  listPhotos.Items.Count.ToString;
+     ProgressBar1.position := i;
+     taskbar1.ProgressValue := i;
+     Application.ProcessMessages;
+     RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+   end;
 
   // Use parallel looping
-  TParallel.ForEach(0, listPhotos.Items.Count - 1,8,
-    procedure(index: Integer; threadId: Integer)
-    begin
-      Process.Caption := 'Processing image: ' + listPhotos.Items[index].Caption
-        + ' ' + index.ToString + ' out of ' + listPhotos.Items.Count.ToString;
-      ProgressBar1.position := index;
-      Taskbar1.ProgressValue := index;
-      Application.ProcessMessages;
-      RequestInformation_REST_Flickr(listPhotos.Items[index].Caption);
-    end);
+//  TParallel.ForEach(0, listPhotos.Items.Count - 1,8,
+//    procedure(index: Integer; threadId: Integer)
+//    begin
+//      Process.Caption := 'Processing image: ' + listPhotos.Items[index].Caption
+//        + ' ' + index.ToString + ' out of ' + listPhotos.Items.Count.ToString;
+//      ProgressBar1.position := index;
+//      Taskbar1.ProgressValue := index;
+//      Application.ProcessMessages;
+//      RequestInformation_REST_Flickr(listPhotos.Items[index].Caption);
+//    end);
 
   ProgressBar1.Visible := false;
   Process.Visible := false;
@@ -692,7 +698,8 @@ var
   color: TColor;
   i: Integer;
   theDate: TDateTime;
-  views: Integer;
+  views, viewsTotal, average: Integer;
+  averageSeries, averageLikes : TLineSeries;
 begin
   if dailyViews.SeriesList.Count = 1 then
     dailyViews.RemoveAllSeries;
@@ -722,6 +729,50 @@ begin
 
   dailyViews.AddSeries(Series);
 
+  //Add average views
+  averageSeries := TLineSeries.Create(dailyViews);
+  //averageSeries.Marks.Arrow.Visible := true;
+  averageSeries.Marks.Callout.Brush.color := clBlack;
+  averageSeries.Marks.Callout.Arrow.Visible := true;
+  averageSeries.Marks.DrawEvery := 10;
+  averageSeries.Marks.Shadow.color := 8487297;
+  averageSeries.Marks.Visible := true;
+  averageSeries.SeriesColor := 10708548;
+  averageSeries.LinePen.Width := 1;
+  averageSeries.LinePen.color := 10708548;
+  averageSeries.Pointer.InflateMargins := true;
+  averageSeries.Pointer.Style := psRectangle;
+  averageSeries.Pointer.Brush.Gradient.EndColor := 10708548;
+  averageSeries.Pointer.Gradient.EndColor := 10708548;
+  averageSeries.Pointer.InflateMargins := true;
+  averageSeries.Pointer.Visible := false;
+  averageSeries.XValues.DateTime := true;
+  averageSeries.XValues.Name := 'X';
+  averageSeries.XValues.Order := loAscending;
+  averageSeries.YValues.Name := 'Y';
+  averageSeries.YValues.Order := loNone;
+  averageSeries.ParentChart := ChartComments;
+  color := clRed;
+
+  viewsTotal := 0;
+  for i := 1 to globalsRepository.globals.Count - 1 do
+  begin
+    theDate := globalsRepository.globals[i].Date;
+    viewsTotal := viewsTotal + (globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views);
+  end;
+
+  average := round(viewsTotal / globalsRepository.globals.Count);
+
+  for i := 0 to globalsRepository.globals.Count - 1 do
+  begin
+    theDate := globalsRepository.globals[i].Date;
+    averageSeries.AddXY(theDate, average, '', color);
+  end;
+
+  dailyViews.AddSeries(averageSeries);
+
+  /////Likes
+
   if dailyLikes.SeriesList.Count = 1 then
     dailyLikes.RemoveAllSeries;
 
@@ -749,6 +800,99 @@ begin
   end;
 
   dailyLikes.AddSeries(Series);
+
+  //Add average views
+  averageLikes := TLineSeries.Create(dailyLikes);
+  //averageLikes.Marks.Arrow.Visible := true;
+  averageLikes.Marks.Callout.Brush.color := clBlack;
+  averageLikes.Marks.Callout.Arrow.Visible := true;
+  averageLikes.Marks.DrawEvery := 10;
+  averageLikes.Marks.Shadow.color := 8487297;
+  averageLikes.Marks.Visible := true;
+  averageLikes.SeriesColor := 10708548;
+  averageLikes.LinePen.Width := 1;
+  averageLikes.LinePen.color := 10708548;
+  averageLikes.Pointer.InflateMargins := true;
+  averageLikes.Pointer.Style := psRectangle;
+  averageLikes.Pointer.Brush.Gradient.EndColor := 10708548;
+  averageLikes.Pointer.Gradient.EndColor := 10708548;
+  averageLikes.Pointer.InflateMargins := true;
+  averageLikes.Pointer.Visible := false;
+  averageLikes.XValues.DateTime := true;
+  averageLikes.XValues.Name := 'X';
+  averageLikes.XValues.Order := loAscending;
+  averageLikes.YValues.Name := 'Y';
+  averageLikes.YValues.Order := loNone;
+  averageLikes.ParentChart := ChartComments;
+  color := clRed;
+
+  viewsTotal := 0;
+  for i := 1 to globalsRepository.globals.Count - 1 do
+  begin
+    theDate := globalsRepository.globals[i].Date;
+    viewsTotal := viewsTotal + (globalsRepository.globals[i].likes - globalsRepository.globals[i - 1].likes);
+  end;
+
+  average := round(viewsTotal / globalsRepository.globals.Count);
+
+  for i := 0 to globalsRepository.globals.Count - 1 do
+  begin
+    theDate := globalsRepository.globals[i].Date;
+    averageLikes.AddXY(theDate, average, '', color);
+  end;
+
+  dailyLikes.AddSeries(averageLikes);
+
+end;
+
+procedure TfrmFlickr.UpdateSingleStats(id : string);
+var
+  Series: TBarSeries;
+  color: TColor;
+  i: Integer;
+  theDate: TDateTime;
+  views: Integer;
+  photo : iPhoto;
+begin
+  Series := TBarSeries.Create(statsDay);
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
+  Series.Marks.DrawEvery := 10;
+  Series.Title := id;
+  Series.Marks.Shadow.color := 8487297;
+  Series.SeriesColor := 10708548;
+  Series.XValues.DateTime := true;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := Chart2;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  photo := repository.GetPhoto(id);
+
+  for i := 1 to photo.stats.Count - 1 do
+  begin
+    theDate := photo.stats[i].Date;
+    if rbViews.Checked then
+    begin
+      views := photo.stats[i].views - photo.stats[i - 1].views;
+      Series.AddXY(theDate, views, '', color);
+    end;
+    if rbLikes.Checked then
+    begin
+      views := photo.stats[i].likes - photo.stats[i - 1].likes;
+      Series.AddXY(theDate, views, '', color);
+    end;
+    if rbComments.Checked then
+    begin
+      views := photo.stats[i].numComments - photo.stats[i - 1].numComments;
+      Series.AddXY(theDate, views, '', color);
+    end;
+  end;
+
+  statsDay.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments,
@@ -915,11 +1059,15 @@ end;
 function TfrmFlickr.getTotalGroupCounts(): Integer;
 var
   response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
   pages, total: string;
   numPages, numTotal: Integer;
   i: Integer;
   totalViews: Integer;
+  photosetId : string;
+  title : string;
+  countViews : integer;
+  numPhotos : integer;
 begin
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
@@ -928,9 +1076,9 @@ begin
   listPhotosUser.Visible := false;
   lblfetching.Visible := true;
   progressfetching.Visible := true;
+  listAlbums.Clear;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text,
-    edtUserId.text, '1', '500'));
+  response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, '1', '500'));
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -949,9 +1097,15 @@ begin
   begin
     if iXMLRootNode4.NodeName = 'photoset' then
     begin
-      totalViews := totalViews + iXMLRootNode4.attributes['count_views'];
+      photosetId := iXMLRootNode4.attributes['id'];
+      numPhotos := iXMLRootNode4.attributes['photos'];
+      countViews := iXMLRootNode4.attributes['count_views'];
+      iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+      title := iXMLRootNode5.Text;
+      totalViews := totalViews + countViews;
     end;
     progressfetching.position := progressfetching.position + 1;
+    listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     Taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -961,8 +1115,7 @@ begin
   numPages := pages.ToInteger;
   for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text,
-      edtUserId.text, i.ToString, '500'));
+    response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, i.ToString, '500'));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -973,9 +1126,15 @@ begin
     begin
       if iXMLRootNode4.NodeName = 'photoset' then
       begin
-        totalViews := totalViews + iXMLRootNode4.attributes['count_views'];
+        photosetId := iXMLRootNode4.attributes['id'];
+        numPhotos := iXMLRootNode4.attributes['photos'];
+        countViews := iXMLRootNode4.attributes['count_views'];
+        iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+        title := iXMLRootNode5.Text;
+        totalViews := totalViews + countViews;
       end;
       progressfetching.position := progressfetching.position + 1;
+      listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       Taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -1368,6 +1527,7 @@ var
   stat: IStat;
   i: Integer;
   Series: TLineSeries;
+  barSeries : TBarSeries;
   colour: TColor;
 begin
   if (Item.Checked) then
@@ -1419,6 +1579,7 @@ begin
           Series.AddXY(stat.Date, stat.numComments, '', colour);
       end;
       Chart1.AddSeries(Series);
+      UpdateSingleStats(id);
     end;
   end
   else
@@ -1437,6 +1598,18 @@ begin
       end;
       if Series <> nil then
         Chart1.RemoveSeries(Series);
+
+      barSeries := nil;
+      for i := 0 to StatsDay.SeriesList.Count - 1 do
+      begin
+        if StatsDay.SeriesList[i].title = id then
+        begin
+          barSeries := TBarSeries(StatsDay.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if barSeries <> nil then
+        StatsDay.RemoveSeries(barSeries);
     end;
   end;
 end;

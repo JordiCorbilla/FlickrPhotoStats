@@ -559,7 +559,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 659
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -571,6 +571,16 @@ object frmFlickr: TfrmFlickr
         Height = 660
         Align = alClient
         TabOrder = 0
+        object Splitter2: TSplitter
+          Left = 1
+          Top = 544
+          Width = 649
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+          ExplicitLeft = 2
+          ExplicitTop = 553
+        end
         object Chart2: TChart
           Left = 1
           Top = 1
@@ -605,6 +615,8 @@ object frmFlickr: TfrmFlickr
           Align = alTop
           Color = 2763306
           TabOrder = 0
+          ExplicitLeft = -2
+          ExplicitTop = -5
           DefaultCanvas = 'TGDIPlusCanvas'
           PrintMargins = (
             15
@@ -623,7 +635,7 @@ object frmFlickr: TfrmFlickr
           Left = 1
           Top = 153
           Width = 649
-          Height = 506
+          Height = 391
           Legend.Visible = False
           Title.Text.Strings = (
             '')
@@ -651,9 +663,10 @@ object frmFlickr: TfrmFlickr
           RightAxis.Title.Font.Color = clLime
           TopAxis.Title.Font.Color = clLime
           View3D = False
-          Align = alClient
+          Align = alTop
           Color = 2763306
           TabOrder = 1
+          ExplicitHeight = 384
           DefaultCanvas = 'TGDIPlusCanvas'
           PrintMargins = (
             15
@@ -695,6 +708,66 @@ object frmFlickr: TfrmFlickr
             XValues.Name = 'X'
             XValues.Order = loAscending
             YValues.Name = 'Y'
+            YValues.Order = loNone
+          end
+        end
+        object statsDay: TChart
+          Left = 1
+          Top = 547
+          Width = 649
+          Height = 112
+          Legend.Visible = False
+          Title.Font.Color = clWhite
+          Title.Text.Strings = (
+            'Total Views')
+          BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+          BottomAxis.Grid.Width = 0
+          BottomAxis.Grid.ZPosition = 1.000000000000000000
+          BottomAxis.Increment = 1.000000000000000000
+          BottomAxis.LabelsFormat.Font.Color = clWhite
+          BottomAxis.LabelsMultiLine = True
+          BottomAxis.MinimumOffset = 16
+          BottomAxis.MinorTickCount = 16
+          BottomAxis.EndPosition = 98.000000000000000000
+          BottomAxis.PositionPercent = -1.000000000000000000
+          BottomAxis.TickLength = 2
+          BottomAxis.Ticks.Width = 0
+          BottomAxis.Title.Font.Color = clLime
+          DepthAxis.Title.Font.Color = clLime
+          DepthTopAxis.Title.Font.Color = clLime
+          LeftAxis.Grid.Width = 0
+          LeftAxis.LabelsFormat.Font.Color = clWhite
+          LeftAxis.MinorTicks.Width = 0
+          LeftAxis.Ticks.Width = 0
+          LeftAxis.TicksInner.Width = 0
+          LeftAxis.Title.Font.Color = clLime
+          RightAxis.Title.Font.Color = clLime
+          TopAxis.Title.Font.Color = clLime
+          View3D = False
+          Align = alClient
+          Color = 2763306
+          TabOrder = 2
+          ExplicitLeft = -1
+          ExplicitTop = 609
+          DefaultCanvas = 'TGDIPlusCanvas'
+          PrintMargins = (
+            15
+            7
+            15
+            7)
+          ColorPaletteIndex = 13
+          object BarSeries2: TBarSeries
+            BarBrush.BackColor = clDefault
+            BarPen.Color = 10708548
+            Marks.Shadow.Color = 8487297
+            Marks.Visible = False
+            Marks.Callout.Length = 8
+            Marks.DrawEvery = 10
+            Title = 'Flickr Stats'
+            XValues.DateTime = True
+            XValues.Name = 'X'
+            XValues.Order = loAscending
+            YValues.Name = 'Bar'
             YValues.Order = loNone
           end
         end
@@ -1022,6 +1095,26 @@ object frmFlickr: TfrmFlickr
           YValues.Name = 'Bar'
           YValues.Order = loNone
         end
+      end
+    end
+    object TabSheet7: TTabSheet
+      Caption = 'Albums'
+      ImageIndex = 9
+      object listAlbums: TMemo
+        Left = 0
+        Top = 0
+        Width = 651
+        Height = 660
+        Align = alClient
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Courier New'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
       end
     end
     object TabSheet1: TTabSheet
@@ -1357,7 +1450,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010A00D800740110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D8007C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
