@@ -143,6 +143,7 @@ type
     procedure AuthenticateClick(Sender: TObject);
     procedure btnExcelClick(Sender: TObject);
     procedure btnGetTokenClick(Sender: TObject);
+    procedure Label2DblClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -382,15 +383,33 @@ var
   IdHTTP: TIdHTTP;
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
+  timedout : boolean;
 begin
   CoInitialize(nil);
   try
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
     xmlDocument := TXMLDocument.Create(nil);
     IdHTTP := TIdHTTP.Create(nil);
     try
       IdHTTP.IOHandler := IdIOHandler;
-      response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey.text, id));
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey.text, id));
+          timedout := true;
+        except
+          on e : exception do
+          begin
+            sleep(2000);
+            timedout := false;
+          end;
+        end;
+
+      end;
+
       // response := IdHTTP1.Get(TFlickrRest.new().getInfo(apikey.text, id));
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
@@ -413,11 +432,26 @@ begin
     end;
 
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
     xmlDocument := TXMLDocument.Create(nil);
     IdHTTP := TIdHTTP.Create(nil);
     try
       IdHTTP.IOHandler := IdIOHandler;
-      response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey.text, id));
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey.text, id));
+          timedout := true;
+        except
+          on e : exception do
+          begin
+            sleep(2000);
+            timedout := false;
+          end;
+        end;
+      end;
       // response := IdHTTP1.Get(TFlickrRest.new().getFavorites(apikey.text, id));
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
@@ -1471,6 +1505,11 @@ begin
     inc(i);
   end;
   Result := found;
+end;
+
+procedure TfrmFlickr.Label2DblClick(Sender: TObject);
+begin
+  batchUpdate.Enabled := true;
 end;
 
 procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView;
