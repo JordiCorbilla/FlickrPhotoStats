@@ -1224,12 +1224,12 @@ object frmFlickr: TfrmFlickr
         Left = 0
         Top = 0
         Width = 651
-        Height = 33
+        Height = 73
         Align = alTop
         TabOrder = 0
         object lblfetchinggroup: TLabel
           Left = 117
-          Top = 6
+          Top = 7
           Width = 68
           Height = 13
           Caption = 'fetching data:'
@@ -1237,7 +1237,7 @@ object frmFlickr: TfrmFlickr
         end
         object btnGetGroups: TButton
           Left = 2
-          Top = 1
+          Top = 2
           Width = 99
           Height = 25
           Caption = 'Get entire list'
@@ -1249,19 +1249,51 @@ object frmFlickr: TfrmFlickr
         end
         object progressfetchinggroups: TProgressBar
           Left = 191
-          Top = 4
-          Width = 448
+          Top = 5
+          Width = 266
           Height = 17
           TabOrder = 1
           Visible = False
         end
+        object Button2: TButton
+          Left = 478
+          Top = 2
+          Width = 115
+          Height = 25
+          Caption = 'Export to Excel'
+          ImageIndex = 7
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 2
+          OnClick = Button2Click
+        end
+        object chkAddItem: TCheckBox
+          Left = 2
+          Top = 33
+          Width = 127
+          Height = 17
+          Caption = 'Add items to the list'
+          TabOrder = 3
+        end
+        object Button3: TButton
+          Left = 135
+          Top = 28
+          Width = 178
+          Height = 25
+          Caption = 'Add photos to the groups'
+          ImageIndex = 4
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 4
+          OnClick = Button3Click
+        end
       end
       object listGroups: TListView
         Left = 0
-        Top = 33
+        Top = 73
         Width = 651
-        Height = 521
-        Align = alTop
+        Height = 587
+        Align = alClient
         Checkboxes = True
         Columns = <
           item
@@ -1271,6 +1303,14 @@ object frmFlickr: TfrmFlickr
           item
             Caption = 'Title'
             Width = 300
+          end
+          item
+            Caption = 'Topic count'
+            Width = 100
+          end
+          item
+            Caption = 'Status'
+            Width = 200
           end>
         GridLines = True
         ReadOnly = True

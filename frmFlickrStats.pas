@@ -126,6 +126,9 @@ type
     TabSheet7: TTabSheet;
     listAlbums: TMemo;
     Button1: TButton;
+    Button2: TButton;
+    chkAddItem: TCheckBox;
+    Button3: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -146,6 +149,8 @@ type
     procedure btnGetTokenClick(Sender: TObject);
     procedure Label2DblClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -163,6 +168,8 @@ type
     function getTotalGroupCounts: Integer;
     procedure Log(s: string);
     procedure UpdateSingleStats(id : string);
+    function SaveToExcelGroups(AView: TListView; ASheetName,
+      AFileName: string): Boolean;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -252,14 +259,9 @@ begin
   userTokenSecret := oauth_token_secret;
 
   PageControl1.ActivePage := Authentication;
-  Log('Navigating to ' +
-    'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token
-    + '&perms=read');
-  WebBrowser1.Navigate
-    ('https://www.flickr.com/services/oauth/authorize?oauth_token=' +
-    oauth_token + '&perms=read');
-  showmessage
-    ('Authorise the application in the browser and once you get the example page, press Get token button');
+  Log('Navigating to ' +  'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
+  WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
+  showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
   btnGetToken.Visible := true;
 end;
 
@@ -982,6 +984,39 @@ begin
   showmessage(response);
 end;
 
+procedure TfrmFlickr.Button2Click(Sender: TObject);
+begin
+  if SaveToExcelGroups(listGroups, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) +
+    'FlickrAnalyticsGroups.xls') then
+    showmessage('Data saved successfully!');
+end;
+
+procedure TfrmFlickr.Button3Click(Sender: TObject);
+var
+  i: Integer;
+  j: Integer;
+  photoId : string;
+  groupId : string;
+  urlAdd, response : string;
+begin
+  //add photos to the groups
+  for i := 0 to listPhotos.Items.Count-1 do
+  begin
+    for j := 0 to listGroups.Items.Count-1 do
+    begin
+      if listPhotos.Items[i].Checked and listGroups.Items[i].Checked then
+      begin
+        photoId := listPhotos.Items[i].Caption;
+        groupId := listGroups.Items[j].Caption;
+        urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+        response := IdHTTP1.Get(urlAdd);
+        listGroups.Items[j].SubItems[1] := response;
+        sleep(1000);
+      end;
+    end;
+  end;
+end;
+
 // returns MD5 has for a file
 function TfrmFlickr.MD5(apikey: string; secret: string): string;
 var
@@ -1001,7 +1036,7 @@ var
   Item: TListItem;
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  pages, title, id, ismember, total: string;
+  pages, title, id, ismember, total, topiccount, totalitems: string;
   numPages, numTotal: Integer;
   urlGroups: string;
   i: Integer;
@@ -1024,7 +1059,7 @@ begin
   lblfetchinggroup.Visible := true;
   progressfetchinggroups.Visible := true;
   Application.ProcessMessages;
-  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text);
+  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text, userTokenSecret);
   response := IdHTTP1.Get(urlGroups);
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
@@ -1032,12 +1067,13 @@ begin
   iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
   pages := iXMLRootNode3.attributes['page'];
   total := iXMLRootNode3.attributes['pages'];
+  totalitems := iXMLRootNode3.attributes['total'];
   iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
   listGroups.Clear;
   numTotal := total.ToInteger();
-  progressfetchinggroups.Max := numTotal;
+  progressfetchinggroups.Max := totalitems.ToInteger();
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  Taskbar1.ProgressMaxValue := numTotal;
+  Taskbar1.ProgressMaxValue := totalitems.ToInteger();
   progressfetchinggroups.position := 0;
   while iXMLRootNode4 <> nil do
   begin
@@ -1046,11 +1082,13 @@ begin
       id := iXMLRootNode4.attributes['id'];
       ismember := iXMLRootNode4.attributes['member'];
       title := iXMLRootNode4.attributes['name'];
+      topiccount := iXMLRootNode4.attributes['topic_count'];
       if ismember = '1' then
       begin
         Item := listGroups.Items.Add;
         Item.Caption := id;
         Item.SubItems.Add(title);
+        Item.SubItems.Add(topiccount);
       end;
     end;
     progressfetchinggroups.position := progressfetchinggroups.position + 1;
@@ -1063,8 +1101,8 @@ begin
   numPages := total.ToInteger;
   for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.New().getGroups(apikey.text, i.ToString,
-      '500', userToken, secret.text));
+    sleep(1000);
+    response := IdHTTP1.Get(TFlickrRest.New().getGroups(apikey.text, i.ToString, '500', userToken, secret.text, userTokenSecret));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1073,16 +1111,18 @@ begin
     iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
     while iXMLRootNode4 <> nil do
     begin
-      if iXMLRootNode4.NodeName = 'photo' then
+      if iXMLRootNode4.NodeName = 'group' then
       begin
         id := iXMLRootNode4.attributes['id'];
         ismember := iXMLRootNode4.attributes['member'];
         title := iXMLRootNode4.attributes['name'];
+        topiccount := iXMLRootNode4.attributes['topic_count'];
         if ismember = '1' then
         begin
           Item := listGroups.Items.Add;
           Item.Caption := id;
           Item.SubItems.Add(title);
+          Item.SubItems.Add(topiccount);
         end;
       end;
       progressfetchinggroups.position := progressfetchinggroups.position + 1;
@@ -1381,8 +1421,7 @@ begin
 
   userToken := oauth_token;
   userTokenSecret := oauth_token_secret;
-  showmessage('Congratulations, application authenticated with token ' +
-    oauth_token);
+  showmessage('Congratulations, application authenticated with token ' +  oauth_token);
 end;
 
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
@@ -1423,8 +1462,7 @@ begin
   btnAddItems.Enabled := true;
 end;
 
-function TfrmFlickr.SaveToExcel(AView: TListView;
-ASheetName, AFileName: string): Boolean;
+function TfrmFlickr.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
 var
@@ -1461,6 +1499,53 @@ begin
       Sheet.Cells[Row, 5] := AView.Items.Item[i].SubItems[3];
       Sheet.Cells[Row, 6] := AView.Items.Item[i].SubItems[4];
       Sheet.Cells[Row, 7] := AView.Items.Item[i].SubItems[5];
+      inc(Row);
+    end;
+
+    try
+      ExcelOLE.Workbooks[1].SaveAs(AFileName);
+      Result := true;
+    except
+
+    end;
+  finally
+    if not VarIsEmpty(ExcelOLE) then
+    begin
+      ExcelOLE.DisplayAlerts := false;
+      ExcelOLE.Quit;
+      ExcelOLE := Unassigned;
+      Sheet := Unassigned;
+    end;
+  end;
+end;
+
+function TfrmFlickr.SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
+const
+  xlWBATWorksheet = -4167;
+var
+  Row: Integer;
+  ExcelOLE, Sheet: OLEVariant;
+  i: Integer;
+begin
+  // Create Excel-OLE Object
+  Result := false;
+  ExcelOLE := CreateOleObject('Excel.Application');
+  try
+    // Hide Excel
+    ExcelOLE.Visible := false;
+
+    ExcelOLE.Workbooks.Add(xlWBATWorksheet);
+    Sheet := ExcelOLE.Workbooks[1].WorkSheets[1];
+    Sheet.Name := ASheetName;
+
+    Sheet.Cells[1, 1] := 'Id';
+    Sheet.Cells[1, 2] := 'Title';
+
+    Row := 2;
+    for i := 0 to AView.Items.Count - 1 do
+    begin
+      Sheet.Cells[Row, 1] := AView.Items.Item[i].Caption;
+      Sheet.Cells[Row, 2] := AView.Items.Item[i].SubItems[0];
       inc(Row);
     end;
 
@@ -1581,7 +1666,7 @@ var
   barSeries : TBarSeries;
   colour: TColor;
 begin
-  if (Item.Checked) then
+  if (Item.Checked) and (not chkAddItem.Checked) then
   begin
     id := Item.Caption;
     title := Item.SubItems.Strings[0];

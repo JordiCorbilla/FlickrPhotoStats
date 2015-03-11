@@ -14,7 +14,8 @@ uses
   flickr.oauth in 'flickr.oauth.pas',
   flickr.signature in 'flickr.signature.pas',
   flickr.access.token in 'flickr.access.token.pas',
-  flickr.lib.parallel in 'flickr.lib.parallel.pas';
+  flickr.lib.parallel in 'flickr.lib.parallel.pas',
+  flickr.call.methods in 'flickr.call.methods.pas';
 
 {$R *.res}
 

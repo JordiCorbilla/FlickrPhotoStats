@@ -35,8 +35,9 @@ type
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
     function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
     function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+    function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
   end;
 
   TFlickrRest = class(TInterfacedObject, IFlickrRest)
@@ -46,15 +47,16 @@ type
     function getInfo(api_key: string; photo_id: string): string;
     function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
     function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string): string;
+    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
     function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+    function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
     class function New(): IFlickrRest;
   end;
 
 implementation
 
 uses
-  flickr.signature, HTTPApp;
+  flickr.signature, HTTPApp, flickr.call.methods, generics.collections, SysUtils;
 
 { TFlickrRest }
 
@@ -63,29 +65,15 @@ begin
   Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getFavorites&api_key=' + api_key + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string; secret : string): string;
+function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string; secret : string; token_secret : string): string;
 var
-  url : string;
-  signature : string;
+  params : TDictionary<string, string>;
 begin
-  //Generate signature
-  url := secret +'api_key'+api_key+ 'auth_token' +auth_token;
-  url := url + 'formatrest';
-  url := url + 'methodflickr.groups.pools.getgroups';
-  url := url + 'page' + page + 'per_page' + per_page;
-  signature := TSignature.api_sig(url);
-
-  //Example
-  //https://api.flickr.com/services/rest/?
-  //method=flickr.groups.pools.getgroups&
-  //api_key=0edf6f13dc6309c822b59ae8bb783df6&
-  //page=1&
-  //per_page=500&
-  //format=rest&
-  //auth_token=72157639942921845-e4f73de08dc774e6&
-  //api_sig=477fdb1c77194a6e185e0fd99da04868
-
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.groups.pools.getGroups&api_key=' + api_key + '&page=' + page + '&per_page=' + per_page + '&format=rest&auth_token=' +auth_token + '&api_sig=' + signature;
+  params := TDictionary<String, String>.create;
+  params.Add('page', page);
+  params.Add('per_page', per_page);
+  Result := TCallMethod.New(api_key, auth_token, secret, token_secret).getURLmethodParams('flickr.groups.pools.getGroups', params);
+  params.Free;
 end;
 
 function TFlickrRest.getInfo(api_key, photo_id: string): string;
@@ -103,7 +91,7 @@ begin
   Result := 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=' + api_key + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
 end;
 
-function TFlickrRest.getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+function TFlickrRest.getPoolsAdd(api_key, auth_token, secret, token_secret, photoId, groupId: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -117,13 +105,16 @@ begin
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
-  paramURL := paramURL + '&method=flickr.test.login';
+  groupId := groupId.Replace('@', '%40');
+  paramURL := paramURL + '&group_id=' + groupId;
+  paramURL := paramURL + '&method=flickr.groups.pools.add';
   paramURL := paramURL + '&oauth_consumer_key=' + api_key;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
   paramURL := paramURL + '&oauth_token=' + auth_token;
   paramURL := paramURL + '&oauth_version=1.0';
+  paramURL := paramURL + '&photo_id=' + photoId;
 
   paramURL := String(HTTPEncode(AnsiString(paramURL)));
 
@@ -140,15 +131,22 @@ begin
   returnURL := 'https://api.flickr.com/services/rest';
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
+  returnURL := returnURL + '&group_id=' + groupId;
+  returnURL := returnURL + '&photo_id=' + photoId;
   returnURL := returnURL + '&oauth_consumer_key=' + api_key;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
   returnURL := returnURL + '&oauth_token=' + auth_token;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
-  returnURL := returnURL + '&method=flickr.test.login';
+  returnURL := returnURL + '&method=flickr.groups.pools.add';
 
   result := returnURL;
+end;
+
+function TFlickrRest.getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+begin
+  result := TCallMethod.New(api_key, auth_token, secret, token_secret).getURLmethod('flickr.test.login');
 end;
 
 class function TFlickrRest.New: IFlickrRest;
