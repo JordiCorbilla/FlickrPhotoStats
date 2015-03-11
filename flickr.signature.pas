@@ -59,7 +59,7 @@ class function TSignature.DateTimeToUnixEpoch(date: TDateTime): Longint;
 var
   timeZone: TTimeZoneInformation;
 begin
-  GetTimeZoneInformation(timeZone);
+  GetTimeZoneInformation(timeZone); //this returns UTC format
   date := date + (timeZone.Bias / 1440);
   Result := Trunc((date - UnixDateTimeStamps) * 86400);
 end;

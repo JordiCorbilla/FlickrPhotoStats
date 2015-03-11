@@ -560,7 +560,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 659
     Height = 688
-    ActivePage = TabSheet4
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1371,6 +1371,15 @@ object frmFlickr: TfrmFlickr
         TabOrder = 3
         OnChange = apikeyChange
       end
+      object Button1: TButton
+        Left = 336
+        Top = 136
+        Width = 113
+        Height = 41
+        Caption = 'Test REST Login'
+        TabOrder = 4
+        OnClick = Button1Click
+      end
     end
     object TabSheet5: TTabSheet
       Caption = 'Logs'
@@ -1446,7 +1455,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010A00D800880110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D8008C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

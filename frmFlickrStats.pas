@@ -125,6 +125,7 @@ type
     BarSeries2: TBarSeries;
     TabSheet7: TTabSheet;
     listAlbums: TMemo;
+    Button1: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -144,6 +145,7 @@ type
     procedure btnExcelClick(Sender: TObject);
     procedure btnGetTokenClick(Sender: TObject);
     procedure Label2DblClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -735,7 +737,7 @@ var
   views, viewsTotal, average: Integer;
   averageSeries, averageLikes : TLineSeries;
 begin
-  if dailyViews.SeriesList.Count = 1 then
+  if dailyViews.SeriesList.Count >= 1 then
     dailyViews.RemoveAllSeries;
 
   Series := TBarSeries.Create(dailyViews);
@@ -807,7 +809,7 @@ begin
 
   /////Likes
 
-  if dailyLikes.SeriesList.Count = 1 then
+  if dailyLikes.SeriesList.Count >= 1 then
     dailyLikes.RemoveAllSeries;
 
   Series := TBarSeries.Create(dailyLikes);
@@ -970,6 +972,16 @@ begin
   btnSave.Enabled := false;
 end;
 
+procedure TfrmFlickr.Button1Click(Sender: TObject);
+var
+  urlGroups: string;
+  response : string;
+begin
+  urlGroups := TFlickrRest.New().getTestLogin(apikey.text, userToken, secret.text, userTokenSecret);
+  response := IdHTTP1.Get(urlGroups);
+  showmessage(response);
+end;
+
 // returns MD5 has for a file
 function TfrmFlickr.MD5(apikey: string; secret: string): string;
 var
@@ -1012,8 +1024,7 @@ begin
   lblfetchinggroup.Visible := true;
   progressfetchinggroups.Visible := true;
   Application.ProcessMessages;
-  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken,
-    secret.text);
+  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text);
   response := IdHTTP1.Get(urlGroups);
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
@@ -1369,6 +1380,7 @@ begin
   Log('username= ' + username);
 
   userToken := oauth_token;
+  userTokenSecret := oauth_token_secret;
   showmessage('Congratulations, application authenticated with token ' +
     oauth_token);
 end;
