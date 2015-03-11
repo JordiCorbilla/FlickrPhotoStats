@@ -1004,7 +1004,7 @@ begin
   begin
     for j := 0 to listGroups.Items.Count-1 do
     begin
-      if listPhotos.Items[i].Checked and listGroups.Items[i].Checked then
+      if listPhotos.Items[i].Checked and listGroups.Items[j].Checked then
       begin
         photoId := listPhotos.Items[i].Caption;
         groupId := listGroups.Items[j].Caption;
