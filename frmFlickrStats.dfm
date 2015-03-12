@@ -1224,7 +1224,7 @@ object frmFlickr: TfrmFlickr
         Left = 0
         Top = 0
         Width = 651
-        Height = 73
+        Height = 121
         Align = alTop
         TabOrder = 0
         object lblfetchinggroup: TLabel
@@ -1234,6 +1234,27 @@ object frmFlickr: TfrmFlickr
           Height = 13
           Caption = 'fetching data:'
           Visible = False
+        end
+        object Label5: TLabel
+          Left = 2
+          Top = 64
+          Width = 42
+          Height = 13
+          Caption = 'Filtering:'
+        end
+        object Label6: TLabel
+          Left = 349
+          Top = 34
+          Width = 66
+          Height = 13
+          Caption = 'Select Profile:'
+        end
+        object Label7: TLabel
+          Left = 349
+          Top = 64
+          Width = 34
+          Height = 13
+          Caption = 'Profile:'
         end
         object btnGetGroups: TButton
           Left = 2
@@ -1287,12 +1308,98 @@ object frmFlickr: TfrmFlickr
           TabOrder = 4
           OnClick = Button3Click
         end
+        object Edit2: TEdit
+          Left = 50
+          Top = 61
+          Width = 199
+          Height = 21
+          TabOrder = 5
+        end
+        object Button4: TButton
+          Left = 251
+          Top = 59
+          Width = 34
+          Height = 25
+          ImageIndex = 3
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 6
+        end
+        object ComboBox1: TComboBox
+          Left = 418
+          Top = 30
+          Width = 175
+          Height = 21
+          Style = csDropDownList
+          TabOrder = 7
+        end
+        object Button5: TButton
+          Left = 285
+          Top = 59
+          Width = 34
+          Height = 25
+          ImageIndex = 3
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 8
+        end
+        object edtProfile: TEdit
+          Left = 421
+          Top = 61
+          Width = 172
+          Height = 21
+          TabOrder = 9
+        end
+        object Button7: TButton
+          Left = 515
+          Top = 88
+          Width = 78
+          Height = 25
+          Caption = 'Update'
+          ImageIndex = 3
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 10
+        end
+        object Button8: TButton
+          Left = -1
+          Top = 90
+          Width = 75
+          Height = 25
+          Caption = 'Uncheck'
+          TabOrder = 11
+          OnClick = Button8Click
+        end
+        object Button6: TButton
+          Left = 323
+          Top = 90
+          Width = 78
+          Height = 25
+          Caption = 'SaveDisk'
+          ImageIndex = 3
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 12
+          OnClick = Button6Click
+        end
+        object btnSaveProfile: TButton
+          Left = 419
+          Top = 88
+          Width = 78
+          Height = 25
+          Caption = 'Save'
+          ImageIndex = 3
+          ImageMargins.Left = 5
+          Images = ImageList1
+          TabOrder = 13
+          OnClick = btnSaveProfileClick
+        end
       end
       object listGroups: TListView
         Left = 0
-        Top = 73
+        Top = 121
         Width = 651
-        Height = 587
+        Height = 539
         Align = alClient
         Checkboxes = True
         Columns = <
@@ -1318,6 +1425,8 @@ object frmFlickr: TfrmFlickr
         TabOrder = 1
         ViewStyle = vsReport
         OnItemChecked = listPhotosItemChecked
+        ExplicitTop = 73
+        ExplicitHeight = 587
       end
     end
     object TabSheet3: TTabSheet
@@ -1495,7 +1604,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010A00D8008C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010A00D800900110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

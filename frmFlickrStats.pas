@@ -38,7 +38,8 @@ uses
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus,
   System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
-  Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw;
+  Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
+  flickr.profiles, flickr.profile;
 
 type
   TfrmFlickr = class(TForm)
@@ -129,6 +130,18 @@ type
     Button2: TButton;
     chkAddItem: TCheckBox;
     Button3: TButton;
+    Label5: TLabel;
+    Edit2: TEdit;
+    Button4: TButton;
+    ComboBox1: TComboBox;
+    Button5: TButton;
+    Label6: TLabel;
+    edtProfile: TEdit;
+    Label7: TLabel;
+    Button7: TButton;
+    Button8: TButton;
+    Button6: TButton;
+    btnSaveProfile: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -151,6 +164,9 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure btnSaveProfileClick(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -177,6 +193,7 @@ type
     CheckedSeries: TStringList;
     userToken: string;
     userTokenSecret: string;
+    flickrProfiles : IProfiles;
   end;
 
 var
@@ -187,7 +204,7 @@ implementation
 uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
-  System.SyncObjs;
+  System.SyncObjs, generics.collections;
 
 {$R *.dfm}
 
@@ -555,6 +572,13 @@ begin
   LoadForms(repository);
 
   LoadHallOfFame(repository);
+
+  if Assigned(flickrProfiles) then
+  begin
+    flickrProfiles := nil;
+    flickrProfiles := TProfiles.Create();
+  end;
+  flickrProfiles.Load('flickrProfiles.xml');
 end;
 
 procedure TfrmFlickr.LoadHallOfFame(repository: IFlickrRepository);
@@ -968,8 +992,7 @@ end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
 begin
-  repository.save(apikey.text, secret.text, edtUserId.text,
-    'flickrRepository.xml');
+  repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
   globalsRepository.save('flickrRepositoryGlobal.xml');
   btnSave.Enabled := false;
 end;
@@ -998,22 +1021,92 @@ var
   photoId : string;
   groupId : string;
   urlAdd, response : string;
+  photos : TList<string>;
+  groups : TList<string>;
+  timedout : boolean;
 begin
-  //add photos to the groups
-  for i := 0 to listPhotos.Items.Count-1 do
-  begin
-    for j := 0 to listGroups.Items.Count-1 do
+  photos := TList<string>.create;
+  groups := TList<string>.create;
+
+  try
+    for i := 0 to listPhotos.Items.Count-1 do
     begin
-      if listPhotos.Items[i].Checked and listGroups.Items[j].Checked then
+      if listPhotos.Items[i].Checked then
+        photos.Add(listPhotos.Items[i].Caption);
+    end;
+    for i := 0 to listGroups.Items.Count-1 do
+    begin
+      if listGroups.Items[i].Checked then
+        groups.Add(listGroups.Items[i].Caption);
+    end;
+    //add photos to the groups
+    for i := 0 to photos.Count-1 do
+    begin
+      for j := 0 to groups.Count-1 do
       begin
-        photoId := listPhotos.Items[i].Caption;
-        groupId := listGroups.Items[j].Caption;
+        photoId := photos[i];
+        groupId := groups[j];
+        timedout := false;
         urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-        response := IdHTTP1.Get(urlAdd);
+        while (not timedout) do
+        begin
+          try
+            response := IdHTTP1.Get(urlAdd);
+            timedout := true;
+          except
+            on e : exception do
+            begin
+              sleep(2000);
+              timedout := false;
+            end;
+          end;
+        end;
         listGroups.Items[j].SubItems[1] := response;
-        sleep(1000);
+        sleep(10);
       end;
     end;
+  finally
+    photos.Free;
+    groups.Free;
+  end;
+
+
+end;
+
+procedure TfrmFlickr.Button6Click(Sender: TObject);
+begin
+  flickrProfiles.Save('flickrProfiles.xml');
+end;
+
+procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);
+var
+  profile : Iprofile;
+  I: Integer;
+begin
+  if edtProfile.Text = '' then
+  begin
+    showMessage('profile name can''t be empty');
+    exit;
+  end;
+  profile := TProfile.Create;
+  profile.Name := edtProfile.Text;
+  for I := 0 to listgroups.Items.Count-1 do
+  begin
+    if listgroups.Items[i].Checked then
+    begin
+      profile.GroupId.Add(listgroups.Items[i].Caption);
+    end;
+  end;
+  flickrProfiles.Add(profile);
+end;
+
+procedure TfrmFlickr.Button8Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to listgroups.Items.count - 1 do
+  begin
+    listgroups.Items[i].Checked := false;
   end;
 end;
 
@@ -1576,6 +1669,7 @@ end;
 procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
   repository := TFlickrRepository.Create();
+  flickrProfiles := TProfiles.Create();
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
@@ -1586,6 +1680,7 @@ procedure TfrmFlickr.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(CheckedSeries);
   repository := nil;
+  flickrProfiles := nil;
   globalsRepository := nil;
 end;
 
