@@ -17,7 +17,10 @@ uses
   flickr.lib.parallel in 'flickr.lib.parallel.pas',
   flickr.call.methods in 'flickr.call.methods.pas',
   flickr.profiles in 'flickr.profiles.pas',
-  flickr.profile in 'flickr.profile.pas';
+  flickr.profile in 'flickr.profile.pas',
+  flickr.rejected in 'flickr.rejected.pas',
+  flickr.filtered.list in 'flickr.filtered.list.pas',
+  flickr.base in 'flickr.base.pas';
 
 {$R *.res}
 

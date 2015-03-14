@@ -39,7 +39,7 @@ uses
   System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
-  flickr.profiles, flickr.profile;
+  flickr.profiles, flickr.profile, flickr.filtered.list;
 
 type
   TfrmFlickr = class(TForm)
@@ -127,9 +127,9 @@ type
     Button2: TButton;
     btnAddPhotos: TButton;
     Label5: TLabel;
-    Edit2: TEdit;
-    Button4: TButton;
-    Button5: TButton;
+    edtFilterGroup: TEdit;
+    btnFilterOK: TButton;
+    btnFilterCancel: TButton;
     PageControl2: TPageControl;
     tabList: TTabSheet;
     tabStatus: TTabSheet;
@@ -180,6 +180,8 @@ type
     procedure ComboBox1Change(Sender: TObject);
     procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem;
       State: TCustomDrawState; var DefaultDraw: Boolean);
+    procedure btnFilterOKClick(Sender: TObject);
+    procedure btnFilterCancelClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -207,6 +209,7 @@ type
     userToken: string;
     userTokenSecret: string;
     flickrProfiles : IProfiles;
+    FilteredGroupList : IFilteredList;
   end;
 
 var
@@ -217,7 +220,7 @@ implementation
 uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
-  System.SyncObjs, generics.collections;
+  System.SyncObjs, generics.collections, flickr.rejected, flickr.base;
 
 {$R *.dfm}
 
@@ -1033,6 +1036,43 @@ begin
     showmessage('Data saved successfully!');
 end;
 
+procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
+var
+  i: Integer;
+  Item : TListItem;
+begin
+  listgroups.Visible := false;
+  listGroups.Items.Clear;
+
+  for i := 0 to FilteredGroupList.List.Count-1 do
+  begin
+    Item := listGroups.Items.Add;
+    Item.Caption := FilteredGroupList.list[i].id;
+    Item.SubItems.Add(FilteredGroupList.list[i].title);
+  end;
+  listgroups.Visible := true;
+end;
+
+procedure TfrmFlickr.btnFilterOKClick(Sender: TObject);
+var
+  i: Integer;
+  Item : TListItem;
+begin
+  listgroups.Visible := false;
+  listGroups.Items.Clear;
+
+  for i := 0 to FilteredGroupList.List.Count-1 do
+  begin
+    if FilteredGroupList.List[i].Title.Contains(edtFiltergroup.Text) then
+    begin
+      Item := listGroups.Items.Add;
+      Item.Caption := FilteredGroupList.list[i].id;
+      Item.SubItems.Add(FilteredGroupList.list[i].title);
+    end;
+  end;
+  listgroups.Visible := true;
+end;
+
 procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
 var
   i: Integer;
@@ -1044,6 +1084,7 @@ var
   photos : TList<string>;
   groups : TList<string>;
   timedout : boolean;
+  rejected : IRejected;
 begin
   photos := TList<string>.create;
   groups := TList<string>.create;
@@ -1060,6 +1101,8 @@ begin
       if listGroups.Items[i].Checked then
         groups.Add(listGroups.Items[i].Caption);
     end;
+
+    rejected := TRejected.Create;
     //add photos to the groups
     pstatus.Max := (photos.Count * groups.Count);
     pstatus.Min := 0;
@@ -1072,17 +1115,22 @@ begin
         photoId := photos[i];
         groupId := groups[j];
         timedout := false;
-        urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-        while (not timedout) do
+        if not rejected.Exists(groupId) then
         begin
-          try
-            response := IdHTTP1.Get(urlAdd);
-            timedout := true;
-          except
-            on e : exception do
-            begin
-              sleep(2000);
-              timedout := false;
+          urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+          while (not timedout) do
+          begin
+            try
+              response := IdHTTP1.Get(urlAdd);
+              if response.Contains('fail') then
+                rejected.Add(groupId);
+              timedout := true;
+            except
+              on e : exception do
+              begin
+                sleep(2000);
+                timedout := false;
+              end;
             end;
           end;
         end;
@@ -1224,7 +1272,7 @@ var
   Item: TListItem;
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  pages, title, id, ismember, total, topiccount, totalitems: string;
+  pages, title, id, ismember, total, totalitems: string;
   numPages: Integer;
   urlGroups: string;
   i: Integer;
@@ -1239,6 +1287,11 @@ begin
   begin
     showmessage('User ID key can''t be empty');
     exit;
+  end;
+  if Assigned(FilteredGroupList) then
+  begin
+    FilteredGroupList := nil;
+    FilteredGroupList := TFilteredList.Create();
   end;
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
@@ -1283,14 +1336,8 @@ begin
       id := iXMLRootNode4.attributes['id'];
       ismember := iXMLRootNode4.attributes['member'];
       title := iXMLRootNode4.attributes['name'];
-      topiccount := iXMLRootNode4.attributes['topic_count'];
       if ismember = '1' then
-      begin
-        Item := listGroups.Items.Add;
-        Item.Caption := id;
-        Item.SubItems.Add(title);
-        Item.SubItems.Add(topiccount);
-      end;
+        FilteredGroupList.Add(TBase.New(id, title));
     end;
     progressfetchinggroups.position := progressfetchinggroups.position + 1;
     Taskbar1.ProgressValue := progressfetchinggroups.position;
@@ -1331,20 +1378,21 @@ begin
         id := iXMLRootNode4.attributes['id'];
         ismember := iXMLRootNode4.attributes['member'];
         title := iXMLRootNode4.attributes['name'];
-        topiccount := iXMLRootNode4.attributes['topic_count'];
         if ismember = '1' then
-        begin
-          Item := listGroups.Items.Add;
-          Item.Caption := id;
-          Item.SubItems.Add(title);
-          Item.SubItems.Add(topiccount);
-        end;
+          FilteredGroupList.Add(TBase.New(id, title));
       end;
       progressfetchinggroups.position := progressfetchinggroups.position + 1;
       Taskbar1.ProgressValue := progressfetchinggroups.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
+  end;
+  //Add items to the listview
+  for i := 0 to FilteredGroupList.List.Count-1 do
+  begin
+    Item := listGroups.Items.Add;
+    Item.Caption := FilteredGroupList.list[i].id;
+    Item.SubItems.Add(FilteredGroupList.list[i].title);
   end;
   btnLoad.Enabled := true;
   btnAdd.Enabled := true;
@@ -1792,6 +1840,7 @@ procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
   repository := TFlickrRepository.Create();
   flickrProfiles := TProfiles.Create();
+  FilteredGroupList := TFilteredList.Create;
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
@@ -1803,6 +1852,7 @@ begin
   FreeAndNil(CheckedSeries);
   repository := nil;
   flickrProfiles := nil;
+  FilteredGroupList := nil;
   globalsRepository := nil;
 end;
 

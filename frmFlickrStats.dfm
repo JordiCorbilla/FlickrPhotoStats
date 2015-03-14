@@ -441,8 +441,6 @@ object frmFlickr: TfrmFlickr
       ViewStyle = vsReport
       OnCustomDrawSubItem = listPhotosCustomDrawSubItem
       OnItemChecked = listPhotosItemChecked
-      ExplicitTop = 41
-      ExplicitHeight = 646
     end
     object Panel5: TPanel
       Left = 1
@@ -1300,14 +1298,14 @@ object frmFlickr: TfrmFlickr
           TabOrder = 3
           OnClick = btnAddPhotosClick
         end
-        object Edit2: TEdit
+        object edtFilterGroup: TEdit
           Left = 50
           Top = 121
           Width = 319
           Height = 21
           TabOrder = 4
         end
-        object Button4: TButton
+        object btnFilterOK: TButton
           Left = 371
           Top = 119
           Width = 34
@@ -1316,8 +1314,9 @@ object frmFlickr: TfrmFlickr
           ImageMargins.Left = 5
           Images = ImageList1
           TabOrder = 5
+          OnClick = btnFilterOKClick
         end
-        object Button5: TButton
+        object btnFilterCancel: TButton
           Left = 405
           Top = 119
           Width = 34
@@ -1326,6 +1325,7 @@ object frmFlickr: TfrmFlickr
           ImageMargins.Left = 5
           Images = ImageList1
           TabOrder = 6
+          OnClick = btnFilterCancelClick
         end
         object Profiles: TGroupBox
           Left = 2
@@ -1407,15 +1407,11 @@ object frmFlickr: TfrmFlickr
         Top = 149
         Width = 651
         Height = 511
-        ActivePage = tabList
+        ActivePage = tabStatus
         Align = alClient
         TabOrder = 1
-        ExplicitTop = 121
-        ExplicitHeight = 539
         object tabList: TTabSheet
           Caption = 'List'
-          ExplicitWidth = 281
-          ExplicitHeight = 165
           object listGroups: TListView
             Left = 0
             Top = 0
@@ -1426,19 +1422,11 @@ object frmFlickr: TfrmFlickr
             Columns = <
               item
                 Caption = 'ID'
-                Width = 100
+                Width = 150
               end
               item
                 Caption = 'Title'
-                Width = 300
-              end
-              item
-                Caption = 'Topic count'
-                Width = 100
-              end
-              item
-                Caption = 'Status'
-                Width = 200
+                Width = 450
               end>
             GridLines = True
             ReadOnly = True
@@ -1446,18 +1434,11 @@ object frmFlickr: TfrmFlickr
             TabOrder = 0
             ViewStyle = vsReport
             OnCustomDrawItem = listGroupsCustomDrawItem
-            ExplicitTop = 185
-            ExplicitWidth = 561
-            ExplicitHeight = 220
           end
         end
         object tabStatus: TTabSheet
           Caption = 'Status'
           ImageIndex = 1
-          ExplicitLeft = 36
-          ExplicitTop = 72
-          ExplicitWidth = 561
-          ExplicitHeight = 405
           object Panel9: TPanel
             Left = 0
             Top = 0
@@ -1465,7 +1446,6 @@ object frmFlickr: TfrmFlickr
             Height = 41
             Align = alTop
             TabOrder = 0
-            Visible = False
             object Label10: TLabel
               Left = 6
               Top = 14
@@ -1488,20 +1468,21 @@ object frmFlickr: TfrmFlickr
             Height = 442
             Align = alClient
             TabOrder = 1
-            ExplicitLeft = 224
-            ExplicitTop = 208
-            ExplicitWidth = 185
-            ExplicitHeight = 41
             object mStatus: TMemo
               Left = 1
               Top = 1
               Width = 641
               Height = 440
               Align = alClient
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clLime
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = []
+              ParentFont = False
               ScrollBars = ssBoth
               TabOrder = 0
               WordWrap = False
-              ExplicitHeight = 468
             end
           end
         end
@@ -1682,7 +1663,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010D00D800A00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D00D800A40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

@@ -119,6 +119,9 @@
         <DCCReference Include="flickr.call.methods.pas"/>
         <DCCReference Include="flickr.profiles.pas"/>
         <DCCReference Include="flickr.profile.pas"/>
+        <DCCReference Include="flickr.rejected.pas"/>
+        <DCCReference Include="flickr.filtered.list.pas"/>
+        <DCCReference Include="flickr.base.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
