@@ -40,6 +40,7 @@ type
     procedure Save(FileName: string);
     procedure Load(FileName: string);
     procedure Add(profile : IProfile);
+    function getProfile(name : string) : IProfile;
   end;
 
   TProfiles = class(TInterfacedObject, IProfiles)
@@ -52,6 +53,7 @@ type
     procedure Save(FileName: string);
     procedure Load(FileName: string);
     procedure Add(profile : IProfile);
+    function getProfile(name : string) : IProfile;
     constructor Create();
     destructor Destroy(); override;
   end;
@@ -82,6 +84,25 @@ end;
 function TProfiles.getList: TList<IProfile>;
 begin
   result := FList;
+end;
+
+function TProfiles.getProfile(name: string): IProfile;
+var
+  found : boolean;
+  i : integer;
+  profile : IProfile;
+begin
+  profile := nil;
+  i := 0;
+  found := false;
+  while not( found) and (i<FList.Count) do
+  begin
+    found := FList[i].Name = name;
+    if found then
+      profile := FList[i];
+    inc(i);
+  end;
+  result := profile;
 end;
 
 procedure TProfiles.Load(FileName: string);

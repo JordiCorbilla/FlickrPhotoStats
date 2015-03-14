@@ -47,7 +47,6 @@ type
     IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
     XMLDocument1: TXMLDocument;
     Panel1: TPanel;
-    btnLoad: TButton;
     btnSave: TButton;
     Panel2: TPanel;
     listPhotos: TListView;
@@ -94,10 +93,8 @@ type
     ActionList1: TActionList;
     TabSheet2: TTabSheet;
     Panel8: TPanel;
-    lblfetchinggroup: TLabel;
     btnGetGroups: TButton;
     progressfetchinggroups: TProgressBar;
-    listGroups: TListView;
     Authenticate: TButton;
     TabSheet3: TTabSheet;
     edtMax: TEdit;
@@ -128,20 +125,31 @@ type
     listAlbums: TMemo;
     Button1: TButton;
     Button2: TButton;
-    chkAddItem: TCheckBox;
-    Button3: TButton;
+    btnAddPhotos: TButton;
     Label5: TLabel;
     Edit2: TEdit;
     Button4: TButton;
-    ComboBox1: TComboBox;
     Button5: TButton;
+    PageControl2: TPageControl;
+    tabList: TTabSheet;
+    tabStatus: TTabSheet;
+    Panel9: TPanel;
+    Label10: TLabel;
+    pstatus: TProgressBar;
+    listGroups: TListView;
+    Panel10: TPanel;
+    mStatus: TMemo;
+    Profiles: TGroupBox;
     Label6: TLabel;
-    edtProfile: TEdit;
+    ComboBox1: TComboBox;
+    btnLoadProfile: TButton;
     Label7: TLabel;
-    Button7: TButton;
-    Button8: TButton;
-    Button6: TButton;
+    edtProfile: TEdit;
     btnSaveProfile: TButton;
+    chkAddItem: TCheckBox;
+    CheckBox1: TCheckBox;
+    CheckBox2: TCheckBox;
+    btnLoad: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -163,10 +171,15 @@ type
     procedure Label2DblClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
+    procedure btnAddPhotosClick(Sender: TObject);
     procedure Button8Click(Sender: TObject);
     procedure btnSaveProfileClick(Sender: TObject);
-    procedure Button6Click(Sender: TObject);
+    procedure btnLoadProfileClick(Sender: TObject);
+    procedure CheckBox1Click(Sender: TObject);
+    procedure CheckBox2Click(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem;
+      State: TCustomDrawState; var DefaultDraw: Boolean);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -178,7 +191,7 @@ type
     procedure UpdateGlobals();
     procedure UpdateAnalytics();
     procedure LoadHallOfFame(repository: IFlickrRepository);
-    function MD5(apikey, secret: string): string;
+    //function MD5(apikey, secret: string): string;
     function SaveToExcel(AView: TListView;
       ASheetName, AFileName: string): Boolean;
     function getTotalGroupCounts: Integer;
@@ -554,6 +567,8 @@ begin
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
+var
+  i: Integer;
 begin
   if Assigned(repository) then
   begin
@@ -579,6 +594,10 @@ begin
     flickrProfiles := TProfiles.Create();
   end;
   flickrProfiles.Load('flickrProfiles.xml');
+  for i := 0 to flickrProfiles.list.Count-1 do
+  begin
+    ComboBox1.AddItem(flickrProfiles.list[i].Name, nil);
+  end;
 end;
 
 procedure TfrmFlickr.LoadHallOfFame(repository: IFlickrRepository);
@@ -1014,10 +1033,11 @@ begin
     showmessage('Data saved successfully!');
 end;
 
-procedure TfrmFlickr.Button3Click(Sender: TObject);
+procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
 var
   i: Integer;
   j: Integer;
+  k : integer;
   photoId : string;
   groupId : string;
   urlAdd, response : string;
@@ -1029,6 +1049,7 @@ begin
   groups := TList<string>.create;
 
   try
+    PageControl2.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count-1 do
     begin
       if listPhotos.Items[i].Checked then
@@ -1040,6 +1061,9 @@ begin
         groups.Add(listGroups.Items[i].Caption);
     end;
     //add photos to the groups
+    pstatus.Max := (photos.Count * groups.Count);
+    k := 0;
+
     for i := 0 to photos.Count-1 do
     begin
       for j := 0 to groups.Count-1 do
@@ -1061,7 +1085,10 @@ begin
             end;
           end;
         end;
-        listGroups.Items[j].SubItems[1] := response;
+        inc(k);
+        pstatus.Position := k;
+        mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: '+ response);
+        application.ProcessMessages;
         sleep(10);
       end;
     end;
@@ -1069,13 +1096,30 @@ begin
     photos.Free;
     groups.Free;
   end;
-
-
 end;
 
-procedure TfrmFlickr.Button6Click(Sender: TObject);
+procedure TfrmFlickr.btnLoadProfileClick(Sender: TObject);
+var
+  profileName : string;
+  profile : IProfile;
+  i : integer;
+  j: Integer;
 begin
-  flickrProfiles.Save('flickrProfiles.xml');
+  profileName := ComboBox1.Items[ComboBox1.ItemIndex];
+  //Now look for this profileName in the Main Object.
+  profile := flickrProfiles.getProfile(profileName);
+  if profile <> nil then
+  begin
+    edtProfile.text := profileName;
+    for I := 0 to profile.groupId.Count-1 do
+      for j := 0 to listgroups.Items.Count-1 do
+      begin
+        if profile.GroupId[i] = listgroups.Items[j].Caption then
+        begin
+          listgroups.Items[j].Checked := true;
+        end;
+      end;
+    end;
 end;
 
 procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);
@@ -1088,16 +1132,35 @@ begin
     showMessage('profile name can''t be empty');
     exit;
   end;
-  profile := TProfile.Create;
-  profile.Name := edtProfile.Text;
-  for I := 0 to listgroups.Items.Count-1 do
+
+  //Give me the profile
+  profile := flickrProfiles.getProfile(edtProfile.text);
+
+  if profile = nil then
   begin
-    if listgroups.Items[i].Checked then
+    //New Profile
+    profile := TProfile.Create;
+    profile.Name := edtProfile.Text;
+    for I := 0 to listgroups.Items.Count-1 do
     begin
-      profile.GroupId.Add(listgroups.Items[i].Caption);
+      if listgroups.Items[i].Checked then
+      begin
+        profile.AddId(listgroups.Items[i].Caption);
+      end;
+    end;
+    flickrProfiles.Add(profile);
+  end
+  else
+  begin
+    for I := 0 to listgroups.Items.Count-1 do
+    begin
+      if listgroups.Items[i].Checked then
+      begin
+        profile.AddId(listgroups.Items[i].Caption);
+      end;
     end;
   end;
-  flickrProfiles.Add(profile);
+  flickrProfiles.Save('flickrProfiles.xml');
 end;
 
 procedure TfrmFlickr.Button8Click(Sender: TObject);
@@ -1110,19 +1173,46 @@ begin
   end;
 end;
 
-// returns MD5 has for a file
-function TfrmFlickr.MD5(apikey: string; secret: string): string;
+procedure TfrmFlickr.CheckBox1Click(Sender: TObject);
 var
-  idmd5: TIdHashMessageDigest5;
+  i: Integer;
 begin
-  idmd5 := TIdHashMessageDigest5.Create;
-  try
-    Result := idmd5.HashStringAsHex(secret + 'api_key' + apikey + 'permswrite',
-      IndyTextEncoding_OSDefault());
-  finally
-    idmd5.Free;
+  for i := 0 to listgroups.Items.Count-1 do
+  begin
+    listgroups.Items[i].Checked := checkBox1.Checked;
   end;
 end;
+
+procedure TfrmFlickr.CheckBox2Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to listphotos.Items.Count-1 do
+  begin
+    listphotos.Items[i].Checked := checkBox2.Checked;
+  end;
+end;
+
+procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
+begin
+  btnLoadProfile.Enabled := true;
+  edtProfile.Enabled := true;
+  btnSaveProfile.Enabled := true;
+end;
+
+// returns MD5 has for a file
+//function TfrmFlickr.MD5(apikey: string; secret: string): string;
+//var
+//  idmd5: TIdHashMessageDigest5;
+//begin
+//  idmd5 := TIdHashMessageDigest5.Create;
+//  try
+//    Result := idmd5.HashStringAsHex(secret + 'api_key' + apikey + 'permswrite',
+//      IndyTextEncoding_OSDefault());
+//  finally
+//    idmd5.Free;
+//  end;
+//end;
 
 procedure TfrmFlickr.btnGetGroupsClick(Sender: TObject);
 var
@@ -1130,16 +1220,17 @@ var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
   pages, title, id, ismember, total, topiccount, totalitems: string;
-  numPages, numTotal: Integer;
+  numPages: Integer;
   urlGroups: string;
   i: Integer;
+  timedout : boolean;
 begin
-  if apikey.text = '' then
+  if (apikey.text = '') or (userToken = '') then
   begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-  if edtUserId.text = '' then
+  if (edtUserId.text = '') or (userTokenSecret = '') then
   begin
     showmessage('User ID key can''t be empty');
     exit;
@@ -1149,11 +1240,23 @@ begin
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listGroups.Visible := false;
-  lblfetchinggroup.Visible := true;
   progressfetchinggroups.Visible := true;
   Application.ProcessMessages;
   urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text, userTokenSecret);
-  response := IdHTTP1.Get(urlGroups);
+  timedout := false;
+  while (not timedout) do
+  begin
+    try
+      response := IdHTTP1.Get(urlGroups);
+      timedout := true;
+    except
+      on e : exception do
+      begin
+        sleep(2000);
+        timedout := false;
+      end;
+    end;
+  end;
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1163,7 +1266,7 @@ begin
   totalitems := iXMLRootNode3.attributes['total'];
   iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
   listGroups.Clear;
-  numTotal := total.ToInteger();
+  //numTotal := total.ToInteger();
   progressfetchinggroups.Max := totalitems.ToInteger();
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
   Taskbar1.ProgressMaxValue := totalitems.ToInteger();
@@ -1194,8 +1297,22 @@ begin
   numPages := total.ToInteger;
   for i := 2 to numPages do
   begin
-    sleep(1000);
-    response := IdHTTP1.Get(TFlickrRest.New().getGroups(apikey.text, i.ToString, '500', userToken, secret.text, userTokenSecret));
+    sleep(100);
+    urlGroups := TFlickrRest.New().getGroups(apikey.text, i.ToString, '500', userToken, secret.text, userTokenSecret);
+    timedout := false;
+    while (not timedout) do
+    begin
+      try
+        response := IdHTTP1.Get(urlGroups);
+        timedout := true;
+      except
+        on e : exception do
+        begin
+          sleep(2000);
+          timedout := false;
+        end;
+      end;
+    end;
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -1227,8 +1344,8 @@ begin
   btnLoad.Enabled := true;
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
+  btnAddPhotos.Enabled := true;
   btnAddItems.Enabled := true;
-  lblfetchinggroup.Visible := false;
   progressfetchinggroups.Visible := false;
   Taskbar1.ProgressValue := 0;
   listGroups.Visible := true;
@@ -1702,6 +1819,25 @@ end;
 procedure TfrmFlickr.Label2DblClick(Sender: TObject);
 begin
   batchUpdate.Enabled := true;
+end;
+
+procedure TfrmFlickr.listGroupsCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+var
+  color, Color2: TColor;
+begin
+  color := Sender.Canvas.Font.color;
+  Color2 := Sender.Canvas.Brush.color;
+  if item.Checked then
+  begin
+    Sender.Canvas.Font.color := clBlue;
+    Sender.Canvas.Brush.color := Color2;
+  end
+  else
+  begin
+    Sender.Canvas.Font.color := color;
+    Sender.Canvas.Brush.color := Color2;
+  end;
 end;
 
 procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView;

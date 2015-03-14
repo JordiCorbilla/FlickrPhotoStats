@@ -42,6 +42,8 @@ type
     property GroupId: TList<String> read GetGroupId write SetGroupId;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
+    procedure AddId(id : string);
+    function Exists(id : string) : boolean;
   end;
 
   TProfile = class(TinterfacedObject, IProfile)
@@ -57,6 +59,8 @@ type
     property GroupId: TList<String> read GetGroupId write SetGroupId;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
+    procedure AddId(id : string);
+    function Exists(id : string) : boolean;
     constructor Create();
     destructor Destroy(); override;
   end;
@@ -64,6 +68,12 @@ type
 implementation
 
 { TProfile }
+
+procedure TProfile.AddId(id: string);
+begin
+  if not Exists(id) then
+    FGroupId.Add(id);
+end;
 
 constructor TProfile.Create;
 begin
@@ -74,6 +84,21 @@ destructor TProfile.Destroy;
 begin
   FreeAndNil(FGroupId);
   inherited;
+end;
+
+function TProfile.Exists(id: string): boolean;
+var
+  i: Integer;
+  found: boolean;
+begin
+  i := 0;
+  found := false;
+  while (not found) and (i < FGroupId.count) do
+  begin
+    found := FGroupId[i] = id;
+    inc(i);
+  end;
+  result := found;
 end;
 
 function TProfile.GetGroupId: TList<String>;
@@ -88,7 +113,7 @@ end;
 
 procedure TProfile.Load(iNode: IXMLNode);
 var
-  iNode2, iNode3: IXMLNode;
+  iNode2: IXMLNode;
 begin
   FName := iNode.Attributes['Name'];
   iNode2 := iNode.ChildNodes.First;
