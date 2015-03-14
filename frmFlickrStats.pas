@@ -1062,6 +1062,7 @@ begin
     end;
     //add photos to the groups
     pstatus.Max := (photos.Count * groups.Count);
+    pstatus.Min := 0;
     k := 0;
 
     for i := 0 to photos.Count-1 do
@@ -1087,6 +1088,10 @@ begin
         end;
         inc(k);
         pstatus.Position := k;
+        response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
+        response := response.Replace('<rsp stat="', '');
+        response := response.Replace('">', '');
+        response := response.Replace('</rsp>', '');
         mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: '+ response);
         application.ProcessMessages;
         sleep(10);
