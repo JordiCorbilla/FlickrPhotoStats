@@ -1253,6 +1253,13 @@ object frmFlickr: TfrmFlickr
           Height = 13
           Caption = 'Filtering:'
         end
+        object Label11: TLabel
+          Left = 451
+          Top = 124
+          Width = 84
+          Height = 13
+          Caption = 'Number of Items:'
+        end
         object btnGetGroups: TButton
           Left = 2
           Top = 2
@@ -1274,10 +1281,10 @@ object frmFlickr: TfrmFlickr
           Visible = False
         end
         object Button2: TButton
-          Left = 526
-          Top = 118
+          Left = 522
+          Top = 85
           Width = 115
-          Height = 25
+          Height = 30
           Caption = 'Export to Excel'
           ImageIndex = 7
           ImageMargins.Left = 5
@@ -1287,9 +1294,9 @@ object frmFlickr: TfrmFlickr
         end
         object btnAddPhotos: TButton
           Left = 244
-          Top = 75
+          Top = 85
           Width = 170
-          Height = 42
+          Height = 30
           Caption = 'Add photos to the groups'
           Enabled = False
           ImageIndex = 4
@@ -1331,7 +1338,7 @@ object frmFlickr: TfrmFlickr
           Left = 2
           Top = 28
           Width = 639
-          Height = 45
+          Height = 57
           Caption = 'Profiles'
           TabOrder = 7
           object Label6: TLabel
@@ -1391,6 +1398,22 @@ object frmFlickr: TfrmFlickr
             TabOrder = 3
             OnClick = btnSaveProfileClick
           end
+          object chkReplaceProfile: TCheckBox
+            Left = 385
+            Top = 36
+            Width = 127
+            Height = 17
+            Caption = 'Replace Profile'
+            TabOrder = 4
+          end
+          object chkDisplayOnly: TCheckBox
+            Left = 82
+            Top = 35
+            Width = 127
+            Height = 17
+            Caption = 'Display only selected'
+            TabOrder = 5
+          end
         end
         object CheckBox1: TCheckBox
           Left = 2
@@ -1407,7 +1430,7 @@ object frmFlickr: TfrmFlickr
         Top = 149
         Width = 651
         Height = 511
-        ActivePage = tabStatus
+        ActivePage = tabList
         Align = alClient
         TabOrder = 1
         object tabList: TTabSheet
@@ -1663,7 +1686,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010D00D800A40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D00D800A80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

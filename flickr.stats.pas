@@ -1,4 +1,4 @@
-// Copyright (c) 2014, Jordi Corbilla
+// Copyright (c) 2015, Jordi Corbilla
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without

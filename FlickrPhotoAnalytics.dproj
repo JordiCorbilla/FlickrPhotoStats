@@ -89,9 +89,10 @@
         <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.1;FileVersion=4.0.0.1;InternalName=Flickr Photo Stats v4.1;LegalCopyright=Jordi Corbilla;LegalTrademarks=Flickr Photo Stats v4.1;OriginalFilename=Flickr Photo Stats v4.1;ProductName=Flickr Photo Stats v4.1;ProductVersion=4.0.0.1;Comments=Flickr Photo Stats v4.1</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <VerInfo_Build>1</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v3.0;FileVersion=3.0.0.0;InternalName=Flickr Photo Stats v3.0;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v3.0;ProductName=Flickr Photo Stats v3.0;ProductVersion=3.0.0.0;Comments=Flickr Photo Stats v3.0</VerInfo_Keys>
-        <VerInfo_MajorVer>3</VerInfo_MajorVer>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.1;FileVersion=4.0.0.1;InternalName=Flickr Photo Stats v4.1;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.1;ProductName=Flickr Photo Stats v4.1;ProductVersion=4.0.0.1;Comments=Flickr Photo Stats v4.1</VerInfo_Keys>
+        <VerInfo_MajorVer>4</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
