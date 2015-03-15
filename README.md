@@ -47,7 +47,8 @@ New versions of the application (RC):
 New versions of the application (beta):
 
 - FlickrPhotoStats(x86) v4.1. (https://app.box.com/s/ydtsu1ceq3f5dkkilct20qhnkdahcddd)
-
+- FlickrPhotoStats(x64) v4.1. (https://app.box.com/s/x3ta5x4z3o6e5h7ozc82d6e49uslzjw5)
+- 
 Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
 
