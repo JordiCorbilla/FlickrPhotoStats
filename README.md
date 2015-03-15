@@ -49,10 +49,11 @@ New versions of the application (beta):
 - FlickrPhotoStats(x86) v4.1. (https://app.box.com/s/ydtsu1ceq3f5dkkilct20qhnkdahcddd)
 - FlickrPhotoStats(x64) v4.1. (https://app.box.com/s/x3ta5x4z3o6e5h7ozc82d6e49uslzjw5)
  
-Features for version 3.1:
+## Changelog
+### Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
 
-Features for version 4.1:
+### Features for version 4.1:
 - OAuth authentication.
 - Get list of groups and create your own profiles for automatic population.
 - Totals for Albums.
@@ -62,3 +63,7 @@ Source code is available here.
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
 
 Developed with Delphi XE6.
+
+## Sponsors
+No sponsors yet! Will you be the first?
+[![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=L5FCF6LX5C9AW "Donate once-off to this project using Paypal")
