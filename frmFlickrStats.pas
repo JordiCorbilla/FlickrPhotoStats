@@ -1107,7 +1107,7 @@ begin
           begin
             try
               response := IdHTTP1.Get(urlAdd);
-              if response.Contains('fail') then
+              if response.Contains('Photo limit reached') then
                 rejected.Add(groupId);
               timedout := true;
             except
