@@ -1468,7 +1468,6 @@ begin
   pages := iXMLRootNode3.attributes['pages'];
   total := iXMLRootNode3.attributes['total'];
   iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
-  listPhotosUser.Clear;
   numTotal := total.ToInteger();
   progressfetching.Max := numTotal;
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
