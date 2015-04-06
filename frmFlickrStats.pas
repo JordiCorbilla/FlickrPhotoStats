@@ -153,6 +153,7 @@ type
     chkReplaceProfile: TCheckBox;
     chkDisplayOnly: TCheckBox;
     Label11: TLabel;
+    chkUpdate: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -324,7 +325,13 @@ begin
     ProgressBar1.position := i;
     Taskbar1.ProgressValue := i;
     Application.ProcessMessages;
-    RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+    if chkUpdate.checked then
+    begin
+      if listPhotos.items[i].checked then
+        RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+    end
+    else
+      RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
   end;
 
   // Use parallel looping
@@ -348,7 +355,7 @@ begin
   btnAdd.Enabled := true;
   Taskbar1.ProgressValue := 0;
   btnGetList.Enabled := true;
-  batchUpdate.Enabled := false;
+  batchUpdate.Enabled := true;
 end;
 
 procedure TfrmFlickr.UpdateTotals();
@@ -1024,6 +1031,7 @@ var
   i: Integer;
   Item: TListItem;
 begin
+  pagecontrol2.TabIndex := 0;
   listGroups.Visible := false;
   listGroups.Items.Clear;
 
@@ -1034,6 +1042,7 @@ begin
     Item.SubItems.Add(FilteredGroupList.list[i].title);
   end;
   listGroups.Visible := true;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
 end;
 
 procedure TfrmFlickr.btnFilterOKClick(Sender: TObject);
@@ -1042,6 +1051,7 @@ var
   Item: TListItem;
   description: string;
 begin
+  pagecontrol2.TabIndex := 0;
   listGroups.Visible := false;
   listGroups.Items.Clear;
 
@@ -1056,6 +1066,7 @@ begin
     end;
   end;
   listGroups.Visible := true;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
 end;
 
 procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
@@ -1145,6 +1156,7 @@ var
   Item: TListItem;
 begin
   try
+    pagecontrol2.TabIndex := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
     // Now look for this profileName in the Main Object.
     profile := flickrProfiles.getProfile(profileName);
@@ -1185,6 +1197,7 @@ begin
       end;
     end;
   finally
+    Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
   end;
 end;
 

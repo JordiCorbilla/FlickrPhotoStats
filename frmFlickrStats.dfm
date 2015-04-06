@@ -523,6 +523,14 @@ object frmFlickr: TfrmFlickr
         TabOrder = 5
         OnClick = CheckBox2Click
       end
+      object chkUpdate: TCheckBox
+        Left = 320
+        Top = 33
+        Width = 144
+        Height = 17
+        Caption = 'Update only selected'
+        TabOrder = 6
+      end
     end
   end
   object Panel3: TPanel
@@ -579,7 +587,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 659
     Height = 688
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
