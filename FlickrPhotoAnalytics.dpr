@@ -20,7 +20,9 @@ uses
   flickr.profile in 'flickr.profile.pas',
   flickr.rejected in 'flickr.rejected.pas',
   flickr.filtered.list in 'flickr.filtered.list.pas',
-  flickr.base in 'flickr.base.pas';
+  flickr.base in 'flickr.base.pas',
+  flickr.url.attributes in 'flickr.url.attributes.pas',
+  flickr.pools in 'flickr.pools.pas';
 
 {$R *.res}
 
