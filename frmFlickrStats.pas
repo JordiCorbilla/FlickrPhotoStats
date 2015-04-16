@@ -154,6 +154,13 @@ type
     chkDisplayOnly: TCheckBox;
     Label11: TLabel;
     chkUpdate: TCheckBox;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -702,6 +709,18 @@ begin
     Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].views, '', color);
   end;
   ChartViews.AddSeries(Series);
+
+  Label12.Visible := true;
+  Label13.Visible := true;
+  Label14.Visible := true;
+  Label15.Visible := true;
+  Label16.Visible := true;
+  Label17.Visible := true;
+  Label18.Visible := true;
+
+  Label16.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views);
+  Label17.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views);
+  Label18.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-1].views);
 
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;

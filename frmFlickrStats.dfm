@@ -334,6 +334,104 @@ object frmFlickr: TfrmFlickr
     Height = 57
     Align = alTop
     TabOrder = 0
+    object Label12: TLabel
+      Left = 321
+      Top = 6
+      Width = 138
+      Height = 25
+      Caption = 'View Counts:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -21
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label13: TLabel
+      Left = 489
+      Top = 6
+      Width = 102
+      Height = 23
+      Caption = 'Yesterday:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label14: TLabel
+      Left = 526
+      Top = 28
+      Width = 65
+      Height = 23
+      Caption = 'Today:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label15: TLabel
+      Left = 822
+      Top = 6
+      Width = 56
+      Height = 23
+      Caption = 'Total:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label16: TLabel
+      Left = 597
+      Top = 6
+      Width = 160
+      Height = 23
+      Caption = '##########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label17: TLabel
+      Left = 597
+      Top = 28
+      Width = 160
+      Height = 23
+      Caption = '##########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label18: TLabel
+      Left = 884
+      Top = 6
+      Width = 160
+      Height = 23
+      Caption = '##########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
     object btnSave: TButton
       Left = 63
       Top = 6
@@ -587,7 +685,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 659
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = Statistics
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1694,7 +1792,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C01010D00D800B00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C01010D00D800B40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000004000000001002000000000000040
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
