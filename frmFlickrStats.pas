@@ -105,8 +105,6 @@ type
     LineSeries2: TBarSeries;
     dailyLikes: TChart;
     BarSeries1: TBarSeries;
-    Label3: TLabel;
-    Edit1: TEdit;
     Label1: TLabel;
     apikey: TEdit;
     Label8: TLabel;
@@ -161,6 +159,11 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
+    Panel11: TPanel;
+    Button4: TButton;
+    Button5: TButton;
+    Edit1: TEdit;
+    Button3: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -190,6 +193,9 @@ type
     procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure btnFilterOKClick(Sender: TObject);
     procedure btnFilterCancelClick(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -215,6 +221,7 @@ type
     userTokenSecret: string;
     flickrProfiles: IProfiles;
     FilteredGroupList: IFilteredList;
+    NavigationUrl : String;
   end;
 
 var
@@ -296,6 +303,7 @@ begin
 
   PageControl1.ActivePage := Authentication;
   Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
+  NavigationUrl := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
   WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
   btnGetToken.Visible := true;
@@ -1043,6 +1051,27 @@ procedure TfrmFlickr.Button2Click(Sender: TObject);
 begin
   if SaveToExcelGroups(listGroups, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsGroups.xls') then
     showmessage('Data saved successfully!');
+end;
+
+procedure TfrmFlickr.Button3Click(Sender: TObject);
+begin
+  WebBrowser1.Navigate(Edit1.text);
+end;
+
+procedure TfrmFlickr.Button4Click(Sender: TObject);
+begin
+  WebBrowser1.Navigate(NavigationUrl);
+end;
+
+procedure TfrmFlickr.Button5Click(Sender: TObject);
+var
+	flags: OleVariant;
+begin
+	if not WebBrowser1.Busy then
+	begin
+		flags := REFRESH_COMPLETELY;
+		WebBrowser1.Refresh2(flags);
+	end;
 end;
 
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
