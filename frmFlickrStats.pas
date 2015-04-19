@@ -39,7 +39,7 @@ uses
   System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
-  flickr.profiles, flickr.profile, flickr.filtered.list;
+  flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus;
 
 type
   TfrmFlickr = class(TForm)
@@ -164,6 +164,15 @@ type
     Button5: TButton;
     Edit1: TEdit;
     Button3: TButton;
+    chkUpdateCollections: TCheckBox;
+    PopupMenu1: TPopupMenu;
+    MarkGroups1: TMenuItem;
+    N1: TMenuItem;
+    ShowListGroups1: TMenuItem;
+    ShowListAlbums1: TMenuItem;
+    N2: TMenuItem;
+    GotoURL1: TMenuItem;
+    CheckBox3: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -232,7 +241,8 @@ implementation
 uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
-  System.SyncObjs, generics.collections, flickr.rejected, flickr.base;
+  System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
+  flickr.pools, flickr.albums;
 
 {$R *.dfm}
 
@@ -430,13 +440,15 @@ var
   Item, itemExisting: TListItem;
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  views, title, likes, comments: string;
+  views, title, likes, comments, taken: string;
   stat: IStat;
   photo, existing: IPhoto;
   IdHTTP: TIdHTTP;
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
+  Albums: TList<IAlbum>;
+  Groups: TList<IPool>;
 begin
   CoInitialize(nil);
   try
@@ -463,7 +475,6 @@ begin
 
       end;
 
-      // response := IdHTTP1.Get(TFlickrRest.new().getInfo(apikey.text, id));
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
       iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -474,6 +485,8 @@ begin
       begin
         if iXMLRootNode4.NodeName = 'title' then
           title := iXMLRootNode4.NodeValue;
+        if iXMLRootNode4.NodeName = 'dates' then
+          taken := iXMLRootNode4.attributes['taken'];
         if iXMLRootNode4.NodeName = 'comments' then
           comments := iXMLRootNode4.NodeValue;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -505,7 +518,7 @@ begin
           end;
         end;
       end;
-      // response := IdHTTP1.Get(TFlickrRest.new().getFavorites(apikey.text, id));
+
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
       iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -517,27 +530,72 @@ begin
       xmlDocument := nil;
     end;
 
-    photo := TPhoto.Create(id, title);
+    photo := TPhoto.Create(id, title, taken);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
+    Albums := TList<IAlbum>.create;
+    Groups := TList<IPool>.create;
+
+    if chkUpdateCollections.checked then
+    begin
+      IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+      IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+      IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+      xmlDocument := TXMLDocument.Create(nil);
+      IdHTTP := TIdHTTP.Create(nil);
+      try
+        IdHTTP.IOHandler := IdIOHandler;
+        timedout := false;
+        while (not timedout) do
+        begin
+          try
+            response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey.text, id));
+            timedout := true;
+          except
+            on e: exception do
+            begin
+              sleep(2000);
+              timedout := false;
+            end;
+          end;
+        end;
+
+        xmlDocument.LoadFromXML(response);
+        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <set or pool>
+        while iXMLRootNode3 <> nil do
+        begin
+          if iXMLRootNode3.NodeName = 'set' then
+            Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+          if iXMLRootNode3.NodeName = 'pool' then
+            Groups.add(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+          iXMLRootNode3 := iXMLRootNode3.NextSibling;
+        end;
+      finally
+        IdIOHandler.Free;
+        IdHTTP.Free;
+        xmlDocument := nil;
+      end;
+    end;
 
     if repository.ExistPhoto(photo, existing) then
     begin
       photo := existing;
+      photo.Title := title; //replace the title as it changes
       photo.AddStats(stat);
+      photo.AddCollections(Albums, groups);
       photo.LastUpdate := Date;
     end
     else
     begin
       photo.AddStats(stat);
       photo.LastUpdate := Date;
+      photo.AddCollections(Albums, groups);
       repository.AddPhoto(photo);
     end;
 
     if not ExistPhotoInList(id, itemExisting) then
     begin
-      // synchronize(
-      // procedure
-      // begin
       Item := frmFlickr.listPhotos.Items.Add;
       Item.Caption := frmFlickr.photoId.text;
       Item.SubItems.Add(title);
@@ -547,8 +605,10 @@ begin
       Item.SubItems.Add(DateToStr(Date));
       if views = '0' then
         views := '1';
+      Item.SubItems.Add(taken);
+      Item.SubItems.Add(photo.Albums.Count.ToString());
+      Item.SubItems.Add(photo.Groups.Count.ToString());
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
-      // end);
     end
     else
     begin
@@ -561,6 +621,9 @@ begin
       itemExisting.SubItems.Add(DateToStr(Date));
       if views = '0' then
         views := '1';
+      itemExisting.SubItems.Add(taken);
+      itemExisting.SubItems.Add(photo.Albums.Count.ToString());
+      itemExisting.SubItems.Add(photo.Groups.Count.ToString());
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
     end;
   finally
@@ -669,6 +732,9 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
+    Item.SubItems.Add(repository.photos[i].taken); //taken
+    Item.SubItems.Add(repository.photos[i].Albums.Count.ToString()); //albums
+    Item.SubItems.Add(repository.photos[i].Groups.Count.ToString()); //groups
     if totalViews = 0 then
       totalViews := 1;
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));

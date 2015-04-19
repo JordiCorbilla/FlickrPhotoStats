@@ -22,7 +22,8 @@ uses
   flickr.filtered.list in 'flickr.filtered.list.pas',
   flickr.base in 'flickr.base.pas',
   flickr.url.attributes in 'flickr.url.attributes.pas',
-  flickr.pools in 'flickr.pools.pas';
+  flickr.pools in 'flickr.pools.pas',
+  flickr.albums in 'flickr.albums.pas';
 
 {$R *.res}
 

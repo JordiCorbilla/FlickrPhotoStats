@@ -29,6 +29,61 @@ unit flickr.pools;
 
 interface
 
+uses
+  XMLDoc, xmldom, XMLIntf;
+
+type
+  IPool = interface
+    function GetId: string;
+    function GetTitle: string;
+    procedure SetId(const Value: string);
+    procedure SetTitle(const Value: string);
+    property Id: string read GetId write SetId;
+    property Title: string read GetTitle write SetTitle;
+  end;
+
+  TPool = class(TInterfacedObject, IPool)
+  private
+    FId : string;
+    FTitle : string;
+    function GetId: string;
+    function GetTitle: string;
+    procedure SetId(const Value: string);
+    procedure SetTitle(const Value: string);
+  public
+    property Id: string read GetId write SetId;
+    property Title: string read GetTitle write SetTitle;
+    constructor Create (id, title : string);
+  end;
+
 implementation
+
+{ TPool }
+
+constructor TPool.Create(id, title: string);
+begin
+  SetId(id);
+  SetTitle(title);
+end;
+
+function TPool.GetId: string;
+begin
+  result := FId;
+end;
+
+function TPool.GetTitle: string;
+begin
+  result := FTitle;
+end;
+
+procedure TPool.SetId(const Value: string);
+begin
+  FId := value;
+end;
+
+procedure TPool.SetTitle(const Value: string);
+begin
+  FTitle := value;
+end;
 
 end.

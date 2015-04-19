@@ -30,23 +30,33 @@ unit flickr.photos;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf;
+  Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools, flickr.albums;
 
 type
   IPhoto = interface
     function AddStats(stat: IStat): boolean;
+    procedure AddCollections(albums: TList<IAlbum>; groups : TList<IPool>);
     function getLastUpdate(): TDatetime;
     procedure SetId(value: string);
     procedure SetTitle(value: string);
     procedure SetStats(value: TList<IStat>);
     procedure SetLastUpdate(value: TDatetime);
+    procedure SetAlbums(value: TList<IAlbum>);
+    procedure SetGroups(value: TList<IPool>);
     function getId(): string;
     function getTitle(): string;
     function GetStats(): TList<IStat>;
+    function GetAlbums(): TList<IAlbum>;
+    function GetGroups(): TList<IPool>;
+    function getTaken: string;
+    procedure SetTaken(const Value: string);
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
     property stats: TList<IStat>read GetStats write SetStats;
+    property Taken : string read getTaken write SetTaken;
+    property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
+    property Groups : TList<IPool> read GetGroups write SetGroups;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(): Integer;
@@ -57,9 +67,12 @@ type
   TPhoto = class(TInterfacedObject, IPhoto)
   private
     FStats: TList<IStat>;
+    FAlbums: TList<IAlbum>;
+    FGroups: TList<IPool>;
     FId: string;
     FTitle: string;
     FLastUpdate: TDatetime;
+    FTaken : string;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -69,14 +82,24 @@ type
     function getTitle(): string;
     function GetStats(): TList<IStat>;
     function ExistStat(stat: IStat; var existing: IStat): boolean;
+    function getTaken: string;
+    procedure SetTaken(const Value: string);
+    function GetAlbums: TList<IAlbum>;
+    function GetGroups: TList<IPool>;
+    procedure SetAlbums(Value: TList<IAlbum>);
+    procedure SetGroups(Value: TList<IPool>);
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
     property stats: TList<IStat>read GetStats write SetStats;
+    property Taken : string read getTaken write SetTaken;
+    property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
+    property Groups : TList<IPool> read GetGroups write SetGroups;
     function AddStats(stat: IStat): boolean;
+    procedure AddCollections(albums: TList<IAlbum>; groups : TList<IPool>);
     constructor Create(); overload;
-    constructor Create(Id: string; Title: string); overload;
+    constructor Create(Id: string; Title: string; taken : string); overload;
     destructor Destroy(); override;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
@@ -92,6 +115,16 @@ implementation
 uses
   SysUtils;
 
+procedure TPhoto.AddCollections(albums: TList<IAlbum>; groups: TList<IPool>);
+begin
+  if Assigned(FAlbums) then
+    FAlbums.Free;
+  FAlbums := albums;
+  if Assigned(FGroups) then
+    FGroups.Free;
+  FGroups := groups;
+end;
+
 function TPhoto.AddStats(stat: IStat): boolean;
 var
   existing: IStat;
@@ -104,21 +137,28 @@ begin
   result := (existing = nil);
 end;
 
-constructor TPhoto.Create(Id: string; Title: string);
+constructor TPhoto.Create(Id: string; Title: string; taken : string);
 begin
   FStats := TList<IStat>.Create;
+  FAlbums := TList<IAlbum>.Create;
+  FGroups := TList<IPool>.Create;
   SetId(Id);
   SetTitle(Title);
+  SetTaken(taken);
 end;
 
 constructor TPhoto.Create;
 begin
   FStats := TList<IStat>.Create;
+  FAlbums := TList<IAlbum>.Create;
+  FGroups := TList<IPool>.Create;
 end;
 
 destructor TPhoto.Destroy;
 begin
   FreeAndNil(FStats);
+  FreeAndNil(FAlbums);
+  FreeAndNil(FGroups);
   inherited;
 end;
 
@@ -139,6 +179,16 @@ begin
   result := found;
 end;
 
+function TPhoto.GetAlbums: TList<IAlbum>;
+begin
+  result := FAlbums;
+end;
+
+function TPhoto.GetGroups: TList<IPool>;
+begin
+  result := FGroups;
+end;
+
 function TPhoto.getId: string;
 begin
   result := FId;
@@ -152,6 +202,11 @@ end;
 function TPhoto.GetStats: TList<IStat>;
 begin
   result := FStats;
+end;
+
+function TPhoto.getTaken: string;
+begin
+  result := FTaken;
 end;
 
 function TPhoto.getTitle: string;
@@ -217,10 +272,13 @@ procedure TPhoto.Load(iNode: IXMLNode);
 var
   iNode2: IXMLNode;
   stat: IStat;
+  Document: IXMLDocument;
+  iXMLRootNode: IXMLNode;
 begin
   FId := iNode.Attributes['id'];
   FTitle := iNode.Attributes['title'];
   FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
+  FTaken := iNode.Attributes['Taken'];
 
   iNode2 := iNode.ChildNodes.First;
   while iNode2 <> nil do
@@ -230,21 +288,93 @@ begin
     FStats.Add(stat);
     iNode2 := iNode2.NextSibling;
   end;
+
+  FAlbums.Clear;
+  if fileExists(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml') then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml');
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode2 := iXMLRootNode.ChildNodes.first;
+      while iNode2 <> nil do
+      begin
+        FAlbums.Add(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
+        iNode2 := iNode2.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
+
+  FGroups.Clear;
+  if fileExists(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml') then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml');
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode2 := iXMLRootNode.ChildNodes.first;
+      while iNode2 <> nil do
+      begin
+        FGroups.Add(TPool.create(iNode2.attributes['id'], iNode2.attributes['title']));
+        iNode2 := iNode2.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
 end;
 
 procedure TPhoto.Save(iNode: IXMLNode);
 var
   i: Integer;
   iNode2: IXMLNode;
+  XMLDoc: TXMLDocument;
 begin
   iNode2 := iNode.AddChild('Photo');
   iNode2.Attributes['id'] := FId;
   iNode2.Attributes['title'] := FTitle;
   iNode2.Attributes['LastUpdate'] := DateToStr(FLastUpdate);
+  iNode2.Attributes['Taken'] := FTaken;
   for i := 0 to FStats.count - 1 do
   begin
     FStats[i].Save(iNode2);
   end;
+
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('Albums');
+  for i := 0 to FAlbums.count - 1 do
+  begin
+    iNode2 := iNode.AddChild('Set');
+    iNode2.Attributes['id'] := FAlbums[i].Id;
+    iNode2.Attributes['title'] := FAlbums[i].Title;
+  end;
+  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml');
+
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('Groups');
+  for i := 0 to FGroups.count - 1 do
+  begin
+    iNode2 := iNode.AddChild('Pool');
+    iNode2.Attributes['id'] := FGroups[i].Id;
+    iNode2.Attributes['title'] := FGroups[i].Title;
+  end;
+  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml');
+end;
+
+procedure TPhoto.SetAlbums(Value: TList<IAlbum>);
+begin
+  FAlbums := Value;
+end;
+
+procedure TPhoto.SetGroups(Value: TList<IPool>);
+begin
+  FGroups := Value;
 end;
 
 procedure TPhoto.SetId(value: string);
@@ -260,6 +390,11 @@ end;
 procedure TPhoto.SetStats(value: TList<IStat>);
 begin
   FStats := value;
+end;
+
+procedure TPhoto.SetTaken(const Value: string);
+begin
+  FTaken := value;
 end;
 
 procedure TPhoto.SetTitle(value: string);
