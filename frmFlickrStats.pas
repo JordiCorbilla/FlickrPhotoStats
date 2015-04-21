@@ -39,7 +39,8 @@ uses
   System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
-  flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus;
+  flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
+  frmFlickrContextList;
 
 type
   TfrmFlickr = class(TForm)
@@ -165,6 +166,7 @@ type
     Edit1: TEdit;
     Button3: TButton;
     chkUpdateCollections: TCheckBox;
+    CheckBox3: TCheckBox;
     PopupMenu1: TPopupMenu;
     MarkGroups1: TMenuItem;
     N1: TMenuItem;
@@ -172,7 +174,6 @@ type
     ShowListAlbums1: TMenuItem;
     N2: TMenuItem;
     GotoURL1: TMenuItem;
-    CheckBox3: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -205,6 +206,10 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure MarkGroups1Click(Sender: TObject);
+    procedure ShowListGroups1Click(Sender: TObject);
+    procedure ShowListAlbums1Click(Sender: TObject);
+    procedure GotoURL1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -231,6 +236,7 @@ type
     flickrProfiles: IProfiles;
     FilteredGroupList: IFilteredList;
     NavigationUrl : String;
+    ListDisplay : TfrmFlickrContext;
   end;
 
 var
@@ -322,6 +328,35 @@ end;
 procedure TfrmFlickr.Log(s: string);
 begin
   mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
+end;
+
+procedure TfrmFlickr.MarkGroups1Click(Sender: TObject);
+var
+  id : string;
+  photo : IPhoto;
+  i: Integer;
+  j: Integer;
+begin
+  //Mark the groups
+  if listgroups.Items.Count > 0 then
+  begin
+    if listPhotos.ItemIndex <> -1 then
+    begin
+    btnFilterCancelClick(sender);
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    photo := repository.GetPhoto(id);
+    for i := 0 to photo.Groups.Count-1 do
+    begin
+      for j := 0 to listgroups.Items.count-1 do
+      begin
+        if photo.Groups[i].Id = listgroups.Items[j].caption then
+        begin
+          listgroups.Items[j].Checked := true;
+        end;
+      end;
+    end;
+    end;
+  end;
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
@@ -582,6 +617,7 @@ begin
     begin
       photo := existing;
       photo.Title := title; //replace the title as it changes
+      photo.Taken := taken;
       photo.AddStats(stat);
       photo.AddCollections(Albums, groups);
       photo.LastUpdate := Date;
@@ -1216,6 +1252,8 @@ begin
     // add photos to the groups
     pstatus.Max := (photos.Count * groups.Count);
     pstatus.Min := 0;
+    Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+    Taskbar1.ProgressMaxValue := pstatus.Max;
     k := 0;
 
     for i := 0 to photos.Count - 1 do
@@ -1246,6 +1284,7 @@ begin
         end;
         inc(k);
         pstatus.position := k;
+        Taskbar1.ProgressValue := k;
         response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
         response := response.Replace('<rsp stat="', '');
         response := response.Replace('">', '');
@@ -1659,6 +1698,20 @@ begin
   Result := totalViews;
 end;
 
+procedure TfrmFlickr.GotoURL1Click(Sender: TObject);
+var
+  id : string;
+begin
+  //Show item in the URL view
+  //https://www.flickr.com/photos/jordicorbillaphotography/
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    PageControl1.ActivePage := Authentication;
+    WebBrowser1.Navigate('https://www.flickr.com/photos/jordicorbillaphotography/' + id + '/in/photostream/lightbox/');
+  end;
+end;
+
 procedure TfrmFlickr.btnGetListClick(Sender: TObject);
 var
   Item: TListItem;
@@ -1982,6 +2035,44 @@ begin
       Sheet := Unassigned;
     end;
   end;
+end;
+
+procedure TfrmFlickr.ShowListAlbums1Click(Sender: TObject);
+var
+  id : string;
+  photo : IPhoto;
+  i : integer;
+begin
+  ListDisplay := TfrmFlickrContext.Create(self);
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    photo := repository.GetPhoto(id);
+    for i := 0 to photo.Albums.Count-1 do
+    begin
+      ListDisplay.AddItem(photo.Albums[i].id, photo.Albums[i].title);
+    end;
+  end;
+  ListDisplay.Show;
+end;
+
+procedure TfrmFlickr.ShowListGroups1Click(Sender: TObject);
+var
+  id : string;
+  photo : IPhoto;
+  i : integer;
+begin
+  ListDisplay := TfrmFlickrContext.Create(self);
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    photo := repository.GetPhoto(id);
+    for i := 0 to photo.Groups.Count-1 do
+    begin
+      ListDisplay.AddItem(photo.groups[i].id, photo.groups[i].title);
+    end;
+  end;
+  ListDisplay.Show;
 end;
 
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);

@@ -704,7 +704,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 669
     Height = 688
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1850,7 +1850,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C0101ED002001380010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020013C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -9795,21 +9795,25 @@ object frmFlickr: TfrmFlickr
     Top = 473
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
+      OnClick = MarkGroups1Click
     end
     object N1: TMenuItem
       Caption = '-'
     end
     object ShowListGroups1: TMenuItem
       Caption = 'Show List Groups'
+      OnClick = ShowListGroups1Click
     end
     object ShowListAlbums1: TMenuItem
       Caption = 'Show List Albums'
+      OnClick = ShowListAlbums1Click
     end
     object N2: TMenuItem
       Caption = '-'
     end
     object GotoURL1: TMenuItem
       Caption = 'Go to URL'
+      OnClick = GotoURL1Click
     end
   end
 end

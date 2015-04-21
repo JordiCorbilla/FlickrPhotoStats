@@ -23,7 +23,8 @@ uses
   flickr.base in 'flickr.base.pas',
   flickr.url.attributes in 'flickr.url.attributes.pas',
   flickr.pools in 'flickr.pools.pas',
-  flickr.albums in 'flickr.albums.pas';
+  flickr.albums in 'flickr.albums.pas',
+  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext};
 
 {$R *.res}
 
