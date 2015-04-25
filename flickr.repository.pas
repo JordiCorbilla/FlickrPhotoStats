@@ -47,6 +47,7 @@ type
     procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
+    function isPhotoInGroup(photo : string; groupId : string) : boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
@@ -71,6 +72,7 @@ type
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
+    function isPhotoInGroup(photo : string; groupId : string) : boolean;
     constructor Create();
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
@@ -157,6 +159,14 @@ end;
 function TFlickrRepository.GetUserId: string;
 begin
   Result := FUserId;
+end;
+
+function TFlickrRepository.isPhotoInGroup(photo, groupId: string): boolean;
+var
+  p : IPhoto;
+begin
+  p := GetPhoto(photo);
+  result := p.InGroup(groupid);
 end;
 
 procedure TFlickrRepository.Load(FileName: string);

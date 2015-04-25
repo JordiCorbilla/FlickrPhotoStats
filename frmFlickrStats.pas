@@ -174,6 +174,11 @@ type
     ShowListAlbums1: TMenuItem;
     N2: TMenuItem;
     GotoURL1: TMenuItem;
+    Label3: TLabel;
+    Edit2: TEdit;
+    Button6: TButton;
+    Button7: TButton;
+    ComboBox2: TComboBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -786,6 +791,7 @@ var
   Series: TLineSeries;
   color: TColor;
   i: Integer;
+  views : integer;
 begin
   if ChartViews.SeriesList.Count = 1 then
     ChartViews.RemoveAllSeries;
@@ -828,9 +834,12 @@ begin
   Label17.Visible := true;
   Label18.Visible := true;
 
-  Label16.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views);
-  Label17.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views);
-  Label18.Caption :=  InttoStr(globalsRepository.globals[globalsRepository.globals.Count-1].views);
+  views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
+  Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  views := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views;
+  Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
+  Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;
@@ -1263,7 +1272,7 @@ begin
         photoId := photos[i];
         groupId := groups[j];
         timedout := false;
-        if not rejected.Exists(groupId) then
+        if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId)) then
         begin
           urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
           while (not timedout) do
@@ -1958,7 +1967,10 @@ begin
     Sheet.Cells[1, 4] := 'Likes';
     Sheet.Cells[1, 5] := 'Comments';
     Sheet.Cells[1, 6] := 'Last Update';
-    Sheet.Cells[1, 7] := 'Affection';
+    Sheet.Cells[1, 7] := 'Taken';
+    Sheet.Cells[1, 8] := 'Albums';
+    Sheet.Cells[1, 9] := 'Groups';
+    Sheet.Cells[1, 10] := 'Affection';
 
     Row := 2;
     for i := 0 to AView.Items.Count - 1 do
@@ -1970,6 +1982,9 @@ begin
       Sheet.Cells[Row, 5] := AView.Items.Item[i].SubItems[3];
       Sheet.Cells[Row, 6] := AView.Items.Item[i].SubItems[4];
       Sheet.Cells[Row, 7] := AView.Items.Item[i].SubItems[5];
+      Sheet.Cells[Row, 8] := AView.Items.Item[i].SubItems[6];
+      Sheet.Cells[Row, 9] := AView.Items.Item[i].SubItems[7];
+      Sheet.Cells[Row, 10] := AView.Items.Item[i].SubItems[8];
       inc(Row);
     end;
 
