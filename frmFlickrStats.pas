@@ -43,6 +43,8 @@ uses
   frmFlickrContextList;
 
 type
+  TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
+
   TfrmFlickr = class(TForm)
     IdHTTP1: TIdHTTP;
     IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
@@ -231,6 +233,7 @@ type
     procedure Log(s: string);
     procedure UpdateSingleStats(id: string);
     function SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
+    function ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -2005,6 +2008,86 @@ begin
   end;
 end;
 
+function TfrmFlickr.ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
+const
+  xlWBATWorksheet = -4167;
+var
+  Row: Integer;
+  ExcelOLE, Sheet: OLEVariant;
+  i: Integer;
+begin
+  // Create Excel-OLE Object
+  Result := false;
+  ExcelOLE := CreateOleObject('Excel.Application');
+  try
+    // Hide Excel
+    ExcelOLE.Visible := false;
+
+    ExcelOLE.Workbooks.Add(xlWBATWorksheet);
+    Sheet := ExcelOLE.Workbooks[1].WorkSheets[1];
+    Sheet.Name := ASheetName;
+
+    Sheet.Cells[1, 1] := 'Date';
+
+
+    case viewsource of
+      TotalViews:
+      begin
+        Sheet.Cells[1, 2] := 'Views';
+        Row := 2;
+        for i := 0 to globalsRepository.globals.Count - 1 do
+        begin
+          Sheet.Cells[Row, 1] := '''' + FormatDateTime('dd/mm/yyyy', globalsRepository.globals[i].Date);
+          Sheet.Cells[Row, 2] := globalsRepository.globals[i].views.ToString;
+          inc(Row);
+        end;
+        Row := 2;
+      end;
+      TotalLikes:
+      begin
+        Sheet.Cells[1, 2] := 'Likes';
+        Row := 2;
+      end;
+      TotalComments:
+      begin
+        Sheet.Cells[1, 2] := 'Comments';
+        Row := 2;
+      end;
+      TotalViewsHistogram:
+      begin
+        Sheet.Cells[1, 2] := 'Views';
+        Row := 2;
+        for i := 1 to globalsRepository.globals.Count - 1 do
+        begin
+          Sheet.Cells[Row, 1] := '''' + FormatDateTime('dd/mm/yyyy', globalsRepository.globals[i].Date);
+          Sheet.Cells[Row, 2] := InttoStr(globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views);
+          inc(Row);
+        end;
+      end;
+      TotalLikesHistogram:
+      begin
+        Sheet.Cells[1, 2] := 'Likes';
+        Row := 2;
+      end;
+    end;
+
+    try
+      ExcelOLE.Workbooks[1].SaveAs(AFileName);
+      Result := true;
+    except
+
+    end;
+  finally
+    if not VarIsEmpty(ExcelOLE) then
+    begin
+      ExcelOLE.DisplayAlerts := false;
+      ExcelOLE.Quit;
+      ExcelOLE := Unassigned;
+      Sheet := Unassigned;
+    end;
+  end;
+end;
+
 function TfrmFlickr.SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
@@ -2094,6 +2177,8 @@ procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
   if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
     showmessage('Data saved successfully!');
+  ExportGraphToExcel(TotalViews, 'Total Views History',ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsTotalViews.xls');
+  ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsTotalViewsHistogram.xls');
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
