@@ -40,7 +40,7 @@ uses
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
-  frmFlickrContextList;
+  frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -168,7 +168,7 @@ type
     Edit1: TEdit;
     Button3: TButton;
     chkUpdateCollections: TCheckBox;
-    CheckBox3: TCheckBox;
+    showMarks: TCheckBox;
     PopupMenu1: TPopupMenu;
     MarkGroups1: TMenuItem;
     N1: TMenuItem;
@@ -181,6 +181,12 @@ type
     Button6: TButton;
     Button7: TButton;
     ComboBox2: TComboBox;
+    N3: TMenuItem;
+    StartMarking1: TMenuItem;
+    EndMarking1: TMenuItem;
+    N4: TMenuItem;
+    CheckAll1: TMenuItem;
+    UncheckAll1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -217,6 +223,11 @@ type
     procedure ShowListGroups1Click(Sender: TObject);
     procedure ShowListAlbums1Click(Sender: TObject);
     procedure GotoURL1Click(Sender: TObject);
+    procedure StartMarking1Click(Sender: TObject);
+    procedure EndMarking1Click(Sender: TObject);
+    procedure CheckAll1Click(Sender: TObject);
+    procedure UncheckAll1Click(Sender: TObject);
+    procedure showMarksClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -234,6 +245,7 @@ type
     procedure UpdateSingleStats(id: string);
     function SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
     function ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
+    procedure LoadProfiles;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -245,6 +257,9 @@ type
     FilteredGroupList: IFilteredList;
     NavigationUrl : String;
     ListDisplay : TfrmFlickrContext;
+    startMark : integer;
+    endMark : integer;
+    flickrChart : IFlickrChart;
   end;
 
 var
@@ -459,6 +474,23 @@ begin
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
   UpdateGlobals();
   UpdateAnalytics();
+end;
+
+procedure TfrmFlickr.EndMarking1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  if (listPhotos.ItemIndex <> -1) and (startMark <> -1) then
+  begin
+    endMark :=  listPhotos.ItemIndex;
+    for i := 0 to listPhotos.Items.Count - 1 do
+    begin
+      if (i >= startMark) and (i <= endMark) then
+        listPhotos.Items[i].Checked := true;
+    end;
+    startMark := -1;
+    endMark := -1;
+  end;
 end;
 
 function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -691,26 +723,49 @@ end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
 var
-  i: Integer;
+  st : TStopWatch;
 begin
   if Assigned(repository) then
   begin
     repository := nil;
     repository := TFlickrRepository.Create();
   end;
+  st := TStopWatch.Create;
+  st.Start;
   repository.load('flickrRepository.xml');
+  st.Stop;
+  log('Loading repository flickrRepository: ' + st.ElapsedMilliseconds.ToString());
 
   if Assigned(globalsRepository) then
   begin
     globalsRepository := nil;
     globalsRepository := TFlickrGlobals.Create();
   end;
+  st.Start;
   globalsRepository.load('flickrRepositoryGlobal.xml');
+  st.Stop;
+  log('Loading repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString());
 
+  st.Start;
   LoadForms(repository);
+  st.Stop;
+  log('Loading Forms for repository: ' + st.ElapsedMilliseconds.ToString());
 
+  st.Start;
   LoadHallOfFame(repository);
+  st.Stop;
+  log('Loading Hall of fame: ' + st.ElapsedMilliseconds.ToString());
 
+  st.Start;
+  LoadProfiles();
+  st.Stop;
+  log('Loading Profiles: ' + st.ElapsedMilliseconds.ToString());
+end;
+
+procedure TfrmFlickr.LoadProfiles();
+var
+  i : integer;
+begin
   if Assigned(flickrProfiles) then
   begin
     flickrProfiles := nil;
@@ -719,7 +774,7 @@ begin
   flickrProfiles.load('flickrProfiles.xml');
   for i := 0 to flickrProfiles.list.Count - 1 do
   begin
-    ComboBox1.AddItem(flickrProfiles.list[i].Name, nil);
+    ComboBox1.AddItem(flickrProfiles.list[i].Name + ' (' + flickrProfiles.list[i].GroupId.Count.ToString + ')', nil);
   end;
 end;
 
@@ -911,6 +966,16 @@ begin
   ChartComments.AddSeries(Series);
 end;
 
+procedure TfrmFlickr.UncheckAll1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to listPhotos.Items.Count - 1 do
+  begin
+    listPhotos.Items[i].Checked := false;
+  end;
+end;
+
 procedure TfrmFlickr.UpdateAnalytics;
 var
   Series: TBarSeries;
@@ -918,7 +983,8 @@ var
   i: Integer;
   theDate: TDateTime;
   views, viewsTotal, average: Integer;
-  averageSeries, averageLikes: TLineSeries;
+  averageSeries, averageLikes, tendencySeries: TLineSeries;
+  viewsTendency : ITendency;
 begin
   if dailyViews.SeriesList.Count >= 1 then
     dailyViews.RemoveAllSeries;
@@ -938,16 +1004,22 @@ begin
   Series.ParentChart := Chart2;
   color := RGB(Random(255), Random(255), Random(255));
 
+  viewsTendency := TTendency.Create;
+
   for i := 1 to globalsRepository.globals.Count - 1 do
   begin
     theDate := globalsRepository.globals[i].Date;
     views := globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views;
+    viewsTendency.AddXY(i, views);
     Series.AddXY(theDate, views, '', color);
   end;
 
   dailyViews.AddSeries(Series);
 
+  viewsTendency.Calculate;
+
   // Add average views
+  averageSeries := flickrChart.GetNewLineSeries(dailyViews);
   averageSeries := TLineSeries.Create(dailyViews);
   // averageSeries.Marks.Arrow.Visible := true;
   averageSeries.Marks.Callout.Brush.color := clBlack;
@@ -969,7 +1041,7 @@ begin
   averageSeries.XValues.Order := loAscending;
   averageSeries.YValues.Name := 'Y';
   averageSeries.YValues.Order := loNone;
-  averageSeries.ParentChart := ChartComments;
+  averageSeries.ParentChart := dailyViews;
   color := clRed;
 
   viewsTotal := 0;
@@ -988,6 +1060,41 @@ begin
   end;
 
   dailyViews.AddSeries(averageSeries);
+
+  //Add tendency line
+  tendencySeries := TLineSeries.Create(dailyViews);
+  // tendencySeries.Marks.Arrow.Visible := true;
+  tendencySeries.Marks.Callout.Brush.color := clBlack;
+  tendencySeries.Marks.Callout.Arrow.Visible := true;
+  tendencySeries.Marks.DrawEvery := 10;
+  tendencySeries.Marks.Shadow.color := 8487297;
+  tendencySeries.Marks.Visible := true;
+  tendencySeries.SeriesColor := 10708548;
+  tendencySeries.LinePen.Width := 1;
+  tendencySeries.LinePen.color := 10708548;
+  tendencySeries.Pointer.InflateMargins := true;
+  tendencySeries.Pointer.Style := psRectangle;
+  tendencySeries.Pointer.Brush.Gradient.EndColor := 10708548;
+  tendencySeries.Pointer.Gradient.EndColor := 10708548;
+  tendencySeries.Pointer.InflateMargins := true;
+  tendencySeries.Pointer.Visible := false;
+  tendencySeries.XValues.DateTime := true;
+  tendencySeries.XValues.Name := 'X';
+  tendencySeries.XValues.Order := loAscending;
+  tendencySeries.YValues.Name := 'Y';
+  tendencySeries.YValues.Order := loNone;
+  tendencySeries.ParentChart := dailyViews;
+  color := clYellow;
+
+  for i := 1 to globalsRepository.globals.Count - 1 do
+  begin
+    theDate := globalsRepository.globals[i].Date;
+    views := globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views;
+    views := viewsTendency.tendencyResult(i, views);
+    tendencySeries.AddXY(theDate, views, '', color);
+  end;
+
+  dailyViews.AddSeries(tendencySeries);
 
   /// //Likes
 
@@ -1323,6 +1430,8 @@ begin
   try
     pagecontrol2.TabIndex := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
+    profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
+    profileName := profileName.Remove(profileName.Length-1, 1);
     // Now look for this profileName in the Main Object.
     profile := flickrProfiles.getProfile(profileName);
 
@@ -1425,6 +1534,7 @@ begin
     end;
   end;
   flickrProfiles.save('flickrProfiles.xml');
+  LoadProfiles();
 end;
 
 procedure TfrmFlickr.Button8Click(Sender: TObject);
@@ -1434,6 +1544,16 @@ begin
   for i := 0 to listGroups.Items.Count - 1 do
   begin
     listGroups.Items[i].Checked := false;
+  end;
+end;
+
+procedure TfrmFlickr.CheckAll1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  for i := 0 to listPhotos.Items.Count - 1 do
+  begin
+    listPhotos.Items[i].Checked := true;
   end;
 end;
 
@@ -1455,6 +1575,17 @@ begin
   begin
     listPhotos.Items[i].Checked := CheckBox2.Checked;
   end;
+end;
+
+procedure TfrmFlickr.showMarksClick(Sender: TObject);
+begin
+  flickrChart.VisibleMarks(Chart1, showMarks.Checked);
+  flickrChart.VisibleMarks(Chart2, showMarks.Checked);
+  flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
+  flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
+  flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
+  flickrChart.VisibleMarks(dailyViews, showMarks.Checked);
+  flickrChart.VisibleMarks(dailyLikes, showMarks.Checked);
 end;
 
 procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
@@ -2173,6 +2304,12 @@ begin
   ListDisplay.Show;
 end;
 
+procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
+begin
+  if listPhotos.ItemIndex <> -1 then
+    startMark :=  listPhotos.ItemIndex;
+end;
+
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
   if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
@@ -2190,6 +2327,9 @@ begin
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
   PageControl1.ActivePage := Statistics;
+  startMark := -1;
+  endMark := -1;
+  flickrChart := TFlickrChart.create;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);
@@ -2199,6 +2339,7 @@ begin
   flickrProfiles := nil;
   FilteredGroupList := nil;
   globalsRepository := nil;
+  flickrChart := nil;
 end;
 
 function TfrmFlickr.isInSeries(id: string): Boolean;

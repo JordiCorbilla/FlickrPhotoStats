@@ -761,7 +761,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = Statistics
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1532,8 +1532,8 @@ object frmFlickr: TfrmFlickr
             Caption = 'Select Profile:'
           end
           object Label7: TLabel
-            Left = 345
-            Top = 18
+            Left = 356
+            Top = 16
             Width = 34
             Height = 13
             Caption = 'Profile:'
@@ -1541,14 +1541,14 @@ object frmFlickr: TfrmFlickr
           object ComboBox1: TComboBox
             Left = 82
             Top = 13
-            Width = 175
+            Width = 198
             Height = 21
             Style = csDropDownList
             TabOrder = 0
             OnChange = ComboBox1Change
           end
           object btnLoadProfile: TButton
-            Left = 263
+            Left = 283
             Top = 11
             Width = 66
             Height = 25
@@ -1561,17 +1561,17 @@ object frmFlickr: TfrmFlickr
             OnClick = btnLoadProfileClick
           end
           object edtProfile: TEdit
-            Left = 385
-            Top = 15
+            Left = 392
+            Top = 13
             Width = 177
             Height = 21
             Enabled = False
             TabOrder = 2
           end
           object btnSaveProfile: TButton
-            Left = 564
-            Top = 12
-            Width = 71
+            Left = 574
+            Top = 11
+            Width = 61
             Height = 25
             Caption = 'Save'
             Enabled = False
@@ -1769,7 +1769,7 @@ object frmFlickr: TfrmFlickr
         TabOrder = 3
         OnClick = Button1Click
       end
-      object CheckBox3: TCheckBox
+      object showMarks: TCheckBox
         Left = 176
         Top = 128
         Width = 169
@@ -1778,6 +1778,7 @@ object frmFlickr: TfrmFlickr
         Checked = True
         State = cbChecked
         TabOrder = 4
+        OnClick = showMarksClick
       end
     end
     object TabSheet5: TTabSheet
@@ -1907,7 +1908,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C0101ED002001500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -9871,6 +9872,28 @@ object frmFlickr: TfrmFlickr
     object GotoURL1: TMenuItem
       Caption = 'Go to URL'
       OnClick = GotoURL1Click
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object StartMarking1: TMenuItem
+      Caption = 'Start Marking'
+      OnClick = StartMarking1Click
+    end
+    object EndMarking1: TMenuItem
+      Caption = 'End Marking'
+      OnClick = EndMarking1Click
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object CheckAll1: TMenuItem
+      Caption = 'Check All'
+      OnClick = CheckAll1Click
+    end
+    object UncheckAll1: TMenuItem
+      Caption = 'Uncheck All'
+      OnClick = UncheckAll1Click
     end
   end
 end

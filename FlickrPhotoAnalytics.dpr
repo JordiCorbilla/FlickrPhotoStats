@@ -24,7 +24,10 @@ uses
   flickr.url.attributes in 'flickr.url.attributes.pas',
   flickr.pools in 'flickr.pools.pas',
   flickr.albums in 'flickr.albums.pas',
-  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext};
+  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
+  flickr.tendency in 'flickr.tendency.pas',
+  flickr.lib.integerlist in 'flickr.lib.integerlist.pas',
+  flickr.charts in 'flickr.charts.pas';
 
 {$R *.res}
 
