@@ -150,7 +150,6 @@ type
     chkAddItem: TCheckBox;
     CheckBox1: TCheckBox;
     CheckBox2: TCheckBox;
-    btnLoad: TButton;
     chkReplaceProfile: TCheckBox;
     chkDisplayOnly: TCheckBox;
     Label11: TLabel;
@@ -187,6 +186,7 @@ type
     N4: TMenuItem;
     CheckAll1: TMenuItem;
     UncheckAll1: TMenuItem;
+    btnLoad: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -807,6 +807,7 @@ begin
   apikey.text := repository.apikey;
   secret.text := repository.secret;
   edtUserId.text := repository.UserId;
+  authenticate.Enabled := true;
   listPhotos.Clear;
   UpdateCounts();
 end;
@@ -1480,6 +1481,7 @@ procedure TfrmFlickr.showMarksClick(Sender: TObject);
 begin
   flickrChart.VisibleMarks(Chart1, showMarks.Checked);
   flickrChart.VisibleMarks(Chart2, showMarks.Checked);
+  flickrChart.VisibleMarks(statsDay, showMarks.Checked);
   flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
   flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
   flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
@@ -2378,8 +2380,8 @@ begin
       color := clYellow;
 
       //Adding only first and last item
-      theDate := photo.stats[1].Date;
-      vTendency := viewsTendency.tendencyResult(1);
+      theDate := photo.stats[0].Date;
+      vTendency := viewsTendency.tendencyResult(0);
       SeriesTendency.AddXY(theDate, vTendency, '', color);
       theDate := photo.stats[photo.stats.Count - 1].Date;
       vTendency := viewsTendency.tendencyResult(photo.stats.Count - 1);

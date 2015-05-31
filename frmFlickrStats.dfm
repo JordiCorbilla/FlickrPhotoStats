@@ -453,6 +453,7 @@ object frmFlickr: TfrmFlickr
       Width = 75
       Height = 45
       Caption = 'Authenticate'
+      Enabled = False
       ImageAlignment = iaTop
       ImageIndex = 26
       ImageMargins.Top = 5
@@ -761,7 +762,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = Statistics
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1420,7 +1421,7 @@ object frmFlickr: TfrmFlickr
       end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Get groups'
+      Caption = 'Get Groups'
       ImageIndex = 3
       object Panel8: TPanel
         Left = 0
