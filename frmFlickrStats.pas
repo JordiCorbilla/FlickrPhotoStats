@@ -187,6 +187,8 @@ type
     CheckAll1: TMenuItem;
     UncheckAll1: TMenuItem;
     btnLoad: TButton;
+    Label19: TLabel;
+    Label20: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -899,6 +901,8 @@ begin
   Label16.Visible := true;
   Label17.Visible := true;
   Label18.Visible := true;
+  Label19.Visible := true;
+  Label20.Visible := true;
 
   views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
   Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
@@ -906,6 +910,8 @@ begin
   Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
   views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
   Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  views := chartTendency.tendencyResult(globalsRepository.globals.Count);
+  Label20.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;
@@ -1104,6 +1110,7 @@ var
   photo: IPhoto;
 begin
   Series := flickrChart.GetNewBarSeries(statsDay);
+  Series.Title := id;
   color := RGB(Random(255), Random(255), Random(255));
 
   photo := repository.GetPhoto(id);

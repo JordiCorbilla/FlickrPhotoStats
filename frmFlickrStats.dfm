@@ -1,7 +1,7 @@
 object frmFlickr: TfrmFlickr
   Left = 0
   Top = 0
-  Caption = 'Flickr Photo Analytics v4 by Jordi Corbilla'
+  Caption = 'Flickr Photo Analytics v4.2 by Jordi Corbilla'
   ClientHeight = 786
   ClientWidth = 1446
   Color = clBtnFace
@@ -377,7 +377,7 @@ object frmFlickr: TfrmFlickr
       Visible = False
     end
     object Label15: TLabel
-      Left = 822
+      Left = 793
       Top = 6
       Width = 56
       Height = 23
@@ -419,13 +419,41 @@ object frmFlickr: TfrmFlickr
       Visible = False
     end
     object Label18: TLabel
-      Left = 884
+      Left = 855
       Top = 6
       Width = 160
       Height = 23
       Caption = '##########'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label19: TLabel
+      Left = 1039
+      Top = 6
+      Width = 224
+      Height = 23
+      Caption = 'Tomorrow'#39's Prediction:'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clYellow
+      Font.Height = -19
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label20: TLabel
+      Left = 1269
+      Top = 6
+      Width = 160
+      Height = 23
+      Caption = '##########'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clYellow
       Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
@@ -725,7 +753,7 @@ object frmFlickr: TfrmFlickr
     object ProgressBar1: TProgressBar
       Left = 8
       Top = 18
-      Width = 653
+      Width = 773
       Height = 17
       TabOrder = 0
       Visible = False
@@ -762,7 +790,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = TabSheet4
+    ActivePage = Statistics
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -839,8 +867,9 @@ object frmFlickr: TfrmFlickr
           Width = 651
           Height = 391
           Legend.Visible = False
+          Title.Font.Color = clWhite
           Title.Text.Strings = (
-            '')
+            'Total Views')
           BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
           BottomAxis.Grid.Width = 0
           BottomAxis.Grid.ZPosition = 1.000000000000000000
@@ -920,7 +949,7 @@ object frmFlickr: TfrmFlickr
           Legend.Visible = False
           Title.Font.Color = clWhite
           Title.Text.Strings = (
-            'Total Views')
+            'Total Views Histogram')
           BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
           BottomAxis.Grid.Width = 0
           BottomAxis.Grid.ZPosition = 1.000000000000000000
