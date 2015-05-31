@@ -761,7 +761,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = TabSheet4
+    ActivePage = Statistics
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1775,8 +1775,6 @@ object frmFlickr: TfrmFlickr
         Width = 169
         Height = 17
         Caption = 'Show Marks in Graphs'
-        Checked = True
-        State = cbChecked
         TabOrder = 4
         OnClick = showMarksClick
       end

@@ -54,10 +54,11 @@ var
   Series : TBarSeries;
 begin
   Series := TBarSeries.Create(parent);
-  Series.Marks.Arrow.Visible := marks;
+  Series.Marks.Arrow.Visible := true;
   Series.Marks.Callout.Brush.color := clBlack;
   Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
+  Series.Marks.Visible := marks;
   Series.Marks.Shadow.color := 8487297;
   Series.SeriesColor := 10708548;
   Series.XValues.DateTime := true;
@@ -74,12 +75,12 @@ var
   Series : TLineSeries;
 begin
   Series := TLineSeries.Create(parent);
-  Series.Marks.Arrow.Visible := marks;
+  Series.Marks.Arrow.Visible := true;
   Series.Marks.Callout.Brush.color := clBlack;
   Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
   Series.Marks.Shadow.color := 8487297;
-  Series.Marks.Visible := true;
+  Series.Marks.Visible := marks;
   Series.SeriesColor := 10708548;
   Series.LinePen.Width := 1;
   Series.LinePen.color := 10708548;
