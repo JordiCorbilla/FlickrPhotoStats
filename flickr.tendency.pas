@@ -38,16 +38,16 @@ type
     procedure AddY(item : integer);
     procedure AddXY(itemX, itemY : integer);
     procedure Calculate();
-    function tendencyResult( a , b : integer) : integer;
+    function tendencyResult(a : integer) : integer;
   end;
 
   TTendency = Class(TInterfacedObject, ITendency)
   private
-    Fa : integer;
-    Fb : integer;
-    Fc : integer;
-    Fd : integer;
-    Fe : integer;
+    Fa : Double;
+    Fb : Double;
+    Fc : Double;
+    Fd : Double;
+    Fe : Double;
     Ff : Double;
     Fm : Double;
     Fyb : double;
@@ -60,7 +60,7 @@ type
     procedure AddY(item : integer);
     procedure AddXY(itemX, itemY : integer);
     procedure Calculate();
-    function tendencyResult( a , b : integer) : integer;
+    function tendencyResult(a : integer) : integer;
     constructor Create();
     Destructor Destroy(); override;
   End;
@@ -109,33 +109,33 @@ end;
 
 function TTendency.interception: double;
 begin
-  Fe := y.Total();
+  Fe := y.Total().ToDouble;
   ff := Fm * x.Total().ToDouble;
-  Fyb := (Fe.ToDouble - Ff) / x.Count.ToDouble;
+  Fyb := (Fe - Ff) / x.Count.ToDouble;
   result := Fyb;
 end;
 
 function TTendency.slope: double;
 var
   i: Integer;
-  acc : integer;
+  acc : double;
 begin
-  acc := 0;
+  acc := 0.0;
   for i := 0 to x.Count-1 do
   begin
-    acc := acc + (x[i] * y[i]);
+    acc := acc + (x[i] * y[i]).ToDouble;
   end;
 
-  Fa := x.Count * acc;
-  Fb := x.Total() * y.Total();
-  Fc := x.count * x.Squared();
-  Fd := x.TotalSquared();
+  Fa := x.Count.ToDouble * acc;
+  Fb := x.Total().ToDouble * y.Total().ToDouble;
+  Fc := x.count.ToDouble * x.Squared().ToDouble;
+  Fd := x.TotalSquared().ToDouble;
 
   Fm := (Fa - Fb) / (Fc - Fd);
   result := Fm;
 end;
 
-function TTendency.tendencyResult(a, b: integer): integer;
+function TTendency.tendencyResult(a : integer): integer;
 begin
   result := round((a.ToDouble * Fm) + Fyb);
 end;

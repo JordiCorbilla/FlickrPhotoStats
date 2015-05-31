@@ -734,32 +734,36 @@ begin
   st.Start;
   repository.load('flickrRepository.xml');
   st.Stop;
-  log('Loading repository flickrRepository: ' + st.ElapsedMilliseconds.ToString());
+  log('Loading repository flickrRepository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
   if Assigned(globalsRepository) then
   begin
     globalsRepository := nil;
     globalsRepository := TFlickrGlobals.Create();
   end;
+  st := TStopWatch.Create;
   st.Start;
   globalsRepository.load('flickrRepositoryGlobal.xml');
   st.Stop;
-  log('Loading repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString());
+  log('Loading repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
+  st := TStopWatch.Create;
   st.Start;
   LoadForms(repository);
   st.Stop;
-  log('Loading Forms for repository: ' + st.ElapsedMilliseconds.ToString());
+  log('Loading Forms for repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
+  st := TStopWatch.Create;
   st.Start;
   LoadHallOfFame(repository);
   st.Stop;
-  log('Loading Hall of fame: ' + st.ElapsedMilliseconds.ToString());
+  log('Loading Hall of fame: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
+  st := TStopWatch.Create;
   st.Start;
   LoadProfiles();
   st.Stop;
-  log('Loading Profiles: ' + st.ElapsedMilliseconds.ToString());
+  log('Loading Profiles: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 end;
 
 procedure TfrmFlickr.LoadProfiles();
@@ -846,43 +850,44 @@ end;
 
 procedure TfrmFlickr.UpdateGlobals;
 var
-  Series: TLineSeries;
+  Series, SeriesTendency: TLineSeries;
   color: TColor;
   i: Integer;
   views : integer;
+  chartTendency : ITendency;
+  viewsTendency : integer;
 begin
   if ChartViews.SeriesList.Count = 1 then
     ChartViews.RemoveAllSeries;
 
-  Series := TLineSeries.Create(ChartViews);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  Series.Marks.Visible := true;
-  Series.SeriesColor := 10708548;
-  Series.LinePen.Width := 1;
-  Series.LinePen.color := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Style := psRectangle;
-  Series.Pointer.Brush.Gradient.EndColor := 10708548;
-  Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Visible := false;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := ChartViews;
+  chartTendency := TTendency.Create;
+
+  Series := flickrChart.GetNewLineSeries(ChartViews);
   color := RGB(Random(255), Random(255), Random(255));
 
   for i := 0 to globalsRepository.globals.Count - 1 do
   begin
+    chartTendency.AddXY(i, globalsRepository.Globals[i].views);
     Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].views, '', color);
   end;
   ChartViews.AddSeries(Series);
+  chartTendency.Calculate;
+
+  SeriesTendency := flickrChart.GetNewLineSeries(ChartViews);
+  color := clYellow;
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+//  for i := 0 to globalsRepository.globals.Count - 1 do
+//  begin
+//    viewsTendency := chartTendency.tendencyResult(i);
+//    SeriesTendency.AddXY(globalsRepository.globals[i].Date, viewsTendency, '', color);
+//  end;
+  ChartViews.AddSeries(SeriesTendency);
+
 
   Label12.Visible := true;
   Label13.Visible := true;
@@ -902,68 +907,50 @@ begin
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;
 
-  Series := TLineSeries.Create(ChartLikes);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  Series.Marks.Visible := true;
-  Series.SeriesColor := 10708548;
-  Series.LinePen.Width := 1;
-  Series.LinePen.color := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Style := psRectangle;
-  Series.Pointer.Brush.Gradient.EndColor := 10708548;
-  Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Visible := false;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := ChartLikes;
+  Series := flickrChart.GetNewLineSeries(ChartLikes);
   color := RGB(Random(255), Random(255), Random(255));
-
+  chartTendency := TTendency.Create;
   for i := 0 to globalsRepository.globals.Count - 1 do
   begin
+    chartTendency.AddXY(i, globalsRepository.globals[i].likes);
     Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].likes, '', color);
   end;
   ChartLikes.AddSeries(Series);
 
+  chartTendency.Calculate;
+
+  SeriesTendency := flickrChart.GetNewLineSeries(ChartLikes, false);
+  color := clYellow;
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+
   if ChartComments.SeriesList.Count = 1 then
     ChartComments.RemoveAllSeries;
 
-  Series := TLineSeries.Create(ChartComments);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  Series.Marks.Visible := true;
-  Series.SeriesColor := 10708548;
-  Series.LinePen.Width := 1;
-  Series.LinePen.color := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Style := psRectangle;
-  Series.Pointer.Brush.Gradient.EndColor := 10708548;
-  Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Visible := false;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := ChartComments;
+  Series := flickrChart.GetNewLineSeries(ChartComments);
   color := RGB(Random(255), Random(255), Random(255));
-
+  chartTendency := TTendency.Create;
   for i := 0 to globalsRepository.globals.Count - 1 do
   begin
+    chartTendency.AddXY(i, globalsRepository.globals[i].numComments);
     Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].numComments, '', color);
   end;
   ChartComments.AddSeries(Series);
+
+  chartTendency.Calculate;
+
+  SeriesTendency := flickrChart.GetNewLineSeries(ChartComments, false);
+  color := clYellow;
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
 end;
 
 procedure TfrmFlickr.UncheckAll1Click(Sender: TObject);
@@ -989,19 +976,7 @@ begin
   if dailyViews.SeriesList.Count >= 1 then
     dailyViews.RemoveAllSeries;
 
-  Series := TBarSeries.Create(dailyViews);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  Series.SeriesColor := 10708548;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := Chart2;
+  Series := flickrChart.GetNewBarSeries(dailyViews, false);
   color := RGB(Random(255), Random(255), Random(255));
 
   viewsTendency := TTendency.Create;
@@ -1020,36 +995,11 @@ begin
 
   // Add average views
   averageSeries := flickrChart.GetNewLineSeries(dailyViews);
-  averageSeries := TLineSeries.Create(dailyViews);
-  // averageSeries.Marks.Arrow.Visible := true;
-  averageSeries.Marks.Callout.Brush.color := clBlack;
-  averageSeries.Marks.Callout.Arrow.Visible := true;
-  averageSeries.Marks.DrawEvery := 10;
-  averageSeries.Marks.Shadow.color := 8487297;
-  averageSeries.Marks.Visible := true;
-  averageSeries.SeriesColor := 10708548;
-  averageSeries.LinePen.Width := 1;
-  averageSeries.LinePen.color := 10708548;
-  averageSeries.Pointer.InflateMargins := true;
-  averageSeries.Pointer.Style := psRectangle;
-  averageSeries.Pointer.Brush.Gradient.EndColor := 10708548;
-  averageSeries.Pointer.Gradient.EndColor := 10708548;
-  averageSeries.Pointer.InflateMargins := true;
-  averageSeries.Pointer.Visible := false;
-  averageSeries.XValues.DateTime := true;
-  averageSeries.XValues.Name := 'X';
-  averageSeries.XValues.Order := loAscending;
-  averageSeries.YValues.Name := 'Y';
-  averageSeries.YValues.Order := loNone;
-  averageSeries.ParentChart := dailyViews;
   color := clRed;
 
   viewsTotal := 0;
   for i := 1 to globalsRepository.globals.Count - 1 do
-  begin
-    // theDate := globalsRepository.globals[i].Date;
     viewsTotal := viewsTotal + (globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views);
-  end;
 
   average := round(viewsTotal / globalsRepository.globals.Count);
 
@@ -1062,37 +1012,22 @@ begin
   dailyViews.AddSeries(averageSeries);
 
   //Add tendency line
-  tendencySeries := TLineSeries.Create(dailyViews);
-  // tendencySeries.Marks.Arrow.Visible := true;
-  tendencySeries.Marks.Callout.Brush.color := clBlack;
-  tendencySeries.Marks.Callout.Arrow.Visible := true;
-  tendencySeries.Marks.DrawEvery := 10;
-  tendencySeries.Marks.Shadow.color := 8487297;
-  tendencySeries.Marks.Visible := true;
-  tendencySeries.SeriesColor := 10708548;
-  tendencySeries.LinePen.Width := 1;
-  tendencySeries.LinePen.color := 10708548;
-  tendencySeries.Pointer.InflateMargins := true;
-  tendencySeries.Pointer.Style := psRectangle;
-  tendencySeries.Pointer.Brush.Gradient.EndColor := 10708548;
-  tendencySeries.Pointer.Gradient.EndColor := 10708548;
-  tendencySeries.Pointer.InflateMargins := true;
-  tendencySeries.Pointer.Visible := false;
-  tendencySeries.XValues.DateTime := true;
-  tendencySeries.XValues.Name := 'X';
-  tendencySeries.XValues.Order := loAscending;
-  tendencySeries.YValues.Name := 'Y';
-  tendencySeries.YValues.Order := loNone;
-  tendencySeries.ParentChart := dailyViews;
+  tendencySeries := flickrChart.GetNewLineSeries(dailyViews);
   color := clYellow;
 
-  for i := 1 to globalsRepository.globals.Count - 1 do
-  begin
-    theDate := globalsRepository.globals[i].Date;
-    views := globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views;
-    views := viewsTendency.tendencyResult(i, views);
-    tendencySeries.AddXY(theDate, views, '', color);
-  end;
+  //Adding only first and last item
+  theDate := globalsRepository.globals[1].Date;
+  views := viewsTendency.tendencyResult(1);
+  tendencySeries.AddXY(theDate, views, '', color);
+  theDate := globalsRepository.globals[globalsRepository.globals.Count - 1].Date;
+  views := viewsTendency.tendencyResult(globalsRepository.globals.Count - 1);
+  tendencySeries.AddXY(theDate, views, '', color);
+//  for i := 1 to globalsRepository.globals.Count - 1 do
+//  begin
+//    theDate := globalsRepository.globals[i].Date;
+//    views := viewsTendency.tendencyResult(i);
+//    tendencySeries.AddXY(theDate, views, '', color);
+//  end;
 
   dailyViews.AddSeries(tendencySeries);
 
@@ -1101,19 +1036,7 @@ begin
   if dailyLikes.SeriesList.Count >= 1 then
     dailyLikes.RemoveAllSeries;
 
-  Series := TBarSeries.Create(dailyLikes);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  Series.SeriesColor := 10708548;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := Chart2;
+  Series := flickrChart.GetNewBarSeries(dailyLikes, false);
   color := RGB(Random(255), Random(255), Random(255));
 
   for i := 1 to globalsRepository.globals.Count - 1 do
@@ -1191,7 +1114,7 @@ begin
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
-  Series.ParentChart := Chart2;
+  Series.ParentChart := statsDay;
   color := RGB(Random(255), Random(255), Random(255));
 
   photo := repository.GetPhoto(id);
@@ -1227,26 +1150,14 @@ begin
   if Chart2.SeriesList.Count = 1 then
     Chart2.RemoveAllSeries;
 
-  Series := TBarSeries.Create(Chart2);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
-  Series.Marks.Shadow.color := 8487297;
-  // Series.Marks.Visible := true;
-  Series.SeriesColor := 10708548;
-  // Series.Stairs := true;
-  Series.XValues.DateTime := true;
-  Series.XValues.Name := 'X';
-  Series.XValues.Order := loAscending;
-  Series.YValues.Name := 'Y';
-  Series.YValues.Order := loNone;
-  Series.ParentChart := Chart2;
+  Series := flickrChart.GetNewBarSeries(Chart2, true);
   color := RGB(Random(255), Random(255), Random(255));
-
   Series.AddBar(totalViews, 'Views', color);
+  color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalLikes, 'Likes', color);
+  color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalComments, 'Comments', color);
+  color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalPhotos, 'Photos', color);
   Chart2.AddSeries(Series);
 end;

@@ -34,12 +34,14 @@ uses
 
 type
   IFlickrChart = interface
-    function GetNewLineSeries(parent : TChart) : TLineSeries;
+    function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
+    function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   end;
 
   TFlickrChart = Class(TInterfacedObject, IFlickrChart)
-    function GetNewLineSeries(parent : TChart) : TLineSeries;
+    function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
+    function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   End;
 
@@ -47,12 +49,32 @@ implementation
 
 { TFlickrChart }
 
-function TFlickrChart.GetNewLineSeries(parent : TChart): TLineSeries;
+function TFlickrChart.GetNewBarSeries(parent: TChart; marks : boolean = false): TBarSeries;
+var
+  Series : TBarSeries;
+begin
+  Series := TBarSeries.Create(parent);
+  Series.Marks.Arrow.Visible := marks;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
+  Series.Marks.DrawEvery := 10;
+  Series.Marks.Shadow.color := 8487297;
+  Series.SeriesColor := 10708548;
+  Series.XValues.DateTime := true;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := parent;
+  result := Series;
+end;
+
+function TFlickrChart.GetNewLineSeries(parent : TChart; marks : boolean = false): TLineSeries;
 var
   Series : TLineSeries;
 begin
   Series := TLineSeries.Create(parent);
-  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Arrow.Visible := marks;
   Series.Marks.Callout.Brush.color := clBlack;
   Series.Marks.Callout.Arrow.Visible := true;
   Series.Marks.DrawEvery := 10;
