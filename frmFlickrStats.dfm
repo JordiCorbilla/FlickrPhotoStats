@@ -439,7 +439,7 @@ object frmFlickr: TfrmFlickr
       Height = 23
       Caption = 'Tomorrow'#39's Prediction:'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
+      Font.Color = clBlack
       Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
@@ -453,7 +453,7 @@ object frmFlickr: TfrmFlickr
       Height = 23
       Caption = '##########'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clYellow
+      Font.Color = clBlack
       Font.Height = -19
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
@@ -684,6 +684,8 @@ object frmFlickr: TfrmFlickr
         Width = 144
         Height = 17
         Caption = 'Update Collections'
+        Checked = True
+        State = cbChecked
         TabOrder = 7
       end
       object Edit2: TEdit
@@ -759,7 +761,7 @@ object frmFlickr: TfrmFlickr
       Visible = False
     end
     object rbViews: TRadioButton
-      Left = 863
+      Left = 965
       Top = 6
       Width = 113
       Height = 17
@@ -769,7 +771,7 @@ object frmFlickr: TfrmFlickr
       TabStop = True
     end
     object rbLikes: TRadioButton
-      Left = 975
+      Left = 1077
       Top = 6
       Width = 113
       Height = 17
@@ -777,7 +779,7 @@ object frmFlickr: TfrmFlickr
       TabOrder = 2
     end
     object rbComments: TRadioButton
-      Left = 1079
+      Left = 1181
       Top = 6
       Width = 113
       Height = 17
@@ -790,7 +792,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = Statistics
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1212,7 +1214,7 @@ object frmFlickr: TfrmFlickr
         Left = 0
         Top = 0
         Width = 653
-        Height = 321
+        Height = 339
         Legend.Visible = False
         Title.Font.Color = clWhite
         Title.Text.Strings = (
@@ -1241,7 +1243,7 @@ object frmFlickr: TfrmFlickr
         RightAxis.Title.Font.Color = clLime
         TopAxis.Title.Font.Color = clLime
         View3D = False
-        Align = alTop
+        Align = alClient
         Color = 2763306
         TabOrder = 0
         DefaultCanvas = 'TGDIPlusCanvas'
@@ -1268,7 +1270,7 @@ object frmFlickr: TfrmFlickr
       end
       object dailyLikes: TChart
         Left = 0
-        Top = 321
+        Top = 339
         Width = 653
         Height = 321
         Legend.Visible = False
@@ -1299,7 +1301,7 @@ object frmFlickr: TfrmFlickr
         RightAxis.Title.Font.Color = clLime
         TopAxis.Title.Font.Color = clLime
         View3D = False
-        Align = alTop
+        Align = alBottom
         Color = 2763306
         TabOrder = 1
         DefaultCanvas = 'TGDIPlusCanvas'
@@ -1494,7 +1496,7 @@ object frmFlickr: TfrmFlickr
           Visible = False
         end
         object Button2: TButton
-          Left = 522
+          Left = 525
           Top = 85
           Width = 115
           Height = 30
@@ -1612,7 +1614,7 @@ object frmFlickr: TfrmFlickr
             OnClick = btnSaveProfileClick
           end
           object chkReplaceProfile: TCheckBox
-            Left = 385
+            Left = 392
             Top = 36
             Width = 127
             Height = 17
@@ -1936,7 +1938,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C0101ED002001540010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

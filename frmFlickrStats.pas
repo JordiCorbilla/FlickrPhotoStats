@@ -774,6 +774,7 @@ procedure TfrmFlickr.LoadProfiles();
 var
   i : integer;
 begin
+  ComboBox1.Clear;
   if Assigned(flickrProfiles) then
   begin
     flickrProfiles := nil;
@@ -910,8 +911,6 @@ begin
   Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
   views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
   Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  views := chartTendency.tendencyResult(globalsRepository.globals.Count);
-  Label20.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;
@@ -1033,6 +1032,9 @@ begin
   tendencySeries.AddXY(theDate, views, '', color);
 
   dailyViews.AddSeries(tendencySeries);
+
+  views := viewsTendency.tendencyResult(globalsRepository.globals.Count);
+  Label20.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 end;
 
 procedure TfrmFlickr.UpdateDailyLikesChart();
