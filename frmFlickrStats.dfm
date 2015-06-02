@@ -792,7 +792,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = TabSheet2
+    ActivePage = Statistics
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1187,26 +1187,6 @@ object frmFlickr: TfrmFlickr
         end
       end
     end
-    object TabSheet6: TTabSheet
-      Caption = 'Hall of Fame'
-      ImageIndex = 7
-      object Memo1: TMemo
-        Left = 0
-        Top = 0
-        Width = 653
-        Height = 660
-        Align = alClient
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssVertical
-        TabOrder = 0
-      end
-    end
     object TabSheet4: TTabSheet
       Caption = 'Analytics'
       ImageIndex = 5
@@ -1327,6 +1307,146 @@ object frmFlickr: TfrmFlickr
         end
       end
     end
+    object MostViewed: TTabSheet
+      Caption = 'Most Viewed'
+      ImageIndex = 10
+      object mostviewschart: TChart
+        Left = 0
+        Top = 0
+        Width = 653
+        Height = 339
+        Legend.Visible = False
+        Title.Font.Color = clWhite
+        Title.Text.Strings = (
+          'Most Viewed Pictures per day')
+        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+        BottomAxis.Grid.Width = 0
+        BottomAxis.Grid.ZPosition = 1.000000000000000000
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelsFormat.Font.Color = clWhite
+        BottomAxis.LabelsMultiLine = True
+        BottomAxis.MinimumOffset = 16
+        BottomAxis.MinorTickCount = 16
+        BottomAxis.EndPosition = 98.000000000000000000
+        BottomAxis.PositionPercent = -1.000000000000000000
+        BottomAxis.TickLength = 2
+        BottomAxis.Ticks.Width = 0
+        BottomAxis.Title.Font.Color = clLime
+        DepthAxis.Title.Font.Color = clLime
+        DepthTopAxis.Title.Font.Color = clLime
+        LeftAxis.Grid.Width = 0
+        LeftAxis.LabelsFormat.Font.Color = clWhite
+        LeftAxis.MinorTicks.Width = 0
+        LeftAxis.Ticks.Width = 0
+        LeftAxis.TicksInner.Width = 0
+        LeftAxis.Title.Font.Color = clLime
+        RightAxis.Title.Font.Color = clLime
+        TopAxis.Title.Font.Color = clLime
+        View3D = False
+        Align = alClient
+        Color = 2763306
+        TabOrder = 0
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          7
+          15
+          7)
+        ColorPaletteIndex = 13
+        object BarSeries3: TBarSeries
+          BarBrush.BackColor = clDefault
+          BarPen.Color = 10708548
+          Marks.Shadow.Color = 8487297
+          Marks.Visible = False
+          Marks.Callout.Length = 8
+          Marks.DrawEvery = 10
+          Title = 'Flickr Stats'
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+      end
+      object mostlikeschart: TChart
+        Left = 0
+        Top = 339
+        Width = 653
+        Height = 321
+        Legend.Visible = False
+        Title.Font.Color = clWhite
+        Title.Text.Strings = (
+          'Most Liked Pictures per day')
+        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+        BottomAxis.Grid.Width = 0
+        BottomAxis.Grid.ZPosition = 1.000000000000000000
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelsFormat.Font.Color = clWhite
+        BottomAxis.LabelsMultiLine = True
+        BottomAxis.MinimumOffset = 16
+        BottomAxis.MinorTickCount = 16
+        BottomAxis.EndPosition = 98.000000000000000000
+        BottomAxis.PositionPercent = -1.000000000000000000
+        BottomAxis.TickLength = 2
+        BottomAxis.Ticks.Width = 0
+        BottomAxis.Title.Font.Color = clLime
+        DepthAxis.Title.Font.Color = clLime
+        DepthTopAxis.Title.Font.Color = clLime
+        LeftAxis.Grid.Width = 0
+        LeftAxis.LabelsFormat.Font.Color = clWhite
+        LeftAxis.MinorTicks.Width = 0
+        LeftAxis.Ticks.Width = 0
+        LeftAxis.TicksInner.Width = 0
+        LeftAxis.Title.Font.Color = clLime
+        RightAxis.Title.Font.Color = clLime
+        TopAxis.Title.Font.Color = clLime
+        View3D = False
+        Align = alBottom
+        Color = 2763306
+        TabOrder = 1
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          7
+          15
+          7)
+        ColorPaletteIndex = 13
+        object BarSeries4: TBarSeries
+          BarBrush.BackColor = clDefault
+          BarPen.Color = 10708548
+          Marks.Shadow.Color = 8487297
+          Marks.Visible = False
+          Marks.Callout.Length = 8
+          Marks.DrawEvery = 10
+          Title = 'Flickr Stats'
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
+        end
+      end
+    end
+    object TabSheet6: TTabSheet
+      Caption = 'Hall of Fame'
+      ImageIndex = 7
+      object Memo1: TMemo
+        Left = 0
+        Top = 0
+        Width = 653
+        Height = 660
+        Align = alClient
+        Font.Charset = ANSI_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Courier New'
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssVertical
+        TabOrder = 0
+      end
+    end
     object TabSheet7: TTabSheet
       Caption = 'Albums'
       ImageIndex = 9
@@ -1348,7 +1468,7 @@ object frmFlickr: TfrmFlickr
       end
     end
     object TabSheet1: TTabSheet
-      Caption = 'Get list of photos'
+      Caption = 'Photo List'
       ImageIndex = 2
       object Panel6: TPanel
         Left = 0
@@ -1452,7 +1572,7 @@ object frmFlickr: TfrmFlickr
       end
     end
     object TabSheet2: TTabSheet
-      Caption = 'Get Groups'
+      Caption = 'Group List'
       ImageIndex = 3
       object Panel8: TPanel
         Left = 0
@@ -1726,91 +1846,6 @@ object frmFlickr: TfrmFlickr
         end
       end
     end
-    object TabSheet3: TTabSheet
-      Caption = 'Options'
-      ImageIndex = 4
-      object Label9: TLabel
-        Left = 16
-        Top = 35
-        Width = 139
-        Height = 13
-        Caption = 'Max items list of globals:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Label1: TLabel
-        Left = 16
-        Top = 67
-        Width = 78
-        Height = 13
-        Caption = 'Flickr Api Key:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object Label8: TLabel
-        Left = 16
-        Top = 97
-        Width = 73
-        Height = 13
-        Caption = 'Flickr Secret:'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Tahoma'
-        Font.Style = [fsBold]
-        ParentFont = False
-      end
-      object edtMax: TEdit
-        Left = 176
-        Top = 32
-        Width = 57
-        Height = 21
-        TabOrder = 0
-        Text = '80'
-      end
-      object apikey: TEdit
-        Left = 176
-        Top = 64
-        Width = 243
-        Height = 21
-        TabOrder = 1
-        OnChange = apikeyChange
-      end
-      object secret: TEdit
-        Left = 176
-        Top = 94
-        Width = 243
-        Height = 21
-        TabOrder = 2
-        OnChange = apikeyChange
-      end
-      object Button1: TButton
-        Left = 425
-        Top = 64
-        Width = 96
-        Height = 51
-        Caption = 'Test REST Login'
-        TabOrder = 3
-        OnClick = Button1Click
-      end
-      object showMarks: TCheckBox
-        Left = 176
-        Top = 128
-        Width = 169
-        Height = 17
-        Caption = 'Show Marks in Graphs'
-        TabOrder = 4
-        OnClick = showMarksClick
-      end
-    end
     object TabSheet5: TTabSheet
       Caption = 'Logs'
       ImageIndex = 6
@@ -1898,6 +1933,91 @@ object frmFlickr: TfrmFlickr
         end
       end
     end
+    object TabSheet3: TTabSheet
+      Caption = 'Options'
+      ImageIndex = 4
+      object Label9: TLabel
+        Left = 16
+        Top = 35
+        Width = 139
+        Height = 13
+        Caption = 'Max items list of globals:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 16
+        Top = 67
+        Width = 78
+        Height = 13
+        Caption = 'Flickr Api Key:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Label8: TLabel
+        Left = 16
+        Top = 97
+        Width = 73
+        Height = 13
+        Caption = 'Flickr Secret:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object edtMax: TEdit
+        Left = 176
+        Top = 32
+        Width = 57
+        Height = 21
+        TabOrder = 0
+        Text = '80'
+      end
+      object apikey: TEdit
+        Left = 176
+        Top = 64
+        Width = 243
+        Height = 21
+        TabOrder = 1
+        OnChange = apikeyChange
+      end
+      object secret: TEdit
+        Left = 176
+        Top = 94
+        Width = 243
+        Height = 21
+        TabOrder = 2
+        OnChange = apikeyChange
+      end
+      object Button1: TButton
+        Left = 425
+        Top = 64
+        Width = 96
+        Height = 51
+        Caption = 'Test REST Login'
+        TabOrder = 3
+        OnClick = Button1Click
+      end
+      object showMarks: TCheckBox
+        Left = 176
+        Top = 128
+        Width = 169
+        Height = 17
+        Caption = 'Show Marks in Graphs'
+        TabOrder = 4
+        OnClick = showMarksClick
+      end
+    end
   end
   object IdHTTP1: TIdHTTP
     IOHandler = IdSSLIOHandlerSocketOpenSSL1
@@ -1938,7 +2058,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C0101ED002001580010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020015C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

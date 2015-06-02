@@ -189,6 +189,11 @@ type
     btnLoad: TButton;
     Label19: TLabel;
     Label20: TLabel;
+    MostViewed: TTabSheet;
+    mostviewschart: TChart;
+    BarSeries3: TBarSeries;
+    mostlikeschart: TChart;
+    BarSeries4: TBarSeries;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -250,6 +255,8 @@ type
     procedure LoadProfiles;
     procedure UpdateDailyViewsChart;
     procedure UpdateDailyLikesChart;
+    procedure UpdateMostViewedChart;
+    procedure UpdateMostLikedChart;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -1100,6 +1107,64 @@ procedure TfrmFlickr.UpdateAnalytics;
 begin
   UpdateDailyViewsChart();
   UpdateDailyLikesChart();
+  UpdateMostViewedChart();
+  UpdateMostLikedChart();
+end;
+
+procedure TfrmFlickr.UpdateMostLikedChart();
+var
+  Series: TBarSeries;
+  color: TColor;
+  i: Integer;
+  PhotosSorted: TList<IPhoto>;
+  topStats : TTopStats;
+begin
+  if mostlikeschart.SeriesList.Count >= 1 then
+    mostlikeschart.RemoveAllSeries;
+
+  Series := flickrChart.GetNewBarSeries(mostlikeschart);
+  color := RGB(Random(255), Random(255), Random(255));
+
+  topStats := TTopStats.Create(repository);
+  PhotosSorted := nil;
+  try
+    PhotosSorted := topStats.GetTopXNumberofMostLiked();
+    for i := 0 to 50 do
+    begin
+      Series.AddBar(PhotosSorted[i].getHighestLikes(), PhotosSorted[i].Id, color);
+    end;
+  finally
+    topStats.Free;
+    PhotosSorted.Free;
+  end;
+end;
+
+procedure TfrmFlickr.UpdateMostViewedChart();
+var
+  Series: TBarSeries;
+  color: TColor;
+  i: Integer;
+  PhotosSorted: TList<IPhoto>;
+  topStats : TTopStats;
+begin
+  if mostviewschart.SeriesList.Count >= 1 then
+    mostviewschart.RemoveAllSeries;
+
+  Series := flickrChart.GetNewBarSeries(mostviewschart);
+  color := RGB(Random(255), Random(255), Random(255));
+
+  topStats := TTopStats.Create(repository);
+  PhotosSorted := nil;
+  try
+    PhotosSorted := topStats.GetTopXNumberofMostViewed();
+    for i := 0 to 50 do
+    begin
+      Series.AddBar(PhotosSorted[i].getHighestViews(), PhotosSorted[i].Id, color);
+    end;
+  finally
+    topStats.Free;
+    PhotosSorted.Free;
+  end;
 end;
 
 procedure TfrmFlickr.UpdateSingleStats(id: string);

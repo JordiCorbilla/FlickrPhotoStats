@@ -48,6 +48,16 @@ type
     function Compare(const Left, Right: IPhoto): Integer; override;
   end;
 
+  TIPhotoComparerMostLikes = class(TComparer<IPhoto>)
+  public
+    function Compare(const Left, Right: IPhoto): Integer; override;
+  end;
+
+  TIPhotoComparerMostViews = class(TComparer<IPhoto>)
+  public
+    function Compare(const Left, Right: IPhoto): Integer; override;
+  end;
+
   TTopStats = class(TObject)
   private
     FRepository : IFlickrRepository;
@@ -57,7 +67,10 @@ type
     function GetTopXNumberOfLikes(num : integer) : string;
     function GetTopXNumberOfViews(num : integer) : string;
     function GetTopXNumberOfComments(num : integer) : string;
+    function GetTopXNumberofMostViewed() : TList<IPhoto>;
+    function GetTopXNumberofMostLiked() : TList<IPhoto>;
   end;
+
 
 implementation
 
@@ -131,6 +144,44 @@ begin
   result := description;
 end;
 
+function TTopStats.GetTopXNumberofMostLiked(): TList<IPhoto>;
+var
+  PhotosSorted: TList<IPhoto>;
+  IPhotoComparer : TIPhotoComparerMostLikes;
+  i : integer;
+begin
+  IPhotoComparer := TIPhotoComparerMostLikes.Create;
+  PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    PhotosSorted.Add(FRepository.photos[i]);
+  end;
+
+  PhotosSorted.Sort;
+
+  result := PhotosSorted;
+end;
+
+function TTopStats.GetTopXNumberofMostViewed(): TList<IPhoto>;
+var
+  PhotosSorted: TList<IPhoto>;
+  IPhotoComparer : TIPhotoComparerMostViews;
+  i : integer;
+begin
+  IPhotoComparer := TIPhotoComparerMostViews.Create;
+  PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    PhotosSorted.Add(FRepository.photos[i]);
+  end;
+
+  PhotosSorted.Sort;
+
+  result := PhotosSorted;
+end;
+
 function TTopStats.GetTopXNumberOfViews(num: integer): string;
 var
   PhotosSorted: TList<IPhoto>;
@@ -188,6 +239,28 @@ var
 begin
   LeftTerm := Left.getTotalComments;
   RightTerm := Right.getTotalComments;
+  Result := RightTerm - LeftTerm;
+end;
+
+{ TIPhotoComparerMostLikes }
+
+function TIPhotoComparerMostLikes.Compare(const Left, Right: IPhoto): Integer;
+var
+  LeftTerm, RightTerm: Integer;
+begin
+  LeftTerm := Left.getHighestLikes;
+  RightTerm := Right.getHighestLikes;
+  Result := RightTerm - LeftTerm;
+end;
+
+{ TIPhotoComparerMostViews }
+
+function TIPhotoComparerMostViews.Compare(const Left, Right: IPhoto): Integer;
+var
+  LeftTerm, RightTerm: Integer;
+begin
+  LeftTerm := Left.getHighestViews;
+  RightTerm := Right.getHighestViews;
   Result := RightTerm - LeftTerm;
 end;
 
