@@ -241,7 +241,7 @@ type
     procedure RequestInformation_REST_Flickr(id: string);
     procedure UpdateCounts;
     procedure UpdateTotals;
-    procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: Integer);
+    procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
     procedure UpdateGlobals();
     procedure UpdateAnalytics();
     procedure LoadHallOfFame(repository: IFlickrRepository);
@@ -482,7 +482,7 @@ begin
   stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
   globalsRepository.AddGlobals(stat);
 
-  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
   UpdateGlobals();
   UpdateAnalytics();
 end;
@@ -856,7 +856,7 @@ begin
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
   end;
 
-  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count);
+  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
   UpdateGlobals();
   UpdateAnalytics();
 end;
@@ -1205,7 +1205,7 @@ begin
   statsDay.AddSeries(Series);
 end;
 
-procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos: Integer);
+procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
 var
   Series: TBarSeries;
   color: TColor;
@@ -1222,6 +1222,8 @@ begin
   Series.AddBar(totalComments, 'Comments', color);
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalPhotos, 'Photos', color);
+  color := RGB(Random(255), Random(255), Random(255));
+  Series.AddBar(totalSpreadGroups, 'Group spread', color);
   Chart2.AddSeries(Series);
 end;
 

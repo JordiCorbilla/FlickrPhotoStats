@@ -52,6 +52,7 @@ type
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
     property Secret: string read GetSecret write SetSecret;
+    function getTotalSpreadGroups() : integer;
   end;
 
   TFlickrRepository = class(TInterfacedObject, IFlickrRepository)
@@ -76,6 +77,7 @@ type
     constructor Create();
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
+    function getTotalSpreadGroups() : integer;
     procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
@@ -154,6 +156,19 @@ end;
 function TFlickrRepository.GetSecret: string;
 begin
   Result := FSecret;
+end;
+
+function TFlickrRepository.getTotalSpreadGroups: integer;
+var
+  total : integer;
+  i: Integer;
+begin
+  total := 0;
+  for i := 0 to FPhotos.Count-1 do
+  begin
+    total := total + FPhotos[i].Groups.Count;
+  end;
+  result := total;
 end;
 
 function TFlickrRepository.GetUserId: string;
