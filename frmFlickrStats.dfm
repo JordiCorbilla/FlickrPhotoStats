@@ -792,7 +792,7 @@ object frmFlickr: TfrmFlickr
     Top = 57
     Width = 661
     Height = 688
-    ActivePage = Statistics
+    ActivePage = TabSheet3
     Align = alClient
     TabOrder = 3
     object Statistics: TTabSheet
@@ -1975,6 +1975,19 @@ object frmFlickr: TfrmFlickr
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label21: TLabel
+        Left = 16
+        Top = 200
+        Width = 137
+        Height = 13
+        Caption = 'Max number of lines log:'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object edtMax: TEdit
         Left = 176
         Top = 32
@@ -2015,6 +2028,34 @@ object frmFlickr: TfrmFlickr
         Height = 17
         Caption = 'Show Marks in Graphs'
         TabOrder = 4
+        OnClick = showMarksClick
+      end
+      object chkPending: TCheckBox
+        Left = 176
+        Top = 151
+        Width = 169
+        Height = 17
+        Caption = 'Consider Pending Queue items'
+        Checked = True
+        State = cbChecked
+        TabOrder = 5
+        OnClick = showMarksClick
+      end
+      object edtMaxLog: TEdit
+        Left = 176
+        Top = 197
+        Width = 57
+        Height = 21
+        TabOrder = 6
+        Text = '30000'
+      end
+      object chkRealTime: TCheckBox
+        Left = 176
+        Top = 174
+        Width = 169
+        Height = 17
+        Caption = 'Update counts real time'
+        TabOrder = 7
         OnClick = showMarksClick
       end
     end
@@ -2058,7 +2099,7 @@ object frmFlickr: TfrmFlickr
     Left = 120
     Top = 208
     Bitmap = {
-      494C0101ED0020015C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001680010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

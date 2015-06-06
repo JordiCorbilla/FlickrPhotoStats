@@ -194,6 +194,10 @@ type
     BarSeries3: TBarSeries;
     mostlikeschart: TChart;
     BarSeries4: TBarSeries;
+    chkPending: TCheckBox;
+    Label21: TLabel;
+    edtMaxLog: TEdit;
+    chkRealTime: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -240,7 +244,7 @@ type
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
     procedure RequestInformation_REST_Flickr(id: string);
     procedure UpdateCounts;
-    procedure UpdateTotals;
+    procedure UpdateTotals(onlyLabels : boolean);
     procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
     procedure UpdateGlobals();
     procedure UpdateAnalytics();
@@ -257,6 +261,7 @@ type
     procedure UpdateDailyLikesChart;
     procedure UpdateMostViewedChart;
     procedure UpdateMostLikedChart;
+    procedure UpdateLabels;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -360,7 +365,12 @@ begin
 end;
 
 procedure TfrmFlickr.Log(s: string);
+var
+  max : string;
 begin
+  max := edtMaxLog.text;
+  if mLogs.Lines.Count > max.ToInteger then
+    mLogs.Lines.Clear;
   mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
@@ -396,6 +406,7 @@ end;
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
+  st : TStopWatch;
 begin
   if apikey.text = '' then
   begin
@@ -403,6 +414,7 @@ begin
     exit;
   end;
   batchUpdate.Enabled := false;
+  btnLoad.Enabled := false;
   btnGetList.Enabled := false;
   ProgressBar1.Visible := true;
   photoId.Enabled := false;
@@ -422,10 +434,22 @@ begin
     if chkUpdate.checked then
     begin
       if listPhotos.items[i].checked then
+      begin
+        st := TStopWatch.Create;
+        st.Start;
         RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+        st.Stop;
+        log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      end;
     end
     else
+    begin
+      st := TStopWatch.Create;
+      st.Start;
       RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+      st.Stop;
+      log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + st.ElapsedMilliseconds.ToString() + 'ms');
+    end;
   end;
 
   // Use parallel looping
@@ -442,17 +466,18 @@ begin
 
   ProgressBar1.Visible := false;
   Process.Visible := false;
-  UpdateTotals();
+  UpdateTotals(false);
   LoadHallOfFame(repository);
   btnSave.Enabled := true;
   photoId.Enabled := true;
+  btnLoad.Enabled := true;
   btnAdd.Enabled := true;
   Taskbar1.ProgressValue := 0;
   btnGetList.Enabled := true;
   batchUpdate.Enabled := true;
 end;
 
-procedure TfrmFlickr.UpdateTotals();
+procedure TfrmFlickr.UpdateTotals(onlyLabels : boolean);
 var
   i: Integer;
   Item: TListItem;
@@ -482,9 +507,35 @@ begin
   stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
   globalsRepository.AddGlobals(stat);
 
-  UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
-  UpdateGlobals();
-  UpdateAnalytics();
+  if not onlyLabels then
+  begin
+    UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
+    UpdateGlobals();
+    UpdateAnalytics();
+  end;
+  UpdateLabels();
+end;
+
+procedure TfrmFlickr.UpdateLabels();
+var
+  views : integer;
+begin
+  Label12.Visible := true;
+  Label13.Visible := true;
+  Label14.Visible := true;
+  Label15.Visible := true;
+  Label16.Visible := true;
+  Label17.Visible := true;
+  Label18.Visible := true;
+  Label19.Visible := true;
+  Label20.Visible := true;
+
+  views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
+  Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  views := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views;
+  Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
+  Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 end;
 
 procedure TfrmFlickr.EndMarking1Click(Sender: TObject);
@@ -713,6 +764,8 @@ begin
       itemExisting.SubItems.Add(photo.Groups.Count.ToString());
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
     end;
+    if chkRealTime.Checked then
+      UpdateTotals(true);
   finally
     CoUninitialize;
   end;
@@ -728,7 +781,7 @@ begin
 
   RequestInformation_REST_Flickr(photoId.text);
   photoId.text := '';
-  UpdateTotals();
+  UpdateTotals(false);
   btnSave.Enabled := true;
 end;
 
@@ -858,6 +911,7 @@ begin
 
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
   UpdateGlobals();
+  UpdateLabels();
   UpdateAnalytics();
 end;
 
@@ -866,7 +920,6 @@ var
   Series, SeriesTendency: TLineSeries;
   color: TColor;
   i: Integer;
-  views : integer;
   chartTendency : ITendency;
   viewsTendency : integer;
 begin
@@ -900,24 +953,6 @@ begin
 //    SeriesTendency.AddXY(globalsRepository.globals[i].Date, viewsTendency, '', color);
 //  end;
   ChartViews.AddSeries(SeriesTendency);
-
-
-  Label12.Visible := true;
-  Label13.Visible := true;
-  Label14.Visible := true;
-  Label15.Visible := true;
-  Label16.Visible := true;
-  Label17.Visible := true;
-  Label18.Visible := true;
-  Label19.Visible := true;
-  Label20.Visible := true;
-
-  views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
-  Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  views := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views;
-  Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
-  Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
 
   if ChartLikes.SeriesList.Count = 1 then
     ChartLikes.RemoveAllSeries;
@@ -1326,6 +1361,8 @@ var
   groups: TList<string>;
   timedout: Boolean;
   rejected: IRejected;
+  total : integer;
+  max : string;
 begin
   photos := TList<string>.Create;
   groups := TList<string>.Create;
@@ -1351,6 +1388,9 @@ begin
     Taskbar1.ProgressMaxValue := pstatus.Max;
     k := 0;
 
+    mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into  ' + groups.Count.ToString + ' groups each.');
+    total := photos.Count * groups.Count;
+    mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     for i := 0 to photos.Count - 1 do
     begin
       for j := 0 to groups.Count - 1 do
@@ -1365,8 +1405,19 @@ begin
           begin
             try
               response := IdHTTP1.Get(urlAdd);
-              if response.Contains('Photo limit reached') then
+              if response.Contains('Photo limit reached') or response.Contains('Maximum') then
+              begin
+                mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
                 rejected.Add(groupId);
+              end;
+              if not chkPending.Checked then
+              begin
+                if response.Contains('Pending Queue') then
+                begin
+                  mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
+                  rejected.Add(groupId);
+                end;
+              end;
               timedout := true;
             except
               on e: exception do
@@ -1384,7 +1435,18 @@ begin
         response := response.Replace('<rsp stat="', '');
         response := response.Replace('">', '');
         response := response.Replace('</rsp>', '');
+        response := response.Replace('<', '');
+        response := response.Replace('/>', '');
+        response := response.Replace('err code="5" msg="', '');
+        response := response.Replace('err code="3" msg="', '');
+        response := response.Replace('err code="10" msg="', '');
+        response := response.Replace('err code="6" msg="', '');
+        response := response.Replace('err code="7" msg="', '');
+        response := response.Replace('"', '');
         mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+        max := edtMaxLog.text;
+        if mStatus.Lines.Count > max.ToInteger then
+          mStatus.Lines.Clear;
         Application.ProcessMessages;
         sleep(10);
       end;
@@ -1737,10 +1799,10 @@ var
   countViews: Integer;
   numPhotos: Integer;
 begin
-  btnLoad.Enabled := false;
-  btnAdd.Enabled := false;
-  btnAddItems.Enabled := false;
-  batchUpdate.Enabled := false;
+  //btnLoad.Enabled := false;
+  //btnAdd.Enabled := false;
+  //btnAddItems.Enabled := false;
+  //batchUpdate.Enabled := false;
   listPhotosUser.Visible := false;
   lblfetching.Visible := true;
   progressfetching.Visible := true;
@@ -1807,10 +1869,10 @@ begin
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
   end;
-  btnLoad.Enabled := true;
-  btnAdd.Enabled := true;
-  batchUpdate.Enabled := true;
-  btnAddItems.Enabled := true;
+  //btnLoad.Enabled := true;
+  //btnAdd.Enabled := true;
+  //batchUpdate.Enabled := true;
+  //btnAddItems.Enabled := true;
   lblfetching.Visible := false;
   progressfetching.Visible := false;
   Taskbar1.ProgressValue := 0;
@@ -2044,7 +2106,7 @@ begin
   photoId.text := '';
   ProgressBar1.Visible := false;
   Process.Visible := false;
-  UpdateTotals();
+  UpdateTotals(false);
   LoadHallOfFame(repository);
   btnSave.Enabled := true;
   batchUpdate.Enabled := true;
