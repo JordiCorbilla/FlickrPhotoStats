@@ -107,32 +107,10 @@
         <DCCReference Include="frmFlickrStats.pas">
             <Form>frmFlickr</Form>
         </DCCReference>
-        <DCCReference Include="flickr.repository.pas"/>
-        <DCCReference Include="flickr.photos.pas"/>
-        <DCCReference Include="flickr.stats.pas"/>
-        <DCCReference Include="flickr.rest.pas"/>
-        <DCCReference Include="flickr.globals.pas"/>
-        <DCCReference Include="flickr.top.stats.pas"/>
-        <DCCReference Include="flickr.oauth.pas"/>
-        <DCCReference Include="flickr.signature.pas"/>
-        <DCCReference Include="flickr.access.token.pas"/>
-        <DCCReference Include="flickr.lib.parallel.pas"/>
-        <DCCReference Include="flickr.call.methods.pas"/>
-        <DCCReference Include="flickr.profiles.pas"/>
-        <DCCReference Include="flickr.profile.pas"/>
-        <DCCReference Include="flickr.rejected.pas"/>
-        <DCCReference Include="flickr.filtered.list.pas"/>
-        <DCCReference Include="flickr.base.pas"/>
-        <DCCReference Include="flickr.url.attributes.pas"/>
-        <DCCReference Include="flickr.pools.pas"/>
-        <DCCReference Include="flickr.albums.pas"/>
         <DCCReference Include="frmFlickrContextList.pas">
             <Form>frmFlickrContext</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="flickr.tendency.pas"/>
-        <DCCReference Include="flickr.lib.integerlist.pas"/>
-        <DCCReference Include="flickr.charts.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

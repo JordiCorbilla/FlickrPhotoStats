@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{D535442B-F35B-47CD-A1D0-06A517D654E9}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="FlickrPhotoAnalyticsLib.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="FlickrPhotoAnalytics.dproj">
+            <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
+        </Projects>
+        <Projects Include="FlickrPhotoAnalyticsBatchUpdate.dproj">
+            <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="FlickrPhotoAnalyticsLib">
+        <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsLib:Clean">
+        <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsLib:Make">
+        <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalytics" DependsOnTargets="FlickrPhotoAnalyticsLib">
+        <MSBuild Projects="FlickrPhotoAnalytics.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalytics:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
+        <MSBuild Projects="FlickrPhotoAnalytics.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalytics:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
+        <MSBuild Projects="FlickrPhotoAnalytics.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsBatchUpdate" DependsOnTargets="FlickrPhotoAnalyticsLib">
+        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsBatchUpdate:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
+        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsBatchUpdate:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
+        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

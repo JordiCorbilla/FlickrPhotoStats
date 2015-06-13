@@ -30,7 +30,7 @@ unit flickr.charts;
 interface
 
 uses
-  Series, Chart, graphics, VclTee.TeeGDIPlus, TeEngine, TeeProcs;
+  VclTee.Series, VCLTee.Chart, graphics, VclTee.TeeGDIPlus, VclTee.TeEngine, VclTee.TeeProcs;
 
 type
   IFlickrChart = interface

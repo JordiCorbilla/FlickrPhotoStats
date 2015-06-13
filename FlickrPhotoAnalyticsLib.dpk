@@ -1,0 +1,65 @@
+package FlickrPhotoAnalyticsLib;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Flickr Photo Analytics library'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  xmlrtl,
+  vcl,
+  inet,
+  IndySystem,
+  IndyProtocols,
+  IndyCore,
+  Tee;
+
+contains
+  flickr.access.token in 'flickr.access.token.pas',
+  flickr.albums in 'flickr.albums.pas',
+  flickr.base in 'flickr.base.pas',
+  flickr.call.methods in 'flickr.call.methods.pas',
+  flickr.charts in 'flickr.charts.pas',
+  flickr.filtered.list in 'flickr.filtered.list.pas',
+  flickr.globals in 'flickr.globals.pas',
+  flickr.lib.integerlist in 'flickr.lib.integerlist.pas',
+  flickr.lib.parallel in 'flickr.lib.parallel.pas',
+  flickr.oauth in 'flickr.oauth.pas',
+  flickr.photos in 'flickr.photos.pas',
+  flickr.pools in 'flickr.pools.pas',
+  flickr.profile in 'flickr.profile.pas',
+  flickr.profiles in 'flickr.profiles.pas',
+  flickr.rejected in 'flickr.rejected.pas',
+  flickr.repository in 'flickr.repository.pas',
+  flickr.rest in 'flickr.rest.pas',
+  flickr.signature in 'flickr.signature.pas',
+  flickr.stats in 'flickr.stats.pas',
+  flickr.tendency in 'flickr.tendency.pas',
+  flickr.top.stats in 'flickr.top.stats.pas',
+  flickr.url.attributes in 'flickr.url.attributes.pas';
+
+end.

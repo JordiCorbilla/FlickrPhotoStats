@@ -3,31 +3,9 @@ program FlickrPhotoAnalytics;
 uses
   Forms,
   frmFlickrStats in 'frmFlickrStats.pas' {frmFlickr},
-  flickr.repository in 'flickr.repository.pas',
-  flickr.photos in 'flickr.photos.pas',
-  flickr.stats in 'flickr.stats.pas',
-  flickr.rest in 'flickr.rest.pas',
   Vcl.Themes,
   Vcl.Styles,
-  flickr.globals in 'flickr.globals.pas',
-  flickr.top.stats in 'flickr.top.stats.pas',
-  flickr.oauth in 'flickr.oauth.pas',
-  flickr.signature in 'flickr.signature.pas',
-  flickr.access.token in 'flickr.access.token.pas',
-  flickr.lib.parallel in 'flickr.lib.parallel.pas',
-  flickr.call.methods in 'flickr.call.methods.pas',
-  flickr.profiles in 'flickr.profiles.pas',
-  flickr.profile in 'flickr.profile.pas',
-  flickr.rejected in 'flickr.rejected.pas',
-  flickr.filtered.list in 'flickr.filtered.list.pas',
-  flickr.base in 'flickr.base.pas',
-  flickr.url.attributes in 'flickr.url.attributes.pas',
-  flickr.pools in 'flickr.pools.pas',
-  flickr.albums in 'flickr.albums.pas',
-  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
-  flickr.tendency in 'flickr.tendency.pas',
-  flickr.lib.integerlist in 'flickr.lib.integerlist.pas',
-  flickr.charts in 'flickr.charts.pas';
+  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext};
 
 {$R *.res}
 
