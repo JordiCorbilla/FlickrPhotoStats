@@ -36,12 +36,14 @@ type
   IFlickrChart = interface
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
+    function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   end;
 
   TFlickrChart = Class(TInterfacedObject, IFlickrChart)
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
+    function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   End;
 
@@ -96,6 +98,35 @@ begin
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
   Series.ParentChart := parent;
+  result := Series;
+end;
+
+function TFlickrChart.GetNewPieSeries(parent: TChart; marks: boolean): TPieSeries;
+var
+  Series : TPieSeries;
+begin
+  Series := TPieSeries.Create(parent);
+  Series.Marks.Visible := false;
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Pie';
+  Series.YValues.Order := loNone;
+  Series.Frame.InnerBrush.BackColor := clRed;
+  Series.Frame.InnerBrush.Gradient.EndColor := clGray;
+  Series.Frame.InnerBrush.Gradient.MidColor := clWhite;
+  Series.Frame.InnerBrush.Gradient.StartColor := 4210752;
+  Series.Frame.InnerBrush.Gradient.Visible := True;
+  Series.Frame.MiddleBrush.BackColor := clYellow;
+  Series.Frame.MiddleBrush.Gradient.EndColor := 8553090;
+  Series.Frame.MiddleBrush.Gradient.MidColor := clWhite;
+  Series.Frame.MiddleBrush.Gradient.StartColor := clGray;
+  Series.Frame.MiddleBrush.Gradient.Visible := True;
+  Series.Frame.OuterBrush.BackColor := clGreen;
+  Series.Frame.OuterBrush.Gradient.EndColor := 4210752;
+  Series.Frame.OuterBrush.Gradient.MidColor := clWhite;
+  Series.Frame.OuterBrush.Gradient.StartColor := clSilver;
+  Series.Frame.OuterBrush.Gradient.Visible := True;
+  Series.Frame.Width := 4;
+  Series.OtherSlice.Legend.Visible := False;
   result := Series;
 end;
 

@@ -50,6 +50,7 @@ type
     function GetGroups(): TList<IPool>;
     function getTaken: string;
     function InGroup(groupId : string) : boolean;
+    function InAlbum(albumId : string) : boolean;
     procedure SetTaken(const Value: string);
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -102,6 +103,7 @@ type
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TList<IAlbum>; groups : TList<IPool>);
     function InGroup(groupId : string) : boolean;
+    function InAlbum(albumId : string) : boolean;
     constructor Create(); overload;
     constructor Create(Id: string; Title: string; taken : string); overload;
     destructor Destroy(); override;
@@ -300,6 +302,21 @@ begin
     end;
   end;
   result := FStats[index].views;
+end;
+
+function TPhoto.InAlbum(albumId: string): boolean;
+var
+  i: integer;
+  found: Boolean;
+begin
+  i := 0;
+  found := false;
+  while (not found) and (i < FAlbums.count) do
+  begin
+    found := FAlbums[i].id = albumId;
+    inc(i);
+  end;
+  Result := found;
 end;
 
 function TPhoto.InGroup(groupId: string): boolean;

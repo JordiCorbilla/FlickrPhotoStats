@@ -198,6 +198,33 @@ type
     Label21: TLabel;
     edtMaxLog: TEdit;
     chkRealTime: TCheckBox;
+    Splitter3: TSplitter;
+    chartAlbum: TChart;
+    Series5: TPieSeries;
+    Panel12: TPanel;
+    Splitter4: TSplitter;
+    Button8: TButton;
+    ChartHallLikes: TChart;
+    PieSeries1: TPieSeries;
+    Splitter5: TSplitter;
+    chartHallViews: TChart;
+    PieSeries2: TPieSeries;
+    TabSheet8: TTabSheet;
+    Panel13: TPanel;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    listValuesViewsAlbums: TMemo;
+    Label22: TLabel;
+    listValuesViewsAlbumsID: TMemo;
+    btnLoadOptions: TButton;
+    Label23: TLabel;
+    Label24: TLabel;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    listValuesLikesAlbums: TMemo;
+    listValuesLikesAlbumsID: TMemo;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -239,6 +266,13 @@ type
     procedure CheckAll1Click(Sender: TObject);
     procedure UncheckAll1Click(Sender: TObject);
     procedure showMarksClick(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries;
+      ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X,
+      Y: Integer);
+    procedure Button11Click(Sender: TObject);
+    procedure btnLoadOptionsClick(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -251,7 +285,7 @@ type
     procedure LoadHallOfFame(repository: IFlickrRepository);
     // function MD5(apikey, secret: string): string;
     function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
-    function getTotalGroupCounts: Integer;
+    function getTotalAlbumsCounts: Integer;
     procedure Log(s: string);
     procedure UpdateSingleStats(id: string);
     function SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
@@ -287,7 +321,7 @@ uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
-  flickr.pools, flickr.albums;
+  flickr.pools, flickr.albums, System.inifiles;
 
 {$R *.dfm}
 
@@ -502,7 +536,7 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
   end;
 
-  totalViewsacc := totalViewsacc + getTotalGroupCounts();
+  totalViewsacc := totalViewsacc + getTotalAlbumsCounts();
 
   stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
   globalsRepository.AddGlobals(stat);
@@ -828,6 +862,9 @@ begin
   LoadProfiles();
   st.Stop;
   log('Loading Profiles: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+
+  Button9Click(sender);
+  btnLoadOptionsClick(Sender);
 end;
 
 procedure TfrmFlickr.LoadProfiles();
@@ -1269,6 +1306,186 @@ begin
   btnSave.Enabled := false;
 end;
 
+procedure TfrmFlickr.Button10Click(Sender: TObject);
+var
+  I: Integer;
+  j : Integer;
+  photo : IPhoto;
+  urlAdd : string;
+  timedOut : boolean;
+  response : string;
+  value : string;
+begin
+  if (apikey.text = '') or (userToken = '') then
+  begin
+    showmessage('You are not authorized!');
+    exit;
+  end;
+  //Organise pictures.
+  //Get the picture from the left and with current value of views and likes and move them to the album.
+  for I := 0 to repository.photos.Count-1 do
+  begin
+    for j := 0 to listValuesViewsAlbums.Lines.Count-1 do
+    begin
+      photo := repository.photos[i];
+      value := listValuesViewsAlbums.Lines[j].Replace('.','');
+      if (photo.getTotalViews() >= value.ToInteger) then
+      begin
+        //Add the photo to the album
+        if not photo.inAlbum(listValuesViewsAlbumsID.Lines[j]) then
+        begin
+          urlAdd := TFlickrRest.New().getPhotoSetsAdd(apikey.text, userToken, secret.text, userTokenSecret, photo.Id, listValuesViewsAlbumsID.Lines[j]);
+          timedout := false;
+          while (not timedout) do
+          begin
+            try
+              response := IdHTTP1.Get(urlAdd);
+              response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
+              response := response.Replace('<rsp stat="', '');
+              response := response.Replace('">', '');
+              response := response.Replace('</rsp>', '');
+              response := response.Replace('<', '');
+              response := response.Replace('/>', '');
+              response := response.Replace('err code="5" msg="', '');
+              response := response.Replace('err code="3" msg="', '');
+              response := response.Replace('err code="10" msg="', '');
+              response := response.Replace('err code="6" msg="', '');
+              response := response.Replace('err code="7" msg="', '');
+              response := response.Replace('"', '');
+              Log(response);
+              timedout := true;
+            except
+              on e: exception do
+              begin
+                sleep(2000);
+                timedout := false;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+
+    for j := 0 to listValuesLikesAlbums.Lines.Count-1 do
+    begin
+      photo := repository.photos[i];
+      value := listValuesLikesAlbums.Lines[j].Replace('.','');
+      if (photo.getTotalLikes() >= value.ToInteger) then
+      begin
+        //Add the photo to the album
+        if not photo.inAlbum(listValuesLikesAlbumsID.Lines[j]) then
+        begin
+          urlAdd := TFlickrRest.New().getPhotoSetsAdd(apikey.text, userToken, secret.text, userTokenSecret, photo.Id, listValuesLikesAlbumsID.Lines[j]);
+          timedout := false;
+          while (not timedout) do
+          begin
+            try
+              response := IdHTTP1.Get(urlAdd);
+              response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
+              response := response.Replace('<rsp stat="', '');
+              response := response.Replace('">', '');
+              response := response.Replace('</rsp>', '');
+              response := response.Replace('<', '');
+              response := response.Replace('/>', '');
+              response := response.Replace('err code="5" msg="', '');
+              response := response.Replace('err code="3" msg="', '');
+              response := response.Replace('err code="10" msg="', '');
+              response := response.Replace('err code="6" msg="', '');
+              response := response.Replace('err code="7" msg="', '');
+              response := response.Replace('"', '');
+              Log(response);
+              timedout := true;
+            except
+              on e: exception do
+              begin
+                sleep(2000);
+                timedout := false;
+              end;
+            end;
+          end;
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmFlickr.Button11Click(Sender: TObject);
+var
+  iniFile : TInifile;
+  i: Integer;
+begin
+  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
+  try
+    inifile.WriteString('System', 'MaxItemsListGlobals', edtMax.Text);
+    inifile.WriteBool('System', 'ShowMarksInGraphs', showMarks.Checked);
+    inifile.WriteBool('System', 'ConsiderPendingQueueItems', chkPending.Checked);
+    inifile.WriteBool('System', 'UpdateCountsRealTime', chkRealTime.Checked);
+    inifile.WriteString('System', 'MaxNumberOfLinesLog', edtMaxLog.Text);
+
+    inifile.WriteInteger('AlbumViews', 'MaxItems', listValuesViewsAlbums.Lines.count);
+
+    for i := 0 to listValuesViewsAlbums.Lines.Count-1 do
+    begin
+      inifile.WriteString('AlbumViews', 'Value' + i.ToString(), listValuesViewsAlbums.Lines[i]);
+      inifile.WriteString('AlbumViews', 'ValueID' + i.ToString(), listValuesViewsAlbumsID.Lines[i]);
+    end;
+
+    inifile.WriteInteger('AlbumLikes', 'MaxItems', listValuesLikesAlbums.Lines.count);
+
+    for i := 0 to listValuesLikesAlbums.Lines.Count-1 do
+    begin
+      inifile.WriteString('AlbumLikes', 'Value' + i.ToString(), listValuesLikesAlbums.Lines[i]);
+      inifile.WriteString('AlbumLikes', 'ValueID' + i.ToString(), listValuesLikesAlbumsID.Lines[i]);
+    end;
+  finally
+    inifile.Free;
+  end;
+end;
+
+procedure TfrmFlickr.btnLoadOptionsClick(Sender: TObject);
+var
+  inifile : Tinifile;
+  maxAlbumViews : integer;
+  maxAlbumLikes : integer;
+  i : integer;
+  value : string;
+begin
+  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
+  try
+    edtMax.Text := inifile.ReadString('System', 'MaxItemsListGlobals', '80');
+    showMarks.Checked := inifile.ReadBool('System', 'ShowMarksInGraphs', false);
+    chkPending.Checked := inifile.ReadBool('System', 'ConsiderPendingQueueItems', true);
+    chkRealTime.Checked := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
+    edtMaxLog.Text := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
+
+    maxAlbumViews := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
+
+    listValuesViewsAlbums.Lines.Clear;
+    listValuesViewsAlbumsID.Lines.Clear;
+    for i := 0 to maxAlbumViews - 1 do
+    begin
+      value := inifile.ReadString('AlbumViews', 'Value' + i.ToString(), '');
+      listValuesViewsAlbums.Lines.Add(value);
+      value := inifile.ReadString('AlbumViews', 'ValueID' + i.ToString(), '');
+      listValuesViewsAlbumsID.Lines.Add(value);
+    end;
+
+    maxAlbumLikes := inifile.ReadInteger('AlbumLikes', 'MaxItems', 0);
+
+    listValuesLikesAlbums.Lines.Clear;
+    listValuesLikesAlbumsID.Lines.Clear;
+    for i := 0 to maxAlbumLikes - 1 do
+    begin
+      value := inifile.ReadString('AlbumLikes', 'Value' + i.ToString(), '');
+      listValuesLikesAlbums.Lines.Add(value);
+      value := inifile.ReadString('AlbumLikes', 'ValueID' + i.ToString(), '');
+      listValuesLikesAlbumsID.Lines.Add(value);
+    end;
+  finally
+    inifile.Free;
+  end;
+end;
+
 procedure TfrmFlickr.Button1Click(Sender: TObject);
 var
   urlGroups: string;
@@ -1364,6 +1581,11 @@ var
   total : integer;
   max : string;
 begin
+  if (apikey.text = '') or (userToken = '') then
+  begin
+    showmessage('You are not authorized!');
+    exit;
+  end;
   photos := TList<string>.Create;
   groups := TList<string>.Create;
 
@@ -1585,6 +1807,17 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.Button9Click(Sender: TObject);
+begin
+  getTotalAlbumsCounts();
+end;
+
+procedure TfrmFlickr.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  if ValueIndex >= 0 then
+    ShowMessage(Series.ValueMarkText[ValueIndex]);
+end;
+
 procedure TfrmFlickr.CheckAll1Click(Sender: TObject);
 var
   i: Integer;
@@ -1661,7 +1894,7 @@ var
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
-    showmessage('Api key can''t be empty');
+    showmessage('You are not authorized!');
     exit;
   end;
   if (edtUserId.text = '') or (userTokenSecret = '') then
@@ -1786,7 +2019,7 @@ begin
   listGroups.Visible := true;
 end;
 
-function TfrmFlickr.getTotalGroupCounts(): Integer;
+function TfrmFlickr.getTotalAlbumsCounts(): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -1798,11 +2031,20 @@ var
   title: string;
   countViews: Integer;
   numPhotos: Integer;
+  Series : TPieSeries;
+  color : TColor;
 begin
   //btnLoad.Enabled := false;
   //btnAdd.Enabled := false;
   //btnAddItems.Enabled := false;
   //batchUpdate.Enabled := false;
+
+  if chartAlbum.SeriesList.Count = 1 then
+    chartAlbum.RemoveAllSeries;
+
+  Series := flickrChart.GetNewPieSeries(Chart2, true);
+
+
   listPhotosUser.Visible := false;
   lblfetching.Visible := true;
   progressfetching.Visible := true;
@@ -1835,6 +2077,8 @@ begin
     end;
     progressfetching.position := progressfetching.position + 1;
     listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
+    color := RGB(Random(255), Random(255), Random(255));
+    Series.Add(numPhotos.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
     Taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -1864,6 +2108,8 @@ begin
       end;
       progressfetching.position := progressfetching.position + 1;
       listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
+      color := RGB(Random(255), Random(255), Random(255));
+      Series.Add(numPhotos.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
       Taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -1873,6 +2119,9 @@ begin
   //btnAdd.Enabled := true;
   //batchUpdate.Enabled := true;
   //btnAddItems.Enabled := true;
+
+  chartAlbum.AddSeries(Series);
+
   lblfetching.Visible := false;
   progressfetching.Visible := false;
   Taskbar1.ProgressValue := 0;
