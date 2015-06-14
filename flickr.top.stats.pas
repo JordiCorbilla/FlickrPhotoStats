@@ -30,7 +30,7 @@ unit flickr.top.stats;
 interface
 
 uses
-  Flickr.repository, Contnrs, Generics.Collections, Generics.defaults, flickr.photos;
+  Flickr.repository, Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series;
 
 type
   TIPhotoComparerLikes = class(TComparer<IPhoto>)
@@ -64,8 +64,8 @@ type
   public
     constructor Create(repository : IFlickrRepository);
     destructor Destroy(); override;
-    function GetTopXNumberOfLikes(num : integer) : string;
-    function GetTopXNumberOfViews(num : integer) : string;
+    function GetTopXNumberOfLikes(num : integer; series : TPieSeries) : string;
+    function GetTopXNumberOfViews(num : integer; series : TPieSeries) : string;
     function GetTopXNumberOfComments(num : integer) : string;
     function GetTopXNumberofMostViewed() : TList<IPhoto>;
     function GetTopXNumberofMostLiked() : TList<IPhoto>;
@@ -75,7 +75,7 @@ type
 implementation
 
 uses
-  Sysutils, Dialogs;
+  Sysutils, Dialogs, System.UITypes, windows;
 
 { TTopStats }
 
@@ -117,12 +117,13 @@ begin
   result := description;
 end;
 
-function TTopStats.GetTopXNumberOfLikes(num: integer): string;
+function TTopStats.GetTopXNumberOfLikes(num: integer; series : TPieSeries): string;
 var
   PhotosSorted: TList<IPhoto>;
   IPhotoComparer : TIPhotoComparerLikes;
   i : integer;
   description : string;
+  color : TColor;
 begin
   IPhotoComparer := TIPhotoComparerLikes.Create;
   PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
@@ -138,6 +139,8 @@ begin
   for i := 0 to num-1 do
   begin
     description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
+    color := RGB(Random(255), Random(255), Random(255));
+    series.Add(PhotosSorted[i].getTotalLikes.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString, color);
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;
@@ -182,12 +185,13 @@ begin
   result := PhotosSorted;
 end;
 
-function TTopStats.GetTopXNumberOfViews(num: integer): string;
+function TTopStats.GetTopXNumberOfViews(num: integer; series : TPieSeries): string;
 var
   PhotosSorted: TList<IPhoto>;
   IPhotoComparer : TIPhotoComparerViews;
   i : integer;
   description : string;
+  color : TColor;
 begin
   IPhotoComparer := TIPhotoComparerViews.Create;
   PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
@@ -203,6 +207,8 @@ begin
   for i := 0 to num-1 do
   begin
     description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
+    color := RGB(Random(255), Random(255), Random(255));
+    series.Add(PhotosSorted[i].getTotalViews.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString, color);
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;

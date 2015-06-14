@@ -89,7 +89,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Dialogs;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin

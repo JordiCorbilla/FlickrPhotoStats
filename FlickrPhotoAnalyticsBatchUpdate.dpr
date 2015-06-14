@@ -62,11 +62,11 @@ begin
       TParallel.ForEach(0, repository.photos.count - 1,
         procedure(index: Integer; threadId: Integer)
         begin
-          RequestInformation_REST_Flickr(listPhotos.Items[index].Caption);
+          TRepositoryRest.updatePhoto(apikey, repository.photos[index].Caption);
         end);
 
     finally
-
+      repository := nil;
     end;
   except
     on E: Exception do

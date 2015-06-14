@@ -33,7 +33,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
-  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls,
+  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls,
   flickr.repository,
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus,
   System.UITypes, flickr.globals,
@@ -51,109 +51,11 @@ type
     XMLDocument1: TXMLDocument;
     Panel1: TPanel;
     btnSave: TButton;
-    Panel2: TPanel;
-    listPhotos: TListView;
-    Splitter1: TSplitter;
-    Panel3: TPanel;
-    ProgressBar1: TProgressBar;
-    rbViews: TRadioButton;
-    rbLikes: TRadioButton;
-    rbComments: TRadioButton;
-    Panel5: TPanel;
-    Label2: TLabel;
-    photoId: TEdit;
-    btnAdd: TButton;
-    batchUpdate: TButton;
-    PageControl1: TPageControl;
-    Statistics: TTabSheet;
-    Panel4: TPanel;
-    Chart2: TChart;
-    Series4: TBarSeries;
-    Chart1: TChart;
-    Series1: TLineSeries;
-    Series2: TLineSeries;
-    Series3: TLineSeries;
-    globals: TTabSheet;
-    Process: TLabel;
-    ChartComments: TChart;
-    LineSeries1: TLineSeries;
-    ChartViews: TChart;
-    LineSeries4: TLineSeries;
-    ChartLikes: TChart;
-    LineSeries7: TLineSeries;
     ImageList1: TImageList;
-    TabSheet1: TTabSheet;
-    Panel6: TPanel;
-    btnGetList: TButton;
-    Label4: TLabel;
-    edtUserId: TEdit;
-    listPhotosUser: TListView;
-    Panel7: TPanel;
-    btnAddItems: TButton;
-    lblfetching: TLabel;
-    progressfetching: TProgressBar;
     Taskbar1: TTaskbar;
     ActionList1: TActionList;
-    TabSheet2: TTabSheet;
-    Panel8: TPanel;
-    btnGetGroups: TButton;
-    progressfetchinggroups: TProgressBar;
     Authenticate: TButton;
-    TabSheet3: TTabSheet;
-    edtMax: TEdit;
-    Label9: TLabel;
-    btnExcel: TButton;
-    TabSheet4: TTabSheet;
-    dailyViews: TChart;
-    LineSeries2: TBarSeries;
-    dailyLikes: TChart;
-    BarSeries1: TBarSeries;
-    Label1: TLabel;
-    apikey: TEdit;
-    Label8: TLabel;
-    secret: TEdit;
-    TabSheet5: TTabSheet;
-    mLogs: TMemo;
-    TabSheet6: TTabSheet;
-    Memo1: TMemo;
-    Authentication: TTabSheet;
-    WebBrowser1: TWebBrowser;
     btnGetToken: TButton;
-    Splitter2: TSplitter;
-    statsDay: TChart;
-    BarSeries2: TBarSeries;
-    TabSheet7: TTabSheet;
-    listAlbums: TMemo;
-    Button1: TButton;
-    Button2: TButton;
-    btnAddPhotos: TButton;
-    Label5: TLabel;
-    edtFilterGroup: TEdit;
-    btnFilterOK: TButton;
-    btnFilterCancel: TButton;
-    PageControl2: TPageControl;
-    tabList: TTabSheet;
-    tabStatus: TTabSheet;
-    Panel9: TPanel;
-    Label10: TLabel;
-    pstatus: TProgressBar;
-    listGroups: TListView;
-    Panel10: TPanel;
-    mStatus: TMemo;
-    profiles: TGroupBox;
-    Label6: TLabel;
-    ComboBox1: TComboBox;
-    btnLoadProfile: TButton;
-    Label7: TLabel;
-    edtProfile: TEdit;
-    btnSaveProfile: TButton;
-    chkAddItem: TCheckBox;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
-    chkReplaceProfile: TCheckBox;
-    chkDisplayOnly: TCheckBox;
-    Label11: TLabel;
-    chkUpdate: TCheckBox;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -161,13 +63,6 @@ type
     Label16: TLabel;
     Label17: TLabel;
     Label18: TLabel;
-    Panel11: TPanel;
-    Button4: TButton;
-    Button5: TButton;
-    Edit1: TEdit;
-    Button3: TButton;
-    chkUpdateCollections: TCheckBox;
-    showMarks: TCheckBox;
     PopupMenu1: TPopupMenu;
     MarkGroups1: TMenuItem;
     N1: TMenuItem;
@@ -175,11 +70,6 @@ type
     ShowListAlbums1: TMenuItem;
     N2: TMenuItem;
     GotoURL1: TMenuItem;
-    Label3: TLabel;
-    Edit2: TEdit;
-    Button6: TButton;
-    Button7: TButton;
-    ComboBox2: TComboBox;
     N3: TMenuItem;
     StartMarking1: TMenuItem;
     EndMarking1: TMenuItem;
@@ -189,42 +79,161 @@ type
     btnLoad: TButton;
     Label19: TLabel;
     Label20: TLabel;
-    MostViewed: TTabSheet;
-    mostviewschart: TChart;
-    BarSeries3: TBarSeries;
-    mostlikeschart: TChart;
-    BarSeries4: TBarSeries;
-    chkPending: TCheckBox;
-    Label21: TLabel;
-    edtMaxLog: TEdit;
-    chkRealTime: TCheckBox;
-    Splitter3: TSplitter;
-    chartAlbum: TChart;
-    Series5: TPieSeries;
+    PageControl1: TPageControl;
+    Dashboard: TTabSheet;
+    TabSheet2: TTabSheet;
+    Panel2: TPanel;
+    listPhotos: TListView;
+    Panel5: TPanel;
+    Label2: TLabel;
+    Label3: TLabel;
+    photoId: TEdit;
+    btnAdd: TButton;
+    batchUpdate: TButton;
+    btnExcel: TButton;
+    chkAddItem: TCheckBox;
+    CheckBox2: TCheckBox;
+    chkUpdate: TCheckBox;
+    chkUpdateCollections: TCheckBox;
+    Edit2: TEdit;
+    Button6: TButton;
+    Button7: TButton;
+    ComboBox2: TComboBox;
+    Splitter1: TSplitter;
+    PageControl2: TPageControl;
+    Statistics: TTabSheet;
+    Panel4: TPanel;
+    Splitter2: TSplitter;
+    Chart1: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    statsDay: TChart;
+    BarSeries2: TBarSeries;
+    TabSheet6: TTabSheet;
+    Memo1: TMemo;
     Panel12: TPanel;
-    Splitter4: TSplitter;
-    Button8: TButton;
-    ChartHallLikes: TChart;
-    PieSeries1: TPieSeries;
-    Splitter5: TSplitter;
-    chartHallViews: TChart;
-    PieSeries2: TPieSeries;
-    TabSheet8: TTabSheet;
+    btnLoadHall: TButton;
+    TabSheet7: TTabSheet;
+    listAlbums: TMemo;
     Panel13: TPanel;
     Button9: TButton;
     Button10: TButton;
-    Button11: TButton;
-    listValuesViewsAlbums: TMemo;
+    TabSheet3: TTabSheet;
+    Panel6: TPanel;
+    Label4: TLabel;
+    lblfetching: TLabel;
+    btnGetList: TButton;
+    edtUserId: TEdit;
+    progressfetching: TProgressBar;
+    listPhotosUser: TListView;
+    Panel7: TPanel;
+    btnAddItems: TButton;
+    TabSheet5: TTabSheet;
+    Panel8: TPanel;
+    Label5: TLabel;
+    Label11: TLabel;
+    btnGetGroups: TButton;
+    progressfetchinggroups: TProgressBar;
+    Button2: TButton;
+    btnAddPhotos: TButton;
+    edtFilterGroup: TEdit;
+    btnFilterOK: TButton;
+    btnFilterCancel: TButton;
+    Profiles: TGroupBox;
+    Label6: TLabel;
+    Label7: TLabel;
+    ComboBox1: TComboBox;
+    btnLoadProfile: TButton;
+    edtProfile: TEdit;
+    btnSaveProfile: TButton;
+    chkReplaceProfile: TCheckBox;
+    chkDisplayOnly: TCheckBox;
+    CheckBox1: TCheckBox;
+    PageControl3: TPageControl;
+    tabList: TTabSheet;
+    listGroups: TListView;
+    tabStatus: TTabSheet;
+    Panel9: TPanel;
+    Label10: TLabel;
+    pstatus: TProgressBar;
+    Panel10: TPanel;
+    mStatus: TMemo;
+    TabSheet8: TTabSheet;
+    mLogs: TMemo;
+    Authentication: TTabSheet;
+    WebBrowser1: TWebBrowser;
+    Panel11: TPanel;
+    Button4: TButton;
+    Button5: TButton;
+    Edit1: TEdit;
+    Button3: TButton;
+    TabSheet9: TTabSheet;
+    Label9: TLabel;
+    Label1: TLabel;
+    Label8: TLabel;
+    Label21: TLabel;
     Label22: TLabel;
-    listValuesViewsAlbumsID: TMemo;
-    btnLoadOptions: TButton;
     Label23: TLabel;
     Label24: TLabel;
     Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
+    edtMax: TEdit;
+    apikey: TEdit;
+    secret: TEdit;
+    Button1: TButton;
+    showMarks: TCheckBox;
+    chkPending: TCheckBox;
+    edtMaxLog: TEdit;
+    chkRealTime: TCheckBox;
+    Button11: TButton;
+    listValuesViewsAlbums: TMemo;
+    listValuesViewsAlbumsID: TMemo;
+    btnLoadOptions: TButton;
     listValuesLikesAlbums: TMemo;
     listValuesLikesAlbumsID: TMemo;
+    TabSheet10: TTabSheet;
+    Panel3: TPanel;
+    Process: TLabel;
+    ProgressBar1: TProgressBar;
+    rbViews: TRadioButton;
+    rbLikes: TRadioButton;
+    rbComments: TRadioButton;
+    Chart2: TChart;
+    Series4: TBarSeries;
+    Panel14: TPanel;
+    Splitter6: TSplitter;
+    Splitter7: TSplitter;
+    Panel15: TPanel;
+    Panel16: TPanel;
+    Splitter8: TSplitter;
+    dailyViews: TChart;
+    LineSeries2: TBarSeries;
+    dailyLikes: TChart;
+    BarSeries1: TBarSeries;
+    Panel17: TPanel;
+    Splitter9: TSplitter;
+    ChartViews: TChart;
+    LineSeries4: TLineSeries;
+    ChartComments: TChart;
+    LineSeries1: TLineSeries;
+    ChartLikes: TChart;
+    LineSeries7: TLineSeries;
+    Panel18: TPanel;
+    mostviewschart: TChart;
+    BarSeries3: TBarSeries;
+    mostlikeschart: TChart;
+    BarSeries4: TBarSeries;
+    Panel19: TPanel;
+    ChartHallLikes: TChart;
+    PieSeries1: TPieSeries;
+    chartAlbum: TChart;
+    Series5: TPieSeries;
+    chartHallViews: TChart;
+    PieSeries2: TPieSeries;
+    Splitter3: TSplitter;
+    Memo2: TMemo;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -273,6 +282,7 @@ type
     procedure Button11Click(Sender: TObject);
     procedure btnLoadOptionsClick(Sender: TObject);
     procedure Button10Click(Sender: TObject);
+    procedure btnLoadHallClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -296,6 +306,7 @@ type
     procedure UpdateMostViewedChart;
     procedure UpdateMostLikedChart;
     procedure UpdateLabels;
+    procedure AlbumLog(s: string);
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -406,6 +417,16 @@ begin
   if mLogs.Lines.Count > max.ToInteger then
     mLogs.Lines.Clear;
   mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
+end;
+
+procedure TfrmFlickr.AlbumLog(s: string);
+var
+  max : string;
+begin
+  max := edtMaxLog.text;
+  if memo2.Lines.Count > max.ToInteger then
+    memo2.Lines.Clear;
+  memo2.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
 procedure TfrmFlickr.MarkGroups1Click(Sender: TObject);
@@ -867,6 +888,11 @@ begin
   btnLoadOptionsClick(Sender);
 end;
 
+procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
+begin
+  LoadHallOfFame(repository);
+end;
+
 procedure TfrmFlickr.LoadProfiles();
 var
   i : integer;
@@ -888,6 +914,7 @@ procedure TfrmFlickr.LoadHallOfFame(repository: IFlickrRepository);
 var
   topStats: TTopStats;
   maxValues: string;
+  SeriesV, SeriesL : TPieSeries;
 begin
   topStats := TTopStats.Create(repository);
   Memo1.Lines.Clear;
@@ -895,10 +922,21 @@ begin
   Memo1.Lines.Add('************ HALL OF FAME **********');
   Memo1.Lines.Add('************************************');
 
+  if chartHallViews.SeriesList.Count = 1 then
+    chartHallViews.RemoveAllSeries;
+  if chartHallLikes.SeriesList.Count = 1 then
+    chartHallLikes.RemoveAllSeries;
+
+  SeriesV := flickrChart.GetNewPieSeries(chartHallViews, true);
+  SeriesL := flickrChart.GetNewPieSeries(chartHallLikes, true);
+
   maxValues := edtMax.text;
-  Memo1.Lines.Add(topStats.GetTopXNumberOfViews(maxValues.ToInteger()));
-  Memo1.Lines.Add(topStats.GetTopXNumberOfLikes(maxValues.ToInteger()));
+  Memo1.Lines.Add(topStats.GetTopXNumberOfViews(maxValues.ToInteger(), SeriesV));
+  Memo1.Lines.Add(topStats.GetTopXNumberOfLikes(maxValues.ToInteger(), SeriesL));
   Memo1.Lines.Add(topStats.GetTopXNumberOfComments(maxValues.ToInteger()));
+
+  chartHallViews.AddSeries(SeriesV);
+  chartHallLikes.AddSeries(SeriesL);
   topStats.Free;
 end;
 
@@ -1352,7 +1390,7 @@ begin
               response := response.Replace('err code="6" msg="', '');
               response := response.Replace('err code="7" msg="', '');
               response := response.Replace('"', '');
-              Log(response);
+              AlbumLog(response);
               timedout := true;
             except
               on e: exception do
@@ -1393,7 +1431,7 @@ begin
               response := response.Replace('err code="6" msg="', '');
               response := response.Replace('err code="7" msg="', '');
               response := response.Replace('"', '');
-              Log(response);
+              AlbumLog(response);
               timedout := true;
             except
               on e: exception do
@@ -2034,15 +2072,10 @@ var
   Series : TPieSeries;
   color : TColor;
 begin
-  //btnLoad.Enabled := false;
-  //btnAdd.Enabled := false;
-  //btnAddItems.Enabled := false;
-  //batchUpdate.Enabled := false;
-
   if chartAlbum.SeriesList.Count = 1 then
     chartAlbum.RemoveAllSeries;
 
-  Series := flickrChart.GetNewPieSeries(Chart2, true);
+  Series := flickrChart.GetNewPieSeries(chartAlbum, true);
 
 
   listPhotosUser.Visible := false;
@@ -2078,7 +2111,7 @@ begin
     progressfetching.position := progressfetching.position + 1;
     listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     color := RGB(Random(255), Random(255), Random(255));
-    Series.Add(numPhotos.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
+    Series.Add(countViews.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
     Taskbar1.ProgressValue := progressfetching.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -2109,16 +2142,12 @@ begin
       progressfetching.position := progressfetching.position + 1;
       listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       color := RGB(Random(255), Random(255), Random(255));
-      Series.Add(numPhotos.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
+      Series.Add(countViews.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
       Taskbar1.ProgressValue := progressfetching.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
   end;
-  //btnLoad.Enabled := true;
-  //btnAdd.Enabled := true;
-  //batchUpdate.Enabled := true;
-  //btnAddItems.Enabled := true;
 
   chartAlbum.AddSeries(Series);
 

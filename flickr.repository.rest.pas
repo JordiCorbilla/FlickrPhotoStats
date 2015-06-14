@@ -8,7 +8,7 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(id : string);
+    class procedure UpdatePhoto(apikey, id : string);
   end;
 
 implementation
@@ -16,12 +16,13 @@ implementation
 uses
   WinApi.ActiveX, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
-  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ComCtrls, flickr.photos,
-  System.SyncObjs, generics.collections;
+  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
+  System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
+  flickr.rest, System.SysUtils;
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(id: string);
+class procedure TRepositoryRest.UpdatePhoto(apikey, id: string);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
@@ -48,7 +49,7 @@ begin
       while (not timedout) do
       begin
         try
-          response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey.text, id));
+          response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey, id));
           timedout := true;
         except
           on e: exception do
@@ -120,8 +121,6 @@ begin
     Albums := TList<IAlbum>.create;
     Groups := TList<IPool>.create;
 
-    if chkUpdateCollections.checked then
-    begin
       IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
       IdIOHandler.ReadTimeout := IdTimeoutInfinite;
       IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
@@ -161,7 +160,6 @@ begin
         IdHTTP.Free;
         xmlDocument := nil;
       end;
-    end;
 
     if repository.ExistPhoto(photo, existing) then
     begin
@@ -212,8 +210,8 @@ begin
       itemExisting.SubItems.Add(photo.Groups.Count.ToString());
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
     end;
-    if chkRealTime.Checked then
-      UpdateTotals(true);
+
+    //Save the repository
   finally
     CoUninitialize;
   end;
