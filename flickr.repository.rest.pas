@@ -1,6 +1,36 @@
+// Copyright (c) 2015, Jordi Corbilla
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+// - Redistributions of source code must retain the above copyright notice,
+// this list of conditions and the following disclaimer.
+// - Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
+// - Neither the name of this library nor the names of its contributors may be
+// used to endorse or promote products derived from this software without
+// specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+
 unit flickr.repository.rest;
 
 interface
+
+uses
+  Windows, flickr.repository;
 
 type
   IRepositoryRest = interface
@@ -8,8 +38,12 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(apikey, id : string);
+    class procedure UpdatePhoto(repository: IFlickrRepository; apikey, id: string);
+    class function getTotalAlbumsCounts(apikey, userId : string): Integer; static;
   end;
+
+var
+  CritSect : TRTLCriticalSection;
 
 implementation
 
@@ -22,7 +56,7 @@ uses
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(apikey, id: string);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; apikey, id: string);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
@@ -94,7 +128,7 @@ begin
       while (not timedout) do
       begin
         try
-          response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey.text, id));
+          response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey, id));
           timedout := true;
         except
           on e: exception do
@@ -132,7 +166,7 @@ begin
         while (not timedout) do
         begin
           try
-            response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey.text, id));
+            response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey, id));
             timedout := true;
           except
             on e: exception do
@@ -161,6 +195,8 @@ begin
         xmlDocument := nil;
       end;
 
+    EnterCriticalSection(CritSect);
+    WriteLn('Updating : ' + title);
     if repository.ExistPhoto(photo, existing) then
     begin
       photo := existing;
@@ -177,44 +213,108 @@ begin
       photo.AddCollections(Albums, groups);
       repository.AddPhoto(photo);
     end;
-
-    if not ExistPhotoInList(id, itemExisting) then
-    begin
-      Item := frmFlickr.listPhotos.Items.Add;
-      Item.Caption := frmFlickr.photoId.text;
-      Item.SubItems.Add(title);
-      Item.SubItems.Add(views);
-      Item.SubItems.Add(likes);
-      Item.SubItems.Add(comments);
-      Item.SubItems.Add(DateToStr(Date));
-      if views = '0' then
-        views := '1';
-      Item.SubItems.Add(taken);
-      Item.SubItems.Add(photo.Albums.Count.ToString());
-      Item.SubItems.Add(photo.Groups.Count.ToString());
-      Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
-    end
-    else
-    begin
-      itemExisting.Caption := id;
-      itemExisting.SubItems.Clear;
-      itemExisting.SubItems.Add(title);
-      itemExisting.SubItems.Add(views);
-      itemExisting.SubItems.Add(likes);
-      itemExisting.SubItems.Add(comments);
-      itemExisting.SubItems.Add(DateToStr(Date));
-      if views = '0' then
-        views := '1';
-      itemExisting.SubItems.Add(taken);
-      itemExisting.SubItems.Add(photo.Albums.Count.ToString());
-      itemExisting.SubItems.Add(photo.Groups.Count.ToString());
-      itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
-    end;
+    LeaveCriticalSection(CritSect);
 
     //Save the repository
   finally
     CoUninitialize;
   end;
 end;
+
+
+class function TRepositoryRest.getTotalAlbumsCounts(apikey, userId : string): Integer;
+var
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
+  pages, total: string;
+  numPages: Integer;
+  i: Integer;
+  totalViews: Integer;
+  photosetId: string;
+  title: string;
+  countViews: Integer;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  xmlDocument: IXMLDocument;
+begin
+CoInitialize(nil);
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userId, '1', '500'));
+      xmlDocument.LoadFromXML(response);
+      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
+      pages := iXMLRootNode3.attributes['pages'];
+      total := iXMLRootNode3.attributes['total'];
+      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
+      totalViews := 0;
+      while iXMLRootNode4 <> nil do
+      begin
+        if iXMLRootNode4.NodeName = 'photoset' then
+        begin
+          photosetId := iXMLRootNode4.attributes['id'];
+          countViews := iXMLRootNode4.attributes['count_views'];
+          iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+          title := iXMLRootNode5.text;
+          totalViews := totalViews + countViews;
+        end;
+        WriteLn('Updating : ' + photosetId);
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      end;
+    finally
+        IdIOHandler.Free;
+        IdHTTP.Free;
+        xmlDocument := nil;
+    end;
+
+    try
+      numPages := pages.ToInteger;
+      for i := 2 to numPages do
+      begin
+        response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userid, i.ToString, '500'));
+        XMLDocument.LoadFromXML(response);
+        iXMLRootNode := XMLDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
+        pages := iXMLRootNode3.attributes['pages'];
+        iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
+        while iXMLRootNode4 <> nil do
+        begin
+          if iXMLRootNode4.NodeName = 'photoset' then
+          begin
+            photosetId := iXMLRootNode4.attributes['id'];
+            countViews := iXMLRootNode4.attributes['count_views'];
+            iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+            title := iXMLRootNode5.text;
+            totalViews := totalViews + countViews;
+          end;
+          WriteLn('Updating : ' + photosetId);
+          iXMLRootNode4 := iXMLRootNode4.NextSibling;
+        end;
+      end;
+    finally
+        IdIOHandler.Free;
+        IdHTTP.Free;
+        xmlDocument := nil;
+    end;
+
+  finally
+    CoUninitialize;
+  end;
+  Result := totalViews;
+end;
+
+initialization
+  InitializeCriticalSection(CritSect);
+
+finalization
+  DeleteCriticalSection(CritSect);
 
 end.

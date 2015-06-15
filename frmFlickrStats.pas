@@ -401,7 +401,7 @@ begin
 
   userTokenSecret := oauth_token_secret;
 
-  PageControl1.ActivePage := Authentication;
+  PageControl2.ActivePage := Authentication;
   Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   NavigationUrl := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
   WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
@@ -1566,7 +1566,7 @@ var
   i: Integer;
   Item: TListItem;
 begin
-  pagecontrol2.TabIndex := 0;
+  pagecontrol3.TabIndex := 0;
   listGroups.Visible := false;
   listGroups.Items.Clear;
 
@@ -1586,7 +1586,7 @@ var
   Item: TListItem;
   description: string;
 begin
-  pagecontrol2.TabIndex := 0;
+  pagecontrol3.TabIndex := 0;
   listGroups.Visible := false;
   listGroups.Items.Clear;
 
@@ -1628,7 +1628,7 @@ begin
   groups := TList<string>.Create;
 
   try
-    PageControl2.ActivePage := tabStatus;
+    PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
       if listPhotos.Items[i].Checked then
@@ -1726,7 +1726,7 @@ var
   Item: TListItem;
 begin
   try
-    pagecontrol2.TabIndex := 0;
+    pagecontrol3.TabIndex := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
     profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
     profileName := profileName.Remove(profileName.Length-1, 1);
@@ -1945,7 +1945,7 @@ begin
     FilteredGroupList := nil;
     FilteredGroupList := TFilteredList.Create();
   end;
-  pagecontrol2.TabIndex := 0;
+  pagecontrol3.TabIndex := 0;
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
   btnAddItems.Enabled := false;
@@ -2167,7 +2167,7 @@ begin
   if listPhotos.ItemIndex <> -1 then
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
-    PageControl1.ActivePage := Authentication;
+    PageControl2.ActivePage := Authentication;
     WebBrowser1.Navigate('https://www.flickr.com/photos/jordicorbillaphotography/' + id + '/in/photostream/lightbox/');
   end;
 end;
@@ -2643,7 +2643,7 @@ begin
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
-  PageControl1.ActivePage := Statistics;
+  PageControl1.ActivePage := Dashboard;
   startMark := -1;
   endMark := -1;
   flickrChart := TFlickrChart.create;

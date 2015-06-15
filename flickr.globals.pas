@@ -61,7 +61,7 @@ type
 implementation
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Dialogs;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs;
 
 { TFlickrGlobals }
 

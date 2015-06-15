@@ -108,6 +108,8 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win32\</DCC_ExeOutput>
+        <Debugger_RunParams>0edf6f13dc6309c822b59ae8bb783df6 b9e217d1c0333300 96100496@N05</Debugger_RunParams>
         <VerInfo_Build>2</VerInfo_Build>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
