@@ -52,33 +52,27 @@ var
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
   stat: IStat;
+  verbosity, loadrepository, loadglobals : boolean;
 begin
   try
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
     WriteLn('# version 4.2 @author: Jordi Corbilla             #');
     WriteLn('###################################################');
-    if ParamStr(1) = '' then
-    begin
-      WriteLn('Apikey must be entered as a parameter.');
-      exit;
-    end;
-    if ParamStr(2) = '' then
-    begin
-      WriteLn('Secret must be entered as a parameter.');
-      exit;
-    end;
-    if ParamStr(3) = '' then
-    begin
-      WriteLn('UserId must be entered as a parameter.');
-      exit;
-    end;
-    apikey := ParamStr(1);
-    secret := ParamStr(2);
-    userid := ParamStr(3);
-    sleep(2000);
+    verbosity := false;
+    if paramstr(1) = '-v' then
+      verbosity := true;
+
+    loadrepository := false;
+    if paramstr(2) = '-r' then
+      loadrepository := true;
+
+    loadglobals := false;
+    if paramstr(3) = '-g' then
+      loadglobals := true;
+
     //Load repository
-    WriteLn('Loading Repository with ' + apikey + ' ' + secret + ' ' + userid);
+    WriteLn('Loading Repository');
     repository := TFlickrRepository.Create();
     try
       st := TStopWatch.Create;
@@ -86,68 +80,75 @@ begin
       repository.load('flickrRepository.xml');
       st.Stop;
       WriteLn('Loaded repository flickrRepository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      if loadrepository then
+      begin
+        //Use parallel looping
+        st := TStopWatch.Create;
+        st.Start;
+        apikey := repository.ApiKey;
+        secret := repository.Secret;
+        userId := repository.UserId;
+        TParallel.ForEach(0, repository.photos.count - 1,
+          procedure(index: Integer; threadId: Integer)
+          begin
+            TRepositoryRest.updatePhoto(repository, apikey, repository.photos[index].id, verbosity);
+          end);
 
-      //Use parallel looping
-      st := TStopWatch.Create;
-      st.Start;
+        st.Stop;
+        WriteLn('Update repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
-      TParallel.ForEach(0, repository.photos.count - 1,
-        procedure(index: Integer; threadId: Integer)
-        begin
-          TRepositoryRest.updatePhoto(repository, apikey, repository.photos[index].id);
-        end);
-
-      st.Stop;
-      WriteLn('Update repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
-
-      st := TStopWatch.Create;
-      st.Start;
-      repository.save(apikey, secret, userid, 'flickrRepository.xml');
-      st.Stop;
-      WriteLn('Saving repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        st := TStopWatch.Create;
+        st.Start;
+        repository.save(apikey, secret, userid, 'flickrRepository.xml');
+        st.Stop;
+        WriteLn('Saving repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      end;
     finally
 
     end;
 
-    globalsRepository := TFlickrGlobals.Create();
-    try
-      st := TStopWatch.Create;
-      st.Start;
-      globalsRepository.load('flickrRepositoryGlobal.xml');
-      st.Stop;
-      WriteLn('Loaded repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+    if loadglobals then
+    begin
+      globalsRepository := TFlickrGlobals.Create();
+      try
+        st := TStopWatch.Create;
+        st.Start;
+        globalsRepository.load('flickrRepositoryGlobal.xml');
+        st.Stop;
+        WriteLn('Loaded repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
 
-      totalViewsacc := 0;
-      totalLikesacc := 0;
-      totalCommentsacc := 0;
-      st := TStopWatch.Create;
-      st.Start;
-      for i := 0 to repository.photos.Count - 1 do
-      begin
-        totalViews := repository.photos[i].getTotalViews();
-        totalViewsacc := totalViewsacc + totalViews;
+        totalViewsacc := 0;
+        totalLikesacc := 0;
+        totalCommentsacc := 0;
+        st := TStopWatch.Create;
+        st.Start;
+        for i := 0 to repository.photos.Count - 1 do
+        begin
+          totalViews := repository.photos[i].getTotalViews();
+          totalViewsacc := totalViewsacc + totalViews;
 
-        totalLikes := repository.photos[i].getTotalLikes();
-        totalLikesacc := totalLikesacc + totalLikes;
+          totalLikes := repository.photos[i].getTotalLikes();
+          totalLikesacc := totalLikesacc + totalLikes;
 
-        totalComments := repository.photos[i].getTotalComments();
-        totalCommentsacc := totalCommentsacc + totalComments;
+          totalComments := repository.photos[i].getTotalComments();
+          totalCommentsacc := totalCommentsacc + totalComments;
+        end;
+
+        totalViewsacc := totalViewsacc + TRepositoryRest.getTotalAlbumsCounts(apikey, userid, verbosity);
+
+        stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
+        globalsRepository.AddGlobals(stat);
+        st.Stop;
+        WriteLn('Update flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        st := TStopWatch.Create;
+        st.Start;
+        globalsRepository.save('flickrRepositoryGlobal.xml');
+        st.Stop;
+        WriteLn('Save flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      finally
+        repository := nil;
+        globalsRepository := nil;
       end;
-
-      totalViewsacc := totalViewsacc + TRepositoryRest.getTotalAlbumsCounts(apikey, userid);
-
-      stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
-      globalsRepository.AddGlobals(stat);
-      st.Stop;
-      WriteLn('Update flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
-      st := TStopWatch.Create;
-      st.Start;
-      globalsRepository.save('flickrRepositoryGlobal.xml');
-      st.Stop;
-      WriteLn('Save flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
-    finally
-      repository := nil;
-      globalsRepository := nil;
     end;
   except
     on E: Exception do

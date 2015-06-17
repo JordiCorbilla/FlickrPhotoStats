@@ -38,8 +38,8 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(repository: IFlickrRepository; apikey, id: string);
-    class function getTotalAlbumsCounts(apikey, userId : string): Integer; static;
+    class procedure UpdatePhoto(repository: IFlickrRepository; apikey, id: string; verbosity : boolean);
+    class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
   end;
 
 var
@@ -56,7 +56,7 @@ uses
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; apikey, id: string);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; apikey, id: string; verbosity : boolean);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
@@ -155,48 +155,49 @@ begin
     Albums := TList<IAlbum>.create;
     Groups := TList<IPool>.create;
 
-      IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-      IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-      IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-      xmlDocument := TXMLDocument.Create(nil);
-      IdHTTP := TIdHTTP.Create(nil);
-      try
-        IdHTTP.IOHandler := IdIOHandler;
-        timedout := false;
-        while (not timedout) do
-        begin
-          try
-            response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey, id));
-            timedout := true;
-          except
-            on e: exception do
-            begin
-              sleep(2000);
-              timedout := false;
-            end;
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey, id));
+          timedout := true;
+        except
+          on e: exception do
+          begin
+            sleep(2000);
+            timedout := false;
           end;
         end;
-
-        xmlDocument.LoadFromXML(response);
-        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <set or pool>
-        while iXMLRootNode3 <> nil do
-        begin
-          if iXMLRootNode3.NodeName = 'set' then
-            Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
-          if iXMLRootNode3.NodeName = 'pool' then
-            Groups.add(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
-          iXMLRootNode3 := iXMLRootNode3.NextSibling;
-        end;
-      finally
-        IdIOHandler.Free;
-        IdHTTP.Free;
-        xmlDocument := nil;
       end;
 
+      xmlDocument.LoadFromXML(response);
+      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <set or pool>
+      while iXMLRootNode3 <> nil do
+      begin
+        if iXMLRootNode3.NodeName = 'set' then
+          Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+        if iXMLRootNode3.NodeName = 'pool' then
+          Groups.add(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+        iXMLRootNode3 := iXMLRootNode3.NextSibling;
+      end;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+      xmlDocument := nil;
+    end;
+
     EnterCriticalSection(CritSect);
-    WriteLn('Updating : ' + title);
+    if verbosity then
+      WriteLn('Updating : ' + title + ' views:' + views);
     if repository.ExistPhoto(photo, existing) then
     begin
       photo := existing;
@@ -222,7 +223,7 @@ begin
 end;
 
 
-class function TRepositoryRest.getTotalAlbumsCounts(apikey, userId : string): Integer;
+class function TRepositoryRest.getTotalAlbumsCounts(apikey, userId : string; verbosity: boolean): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -236,6 +237,7 @@ var
   IdHTTP: TIdHTTP;
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
+  timedout : boolean;
 begin
 CoInitialize(nil);
   try
@@ -246,7 +248,20 @@ CoInitialize(nil);
     IdHTTP := TIdHTTP.Create(nil);
     try
       IdHTTP.IOHandler := IdIOHandler;
-      response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userId, '1', '500'));
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userId, '1', '500'));
+          timedout := true;
+        except
+          on e: exception do
+          begin
+            sleep(2000);
+            timedout := false;
+          end;
+        end;
+      end;
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
       iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -265,7 +280,8 @@ CoInitialize(nil);
           title := iXMLRootNode5.text;
           totalViews := totalViews + countViews;
         end;
-        WriteLn('Updating : ' + photosetId);
+        if verbosity then
+          WriteLn('Updating : ' + photosetId + ' views: ' + countViews.ToString());
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     finally
@@ -278,7 +294,20 @@ CoInitialize(nil);
       numPages := pages.ToInteger;
       for i := 2 to numPages do
       begin
-        response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userid, i.ToString, '500'));
+        timedout := false;
+        while (not timedout) do
+        begin
+          try
+            response := IdHTTP.Get(TFlickrRest.New().getPhotoSets(apikey, userid, i.ToString, '500'));
+            timedout := true;
+          except
+            on e: exception do
+            begin
+              sleep(2000);
+              timedout := false;
+            end;
+          end;
+        end;
         XMLDocument.LoadFromXML(response);
         iXMLRootNode := XMLDocument.ChildNodes.first; // <xml>
         iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -295,7 +324,8 @@ CoInitialize(nil);
             title := iXMLRootNode5.text;
             totalViews := totalViews + countViews;
           end;
-          WriteLn('Updating : ' + photosetId);
+          if verbosity then
+            WriteLn('Updating : ' + photosetId + ' views: ' + countViews.ToString());
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
       end;
