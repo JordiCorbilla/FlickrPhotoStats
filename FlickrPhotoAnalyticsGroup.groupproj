@@ -12,6 +12,9 @@
         <Projects Include="FlickrPhotoAnalyticsBatchUpdate.dproj">
             <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
         </Projects>
+        <Projects Include="UnitTests\FlickrPhotoAnalyticsTests.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="FlickrPhotoAnalyticsBatchUpdate:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
         <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FlickrPhotoAnalyticsTests">
+        <MSBuild Projects="UnitTests\FlickrPhotoAnalyticsTests.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsTests:Clean">
+        <MSBuild Projects="UnitTests\FlickrPhotoAnalyticsTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsTests:Make">
+        <MSBuild Projects="UnitTests\FlickrPhotoAnalyticsTests.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

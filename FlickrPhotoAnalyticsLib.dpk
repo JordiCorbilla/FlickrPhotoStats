@@ -87,6 +87,7 @@ contains
   flickr.stats in 'flickr.stats.pas',
   flickr.tendency in 'flickr.tendency.pas',
   flickr.top.stats in 'flickr.top.stats.pas',
-  flickr.url.attributes in 'flickr.url.attributes.pas';
+  flickr.url.attributes in 'flickr.url.attributes.pas',
+  flickr.time in 'flickr.time.pas';
 
 end.

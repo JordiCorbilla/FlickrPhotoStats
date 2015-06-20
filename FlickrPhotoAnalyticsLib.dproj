@@ -87,6 +87,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_Description>Flickr Photo Analytics library</DCC_Description>
         <VerInfo_Build>2</VerInfo_Build>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -135,6 +136,7 @@
         <DCCReference Include="flickr.tendency.pas"/>
         <DCCReference Include="flickr.top.stats.pas"/>
         <DCCReference Include="flickr.url.attributes.pas"/>
+        <DCCReference Include="flickr.time.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

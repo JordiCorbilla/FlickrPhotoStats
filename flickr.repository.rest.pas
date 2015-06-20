@@ -197,7 +197,7 @@ begin
 
     EnterCriticalSection(CritSect);
     if verbosity then
-      WriteLn('Updating : ' + title + ' views:' + views);
+      WriteLn('Updating : ' + title + ' views: ' + views);
     if repository.ExistPhoto(photo, existing) then
     begin
       photo := existing;
@@ -290,7 +290,13 @@ CoInitialize(nil);
         xmlDocument := nil;
     end;
 
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
     try
+      IdHTTP.IOHandler := IdIOHandler;
       numPages := pages.ToInteger;
       for i := 2 to numPages do
       begin

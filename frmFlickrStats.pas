@@ -332,7 +332,7 @@ uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
-  flickr.pools, flickr.albums, System.inifiles;
+  flickr.pools, flickr.albums, System.inifiles, flickr.time;
 
 {$R *.dfm}
 
@@ -494,7 +494,7 @@ begin
         st.Start;
         RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
         st.Stop;
-        log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       end;
     end
     else
@@ -503,7 +503,7 @@ begin
       st.Start;
       RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
       st.Stop;
-      log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
     end;
   end;
 
@@ -853,7 +853,7 @@ begin
   st.Start;
   repository.load('flickrRepository.xml');
   st.Stop;
-  log('Loading repository flickrRepository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+  log('Loading repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   if Assigned(globalsRepository) then
   begin
@@ -864,25 +864,25 @@ begin
   st.Start;
   globalsRepository.load('flickrRepositoryGlobal.xml');
   st.Stop;
-  log('Loading repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+  log('Loading repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   st := TStopWatch.Create;
   st.Start;
   LoadForms(repository);
   st.Stop;
-  log('Loading Forms for repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+  log('Loading Forms for repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   st := TStopWatch.Create;
   st.Start;
   LoadHallOfFame(repository);
   st.Stop;
-  log('Loading Hall of fame: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+  log('Loading Hall of fame: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   st := TStopWatch.Create;
   st.Start;
   LoadProfiles();
   st.Stop;
-  log('Loading Profiles: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+  log('Loading Profiles: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   Button9Click(sender);
   btnLoadOptionsClick(Sender);

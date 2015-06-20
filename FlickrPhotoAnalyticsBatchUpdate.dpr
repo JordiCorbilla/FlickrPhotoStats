@@ -38,6 +38,7 @@ uses
   flickr.lib.parallel,
   flickr.globals,
   flickr.stats,
+  flickr.time,
   flickr.repository.rest in 'flickr.repository.rest.pas';
 
 var
@@ -57,7 +58,7 @@ begin
   try
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
-    WriteLn('# version 4.2 @author: Jordi Corbilla             #');
+    WriteLn('# version 4.3 @author: Jordi Corbilla             #');
     WriteLn('###################################################');
     verbosity := false;
     if paramstr(1) = '-v' then
@@ -79,7 +80,7 @@ begin
       st.Start;
       repository.load('flickrRepository.xml');
       st.Stop;
-      WriteLn('Loaded repository flickrRepository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+      WriteLn('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       if loadrepository then
       begin
         //Use parallel looping
@@ -101,7 +102,7 @@ begin
         st.Start;
         repository.save(apikey, secret, userid, 'flickrRepository.xml');
         st.Stop;
-        WriteLn('Saving repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        WriteLn('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       end;
     finally
 
@@ -115,7 +116,7 @@ begin
         st.Start;
         globalsRepository.load('flickrRepositoryGlobal.xml');
         st.Stop;
-        WriteLn('Loaded repository flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        WriteLn('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
         totalViewsacc := 0;
         totalLikesacc := 0;
@@ -139,12 +140,12 @@ begin
         stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
         globalsRepository.AddGlobals(stat);
         st.Stop;
-        WriteLn('Update flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        WriteLn('Update flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         st := TStopWatch.Create;
         st.Start;
         globalsRepository.save('flickrRepositoryGlobal.xml');
         st.Stop;
-        WriteLn('Save flickrRepositoryGlobal: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       finally
         repository := nil;
         globalsRepository := nil;
