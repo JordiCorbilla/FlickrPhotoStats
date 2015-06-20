@@ -96,7 +96,7 @@ begin
           end);
 
         st.Stop;
-        WriteLn('Update repository: ' + st.ElapsedMilliseconds.ToString() + 'ms');
+        WriteLn('Update repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
         st := TStopWatch.Create;
         st.Start;
