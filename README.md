@@ -11,19 +11,19 @@ The app only needs a valid *API Key* that can be requested in the App Garden whe
 
 Once obtained, you can load your list or start a new one using the Api Key.
 
-Additional info can be found in the following [post](http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics.html) in my blog.
+Additional info can be found in the following [**post**](http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics.html) in my blog.
 
-Example of the app:
+**Example of the app**:
 
-Dashboard:
+**Dashboard**:
 
 ![](http://3.bp.blogspot.com/-Wuf66X97Lac/VYh1ezan0tI/AAAAAAAAE58/lr1ECQ4Bjpc/s640/dashboard.png)
 
-Processing:
+**Processing**:
 
 ![](http://4.bp.blogspot.com/-CEV0jQ6qLfc/VYh55Oj3_rI/AAAAAAAAE6Q/3lpyMGmQS00/s640/dashboard2.png)
 
-Authentication:
+**Authentication**:
 
 ![](http://1.bp.blogspot.com/-qqAYuDjdP6w/VYiAROWt6NI/AAAAAAAAE64/HtLd_lIz26Q/s640/auth.png)
 
