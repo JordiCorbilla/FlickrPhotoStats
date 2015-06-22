@@ -14,12 +14,15 @@ Once obtained, you can load your list or start a new one using the Api Key.
 Example of the app:
 
 Dashboard:
+
 ![](http://3.bp.blogspot.com/-Wuf66X97Lac/VYh1ezan0tI/AAAAAAAAE58/lr1ECQ4Bjpc/s640/dashboard.png)
 
 Processing:
+
 ![](http://4.bp.blogspot.com/-CEV0jQ6qLfc/VYh55Oj3_rI/AAAAAAAAE6Q/3lpyMGmQS00/s640/dashboard2.png)
 
 Authentication:
+
 ![](http://1.bp.blogspot.com/-qqAYuDjdP6w/VYiAROWt6NI/AAAAAAAAE64/HtLd_lIz26Q/s640/auth.png)
 
 It will keep a list of all the photos you add to keep track of them automatically.
