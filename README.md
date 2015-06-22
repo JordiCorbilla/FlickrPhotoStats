@@ -13,7 +13,14 @@ Once obtained, you can load your list or start a new one using the Api Key.
 
 Example of the app:
 
-![](http://2.bp.blogspot.com/-u9e9JX1v6Sc/VCabY59YGtI/AAAAAAAAEk8/Qm6ttjVHK7M/s1600/Example.png)
+Dashboard:
+![](http://3.bp.blogspot.com/-Wuf66X97Lac/VYh1ezan0tI/AAAAAAAAE58/lr1ECQ4Bjpc/s640/dashboard.png)
+
+Processing:
+![](http://4.bp.blogspot.com/-CEV0jQ6qLfc/VYh55Oj3_rI/AAAAAAAAE6Q/3lpyMGmQS00/s640/dashboard2.png)
+
+Authentication:
+![](http://1.bp.blogspot.com/-qqAYuDjdP6w/VYiAROWt6NI/AAAAAAAAE64/HtLd_lIz26Q/s640/auth.png)
 
 It will keep a list of all the photos you add to keep track of them automatically.
 The following information will be saved:
@@ -23,7 +30,7 @@ The following information will be saved:
 - Last time it was updated.
 - Affection (number of likes over number of views).
 
-Each value is saved and stored over time so the took can display the trend of a particular photo.
+Each value is saved and stored over time so the tool can display the trend of a particular photo.
 
 Code convention:
 - > 1000 < 3000 views: blue.
@@ -48,7 +55,12 @@ New versions of the application (beta):
 
 - FlickrPhotoStats(x86) v4.1. (https://app.box.com/s/ydtsu1ceq3f5dkkilct20qhnkdahcddd)
 - FlickrPhotoStats(x64) v4.1. (https://app.box.com/s/x3ta5x4z3o6e5h7ozc82d6e49uslzjw5)
- 
+
+Latest release candidate can be found here:
+
+- FlickrPhotoStats(x86) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
+- FlickrPhotoStats(x64) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
+
 ## Changelog
 ### Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
@@ -57,6 +69,11 @@ New versions of the application (beta):
 - OAuth authentication.
 - Get list of groups and create your own profiles for automatic population.
 - Totals for Albums.
+
+### Features for version 4.3:
+- Dashboard.
+- Trend lines.
+- Album population.
 
 Source code is available here.
 
