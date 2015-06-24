@@ -86,6 +86,16 @@ The application can now use **OAuth** authentication using REST. The application
 
 Developed with Delphi XE6.
 
+## Roadmap
+### Version 4.4:
+- Additional photo filtering.
+- Saving the repository in a SQL DB (MySQL, SQL Server).
+- Speed improvements.
+- Authentication improvements.
+
+### Version 5:
+- For version 5 I will start my hosted version where I will be able to take users on-board and just email the results back.
+
 ## Sponsors
 No sponsors yet! Will you be the first?
 
