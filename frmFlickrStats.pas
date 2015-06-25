@@ -234,6 +234,7 @@ type
     PieSeries2: TPieSeries;
     Splitter3: TSplitter;
     Memo2: TMemo;
+    ShowonFlickr1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -283,6 +284,7 @@ type
     procedure btnLoadOptionsClick(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure btnLoadHallClick(Sender: TObject);
+    procedure ShowonFlickr1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -332,7 +334,7 @@ uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
-  flickr.pools, flickr.albums, System.inifiles, flickr.time;
+  flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi;
 
 {$R *.dfm}
 
@@ -2619,6 +2621,19 @@ begin
     end;
   end;
   ListDisplay.Show;
+end;
+
+procedure TfrmFlickr.ShowonFlickr1Click(Sender: TObject);
+var
+  id : string;
+begin
+  //Show item in the URL view
+  //https://www.flickr.com/photos/jordicorbillaphotography/
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/photos/jordicorbillaphotography/' + id + '/in/photostream/lightbox/'), nil, SW_SHOW);
+  end;
 end;
 
 procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
