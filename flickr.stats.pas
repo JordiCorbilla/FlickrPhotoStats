@@ -82,7 +82,7 @@ implementation
 { TViews }
 
 uses
-  SysUtils;
+  System.SysUtils;
 
 procedure TStat.Copy(stat: IStat);
 begin

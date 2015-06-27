@@ -125,7 +125,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win32\</DCC_ExeOutput>
-        <Debugger_RunParams>0edf6f13dc6309c822b59ae8bb783df6 b9e217d1c0333300 96100496@N05</Debugger_RunParams>
+        <Debugger_RunParams>-v -r -g</Debugger_RunParams>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>

@@ -30,7 +30,7 @@ unit flickr.repository.rest;
 interface
 
 uses
-  Windows, flickr.repository;
+  Windows, flickr.repository, flickr.organic.stats;
 
 type
   IRepositoryRest = interface
@@ -38,7 +38,7 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(repository: IFlickrRepository; apikey, id: string; verbosity : boolean);
+    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
     class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
   end;
 
@@ -56,7 +56,7 @@ uses
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; apikey, id: string; verbosity : boolean);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat : IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
@@ -69,6 +69,7 @@ var
   timedout: Boolean;
   Albums: TList<IAlbum>;
   Groups: TList<IPool>;
+  difference : integer;
 begin
   CoInitialize(nil);
   try
@@ -196,11 +197,42 @@ begin
     end;
 
     EnterCriticalSection(CritSect);
-    if verbosity then
-      WriteLn('Updating : ' + title + ' views: ' + views);
+
     if repository.ExistPhoto(photo, existing) then
     begin
       photo := existing;
+      if photo.getTotalViews() >= views.ToInteger() then
+      begin
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_INTENSITY);
+        organicStat.negativeViews := organicStat.negativeViews + 1;
+      end
+      else
+      begin
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+        organicStat.positiveViews := organicStat.positiveViews + 1;
+      end;
+      if photo.getTotalLikes() >= likes.ToInteger() then
+      begin
+        organicStat.negativeLikes := organicStat.negativeLikes + 1;
+      end
+      else
+      begin
+        organicStat.positiveLikes := organicStat.positiveLikes + 1;
+      end;
+      if photo.getTotalComments() >= comments.ToInteger() then
+      begin
+        organicStat.negativeComments := organicStat.negativeComments + 1;
+      end
+      else
+      begin
+        organicStat.positiveComments := organicStat.positiveComments + 1;
+      end;
+
+      if verbosity then
+      begin
+        difference := views.ToInteger() - photo.getTotalViews();
+        WriteLn('Updating : ' + title + ' previous: '+ photo.getTotalViews().ToString() + ' views: ' + views + ' difference: '+ difference.ToString());
+      end;
       photo.Title := title; //replace the title as it changes
       photo.Taken := taken;
       photo.AddStats(stat);
@@ -213,6 +245,11 @@ begin
       photo.LastUpdate := Date;
       photo.AddCollections(Albums, groups);
       repository.AddPhoto(photo);
+      if verbosity then
+      begin
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+        WriteLn('Updating : ' + title + ' views: ' + views);
+      end;
     end;
     LeaveCriticalSection(CritSect);
 
@@ -281,7 +318,10 @@ CoInitialize(nil);
           totalViews := totalViews + countViews;
         end;
         if verbosity then
+        begin
+          SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
           WriteLn('Updating : ' + photosetId + ' views: ' + countViews.ToString());
+        end;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     finally
@@ -331,7 +371,10 @@ CoInitialize(nil);
             totalViews := totalViews + countViews;
           end;
           if verbosity then
+          begin
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
             WriteLn('Updating : ' + photosetId + ' views: ' + countViews.ToString());
+          end;
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
       end;

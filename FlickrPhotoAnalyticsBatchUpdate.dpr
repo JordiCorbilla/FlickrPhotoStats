@@ -39,7 +39,10 @@ uses
   flickr.globals,
   flickr.stats,
   flickr.time,
-  flickr.repository.rest in 'flickr.repository.rest.pas';
+  flickr.lib.logging,
+  flickr.organic,
+  flickr.organic.stats,
+  flickr.repository.rest in 'flickr.repository.rest.pas', Winapi.Windows;
 
 var
   repository: IFlickrRepository;
@@ -54,8 +57,12 @@ var
   totalComments, totalCommentsacc: Integer;
   stat: IStat;
   verbosity, loadrepository, loadglobals : boolean;
+  organic : IFlickrOrganic;
+  organicStat : IFlickrOrganicStats;
 begin
   try
+    TLogger.LogFile('Starting Batch Update');
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
     WriteLn('# version 4.3 @author: Jordi Corbilla             #');
@@ -89,13 +96,41 @@ begin
         apikey := repository.ApiKey;
         secret := repository.Secret;
         userId := repository.UserId;
-        TParallel.ForEach(0, repository.photos.count - 1,
-          procedure(index: Integer; threadId: Integer)
-          begin
-            TRepositoryRest.updatePhoto(repository, apikey, repository.photos[index].id, verbosity);
-          end);
+
+        //Organic Growth checks
+        organic := TFlickrOrganic.Create;
+        try
+          st := TStopWatch.Create;
+          st.Start;
+          organic.Load('flickrOrganic.xml');
+
+          SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
+          WriteLn('Loaded organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+          st.Stop;
+
+          organicStat := TFlickrOrganicStats.create();
+          try
+            TParallel.ForEach(0, repository.photos.count - 1,
+              procedure(index: Integer; threadId: Integer)
+              begin
+                TRepositoryRest.updatePhoto(repository, organicstat, apikey, repository.photos[index].id, verbosity);
+              end);
+          finally
+            organic.AddGlobals(organicStat);
+          end;
+        finally
+          st := TStopWatch.Create;
+          st.Start;
+          organic.save('flickrOrganic.xml');
+          SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
+          WriteLn('Update organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+          st.Stop;
+        end;
+
+
 
         st.Stop;
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
         WriteLn('Update repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
         st := TStopWatch.Create;
@@ -151,8 +186,12 @@ begin
         globalsRepository := nil;
       end;
     end;
+    TLogger.LogFile('Finishing Batch Update');
   except
     on E: Exception do
+    begin
+      TLogger.LogFile('Exception Batch Update' + E.Message);
       Writeln(E.ClassName, ': ', E.Message);
+    end;
   end;
 end.

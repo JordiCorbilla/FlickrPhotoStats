@@ -52,7 +52,6 @@ package FlickrPhotoAnalyticsLib;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Flickr Photo Analytics library'}
 {$IMPLICITBUILD ON}
 
 requires
@@ -88,6 +87,9 @@ contains
   flickr.tendency in 'flickr.tendency.pas',
   flickr.top.stats in 'flickr.top.stats.pas',
   flickr.url.attributes in 'flickr.url.attributes.pas',
-  flickr.time in 'flickr.time.pas';
+  flickr.time in 'flickr.time.pas',
+  flickr.lib.logging in 'flickr.lib.logging.pas',
+  flickr.organic in 'flickr.organic.pas',
+  flickr.organic.stats in 'flickr.organic.stats.pas';
 
 end.
