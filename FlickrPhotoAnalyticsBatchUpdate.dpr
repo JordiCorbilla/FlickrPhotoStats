@@ -88,6 +88,7 @@ begin
       repository.load('flickrRepository.xml');
       st.Stop;
       WriteLn('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      TLogger.LogFile('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       if loadrepository then
       begin
         //Use parallel looping
@@ -106,16 +107,22 @@ begin
 
           SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
           WriteLn('Loaded organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+          TLogger.LogFile('Loaded organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
           st.Stop;
 
           organicStat := TFlickrOrganicStats.create();
+          st := TStopWatch.Create;
           try
+            st.Start;
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin
                 TRepositoryRest.updatePhoto(repository, organicstat, apikey, repository.photos[index].id, verbosity);
               end);
+            st.Stop;
           finally
+            organicStat.executionTime := st.ElapsedMilliseconds;
+            organicStat.date := Date;
             organic.AddGlobals(organicStat);
           end;
         finally
@@ -124,6 +131,7 @@ begin
           organic.save('flickrOrganic.xml');
           SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
           WriteLn('Update organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+          TLogger.LogFile('Update organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
           st.Stop;
         end;
 
@@ -132,12 +140,14 @@ begin
         st.Stop;
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
         WriteLn('Update repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+        TLogger.LogFile('Update repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
         st := TStopWatch.Create;
         st.Start;
         repository.save(apikey, secret, userid, 'flickrRepository.xml');
         st.Stop;
         WriteLn('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+        TLogger.LogFile('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       end;
     finally
 
@@ -152,7 +162,7 @@ begin
         globalsRepository.load('flickrRepositoryGlobal.xml');
         st.Stop;
         WriteLn('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
-
+        TLogger.LogFile('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         totalViewsacc := 0;
         totalLikesacc := 0;
         totalCommentsacc := 0;
@@ -181,6 +191,7 @@ begin
         globalsRepository.save('flickrRepositoryGlobal.xml');
         st.Stop;
         WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+        TLogger.LogFile('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       finally
         repository := nil;
         globalsRepository := nil;

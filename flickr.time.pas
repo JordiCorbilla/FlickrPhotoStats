@@ -35,6 +35,7 @@ uses
 type
   TTime = class(TObject)
     class function GetAdjustedTime(t : int64) : string;
+    class function GetAdjustedTimeValue(t : int64) : extended;
   end;
 
 implementation
@@ -61,6 +62,24 @@ begin
   end;
 
   result := newt.toString() + desc;
+end;
+
+class function TTime.GetAdjustedTimeValue(t: int64): extended;
+var
+  newt : extended;
+begin
+  newt := 0;
+  if t >= 1000 then
+  begin
+    newt := t / 1000;
+  end;
+
+  if (newt / 60) >= 1 then
+  begin
+    newt := newt / 60;
+  end;
+
+  result := newt;
 end;
 
 end.

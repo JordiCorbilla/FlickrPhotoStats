@@ -41,6 +41,7 @@ type
     function GetPositiveComments: Integer;
     function GetPositiveLikes: Integer;
     function GetPositiveViews: Integer;
+    function GetexecutionTime: int64;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -48,6 +49,7 @@ type
     procedure SetPositiveComments(const Value: Integer);
     procedure SetPositiveLikes(const Value: Integer);
     procedure SetPositiveViews(const Value: Integer);
+    procedure SetexecutionTime(const Value: int64);
     property date: TDateTime read GetDate write SetDate;
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
     property negativeViews: Integer read GetNegativeViews write SetNegativeViews;
@@ -55,6 +57,7 @@ type
     property negativeLikes: Integer read GetNegativeLikes write SetNegativeLikes;
     property positiveComments: Integer read GetPositiveComments write SetPositiveComments;
     property negativeComments: Integer read GetNegativeComments write SetNegativeComments;
+    property executionTime : int64 read GetexecutionTime write SetexecutionTime;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IFlickrOrganicStats);
@@ -69,6 +72,7 @@ type
     FPositiveComments : integer;
     FPositiveLikes : integer;
     FPositiveViews : integer;
+    FexecutionTime: int64;
     function GetDate: TDateTime;
     function GetNegativeComments: Integer;
     function GetNegativeLikes: Integer;
@@ -76,6 +80,7 @@ type
     function GetPositiveComments: Integer;
     function GetPositiveLikes: Integer;
     function GetPositiveViews: Integer;
+    function GetexecutionTime: int64;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -83,6 +88,7 @@ type
     procedure SetPositiveComments(const Value: Integer);
     procedure SetPositiveLikes(const Value: Integer);
     procedure SetPositiveViews(const Value: Integer);
+    procedure SetexecutionTime(const Value: int64);
   public
     property date: TDateTime read GetDate write SetDate;
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
@@ -91,6 +97,7 @@ type
     property negativeLikes: Integer read GetNegativeLikes write SetNegativeLikes;
     property positiveComments: Integer read GetPositiveComments write SetPositiveComments;
     property negativeComments: Integer read GetNegativeComments write SetNegativeComments;
+    property executionTime : int64 read GetexecutionTime write SetexecutionTime;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IFlickrOrganicStats);
@@ -111,11 +118,17 @@ begin
   SetNegativeViews(stat.NegativeViews);
   SetNegativeLikes(stat.NegativeLikes);
   SetNegativeComments(stat.NegativeComments);
+  SetExecutionTime(stat.executionTime);
 end;
 
 function TFlickrOrganicStats.GetDate: TDateTime;
 begin
   result := FDate;
+end;
+
+function TFlickrOrganicStats.GetexecutionTime: int64;
+begin
+  result := FExecutionTime;
 end;
 
 function TFlickrOrganicStats.GetNegativeComments: Integer;
@@ -157,6 +170,11 @@ begin
   FNegativeLikes := StrToInt(iNode.Attributes['NegativeLikes']);
   FPositiveComments := StrToInt(iNode.Attributes['PositiveComments']);
   FNegativeComments := StrToInt(iNode.Attributes['NegativeComments']);
+  try
+    FexecutionTime := StrToInt64(iNode.Attributes['ExecutionTime']);
+  except
+    FexecutionTime := 0;
+  end;
 end;
 
 procedure TFlickrOrganicStats.Save(iNode: IXMLNode);
@@ -171,11 +189,17 @@ begin
   iNode2.Attributes['NegativeLikes'] := IntToStr(FNegativeLikes);
   iNode2.Attributes['PositiveComments'] := IntToStr(FPositiveComments);
   iNode2.Attributes['NegativeComments'] := IntToStr(FNegativeComments);
+  iNode2.Attributes['ExecutionTime'] := IntToStr(FexecutionTime);
 end;
 
 procedure TFlickrOrganicStats.SetDate(const Value: TDateTime);
 begin
   Fdate := value;
+end;
+
+procedure TFlickrOrganicStats.SetexecutionTime(const Value: int64);
+begin
+  FexecutionTime := Value;
 end;
 
 procedure TFlickrOrganicStats.SetNegativeComments(const Value: Integer);

@@ -56,6 +56,7 @@ var
   Series : TBarSeries;
 begin
   Series := TBarSeries.Create(parent);
+//    series.MultiBar := mbStacked100;
   Series.Marks.Arrow.Visible := true;
   Series.Marks.Callout.Brush.color := clBlack;
   Series.Marks.Callout.Arrow.Visible := true;

@@ -40,7 +40,8 @@ uses
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
-  frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts;
+  frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
+  flickr.organic.stats;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -221,10 +222,6 @@ type
     ChartLikes: TChart;
     LineSeries7: TLineSeries;
     Panel18: TPanel;
-    mostviewschart: TChart;
-    BarSeries3: TBarSeries;
-    mostlikeschart: TChart;
-    BarSeries4: TBarSeries;
     Panel19: TPanel;
     ChartHallLikes: TChart;
     PieSeries1: TPieSeries;
@@ -235,6 +232,22 @@ type
     Splitter3: TSplitter;
     Memo2: TMemo;
     ShowonFlickr1: TMenuItem;
+    Splitter4: TSplitter;
+    Panel20: TPanel;
+    mostviewschart: TChart;
+    BarSeries3: TBarSeries;
+    mostlikeschart: TChart;
+    BarSeries4: TBarSeries;
+    organicViews: TChart;
+    organicLikes: TChart;
+    LineSeries5: TLineSeries;
+    organicComments: TChart;
+    LineSeries6: TLineSeries;
+    executionTime: TChart;
+    LineSeries3: TLineSeries;
+    Series7: THorizBarSeries;
+    Label28: TLabel;
+    Label29: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -309,10 +322,12 @@ type
     procedure UpdateMostLikedChart;
     procedure UpdateLabels;
     procedure AlbumLog(s: string);
+    procedure UpdateOrganics;
     { Private declarations }
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
+    organic : IFlickrOrganic;
     CheckedSeries: TStringList;
     userToken: string;
     userTokenSecret: string;
@@ -586,6 +601,8 @@ begin
   Label18.Visible := true;
   Label19.Visible := true;
   Label20.Visible := true;
+  Label28.Visible := true;
+  Label29.Visible := true;
 
   views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
   Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
@@ -593,6 +610,7 @@ begin
   Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
   views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
   Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  Label29.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
 end;
 
 procedure TfrmFlickr.EndMarking1Click(Sender: TObject);
@@ -868,6 +886,17 @@ begin
   st.Stop;
   log('Loading repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
+  if Assigned(organic) then
+  begin
+    organic := nil;
+    organic := TFlickrOrganic.Create();
+  end;
+  st := TStopWatch.Create;
+  st.Start;
+  organic.load('flickrOrganic.xml');
+  st.Stop;
+  log('Loading repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
   st := TStopWatch.Create;
   st.Start;
   LoadForms(repository);
@@ -924,9 +953,9 @@ begin
   Memo1.Lines.Add('************ HALL OF FAME **********');
   Memo1.Lines.Add('************************************');
 
-  if chartHallViews.SeriesList.Count = 1 then
+  if chartHallViews.SeriesList.Count > 0 then
     chartHallViews.RemoveAllSeries;
-  if chartHallLikes.SeriesList.Count = 1 then
+  if chartHallLikes.SeriesList.Count > 0 then
     chartHallLikes.RemoveAllSeries;
 
   SeriesV := flickrChart.GetNewPieSeries(chartHallViews, true);
@@ -989,7 +1018,82 @@ begin
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
   UpdateGlobals();
   UpdateLabels();
+  UpdateOrganics();
   UpdateAnalytics();
+end;
+
+procedure TfrmFlickr.UpdateOrganics();
+var
+  SeriesPositive, SeriesNegative  : TBarSeries;
+  i: Integer;
+  Series : TLineSeries;
+begin
+  if organicViews.SeriesList.Count > 0 then
+    organicViews.RemoveAllSeries;
+
+  SeriesPositive := flickrChart.GetNewBarSeries(organicViews);
+  OrganicViews.AddSeries(SeriesPositive);
+  SeriesPositive.MultiBar := mbStacked;
+  SeriesPositive.BarWidthPercent := 25;
+
+  SeriesNegative := flickrChart.GetNewBarSeries(organicViews);
+  OrganicViews.AddSeries(SeriesNegative);
+  SeriesNegative.MultiBar := mbStacked;
+  SeriesNegative.BarWidthPercent := 25;
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveViews * 100)/ (organic.Globals[i].positiveViews + organic.Globals[i].negativeViews), '', clgreen);
+    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeViews * 100)/ (organic.Globals[i].positiveViews + organic.Globals[i].negativeViews), '', clred);
+  end;
+
+  if organicLikes.SeriesList.Count > 0 then
+    organicLikes.RemoveAllSeries;
+
+  SeriesPositive := flickrChart.GetNewBarSeries(organicLikes);
+  SeriesNegative := flickrChart.GetNewBarSeries(organicLikes);
+  organicLikes.AddSeries(SeriesPositive);
+  organicLikes.AddSeries(SeriesNegative);
+  SeriesPositive.MultiBar := mbStacked;
+  SeriesPositive.BarWidthPercent := 25;
+  SeriesNegative.MultiBar := mbStacked;
+  SeriesNegative.BarWidthPercent := 25;
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes), '', clgreen);
+    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes), '', clred);
+  end;
+
+  if organicComments.SeriesList.Count > 0 then
+    organicComments.RemoveAllSeries;
+
+  SeriesPositive := flickrChart.GetNewBarSeries(organicComments);
+  SeriesNegative := flickrChart.GetNewBarSeries(organicComments);
+  organicComments.AddSeries(SeriesPositive);
+  organicComments.AddSeries(SeriesNegative);
+  SeriesPositive.MultiBar := mbStacked;
+  SeriesPositive.BarWidthPercent := 25;
+  SeriesNegative.MultiBar := mbStacked;
+  SeriesNegative.BarWidthPercent := 25;
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments), '', clgreen);
+    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments), '', clred);
+  end;
+
+  if executionTime.SeriesList.Count > 0 then
+    executionTime.RemoveAllSeries;
+
+  Series := flickrChart.GetNewLineSeries(executionTime);
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    Series.AddXY(organic.Globals[i].date, TTime.GetAdjustedTimeValue(organic.Globals[i].executionTime), '', color);
+  end;
+  executionTime.AddSeries(Series);
 end;
 
 procedure TfrmFlickr.UpdateGlobals;
@@ -1000,7 +1104,7 @@ var
   chartTendency : ITendency;
   viewsTendency : integer;
 begin
-  if ChartViews.SeriesList.Count = 1 then
+  if ChartViews.SeriesList.Count > 0 then
     ChartViews.RemoveAllSeries;
 
   chartTendency := TTendency.Create;
@@ -1031,7 +1135,7 @@ begin
 //  end;
   ChartViews.AddSeries(SeriesTendency);
 
-  if ChartLikes.SeriesList.Count = 1 then
+  if ChartLikes.SeriesList.Count > 0 then
     ChartLikes.RemoveAllSeries;
 
   Series := flickrChart.GetNewLineSeries(ChartLikes);
@@ -1055,7 +1159,7 @@ begin
   viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
   SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
 
-  if ChartComments.SeriesList.Count = 1 then
+  if ChartComments.SeriesList.Count > 0 then
     ChartComments.RemoveAllSeries;
 
   Series := flickrChart.GetNewLineSeries(ChartComments);
@@ -1100,7 +1204,7 @@ var
   averageSeries, tendencySeries: TLineSeries;
   viewsTendency : ITendency;
 begin
-  if dailyViews.SeriesList.Count >= 1 then
+  if dailyViews.SeriesList.Count > 0 then
     dailyViews.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(dailyViews);
@@ -1166,7 +1270,7 @@ var
   averageLikes, tendencySeries: TLineSeries;
   viewsTendency : ITendency;
 begin
-  if dailyLikes.SeriesList.Count >= 1 then
+  if dailyLikes.SeriesList.Count > 0 then
     dailyLikes.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(dailyLikes);
@@ -1231,7 +1335,7 @@ var
   PhotosSorted: TList<IPhoto>;
   topStats : TTopStats;
 begin
-  if mostlikeschart.SeriesList.Count >= 1 then
+  if mostlikeschart.SeriesList.Count > 0 then
     mostlikeschart.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(mostlikeschart);
@@ -1259,7 +1363,7 @@ var
   PhotosSorted: TList<IPhoto>;
   topStats : TTopStats;
 begin
-  if mostviewschart.SeriesList.Count >= 1 then
+  if mostviewschart.SeriesList.Count > 0 then
     mostviewschart.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(mostviewschart);
@@ -1322,7 +1426,7 @@ var
   Series: TBarSeries;
   color: TColor;
 begin
-  if Chart2.SeriesList.Count = 1 then
+  if Chart2.SeriesList.Count > 0 then
     Chart2.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(Chart2, true);
@@ -2074,7 +2178,7 @@ var
   Series : TPieSeries;
   color : TColor;
 begin
-  if chartAlbum.SeriesList.Count = 1 then
+  if chartAlbum.SeriesList.Count > 0 then
     chartAlbum.RemoveAllSeries;
 
   Series := flickrChart.GetNewPieSeries(chartAlbum, true);
@@ -2653,6 +2757,7 @@ end;
 procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
   repository := TFlickrRepository.Create();
+  organic := TFlickrOrganic.Create();
   flickrProfiles := TProfiles.Create();
   FilteredGroupList := TFilteredList.Create;
   globalsRepository := TFlickrGlobals.Create();
@@ -2668,6 +2773,7 @@ procedure TfrmFlickr.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(CheckedSeries);
   repository := nil;
+  organic := nil;
   flickrProfiles := nil;
   FilteredGroupList := nil;
   globalsRepository := nil;
