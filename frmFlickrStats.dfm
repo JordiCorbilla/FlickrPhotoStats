@@ -455,7 +455,7 @@ object frmFlickr: TfrmFlickr
     object Label28: TLabel
       Left = 762
       Top = 21
-      Width = 91
+      Width = 87
       Height = 23
       Caption = 'Updated:'
       Font.Charset = DEFAULT_CHARSET
@@ -545,7 +545,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 772
-    ActivePage = Dashboard
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -1803,7 +1803,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 703
-        ActivePage = Statistics
+        ActivePage = TabSheet7
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2885,8 +2885,8 @@ object frmFlickr: TfrmFlickr
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 1056
-    Top = 76
+    Left = 680
+    Top = 196
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -2895,21 +2895,21 @@ object frmFlickr: TfrmFlickr
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 960
-    Top = 76
+    Left = 584
+    Top = 196
   end
   object XMLDocument1: TXMLDocument
-    Left = 888
-    Top = 76
+    Left = 512
+    Top = 196
     DOMVendorDesc = 'MSXML'
   end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
-    Left = 832
-    Top = 80
+    Left = 456
+    Top = 200
     Bitmap = {
-      494C0101ED002001B00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -10842,16 +10842,16 @@ object frmFlickr: TfrmFlickr
       end>
     ProgressState = Normal
     TabProperties = []
-    Left = 784
-    Top = 80
+    Left = 408
+    Top = 200
   end
   object ActionList1: TActionList
-    Left = 1112
-    Top = 73
+    Left = 736
+    Top = 193
   end
   object PopupMenu1: TPopupMenu
-    Left = 1176
-    Top = 73
+    Left = 800
+    Top = 193
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
       OnClick = MarkGroups1Click

@@ -151,6 +151,7 @@
         <DCCReference Include="flickr.lib.logging.pas"/>
         <DCCReference Include="flickr.organic.pas"/>
         <DCCReference Include="flickr.organic.stats.pas"/>
+        <DCCReference Include="flickr.lib.response.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

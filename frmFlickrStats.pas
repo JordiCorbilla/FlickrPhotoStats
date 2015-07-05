@@ -349,7 +349,8 @@ uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
-  flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi;
+  flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
+  flickr.lib.response;
 
 {$R *.dfm}
 
@@ -1484,19 +1485,8 @@ begin
           begin
             try
               response := IdHTTP1.Get(urlAdd);
-              response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
-              response := response.Replace('<rsp stat="', '');
-              response := response.Replace('">', '');
-              response := response.Replace('</rsp>', '');
-              response := response.Replace('<', '');
-              response := response.Replace('/>', '');
-              response := response.Replace('err code="5" msg="', '');
-              response := response.Replace('err code="3" msg="', '');
-              response := response.Replace('err code="10" msg="', '');
-              response := response.Replace('err code="6" msg="', '');
-              response := response.Replace('err code="7" msg="', '');
-              response := response.Replace('"', '');
-              AlbumLog(response);
+              response := TResponse.filter(response);
+              AlbumLog(response + '' + photo.Title + ' ->' + value);
               timedout := true;
             except
               on e: exception do
@@ -1525,19 +1515,9 @@ begin
           begin
             try
               response := IdHTTP1.Get(urlAdd);
-              response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
-              response := response.Replace('<rsp stat="', '');
-              response := response.Replace('">', '');
-              response := response.Replace('</rsp>', '');
-              response := response.Replace('<', '');
-              response := response.Replace('/>', '');
-              response := response.Replace('err code="5" msg="', '');
-              response := response.Replace('err code="3" msg="', '');
-              response := response.Replace('err code="10" msg="', '');
-              response := response.Replace('err code="6" msg="', '');
-              response := response.Replace('err code="7" msg="', '');
+              response := TResponse.filter(response);
               response := response.Replace('"', '');
-              AlbumLog(response);
+              AlbumLog(response + '' + photo.Title + ' ->' + value);
               timedout := true;
             except
               on e: exception do
@@ -1797,18 +1777,7 @@ begin
         inc(k);
         pstatus.position := k;
         Taskbar1.ProgressValue := k;
-        response := response.Replace('<?xml version="1.0" encoding="utf-8" ?>', '');
-        response := response.Replace('<rsp stat="', '');
-        response := response.Replace('">', '');
-        response := response.Replace('</rsp>', '');
-        response := response.Replace('<', '');
-        response := response.Replace('/>', '');
-        response := response.Replace('err code="5" msg="', '');
-        response := response.Replace('err code="3" msg="', '');
-        response := response.Replace('err code="10" msg="', '');
-        response := response.Replace('err code="6" msg="', '');
-        response := response.Replace('err code="7" msg="', '');
-        response := response.Replace('"', '');
+        response := TResponse.filter(response);
         mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
         max := edtMaxLog.text;
         if mStatus.Lines.Count > max.ToInteger then

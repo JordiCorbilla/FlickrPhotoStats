@@ -90,6 +90,7 @@ contains
   flickr.time in 'flickr.time.pas',
   flickr.lib.logging in 'flickr.lib.logging.pas',
   flickr.organic in 'flickr.organic.pas',
-  flickr.organic.stats in 'flickr.organic.stats.pas';
+  flickr.organic.stats in 'flickr.organic.stats.pas',
+  flickr.lib.response in 'flickr.lib.response.pas';
 
 end.
