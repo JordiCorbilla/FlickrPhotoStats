@@ -30,7 +30,7 @@ unit flickr.email.test;
 interface
 
 uses
-  DUnitX.TestFramework, flickr.time, flickr.lib.email;
+  DUnitX.TestFramework, flickr.time, flickr.lib.email, flickr.globals, flickr.lib.options;
 
 type
 
@@ -41,11 +41,17 @@ type
     procedure Setup;
     [TearDown]
     procedure TearDown;
-    [Test]
-    [TestCase('TesteMail','This is a test')]
-    procedure Test1(const text : String);
+    [test]
+    [TestCase('TesteMail', 'This is a test')]
+    procedure Test1(const text: String);
+    [test]
+    procedure Test2();
   end;
+
 implementation
+
+uses
+  Sysutils;
 
 { TMyTestObject }
 
@@ -62,6 +68,59 @@ end;
 procedure TMyTestObject.Test1(const text: String);
 begin
   TFlickrEmail.Send('flickrphotoanalytics@gmail.com', text);
+end;
+
+procedure TMyTestObject.Test2;
+var
+  globalsRepository: IFlickrGlobals;
+  options : IOptions;
+  description : string;
+  itemToday : integer;
+  itemYesterday : integer;
+  difference : integer;
+begin
+  globalsRepository := TFlickrGlobals.Create();
+  try
+    globalsRepository.load('flickrRepositoryGlobal.xml');
+    options := TOptions.New().Load;
+
+    description := 'Dear User,' + sLineBreak;
+    description := description + '' + sLineBreak;
+
+    description := description + 'Here are your stats for ' + DateToStr(Date) + sLineBreak;
+
+    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
+    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+    difference := itemToday - itemYesterday;
+
+    description := description + ' - Number of Total Views: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Total Views yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Views Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '' + sLineBreak;
+
+    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
+    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+    difference := itemToday - itemYesterday;
+
+    description := description + ' - Number of Total Likes: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Total Likes yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Likes Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '' + sLineBreak;
+
+    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
+    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+    difference := itemToday - itemYesterday;
+
+    description := description + ' - Number of Total Comments: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Total Comments yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '   - Number of Comments Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+    description := description + '' + sLineBreak;
+    description := description + 'Regards,' + sLineBreak;
+    description := description + 'Flickr Analytics Service';
+    TFlickrEmail.Send(options.eMailAddress, description);
+  finally
+
+  end;
 end;
 
 end.

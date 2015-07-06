@@ -63,6 +63,9 @@ var
   organicStat : IFlickrOrganicStats;
   options : IOptions;
   description : string;
+  itemToday : integer;
+  itemYesterday : integer;
+  difference : integer;
 begin
   try
     TLogger.LogFile('Starting Batch Update');
@@ -205,10 +208,37 @@ begin
       options := TOptions.New().Load;
       description := 'Dear User,' + sLineBreak;
       description := description + '' + sLineBreak;
+
       description := description + 'Here are your stats for ' + DateToStr(Date) + sLineBreak;
-      description := description + ' - Number of Views: ' + totalViewsacc.ToString + sLineBreak;
-      description := description + ' - Number of Likes: ' + totalLikesacc.ToString + sLineBreak;
-      description := description + ' - Number of Comments: ' + totalCommentsacc.ToString + sLineBreak;
+
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
+      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+      difference := itemToday - itemYesterday;
+
+      description := description + ' - Number of Total Views: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Total Views yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Views Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '' + sLineBreak;
+
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
+      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+      difference := itemToday - itemYesterday;
+
+      description := description + ' - Number of Total Likes: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Total Likes yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Likes Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '' + sLineBreak;
+
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
+      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+      difference := itemToday - itemYesterday;
+
+      description := description + ' - Number of Total Comments: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Total Comments yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '   - Number of Comments Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
+      description := description + '' + sLineBreak;
+      description := description + 'Regards,' + sLineBreak;
+      description := description + 'Flickr Analytics Service';
       TFlickrEmail.Send(options.eMailAddress, description);
     except
       on E: Exception do

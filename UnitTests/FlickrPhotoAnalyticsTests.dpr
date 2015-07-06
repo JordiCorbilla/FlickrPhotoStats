@@ -14,7 +14,10 @@ uses
   flickr.Time.test in 'flickr.Time.test.pas',
   flickr.time in '..\flickr.time.pas',
   flickr.email.test in 'flickr.email.test.pas',
-  flickr.lib.email in '..\flickr.lib.email.pas';
+  flickr.lib.email in '..\flickr.lib.email.pas',
+  flickr.globals in '..\flickr.globals.pas',
+  flickr.stats in '..\flickr.stats.pas',
+  flickr.lib.options in '..\flickr.lib.options.pas';
 
 var
   runner : ITestRunner;
