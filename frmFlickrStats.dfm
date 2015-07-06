@@ -1803,7 +1803,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 703
-        ActivePage = TabSheet7
+        ActivePage = TabSheet9
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2555,7 +2555,7 @@ object frmFlickr: TfrmFlickr
           ImageIndex = 4
           object Label9: TLabel
             Left = 16
-            Top = 35
+            Top = 6
             Width = 139
             Height = 13
             Caption = 'Max items list of globals:'
@@ -2568,7 +2568,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label1: TLabel
             Left = 16
-            Top = 67
+            Top = 38
             Width = 78
             Height = 13
             Caption = 'Flickr Api Key:'
@@ -2580,8 +2580,8 @@ object frmFlickr: TfrmFlickr
             ParentFont = False
           end
           object Label8: TLabel
-            Left = 16
-            Top = 97
+            Left = 415
+            Top = 38
             Width = 73
             Height = 13
             Caption = 'Flickr Secret:'
@@ -2594,7 +2594,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label21: TLabel
             Left = 16
-            Top = 200
+            Top = 165
             Width = 137
             Height = 13
             Caption = 'Max number of lines log:'
@@ -2607,7 +2607,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label22: TLabel
             Left = 16
-            Top = 228
+            Top = 193
             Width = 90
             Height = 13
             Caption = 'Albums (views):'
@@ -2620,7 +2620,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label23: TLabel
             Left = 176
-            Top = 228
+            Top = 193
             Width = 34
             Height = 13
             Caption = 'Value:'
@@ -2633,7 +2633,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label24: TLabel
             Left = 335
-            Top = 228
+            Top = 193
             Width = 55
             Height = 13
             Caption = 'Album ID:'
@@ -2646,7 +2646,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label25: TLabel
             Left = 16
-            Top = 436
+            Top = 401
             Width = 84
             Height = 13
             Caption = 'Albums (likes):'
@@ -2659,7 +2659,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label26: TLabel
             Left = 176
-            Top = 436
+            Top = 401
             Width = 34
             Height = 13
             Caption = 'Value:'
@@ -2672,7 +2672,7 @@ object frmFlickr: TfrmFlickr
           end
           object Label27: TLabel
             Left = 335
-            Top = 436
+            Top = 401
             Width = 55
             Height = 13
             Caption = 'Album ID:'
@@ -2683,9 +2683,22 @@ object frmFlickr: TfrmFlickr
             Font.Style = [fsBold]
             ParentFont = False
           end
+          object Label30: TLabel
+            Left = 16
+            Top = 65
+            Width = 82
+            Height = 13
+            Caption = 'eMail Address:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
           object edtMax: TEdit
             Left = 176
-            Top = 32
+            Top = 3
             Width = 57
             Height = 21
             TabOrder = 0
@@ -2693,32 +2706,32 @@ object frmFlickr: TfrmFlickr
           end
           object apikey: TEdit
             Left = 176
-            Top = 64
-            Width = 353
+            Top = 35
+            Width = 233
             Height = 21
             TabOrder = 1
             OnChange = apikeyChange
           end
           object secret: TEdit
-            Left = 176
-            Top = 94
-            Width = 353
+            Left = 494
+            Top = 35
+            Width = 149
             Height = 21
             TabOrder = 2
             OnChange = apikeyChange
           end
           object Button1: TButton
-            Left = 535
-            Top = 64
+            Left = 548
+            Top = 3
             Width = 96
-            Height = 51
+            Height = 27
             Caption = 'Test REST Login'
             TabOrder = 3
             OnClick = Button1Click
           end
           object showMarks: TCheckBox
             Left = 176
-            Top = 128
+            Top = 89
             Width = 169
             Height = 17
             Caption = 'Show Marks in Graphs'
@@ -2727,7 +2740,7 @@ object frmFlickr: TfrmFlickr
           end
           object chkPending: TCheckBox
             Left = 176
-            Top = 151
+            Top = 112
             Width = 169
             Height = 17
             Caption = 'Consider Pending Queue items'
@@ -2738,7 +2751,7 @@ object frmFlickr: TfrmFlickr
           end
           object edtMaxLog: TEdit
             Left = 176
-            Top = 197
+            Top = 162
             Width = 57
             Height = 21
             TabOrder = 6
@@ -2746,7 +2759,7 @@ object frmFlickr: TfrmFlickr
           end
           object chkRealTime: TCheckBox
             Left = 176
-            Top = 174
+            Top = 135
             Width = 169
             Height = 17
             Caption = 'Update counts real time'
@@ -2767,7 +2780,7 @@ object frmFlickr: TfrmFlickr
           end
           object listValuesViewsAlbums: TMemo
             Left = 176
-            Top = 247
+            Top = 212
             Width = 153
             Height = 178
             ScrollBars = ssBoth
@@ -2776,7 +2789,7 @@ object frmFlickr: TfrmFlickr
           end
           object listValuesViewsAlbumsID: TMemo
             Left = 335
-            Top = 247
+            Top = 212
             Width = 296
             Height = 178
             ScrollBars = ssBoth
@@ -2797,7 +2810,7 @@ object frmFlickr: TfrmFlickr
           end
           object listValuesLikesAlbums: TMemo
             Left = 176
-            Top = 455
+            Top = 420
             Width = 153
             Height = 178
             ScrollBars = ssBoth
@@ -2806,12 +2819,20 @@ object frmFlickr: TfrmFlickr
           end
           object listValuesLikesAlbumsID: TMemo
             Left = 335
-            Top = 455
+            Top = 420
             Width = 296
             Height = 178
             ScrollBars = ssBoth
             TabOrder = 13
             WordWrap = False
+          end
+          object edtEmail: TEdit
+            Left = 176
+            Top = 62
+            Width = 233
+            Height = 21
+            TabOrder = 14
+            OnChange = apikeyChange
           end
         end
         object TabSheet10: TTabSheet
@@ -2909,7 +2930,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001B40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

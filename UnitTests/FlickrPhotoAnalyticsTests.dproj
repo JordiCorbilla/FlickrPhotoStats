@@ -121,6 +121,8 @@
         </DelphiCompile>
         <DCCReference Include="flickr.Time.test.pas"/>
         <DCCReference Include="..\flickr.time.pas"/>
+        <DCCReference Include="flickr.email.test.pas"/>
+        <DCCReference Include="..\flickr.lib.email.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

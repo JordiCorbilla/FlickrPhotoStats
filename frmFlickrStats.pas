@@ -248,6 +248,8 @@ type
     Series7: THorizBarSeries;
     Label28: TLabel;
     Label29: TLabel;
+    Label30: TLabel;
+    edtEmail: TEdit;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1545,6 +1547,7 @@ begin
     inifile.WriteBool('System', 'ConsiderPendingQueueItems', chkPending.Checked);
     inifile.WriteBool('System', 'UpdateCountsRealTime', chkRealTime.Checked);
     inifile.WriteString('System', 'MaxNumberOfLinesLog', edtMaxLog.Text);
+    inifile.WriteString('System', 'eMailAddress', edtEmail.Text);
 
     inifile.WriteInteger('AlbumViews', 'MaxItems', listValuesViewsAlbums.Lines.count);
 
@@ -1581,6 +1584,7 @@ begin
     chkPending.Checked := inifile.ReadBool('System', 'ConsiderPendingQueueItems', true);
     chkRealTime.Checked := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
     edtMaxLog.Text := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
+    edtEmail.Text := inifile.ReadString('System', 'eMailAddress', '');
 
     maxAlbumViews := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
 

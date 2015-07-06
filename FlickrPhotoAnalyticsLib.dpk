@@ -91,6 +91,8 @@ contains
   flickr.lib.logging in 'flickr.lib.logging.pas',
   flickr.organic in 'flickr.organic.pas',
   flickr.organic.stats in 'flickr.organic.stats.pas',
-  flickr.lib.response in 'flickr.lib.response.pas';
+  flickr.lib.response in 'flickr.lib.response.pas',
+  flickr.lib.email in 'flickr.lib.email.pas',
+  flickr.lib.options in 'flickr.lib.options.pas';
 
 end.

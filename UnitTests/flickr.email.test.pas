@@ -25,46 +25,43 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit flickr.Time.test;
+unit flickr.email.test;
 
 interface
 
 uses
-  DUnitX.TestFramework, flickr.time;
+  DUnitX.TestFramework, flickr.time, flickr.lib.email;
 
 type
 
   [TestFixture]
-  TMyTestObject = class(TObject) 
+  TMyTestObject = class(TObject)
   public
     [Setup]
     procedure Setup;
     [TearDown]
     procedure TearDown;
     [Test]
-    [TestCase('TestA','1000,1s')]
-    [TestCase('TestB','60000,1min')]
-    procedure Test1(const AValue1 : Int64;const AValue2 : String);
+    [TestCase('TesteMail','This is a test')]
+    procedure Test1(const text : String);
   end;
-
 implementation
+
+{ TMyTestObject }
 
 procedure TMyTestObject.Setup;
 begin
+
 end;
 
 procedure TMyTestObject.TearDown;
 begin
+
 end;
 
-procedure TMyTestObject.Test1(const AValue1 : Int64;const AValue2 : String);
-var
-  desc : string;
+procedure TMyTestObject.Test1(const text: String);
 begin
-  desc := TTime.GetAdjustedTime(Avalue1);
-  Assert.IsTrue(desc = Avalue2, 'wrong time!');
+  TFlickrEmail.Send('flickrphotoanalytics@gmail.com', text);
 end;
 
-initialization
-  TDUnitX.RegisterTestFixture(TMyTestObject);
 end.

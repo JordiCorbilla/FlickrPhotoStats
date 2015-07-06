@@ -42,6 +42,8 @@ uses
   flickr.lib.logging,
   flickr.organic,
   flickr.organic.stats,
+  flickr.lib.options,
+  flickr.lib.email,
   flickr.repository.rest in 'flickr.repository.rest.pas', Winapi.Windows;
 
 var
@@ -59,6 +61,8 @@ var
   verbosity, loadrepository, loadglobals : boolean;
   organic : IFlickrOrganic;
   organicStat : IFlickrOrganicStats;
+  options : IOptions;
+  description : string;
 begin
   try
     TLogger.LogFile('Starting Batch Update');
@@ -135,8 +139,6 @@ begin
           st.Stop;
         end;
 
-
-
         st.Stop;
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
         WriteLn('Update repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -197,6 +199,25 @@ begin
         globalsRepository := nil;
       end;
     end;
+
+    //Send eMail
+    try
+      options := TOptions.New().Load;
+      description := 'Dear User,' + sLineBreak;
+      description := description + '' + sLineBreak;
+      description := description + 'Here are your stats for ' + DateToStr(Date) + sLineBreak;
+      description := description + ' - Number of Views: ' + totalViewsacc.ToString + sLineBreak;
+      description := description + ' - Number of Likes: ' + totalLikesacc.ToString + sLineBreak;
+      description := description + ' - Number of Comments: ' + totalCommentsacc.ToString + sLineBreak;
+      TFlickrEmail.Send(options.eMailAddress, description);
+    except
+      on E: Exception do
+      begin
+        TLogger.LogFile('Exception Sending eMail' + E.Message);
+        Writeln(E.ClassName, ': ', E.Message);
+      end;
+    end;
+
     TLogger.LogFile('Finishing Batch Update');
   except
     on E: Exception do
