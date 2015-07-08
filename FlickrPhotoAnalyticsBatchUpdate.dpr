@@ -199,7 +199,6 @@ begin
         TLogger.LogFile('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       finally
         repository := nil;
-        globalsRepository := nil;
       end;
     end;
 
@@ -247,6 +246,8 @@ begin
         Writeln(E.ClassName, ': ', E.Message);
       end;
     end;
+
+    globalsRepository := nil;
 
     TLogger.LogFile('Finishing Batch Update');
   except

@@ -96,7 +96,7 @@ type
     CheckBox2: TCheckBox;
     chkUpdate: TCheckBox;
     chkUpdateCollections: TCheckBox;
-    Edit2: TEdit;
+    edtfilter: TEdit;
     Button6: TButton;
     Button7: TButton;
     ComboBox2: TComboBox;
@@ -250,6 +250,8 @@ type
     Label29: TLabel;
     Label30: TLabel;
     edtEmail: TEdit;
+    Label31: TLabel;
+    ComboBox3: TComboBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -300,6 +302,9 @@ type
     procedure Button10Click(Sender: TObject);
     procedure btnLoadHallClick(Sender: TObject);
     procedure ShowonFlickr1Click(Sender: TObject);
+    procedure listGroupsItemChecked(Sender: TObject; Item: TListItem);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -325,6 +330,7 @@ type
     procedure UpdateLabels;
     procedure AlbumLog(s: string);
     procedure UpdateOrganics;
+    procedure UpdateLabel;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -527,18 +533,6 @@ begin
     end;
   end;
 
-  // Use parallel looping
-  // TParallel.ForEach(0, listPhotos.Items.Count - 1,8,
-  // procedure(index: Integer; threadId: Integer)
-  // begin
-  // Process.Caption := 'Processing image: ' + listPhotos.Items[index].Caption
-  // + ' ' + index.ToString + ' out of ' + listPhotos.Items.Count.ToString;
-  // ProgressBar1.position := index;
-  // Taskbar1.ProgressValue := index;
-  // Application.ProcessMessages;
-  // RequestInformation_REST_Flickr(listPhotos.Items[index].Caption);
-  // end);
-
   ProgressBar1.Visible := false;
   Process.Visible := false;
   UpdateTotals(false);
@@ -631,6 +625,7 @@ begin
     startMark := -1;
     endMark := -1;
   end;
+  UpdateLabel();
 end;
 
 function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -861,6 +856,7 @@ begin
   photoId.text := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
+  UpdateLabel;
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
@@ -982,6 +978,7 @@ begin
   authenticate.Enabled := true;
   listPhotos.Clear;
   UpdateCounts();
+  UpdateLabel;
 end;
 
 procedure TfrmFlickr.UpdateCounts();
@@ -1519,7 +1516,7 @@ begin
               response := IdHTTP1.Get(urlAdd);
               response := TResponse.filter(response);
               response := response.Replace('"', '');
-              AlbumLog(response + '' + photo.Title + ' ->' + value);
+              AlbumLog(response + ' ' + photo.Title + ' -> ' + value);
               timedout := true;
             except
               on e: exception do
@@ -1651,6 +1648,137 @@ begin
 	end;
 end;
 
+procedure TfrmFlickr.Button6Click(Sender: TObject);
+var
+  i: Integer;
+  add : boolean;
+  value : string;
+  Item : TListItem;
+begin
+  listPhotos.Items.Clear;
+
+  value := edtFilter.text;
+  for i := 0 to repository.photos.count-1 do
+  begin
+    add := false;
+    case Combobox2.ItemIndex of
+          0: //ID
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].Id = value;
+              1: add := repository.photos[i].Id.ToExtended < value.ToExtended;
+              2: add := repository.photos[i].Id.ToExtended > value.ToExtended;
+              3: add := repository.photos[i].Id.ToExtended <= value.ToExtended;
+              4: add := repository.photos[i].Id.ToExtended >= value.ToExtended;
+              5: add := repository.photos[i].Id <> value;
+              6: add := repository.photos[i].Id.Contains(value);
+            end;
+          end;
+          1: //Title
+          begin
+            case combobox3.ItemIndex of
+              0,1,2,3,4: add := repository.photos[i].title = value;
+              5: add := repository.photos[i].title <> edtfilter.Text;
+              6: add := repository.photos[i].title.Contains(value);
+            end;
+          end;
+          2: //Views
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring = value;
+              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views < value.Tointeger;
+              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views > value.Tointeger;
+              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <= value.Tointeger;
+              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views >= value.Tointeger;
+              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <> value.ToInteger;
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring.Contains(value);
+            end;
+          end;
+          3: //Likes
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring = value;
+              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes < value.Tointeger;
+              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes > value.Tointeger;
+              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <= value.Tointeger;
+              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes >= value.Tointeger;
+              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <> value.ToInteger;
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring.Contains(value);
+            end;
+          end;
+          4: //Comments
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring = value;
+              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments < value.Tointeger;
+              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments > value.Tointeger;
+              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <= value.Tointeger;
+              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments >= value.Tointeger;
+              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <> value.ToInteger;
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring.Contains(value);
+            end;
+          end;
+          5: //Last Update
+          begin
+
+          end;
+          6: //Taken
+          begin
+
+          end;
+          7: //Albums
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].Albums.count.ToString = value;
+              1: add := repository.photos[i].Albums.count < value.ToInteger;
+              2: add := repository.photos[i].Albums.count > value.ToInteger;
+              3: add := repository.photos[i].Albums.count <= value.ToInteger;
+              4: add := repository.photos[i].Albums.count >= value.ToInteger;
+              5: add := repository.photos[i].Albums.count <> value.ToInteger;
+              6: add := repository.photos[i].Albums.count.ToString.Contains(value);
+            end;
+          end;
+          8: //Groups
+          begin
+            case combobox3.ItemIndex of
+              0: add := repository.photos[i].Groups.count.ToString = value;
+              1: add := repository.photos[i].Groups.count < value.ToInteger;
+              2: add := repository.photos[i].Groups.count > value.ToInteger;
+              3: add := repository.photos[i].Groups.count <= value.ToInteger;
+              4: add := repository.photos[i].Groups.count >= value.ToInteger;
+              5: add := repository.photos[i].Groups.count <> value.ToInteger;
+              6: add := repository.photos[i].Groups.count.ToString.Contains(value);
+            end;
+          end;
+          9: //Affection
+          begin
+
+          end;
+      end;
+      if add then
+      begin
+        Item := frmFlickr.listPhotos.Items.Add;
+        Item.Caption := repository.photos[i].Id;
+        Item.SubItems.Add(repository.photos[i].Title);
+        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].views.toString);
+        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.toString);
+        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].numcomments.toString);
+        Item.SubItems.Add((DateToStr(repository.photos[i].stats[repository.photos[i].stats.Count-1].date)));
+        Item.SubItems.Add(repository.photos[i].Taken);
+        Item.SubItems.Add(repository.photos[i].Albums.Count.ToString());
+        Item.SubItems.Add(repository.photos[i].Groups.Count.ToString());
+        Item.SubItems.Add(FormatFloat('0.##%', (repository.photos[i].stats[repository.photos[i].stats.Count-1].likes / repository.photos[i].stats[repository.photos[i].stats.Count-1].views) * 100.0));
+      end;
+      Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
+  end;
+end;
+
+procedure TfrmFlickr.Button7Click(Sender: TObject);
+begin
+  //Restore everything as it was.
+  LoadForms(repository);
+end;
+
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
 var
   i: Integer;
@@ -1666,8 +1794,9 @@ begin
     Item.Caption := FilteredGroupList.list[i].id;
     Item.SubItems.Add(FilteredGroupList.list[i].title);
   end;
+
   listGroups.Visible := true;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
 end;
 
 procedure TfrmFlickr.btnFilterOKClick(Sender: TObject);
@@ -1691,7 +1820,7 @@ begin
     end;
   end;
   listGroups.Visible := true;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
 end;
 
 procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
@@ -1803,9 +1932,11 @@ var
   i: Integer;
   j: Integer;
   Item: TListItem;
+  count : integer;
 begin
   try
     pagecontrol3.TabIndex := 0;
+    count := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
     profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
     profileName := profileName.Remove(profileName.Length-1, 1);
@@ -1827,6 +1958,7 @@ begin
             Item.Caption := FilteredGroupList.list[i].id;
             Item.SubItems.Add(FilteredGroupList.list[i].title);
             Item.checked := true;
+            inc(count);
           end;
         end;
       end;
@@ -1843,12 +1975,13 @@ begin
             if profile.groupId[i] = listGroups.Items[j].Caption then
             begin
               listGroups.Items[j].Checked := true;
+              inc(count);
             end;
           end;
       end;
     end;
   finally
-    Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count-1);
+    Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
   end;
 end;
 
@@ -1963,6 +2096,7 @@ begin
   begin
     listPhotos.Items[i].Checked := CheckBox2.Checked;
   end;
+  UpdateLabel();
 end;
 
 procedure TfrmFlickr.showMarksClick(Sender: TObject);
@@ -2791,6 +2925,20 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.listGroupsItemChecked(Sender: TObject; Item: TListItem);
+var
+  i: Integer;
+  count : integer;
+begin
+  count := 0;
+  for i := 0 to listgroups.Items.Count-1 do
+  begin
+    if listgroups.Items[i].Checked then
+      inc(count);
+  end;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
+end;
+
 procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   color, Color2: TColor;
@@ -2944,6 +3092,22 @@ begin
         statsDay.RemoveSeries(barSeries);
     end;
   end;
+
+  UpdateLabel();
+end;
+
+procedure TfrmFlickr.UpdateLabel();
+var
+  i : integer;
+  count : integer;
+begin
+  count := 0;
+  for i := 0 to listphotos.Items.Count-1 do
+  begin
+    if listphotos.Items[i].Checked then
+      inc(count);
+  end;
+  Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
 end.

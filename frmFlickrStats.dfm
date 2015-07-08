@@ -1670,6 +1670,13 @@ object frmFlickr: TfrmFlickr
             Height = 13
             Caption = 'Filtering:'
           end
+          object Label31: TLabel
+            Left = 593
+            Top = 62
+            Width = 84
+            Height = 13
+            Caption = 'Number of Items:'
+          end
           object photoId: TEdit
             Left = 70
             Top = 7
@@ -1748,10 +1755,10 @@ object frmFlickr: TfrmFlickr
             State = cbChecked
             TabOrder = 7
           end
-          object Edit2: TEdit
-            Left = 199
+          object edtfilter: TEdit
+            Left = 264
             Top = 59
-            Width = 312
+            Width = 247
             Height = 21
             TabOrder = 8
           end
@@ -1764,6 +1771,7 @@ object frmFlickr: TfrmFlickr
             ImageMargins.Left = 5
             Images = ImageList1
             TabOrder = 9
+            OnClick = Button6Click
           end
           object Button7: TButton
             Left = 548
@@ -1774,6 +1782,7 @@ object frmFlickr: TfrmFlickr
             ImageMargins.Left = 5
             Images = ImageList1
             TabOrder = 10
+            OnClick = Button7Click
           end
           object ComboBox2: TComboBox
             Left = 58
@@ -1796,6 +1805,24 @@ object frmFlickr: TfrmFlickr
               'Groups'
               'Affection')
           end
+          object ComboBox3: TComboBox
+            Left = 199
+            Top = 59
+            Width = 59
+            Height = 21
+            Style = csDropDownList
+            ItemIndex = 0
+            TabOrder = 12
+            Text = '='
+            Items.Strings = (
+              '='
+              '<'
+              '>'
+              '<='
+              '>='
+              '<>'
+              'Contains')
+          end
         end
       end
       object PageControl2: TPageControl
@@ -1803,7 +1830,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 703
-        ActivePage = TabSheet9
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2410,6 +2437,7 @@ object frmFlickr: TfrmFlickr
                 TabOrder = 0
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
+                OnItemChecked = listGroupsItemChecked
               end
             end
             object tabStatus: TTabSheet
@@ -2930,7 +2958,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001B80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
