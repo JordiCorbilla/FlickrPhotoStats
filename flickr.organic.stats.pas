@@ -42,6 +42,8 @@ type
     function GetPositiveLikes: Integer;
     function GetPositiveViews: Integer;
     function GetexecutionTime: int64;
+    function GetLostLikes: Integer;
+    function getLostComments: Integer;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -50,6 +52,8 @@ type
     procedure SetPositiveLikes(const Value: Integer);
     procedure SetPositiveViews(const Value: Integer);
     procedure SetexecutionTime(const Value: int64);
+    procedure SetLostLikes(const Value: Integer);
+    procedure SetLostComments(const Value: Integer);
     property date: TDateTime read GetDate write SetDate;
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
     property negativeViews: Integer read GetNegativeViews write SetNegativeViews;
@@ -58,6 +62,8 @@ type
     property positiveComments: Integer read GetPositiveComments write SetPositiveComments;
     property negativeComments: Integer read GetNegativeComments write SetNegativeComments;
     property executionTime : int64 read GetexecutionTime write SetexecutionTime;
+    property lostLikes : integer read GetLostLikes write SetLostLikes;
+    property lostComments : integer read getLostComments write SetLostComments;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IFlickrOrganicStats);
@@ -73,6 +79,8 @@ type
     FPositiveLikes : integer;
     FPositiveViews : integer;
     FexecutionTime: int64;
+    FLostLikes : integer;
+    FLostComments : integer;
     function GetDate: TDateTime;
     function GetNegativeComments: Integer;
     function GetNegativeLikes: Integer;
@@ -81,6 +89,8 @@ type
     function GetPositiveLikes: Integer;
     function GetPositiveViews: Integer;
     function GetexecutionTime: int64;
+    function GetLostLikes: Integer;
+    function getLostComments: Integer;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -89,14 +99,18 @@ type
     procedure SetPositiveLikes(const Value: Integer);
     procedure SetPositiveViews(const Value: Integer);
     procedure SetexecutionTime(const Value: int64);
+    procedure SetLostLikes(const Value: Integer);
+    procedure SetLostComments(const Value: Integer);
   public
     property date: TDateTime read GetDate write SetDate;
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
     property negativeViews: Integer read GetNegativeViews write SetNegativeViews;
     property positiveLikes: Integer read GetPositiveLikes write SetPositiveLikes;
     property negativeLikes: Integer read GetNegativeLikes write SetNegativeLikes;
+    property lostLikes : integer read GetLostLikes write SetLostLikes;
     property positiveComments: Integer read GetPositiveComments write SetPositiveComments;
     property negativeComments: Integer read GetNegativeComments write SetNegativeComments;
+    property lostComments : integer read getLostComments write SetLostComments;
     property executionTime : int64 read GetexecutionTime write SetexecutionTime;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
@@ -119,6 +133,8 @@ begin
   SetNegativeLikes(stat.NegativeLikes);
   SetNegativeComments(stat.NegativeComments);
   SetExecutionTime(stat.executionTime);
+  SetLostLikes(stat.LostLikes);
+  SetLostComments(stat.lostComments);
 end;
 
 function TFlickrOrganicStats.GetDate: TDateTime;
@@ -129,6 +145,16 @@ end;
 function TFlickrOrganicStats.GetexecutionTime: int64;
 begin
   result := FExecutionTime;
+end;
+
+function TFlickrOrganicStats.getLostComments: Integer;
+begin
+  result := FLostComments;
+end;
+
+function TFlickrOrganicStats.GetLostLikes: Integer;
+begin
+  result := FLostLikes;
 end;
 
 function TFlickrOrganicStats.GetNegativeComments: Integer;
@@ -175,6 +201,16 @@ begin
   except
     FexecutionTime := 0;
   end;
+  try
+    FLostLikes := StrToInt(iNode.Attributes['LostLikes']);
+  except
+    FLostLikes := 0;
+  end;
+  try
+    FLostComments := StrToInt(iNode.Attributes['LostComments']);
+  except
+    FLostComments := 0;
+  end;
 end;
 
 procedure TFlickrOrganicStats.Save(iNode: IXMLNode);
@@ -190,6 +226,8 @@ begin
   iNode2.Attributes['PositiveComments'] := IntToStr(FPositiveComments);
   iNode2.Attributes['NegativeComments'] := IntToStr(FNegativeComments);
   iNode2.Attributes['ExecutionTime'] := IntToStr(FexecutionTime);
+  iNode2.Attributes['LostLikes'] := IntToStr(FLostLikes);
+  iNode2.Attributes['LostComments'] := IntToStr(FLostComments);
 end;
 
 procedure TFlickrOrganicStats.SetDate(const Value: TDateTime);
@@ -200,6 +238,16 @@ end;
 procedure TFlickrOrganicStats.SetexecutionTime(const Value: int64);
 begin
   FexecutionTime := Value;
+end;
+
+procedure TFlickrOrganicStats.SetLostComments(const Value: Integer);
+begin
+  FLostComments := Value;
+end;
+
+procedure TFlickrOrganicStats.SetLostLikes(const Value: Integer);
+begin
+  FLostLikes := value;
 end;
 
 procedure TFlickrOrganicStats.SetNegativeComments(const Value: Integer);

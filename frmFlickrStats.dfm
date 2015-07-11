@@ -1,7 +1,7 @@
 object frmFlickr: TfrmFlickr
   Left = 0
   Top = 0
-  Caption = 'Flickr Photo Analytics v4.3 by Jordi Corbilla'
+  Caption = 'Flickr Photo Analytics v4.4 by Jordi Corbilla'
   ClientHeight = 820
   ClientWidth = 1511
   Color = clBtnFace
@@ -1830,7 +1830,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 703
-        ActivePage = TabSheet5
+        ActivePage = TabSheet7
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2958,7 +2958,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001BC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001C40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

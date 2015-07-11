@@ -331,6 +331,7 @@ type
     procedure AlbumLog(s: string);
     procedure UpdateOrganics;
     procedure UpdateLabel;
+    procedure UpdateLabelGroups;
     { Private declarations }
   public
     repository: IFlickrRepository;
@@ -346,6 +347,7 @@ type
     startMark : integer;
     endMark : integer;
     flickrChart : IFlickrChart;
+    filterEnabled : boolean;
   end;
 
 var
@@ -358,7 +360,7 @@ uses
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
-  flickr.lib.response;
+  flickr.lib.response, flickr.lib.logging;
 
 {$R *.dfm}
 
@@ -535,8 +537,11 @@ begin
 
   ProgressBar1.Visible := false;
   Process.Visible := false;
-  UpdateTotals(false);
-  LoadHallOfFame(repository);
+  if not filterEnabled then
+  begin
+    UpdateTotals(false);
+    LoadHallOfFame(repository);
+  end;
   btnSave.Enabled := true;
   photoId.Enabled := true;
   btnLoad.Enabled := true;
@@ -1024,7 +1029,7 @@ end;
 
 procedure TfrmFlickr.UpdateOrganics();
 var
-  SeriesPositive, SeriesNegative  : TBarSeries;
+  SeriesPositive, SeriesNegative, SeriesLost  : TBarSeries;
   i: Integer;
   Series : TLineSeries;
 begin
@@ -1052,17 +1057,22 @@ begin
 
   SeriesPositive := flickrChart.GetNewBarSeries(organicLikes);
   SeriesNegative := flickrChart.GetNewBarSeries(organicLikes);
+  SeriesLost := flickrChart.GetNewBarSeries(organicLikes);
   organicLikes.AddSeries(SeriesPositive);
   organicLikes.AddSeries(SeriesNegative);
+  organicLikes.AddSeries(SeriesLost);
   SeriesPositive.MultiBar := mbStacked;
   SeriesPositive.BarWidthPercent := 25;
   SeriesNegative.MultiBar := mbStacked;
   SeriesNegative.BarWidthPercent := 25;
+  SeriesLost.MultiBar := mbStacked;
+  SeriesLost.BarWidthPercent := 25;
 
   for i := 0 to organic.Globals.Count-1 do
   begin
-    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes), '', clgreen);
-    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes), '', clred);
+    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clgreen);
+    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clred);
+    SeriesLost.AddXY(organic.Globals[i].date, (organic.Globals[i]. lostLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clyellow);
   end;
 
   if organicComments.SeriesList.Count > 0 then
@@ -1070,17 +1080,22 @@ begin
 
   SeriesPositive := flickrChart.GetNewBarSeries(organicComments);
   SeriesNegative := flickrChart.GetNewBarSeries(organicComments);
+  SeriesLost := flickrChart.GetNewBarSeries(organicComments);
   organicComments.AddSeries(SeriesPositive);
   organicComments.AddSeries(SeriesNegative);
+  organicComments.AddSeries(SeriesLost);
   SeriesPositive.MultiBar := mbStacked;
   SeriesPositive.BarWidthPercent := 25;
   SeriesNegative.MultiBar := mbStacked;
   SeriesNegative.BarWidthPercent := 25;
+  SeriesLost.MultiBar := mbStacked;
+  SeriesLost.BarWidthPercent := 25;
 
   for i := 0 to organic.Globals.Count-1 do
   begin
-    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments), '', clgreen);
-    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments), '', clred);
+    SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments + organic.Globals[i].lostComments), '', clgreen);
+    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments + organic.Globals[i].lostComments), '', clred);
+    SeriesLost.AddXY(organic.Globals[i].date, (organic.Globals[i]. lostComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments + organic.Globals[i].lostComments), '', clyellow);
   end;
 
   if executionTime.SeriesList.Count > 0 then
@@ -1485,7 +1500,7 @@ begin
             try
               response := IdHTTP1.Get(urlAdd);
               response := TResponse.filter(response);
-              AlbumLog(response + '' + photo.Title + ' ->' + value);
+              AlbumLog(response + ' ' + photo.Title + ' -> ' + value);
               timedout := true;
             except
               on e: exception do
@@ -1656,7 +1671,7 @@ var
   Item : TListItem;
 begin
   listPhotos.Items.Clear;
-
+  filterEnabled := true;
   value := edtFilter.text;
   for i := 0 to repository.photos.count-1 do
   begin
@@ -1776,6 +1791,7 @@ end;
 procedure TfrmFlickr.Button7Click(Sender: TObject);
 begin
   //Restore everything as it was.
+  filterEnabled := false;
   LoadForms(repository);
 end;
 
@@ -1796,7 +1812,7 @@ begin
   end;
 
   listGroups.Visible := true;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
 procedure TfrmFlickr.btnFilterOKClick(Sender: TObject);
@@ -1820,7 +1836,7 @@ begin
     end;
   end;
   listGroups.Visible := true;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
 procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
@@ -1932,11 +1948,9 @@ var
   i: Integer;
   j: Integer;
   Item: TListItem;
-  count : integer;
 begin
   try
     pagecontrol3.TabIndex := 0;
-    count := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
     profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
     profileName := profileName.Remove(profileName.Length-1, 1);
@@ -1958,7 +1972,6 @@ begin
             Item.Caption := FilteredGroupList.list[i].id;
             Item.SubItems.Add(FilteredGroupList.list[i].title);
             Item.checked := true;
-            inc(count);
           end;
         end;
       end;
@@ -1975,13 +1988,12 @@ begin
             if profile.groupId[i] = listGroups.Items[j].Caption then
             begin
               listGroups.Items[j].Checked := true;
-              inc(count);
             end;
           end;
       end;
     end;
   finally
-    Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
+    UpdateLabelGroups();
   end;
 end;
 
@@ -2177,6 +2189,8 @@ begin
       on e: exception do
       begin
         sleep(2000);
+        TLogger.LogFile('reading groups first iteration: ' + e.Message);
+        application.ProcessMessages;
         timedout := false;
       end;
     end;
@@ -2227,6 +2241,8 @@ begin
         on e: exception do
         begin
           sleep(2000);
+          TLogger.LogFile('reading groups second iteration: ' + e.Message);
+          application.ProcessMessages;
           timedout := false;
         end;
       end;
@@ -2926,17 +2942,8 @@ begin
 end;
 
 procedure TfrmFlickr.listGroupsItemChecked(Sender: TObject; Item: TListItem);
-var
-  i: Integer;
-  count : integer;
 begin
-  count := 0;
-  for i := 0 to listgroups.Items.Count-1 do
-  begin
-    if listgroups.Items[i].Checked then
-      inc(count);
-  end;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
+  UpdateLabelGroups();
 end;
 
 procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
@@ -3108,6 +3115,20 @@ begin
       inc(count);
   end;
   Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + count.ToString + ') selected';
+end;
+
+procedure TfrmFlickr.UpdateLabelGroups();
+var
+  i: Integer;
+  count : integer;
+begin
+  count := 0;
+  for i := 0 to listgroups.Items.Count-1 do
+  begin
+    if listgroups.Items[i].Checked then
+      inc(count);
+  end;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
 end;
 
 end.

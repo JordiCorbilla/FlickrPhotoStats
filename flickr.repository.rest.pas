@@ -211,7 +211,11 @@ begin
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
         organicStat.positiveViews := organicStat.positiveViews + 1;
       end;
-      if photo.getTotalLikes() >= likes.ToInteger() then
+      if photo.getTotalLikes() > likes.ToInteger() then
+      begin
+        organicStat.lostLikes := organicStat.lostLikes + 1;
+      end
+      else if photo.getTotalLikes() = likes.ToInteger() then
       begin
         organicStat.negativeLikes := organicStat.negativeLikes + 1;
       end
@@ -219,7 +223,11 @@ begin
       begin
         organicStat.positiveLikes := organicStat.positiveLikes + 1;
       end;
-      if photo.getTotalComments() >= comments.ToInteger() then
+      if photo.getTotalComments() > comments.ToInteger() then
+      begin
+        organicStat.lostComments := organicStat.lostComments + 1;
+      end
+      else if photo.getTotalComments() = comments.ToInteger() then
       begin
         organicStat.negativeComments := organicStat.negativeComments + 1;
       end
