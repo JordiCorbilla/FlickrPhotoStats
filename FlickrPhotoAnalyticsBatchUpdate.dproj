@@ -6,7 +6,7 @@
         <MainSource>FlickrPhotoAnalyticsBatchUpdate.dpr</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <Platform Condition="'$(Platform)'==''">Win64</Platform>
         <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Console</AppType>
     </PropertyGroup>
@@ -123,19 +123,23 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Build>4</VerInfo_Build>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win32\</DCC_ExeOutput>
         <Debugger_RunParams>-v -r -g</Debugger_RunParams>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.3;FileVersion=4.0.0.3;InternalName=Flickr Photo Stats v4.3;LegalCopyright=Jordi Corbilla;LegalTrademarks=Flickr Photo Stats v4.3;OriginalFilename=Flickr Photo Stats v4.3;ProductName=Flickr Photo Stats v4.3;ProductVersion=4.0.0.3;Comments=Flickr Photo Stats v4.3</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.4;FileVersion=4.0.0.4;InternalName=Flickr Photo Stats v4.4;LegalCopyright=Jordi Corbilla;LegalTrademarks=Flickr Photo Stats v4.4;OriginalFilename=Flickr Photo Stats v4.4;ProductName=Flickr Photo Stats v4.4;ProductVersion=4.0.0.4;Comments=Flickr Photo Stats v4.4</VerInfo_Keys>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <VerInfo_Build>4</VerInfo_Build>
+        <DCC_DcuOutput>dcu\</DCC_DcuOutput>
+        <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.3;FileVersion=4.0.0.3;InternalName=Flickr Photo Stats v4.3;LegalCopyright=Flickr Photo Stats v4.3;LegalTrademarks=Flickr Photo Stats v4.3;OriginalFilename=Flickr Photo Stats v4.3;ProductName=Flickr Photo Stats v4.3;ProductVersion=4.0.0.3;Comments=Flickr Photo Stats v4.3</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.4;FileVersion=4.0.0.4;InternalName=Flickr Photo Stats v4.4;LegalCopyright=Flickr Photo Stats v4.4;LegalTrademarks=Flickr Photo Stats v4.4;OriginalFilename=Flickr Photo Stats v4.4;ProductName=Flickr Photo Stats v4.4;ProductVersion=4.0.0.4;Comments=Flickr Photo Stats v4.4</VerInfo_Keys>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

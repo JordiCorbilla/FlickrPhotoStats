@@ -72,7 +72,7 @@ begin
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
-    WriteLn('# version 4.3 @author: Jordi Corbilla             #');
+    WriteLn('# version 4.4 @author: Jordi Corbilla             #');
     WriteLn('###################################################');
     verbosity := false;
     if paramstr(1) = '-v' then

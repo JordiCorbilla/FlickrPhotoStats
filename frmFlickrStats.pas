@@ -1672,6 +1672,8 @@ var
 begin
   listPhotos.Items.Clear;
   filterEnabled := true;
+  btnSave.Enabled := false;
+  btnLoad.Enabled := false;
   value := edtFilter.text;
   for i := 0 to repository.photos.count-1 do
   begin
@@ -1792,7 +1794,11 @@ procedure TfrmFlickr.Button7Click(Sender: TObject);
 begin
   //Restore everything as it was.
   filterEnabled := false;
+  btnSave.Enabled := true;
+  btnLoad.Enabled := true;
+  listPhotos.Visible := false;
   LoadForms(repository);
+  listPhotos.Visible := true;
 end;
 
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
@@ -2094,21 +2100,26 @@ procedure TfrmFlickr.CheckBox1Click(Sender: TObject);
 var
   i: Integer;
 begin
+  listgroups.OnItemChecked := nil;
   for i := 0 to listGroups.Items.Count - 1 do
   begin
     listGroups.Items[i].Checked := CheckBox1.Checked;
   end;
+  listgroups.OnItemChecked := listGroupsItemChecked;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
 end;
 
 procedure TfrmFlickr.CheckBox2Click(Sender: TObject);
 var
   i: Integer;
 begin
+  listPhotos.OnItemChecked := nil;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
     listPhotos.Items[i].Checked := CheckBox2.Checked;
   end;
-  UpdateLabel();
+  listPhotos.OnItemChecked := listPhotosItemChecked;
+  Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected';
 end;
 
 procedure TfrmFlickr.showMarksClick(Sender: TObject);
