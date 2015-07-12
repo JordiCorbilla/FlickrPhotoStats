@@ -505,7 +505,8 @@ begin
   Process.Visible := true;
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
   Taskbar1.ProgressMaxValue := listPhotos.Items.Count;
-
+  listPhotos.OnItemChecked := nil;
+  listPhotos.OnCustomDrawSubItem := nil;
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
   for i := 0 to listPhotos.Items.Count - 1 do
@@ -542,6 +543,8 @@ begin
     UpdateTotals(false);
     LoadHallOfFame(repository);
   end;
+  listPhotos.OnItemChecked := listPhotosItemChecked;
+  listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   btnSave.Enabled := true;
   photoId.Enabled := true;
   btnLoad.Enabled := true;
@@ -856,11 +859,14 @@ begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-
+  listPhotos.OnItemChecked := nil;
+  listPhotos.OnCustomDrawSubItem := nil;
   RequestInformation_REST_Flickr(photoId.text);
   photoId.text := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
+  listPhotos.OnItemChecked := listPhotosItemChecked;
+  listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   UpdateLabel;
 end;
 
@@ -1466,9 +1472,19 @@ begin
 end;
 
 procedure TfrmFlickr.btnSaveClick(Sender: TObject);
+var
+  st : TSTopwatch;
 begin
+  st := TStopWatch.Create;
+  st.Start;
   repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
+  st.Stop;
+  log('Saving repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+  st := TStopWatch.Create;
+  st.Start;
   globalsRepository.save('flickrRepositoryGlobal.xml');
+  st.Stop;
+  log('Saving repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
   btnSave.Enabled := false;
 end;
 
@@ -1800,11 +1816,15 @@ end;
 procedure TfrmFlickr.Button7Click(Sender: TObject);
 begin
   //Restore everything as it was.
+  listPhotos.OnItemChecked := nil;
+  listPhotos.OnCustomDrawSubItem := nil;
   filterEnabled := false;
   btnSave.Enabled := true;
   btnLoad.Enabled := true;
   listPhotos.Visible := false;
   LoadForms(repository);
+  listPhotos.OnItemChecked := listPhotosItemChecked;
+  listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   listPhotos.Visible := true;
 end;
 
