@@ -1,7 +1,7 @@
 object frmFlickr: TfrmFlickr
   Left = 0
   Top = 0
-  Caption = 'Flickr Photo Analytics v4.4 by Jordi Corbilla'
+  Caption = 'Flickr Photo Analytics v4.4'
   ClientHeight = 820
   ClientWidth = 1511
   Color = clBtnFace
@@ -513,7 +513,7 @@ object frmFlickr: TfrmFlickr
     object btnGetToken: TButton
       Left = 200
       Top = 6
-      Width = 75
+      Width = 63
       Height = 38
       Caption = 'Get Token'
       ImageAlignment = iaTop
@@ -2958,7 +2958,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001C40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

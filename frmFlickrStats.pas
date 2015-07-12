@@ -997,6 +997,10 @@ begin
   totalViewsacc := 0;
   totalLikesacc := 0;
   totalCommentsacc := 0;
+
+  listPhotos.OnCustomDrawSubItem := nil;
+  listPhotos.OnItemChecked := nil;
+
   for i := 0 to repository.photos.Count - 1 do
   begin
     Item := listPhotos.Items.Add;
@@ -1019,6 +1023,9 @@ begin
       totalViews := 1;
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
   end;
+
+  listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
+  listPhotos.OnItemChecked := listPhotosItemChecked;
 
   UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
   UpdateGlobals();
@@ -1808,6 +1815,9 @@ var
 begin
   pagecontrol3.TabIndex := 0;
   listGroups.Visible := false;
+  listGroups.OnItemChecked := nil;
+  listgroups.OnCustomDrawItem := nil;
+
   listGroups.Items.Clear;
 
   for i := 0 to FilteredGroupList.list.Count - 1 do
@@ -1816,6 +1826,9 @@ begin
     Item.Caption := FilteredGroupList.list[i].id;
     Item.SubItems.Add(FilteredGroupList.list[i].title);
   end;
+
+  listGroups.OnItemChecked := listGroupsItemChecked;
+  listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
 
   listGroups.Visible := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
@@ -1962,7 +1975,8 @@ begin
     profileName := profileName.Remove(profileName.Length-1, 1);
     // Now look for this profileName in the Main Object.
     profile := flickrProfiles.getProfile(profileName);
-
+    listGroups.OnItemChecked := nil;
+    listgroups.OnCustomDrawItem := nil;
     if chkDisplayOnly.Checked then
     begin
       listGroups.Visible := false;
@@ -1987,6 +2001,7 @@ begin
     begin
       if profile <> nil then
       begin
+        listGroups.Visible := false;
         edtProfile.text := profileName;
         for i := 0 to profile.groupId.Count - 1 do
           for j := 0 to listGroups.Items.Count - 1 do
@@ -1996,9 +2011,12 @@ begin
               listGroups.Items[j].Checked := true;
             end;
           end;
+        listGroups.Visible := true;
       end;
     end;
   finally
+    listGroups.OnItemChecked := listGroupsItemChecked;
+    listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
     UpdateLabelGroups();
   end;
 end;
@@ -2165,6 +2183,7 @@ var
   urlGroups: string;
   i: Integer;
   timedout: Boolean;
+  st : TStopWatch;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -2281,12 +2300,20 @@ begin
     end;
   end;
   // Add items to the listview
+  st := TStopWatch.Create;
+  st.Start;
+  listGroups.OnItemChecked := nil;
+  listgroups.OnCustomDrawItem := nil;
   for i := 0 to FilteredGroupList.list.Count - 1 do
   begin
     Item := listGroups.Items.Add;
     Item.Caption := FilteredGroupList.list[i].id;
     Item.SubItems.Add(FilteredGroupList.list[i].title);
   end;
+  listGroups.OnItemChecked := listGroupsItemChecked;
+  listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
+  st.Stop;
+  log('populating group list ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
   btnLoad.Enabled := true;
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;

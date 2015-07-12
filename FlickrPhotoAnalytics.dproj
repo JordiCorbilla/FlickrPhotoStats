@@ -133,7 +133,9 @@
         </DCCReference>
         <DCCReference Include="frmFlickrContextList.pas">
             <Form>frmFlickrContext</Form>
-            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="frmSplash.pas">
+            <Form>frmFlickrSplash</Form>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

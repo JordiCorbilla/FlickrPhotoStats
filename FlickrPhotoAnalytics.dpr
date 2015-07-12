@@ -29,14 +29,37 @@ program FlickrPhotoAnalytics;
 
 uses
   Forms,
+  Windows,
   frmFlickrStats in 'frmFlickrStats.pas' {frmFlickr},
   Vcl.Themes,
   Vcl.Styles,
-  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext};
+  frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
+  frmSplash in 'frmSplash.pas' {frmFlickrSplash};
 
 {$R *.res}
 
+var
+  SplashScreen: TfrmFlickrSplash;
+
 begin
+  SplashScreen := TfrmFlickrSplash.Create(Application);
+  SplashScreen.Show;
+  Application.Initialize; // this line exists!
+  SplashScreen.Update;
+
+  Sleep(1000); // Or a delay command.
+  SplashScreen.Label2.Caption := 'Loading Application.';
+  SplashScreen.Update;
+  Sleep(1000); // Or a delay command.
+  SplashScreen.Label2.Caption := 'Loading Application..';
+  SplashScreen.Update;
+  Sleep(1000); // Or a delay command.
+  SplashScreen.Label2.Caption := 'Loading Application...';
+  SplashScreen.Update;
+  Sleep(1000);
+  SplashScreen.Hide;
+  SplashScreen.Free;
+
   Application.Initialize;
   ReportMemoryLeaksOnShutdown := true;
   Application.MainFormOnTaskbar := True;
