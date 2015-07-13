@@ -37,6 +37,7 @@ type
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
+    function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   end;
 
@@ -44,12 +45,74 @@ type
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
+    function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
   End;
 
 implementation
 
 { TFlickrChart }
+
+function TFlickrChart.GetNewAreaSeries(parent: TChart;
+  marks: boolean): TAreaSeries;
+var
+  Series : TAreaSeries;
+begin
+  Series := TAreaSeries.Create(parent);
+  Series.Marks.Arrow.Visible := true;
+  Series.Marks.Callout.Brush.color := clBlack;
+  Series.Marks.Callout.Arrow.Visible := true;
+  Series.Marks.DrawEvery := 10;
+  Series.DrawArea := true;
+  //Series.DrawStyle := dsCurve;
+  Series.Marks.Shadow.color := 8487297;
+  Series.Marks.Visible := marks;
+  Series.SeriesColor := 10708548;
+  Series.LinePen.Width := 1;
+  Series.LinePen.color := 10708548;
+  Series.Pointer.InflateMargins := true;
+  Series.Pointer.Style := psRectangle;
+  Series.Pointer.Brush.Gradient.EndColor := 10708548;
+  Series.Pointer.Gradient.EndColor := 10708548;
+  Series.Pointer.InflateMargins := true;
+  Series.Pointer.Visible := false;
+  Series.XValues.DateTime := true;
+  Series.XValues.Name := 'X';
+  Series.XValues.Order := loAscending;
+  Series.YValues.Name := 'Y';
+  Series.YValues.Order := loNone;
+  Series.ParentChart := parent;
+  Series.Transparency := 32;
+  result := Series;
+
+
+//object Series1: TAreaSeries
+//      AreaChartBrush.BackColor = x00FFFFFF
+//      AreaLinesPen.Color = claNull
+//      AreaLinesPen.EndStyle = esFlat
+//      AreaLinesPen.Fill.Color = claNull
+//      AreaLinesPen.Fill.Kind = Gradient
+//      AreaLinesPen.Fill.Gradient.EndColor = claRed
+//      AreaLinesPen.Fill.Gradient.MidColor = claYellow
+//      AreaLinesPen.Fill.Gradient.StartColor = claGreen
+//      AreaLinesPen.Fill.Gradient.Visible = True
+//      AreaLinesPen.JoinStyle = jsBevel
+//      Dark3D = False
+//      DrawArea = True
+//      DrawStyle = dsCurve
+//      Pointer.Dark3D = False
+//      Pointer.Draw3D = False
+//      Pointer.InflateMargins = True
+//      Pointer.Style = psRectangle
+//      Pointer.Visible = False
+//      Transparency = 32
+//      XValues.Name = 'X'
+//      XValues.Order = loNone
+//      YValues.Name = 'Y'
+//      YValues.Order = loNone
+//    end
+
+end;
 
 function TFlickrChart.GetNewBarSeries(parent: TChart; marks : boolean = false): TBarSeries;
 var

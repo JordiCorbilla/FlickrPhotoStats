@@ -545,7 +545,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 772
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -690,7 +690,7 @@ object frmFlickr: TfrmFlickr
               7
               15
               7)
-            ColorPaletteIndex = 13
+            ColorPaletteIndex = 18
             object LineSeries4: TLineSeries
               Marks.Shadow.Color = 8487297
               Marks.DrawEvery = 10
@@ -2958,7 +2958,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001CC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001D80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -10949,5 +10949,11 @@ object frmFlickr: TfrmFlickr
       Caption = 'Uncheck All'
       OnClick = UncheckAll1Click
     end
+  end
+  object TeeGDIPlus1: TTeeGDIPlus
+    Active = True
+    TeePanel = dailyLikes
+    Left = 906
+    Top = 198
   end
 end

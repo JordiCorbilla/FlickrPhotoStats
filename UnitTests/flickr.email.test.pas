@@ -30,7 +30,7 @@ unit flickr.email.test;
 interface
 
 uses
-  DUnitX.TestFramework, flickr.time, flickr.lib.email, flickr.globals, flickr.lib.options;
+  DUnitX.TestFramework, flickr.time, flickr.lib.email, flickr.globals, flickr.lib.options, flickr.lib.email.html;
 
 type
 
@@ -45,13 +45,15 @@ type
     [TestCase('TesteMail', 'This is a test')]
     procedure Test1(const text: String);
     [test]
-    procedure Test2();
+    procedure TestEmail();
+    [test]
+    procedure TestEmailHTML();
   end;
 
 implementation
 
 uses
-  Sysutils;
+  Sysutils, System.Classes;
 
 { TMyTestObject }
 
@@ -67,10 +69,10 @@ end;
 
 procedure TMyTestObject.Test1(const text: String);
 begin
-  TFlickrEmail.Send('flickrphotoanalytics@gmail.com', text);
+  //TFlickrEmail.Send('flickrphotoanalytics@gmail.com', text);
 end;
 
-procedure TMyTestObject.Test2;
+procedure TMyTestObject.TestEmail;
 var
   globalsRepository: IFlickrGlobals;
   options : IOptions;
@@ -117,9 +119,27 @@ begin
     description := description + '' + sLineBreak;
     description := description + 'Regards,' + sLineBreak;
     description := description + 'Flickr Analytics Service';
-    TFlickrEmail.Send(options.eMailAddress, description);
+    //TFlickrEmail.Send(options.eMailAddress, description);
   finally
 
+  end;
+end;
+
+procedure TMyTestObject.TestEmailHTML;
+var
+  globalsRepository: IFlickrGlobals;
+  options : IOptions;
+  description : TStrings;
+begin
+  globalsRepository := TFlickrGlobals.Create();
+  description := nil;
+  try
+    globalsRepository.load('flickrRepositoryGlobal.xml');
+    options := TOptions.New().Load;
+    description := THtmlComposer.getMessage(globalsRepository);
+    TFlickrEmail.SendHTML(options.eMailAddress, description);
+  finally
+    description.free;
   end;
 end;
 

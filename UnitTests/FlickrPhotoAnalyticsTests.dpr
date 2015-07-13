@@ -17,7 +17,8 @@ uses
   flickr.lib.email in '..\flickr.lib.email.pas',
   flickr.globals in '..\flickr.globals.pas',
   flickr.stats in '..\flickr.stats.pas',
-  flickr.lib.options in '..\flickr.lib.options.pas';
+  flickr.lib.options in '..\flickr.lib.options.pas',
+  flickr.lib.email.html in '..\flickr.lib.email.html.pas';
 
 var
   runner : ITestRunner;
@@ -30,6 +31,7 @@ begin
   exit;
 {$ENDIF}
   try
+    ReportMemoryLeaksOnShutdown := true;
     //Check command line options, will exit if invalid
     TDUnitX.CheckCommandLine;
     //Create the test runner

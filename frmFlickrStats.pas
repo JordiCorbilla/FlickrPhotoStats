@@ -216,7 +216,6 @@ type
     Panel17: TPanel;
     Splitter9: TSplitter;
     ChartViews: TChart;
-    LineSeries4: TLineSeries;
     ChartComments: TChart;
     LineSeries1: TLineSeries;
     ChartLikes: TChart;
@@ -244,14 +243,16 @@ type
     organicComments: TChart;
     LineSeries6: TLineSeries;
     executionTime: TChart;
-    LineSeries3: TLineSeries;
-    Series7: THorizBarSeries;
     Label28: TLabel;
     Label29: TLabel;
     Label30: TLabel;
     edtEmail: TEdit;
     Label31: TLabel;
     ComboBox3: TComboBox;
+    LineSeries3: TLineSeries;
+    Series7: THorizBarSeries;
+    TeeGDIPlus1: TTeeGDIPlus;
+    LineSeries4: TLineSeries;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1044,7 +1045,7 @@ procedure TfrmFlickr.UpdateOrganics();
 var
   SeriesPositive, SeriesNegative, SeriesLost  : TBarSeries;
   i: Integer;
-  Series : TLineSeries;
+  Series : TAreaSeries;
 begin
   if organicViews.SeriesList.Count > 0 then
     organicViews.RemoveAllSeries;
@@ -1114,7 +1115,7 @@ begin
   if executionTime.SeriesList.Count > 0 then
     executionTime.RemoveAllSeries;
 
-  Series := flickrChart.GetNewLineSeries(executionTime);
+  Series := flickrChart.GetNewAreaSeries(executionTime);
   color := RGB(Random(255), Random(255), Random(255));
 
   for i := 0 to organic.Globals.Count-1 do

@@ -44,6 +44,8 @@ uses
   flickr.organic.stats,
   flickr.lib.options,
   flickr.lib.email,
+  flickr.lib.email.html,
+  System.Classes,
   flickr.repository.rest in 'flickr.repository.rest.pas', Winapi.Windows;
 
 var
@@ -62,10 +64,7 @@ var
   organic : IFlickrOrganic;
   organicStat : IFlickrOrganicStats;
   options : IOptions;
-  description : string;
-  itemToday : integer;
-  itemYesterday : integer;
-  difference : integer;
+  description : TStrings;
 begin
   try
     TLogger.LogFile('Starting Batch Update');
@@ -203,42 +202,11 @@ begin
     end;
 
     //Send eMail
+    description := nil;
     try
       options := TOptions.New().Load;
-      description := 'Dear User,' + sLineBreak;
-      description := description + '' + sLineBreak;
-
-      description := description + 'Here are your stats for ' + DateToStr(Date) + sLineBreak;
-
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
-      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
-      difference := itemToday - itemYesterday;
-
-      description := description + ' - Number of Total Views: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Total Views yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Views Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '' + sLineBreak;
-
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
-      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
-      difference := itemToday - itemYesterday;
-
-      description := description + ' - Number of Total Likes: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Total Likes yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Likes Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '' + sLineBreak;
-
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
-      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
-      difference := itemToday - itemYesterday;
-
-      description := description + ' - Number of Total Comments: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Total Comments yesterday: ' + Format('%n',[itemYesterday.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '   - Number of Comments Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
-      description := description + '' + sLineBreak;
-      description := description + 'Regards,' + sLineBreak;
-      description := description + 'Flickr Analytics Service';
-      TFlickrEmail.Send(options.eMailAddress, description);
+      description := THtmlComposer.getMessage(globalsRepository);
+      TFlickrEmail.SendHTML(options.eMailAddress, description);
     except
       on E: Exception do
       begin
@@ -248,6 +216,7 @@ begin
     end;
 
     globalsRepository := nil;
+    description.Free;
 
     TLogger.LogFile('Finishing Batch Update');
   except
