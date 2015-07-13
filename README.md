@@ -46,25 +46,30 @@ Code convention:
  
 Use **Batch Update** to easily update all the values and keep a good track record of your flickr pool.
 
-Latest version of the binary can be found here (stable):
+Version 3.0 (stable):
 
 - FlickrPhotoStats(x86) v3.0. (https://app.box.com/s/v3xdczujjdm1b85kcs8k)
 - FlickrPhotoStats(x64) v3.0. (https://app.box.com/s/1i67o9g6krr0398kprk1)
 
-New versions of the application (RC):
+Version 3.1 (RC):
 
 - FlickrPhotoStats(x86) v3.1. (https://app.box.com/s/djm6lei8rli3pkfa1fy3)
 - FlickrPhotoStats(x64) v3.1. (https://app.box.com/s/w24hr4cq8nkh9c22z4iw)
 
-New versions of the application (beta):
+Version 4.1 (beta):
 
 - FlickrPhotoStats(x86) v4.1. (https://app.box.com/s/ydtsu1ceq3f5dkkilct20qhnkdahcddd)
 - FlickrPhotoStats(x64) v4.1. (https://app.box.com/s/x3ta5x4z3o6e5h7ozc82d6e49uslzjw5)
 
-Latest release candidate can be found here:
+Version 4.3 (RC):
 
 - FlickrPhotoStats(x86) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
 - FlickrPhotoStats(x64) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
+
+Latest release candidate can be found here:
+
+- FlickrPhotoStats(x86) v4.4. (https://app.box.com/s/zyv0thasrnrjhi2jvh7359u7lvpdfuh2)
+- FlickrPhotoStats(x64) v4.4. (https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7)
 
 ## Changelog
 ### Features for version 3.1:
@@ -80,6 +85,15 @@ Latest release candidate can be found here:
 - Trend lines.
 - Album population.
 
+### Features for version 4.4:
+- Dashboard upgrade.
+- Area series.
+- Performance improvements.
+- BatchUpdate to send emails out to users.
+- emails support HTML.
+- splash screen.
+- Photo filtering.
+
 Source code is available here.
 
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
@@ -89,8 +103,10 @@ Developed with Delphi XE6.
 ## Roadmap
 ### Version 4.4:
 - Additional photo filtering.
-- Saving the repository in a SQL DB (MySQL, SQL Server).
 - Speed improvements.
+
+### Version 4.5:
+- Saving the repository in a SQL DB (MySQL, SQL Server).
 - Authentication improvements.
 
 ### Version 5:
