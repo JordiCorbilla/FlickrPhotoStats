@@ -253,6 +253,7 @@ type
     Series7: THorizBarSeries;
     TeeGDIPlus1: TTeeGDIPlus;
     LineSeries4: TLineSeries;
+    btnAbout: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -306,6 +307,7 @@ type
     procedure listGroupsItemChecked(Sender: TObject; Item: TListItem);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure btnAboutClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -361,7 +363,7 @@ uses
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
-  flickr.lib.response, flickr.lib.logging;
+  flickr.lib.response, flickr.lib.logging, frmSplash;
 
 {$R *.dfm}
 
@@ -390,7 +392,7 @@ begin
     showmessage('Secret key can''t be empty');
     exit;
   end;
-  btnGetToken.Visible := false;
+  btnGetToken.enabled := false;
   Log('authentication started');
   // oauthr authentication
   Log('Generating request token query for ' + apikey.text + ' ' + secret.text);
@@ -435,7 +437,7 @@ begin
   NavigationUrl := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
   WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
-  btnGetToken.Visible := true;
+  btnGetToken.enabled := true;
 end;
 
 procedure TfrmFlickr.Log(s: string);
@@ -850,6 +852,21 @@ begin
       UpdateTotals(true);
   finally
     CoUninitialize;
+  end;
+end;
+
+procedure TfrmFlickr.btnAboutClick(Sender: TObject);
+var
+  SplashScreen: TfrmFlickrSplash;
+begin
+  SplashScreen := TfrmFlickrSplash.Create(Application);
+  try
+    SplashScreen.label2.Visible := false;
+    SplashScreen.label4.Visible := true;
+    SplashScreen.btnClose.Visible := true;
+    SplashScreen.ShowModal;
+  finally
+    SplashScreen.Free;
   end;
 end;
 
@@ -2158,7 +2175,10 @@ begin
     listPhotos.Items[i].Checked := CheckBox2.Checked;
   end;
   listPhotos.OnItemChecked := listPhotosItemChecked;
-  Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected';
+  if CheckBox2.Checked then
+    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected'
+  else
+    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected'
 end;
 
 procedure TfrmFlickr.showMarksClick(Sender: TObject);

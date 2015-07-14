@@ -32,7 +32,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Imaging.jpeg;
+  Vcl.Imaging.jpeg, Vcl.ImgList;
 
 type
   TfrmFlickrSplash = class(TForm)
@@ -41,7 +41,12 @@ type
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    btnClose: TButton;
+    ImageList1: TImageList;
+    Label4: TLabel;
     procedure FormShow(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
+    procedure Label4Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -53,11 +58,27 @@ var
 
 implementation
 
+uses
+  ShellApi;
+
 {$R *.dfm}
+
+procedure TfrmFlickrSplash.btnCloseClick(Sender: TObject);
+begin
+  Self.Close;
+end;
 
 procedure TfrmFlickrSplash.FormShow(Sender: TObject);
 begin
   SetWindowPos(Application.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE);
+end;
+
+procedure TfrmFlickrSplash.Label4Click(Sender: TObject);
+var
+  MyLink: string;
+begin
+  MyLink := 'https://github.com/JordiCorbilla/FlickrPhotoStats';
+  ShellExecute(self.WindowHandle,'open','chrome.exe', PChar(MyLink), nil, SW_SHOW);
 end;
 
 end.

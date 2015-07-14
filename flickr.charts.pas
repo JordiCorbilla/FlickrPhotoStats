@@ -84,34 +84,6 @@ begin
   Series.ParentChart := parent;
   Series.Transparency := 32;
   result := Series;
-
-
-//object Series1: TAreaSeries
-//      AreaChartBrush.BackColor = x00FFFFFF
-//      AreaLinesPen.Color = claNull
-//      AreaLinesPen.EndStyle = esFlat
-//      AreaLinesPen.Fill.Color = claNull
-//      AreaLinesPen.Fill.Kind = Gradient
-//      AreaLinesPen.Fill.Gradient.EndColor = claRed
-//      AreaLinesPen.Fill.Gradient.MidColor = claYellow
-//      AreaLinesPen.Fill.Gradient.StartColor = claGreen
-//      AreaLinesPen.Fill.Gradient.Visible = True
-//      AreaLinesPen.JoinStyle = jsBevel
-//      Dark3D = False
-//      DrawArea = True
-//      DrawStyle = dsCurve
-//      Pointer.Dark3D = False
-//      Pointer.Draw3D = False
-//      Pointer.InflateMargins = True
-//      Pointer.Style = psRectangle
-//      Pointer.Visible = False
-//      Transparency = 32
-//      XValues.Name = 'X'
-//      XValues.Order = loNone
-//      YValues.Name = 'Y'
-//      YValues.Order = loNone
-//    end
-
 end;
 
 function TFlickrChart.GetNewBarSeries(parent: TChart; marks : boolean = false): TBarSeries;
@@ -133,6 +105,7 @@ begin
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
   Series.ParentChart := parent;
+  Series.Transparency := 32;
   result := Series;
 end;
 
@@ -161,6 +134,7 @@ begin
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
+  Series.Transparency := 32;
   Series.ParentChart := parent;
   result := Series;
 end;
@@ -190,6 +164,7 @@ begin
   Series.Frame.OuterBrush.Gradient.StartColor := clSilver;
   Series.Frame.OuterBrush.Gradient.Visible := True;
   Series.Frame.Width := 4;
+  Series.Transparency := 32;
   Series.OtherSlice.Legend.Visible := False;
   result := Series;
 end;

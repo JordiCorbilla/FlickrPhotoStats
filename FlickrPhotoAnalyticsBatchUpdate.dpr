@@ -205,7 +205,7 @@ begin
     description := nil;
     try
       options := TOptions.New().Load;
-      description := THtmlComposer.getMessage(globalsRepository);
+      description := THtmlComposer.getMessage(globalsRepository, organic);
       TFlickrEmail.SendHTML(options.eMailAddress, description);
     except
       on E: Exception do

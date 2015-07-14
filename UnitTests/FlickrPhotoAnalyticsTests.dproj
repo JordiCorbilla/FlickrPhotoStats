@@ -127,6 +127,8 @@
         <DCCReference Include="..\flickr.stats.pas"/>
         <DCCReference Include="..\flickr.lib.options.pas"/>
         <DCCReference Include="..\flickr.lib.email.html.pas"/>
+        <DCCReference Include="..\flickr.organic.pas"/>
+        <DCCReference Include="..\flickr.organic.stats.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

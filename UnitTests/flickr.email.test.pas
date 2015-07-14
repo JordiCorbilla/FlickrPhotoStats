@@ -53,7 +53,7 @@ type
 implementation
 
 uses
-  Sysutils, System.Classes;
+  Sysutils, System.Classes, flickr.organic;
 
 { TMyTestObject }
 
@@ -130,13 +130,16 @@ var
   globalsRepository: IFlickrGlobals;
   options : IOptions;
   description : TStrings;
+  organic : TFlickrOrganic;
 begin
   globalsRepository := TFlickrGlobals.Create();
+  organic := TFlickrOrganic.Create;
   description := nil;
   try
     globalsRepository.load('flickrRepositoryGlobal.xml');
+    organic.Load('flickrOrganic.xml');
     options := TOptions.New().Load;
-    description := THtmlComposer.getMessage(globalsRepository);
+    description := THtmlComposer.getMessage(globalsRepository, organic);
     TFlickrEmail.SendHTML(options.eMailAddress, description);
   finally
     description.free;

@@ -18,7 +18,9 @@ uses
   flickr.globals in '..\flickr.globals.pas',
   flickr.stats in '..\flickr.stats.pas',
   flickr.lib.options in '..\flickr.lib.options.pas',
-  flickr.lib.email.html in '..\flickr.lib.email.html.pas';
+  flickr.lib.email.html in '..\flickr.lib.email.html.pas',
+  flickr.organic in '..\flickr.organic.pas',
+  flickr.organic.stats in '..\flickr.organic.stats.pas';
 
 var
   runner : ITestRunner;

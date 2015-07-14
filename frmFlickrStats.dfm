@@ -327,7 +327,7 @@ object frmFlickr: TfrmFlickr
     Align = alTop
     TabOrder = 0
     object Label12: TLabel
-      Left = 321
+      Left = 338
       Top = 1
       Width = 138
       Height = 25
@@ -516,13 +516,13 @@ object frmFlickr: TfrmFlickr
       Width = 63
       Height = 38
       Caption = 'Get Token'
+      Enabled = False
       ImageAlignment = iaTop
       ImageIndex = 93
       ImageMargins.Top = 5
       ImageMargins.Bottom = -6
       Images = ImageList1
       TabOrder = 2
-      Visible = False
       OnClick = btnGetTokenClick
     end
     object btnLoad: TButton
@@ -538,6 +538,20 @@ object frmFlickr: TfrmFlickr
       Images = ImageList1
       TabOrder = 3
       OnClick = btnLoadClick
+    end
+    object btnAbout: TButton
+      Left = 266
+      Top = 6
+      Width = 47
+      Height = 38
+      Caption = 'About'
+      ImageAlignment = iaTop
+      ImageIndex = 106
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
+      TabOrder = 4
+      OnClick = btnAboutClick
     end
   end
   object PageControl1: TPageControl
@@ -2958,7 +2972,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001DC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001E00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
