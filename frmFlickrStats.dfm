@@ -1642,6 +1642,10 @@ object frmFlickr: TfrmFlickr
               Caption = ' Groups'
             end
             item
+              Caption = 'Tags'
+              Width = 100
+            end
+            item
               Caption = ' Affection'
               Width = 80
             end>
@@ -1844,7 +1848,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 703
-        ActivePage = Statistics
+        ActivePage = TabSheet9
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2972,7 +2976,7 @@ object frmFlickr: TfrmFlickr
     Left = 456
     Top = 200
     Bitmap = {
-      494C0101ED002001E00010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001E40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

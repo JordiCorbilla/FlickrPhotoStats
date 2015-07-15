@@ -49,9 +49,11 @@ type
     function GetAlbums(): TList<IAlbum>;
     function GetGroups(): TList<IPool>;
     function getTaken: string;
+    function GetTags: string;
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
     procedure SetTaken(const Value: string);
+    procedure SetTags(const Value: string);
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
@@ -59,6 +61,7 @@ type
     property Taken : string read getTaken write SetTaken;
     property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
     property Groups : TList<IPool> read GetGroups write SetGroups;
+    property Tags : string read GetTags write SetTags;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(): Integer;
@@ -77,6 +80,7 @@ type
     FTitle: string;
     FLastUpdate: TDatetime;
     FTaken : string;
+    FTags: string;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -87,11 +91,13 @@ type
     function GetStats(): TList<IStat>;
     function ExistStat(stat: IStat; var existing: IStat): boolean;
     function getTaken: string;
+    function GetTags: string;
     procedure SetTaken(const Value: string);
     function GetAlbums: TList<IAlbum>;
     function GetGroups: TList<IPool>;
     procedure SetAlbums(Value: TList<IAlbum>);
     procedure SetGroups(Value: TList<IPool>);
+    procedure SetTags(const Value: string);
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -100,12 +106,13 @@ type
     property Taken : string read getTaken write SetTaken;
     property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
     property Groups : TList<IPool> read GetGroups write SetGroups;
+    property Tags : string read GetTags write SetTags;
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TList<IAlbum>; groups : TList<IPool>);
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
     constructor Create(); overload;
-    constructor Create(Id: string; Title: string; taken : string); overload;
+    constructor Create(Id: string; Title: string; taken : string; tags : string); overload;
     destructor Destroy(); override;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
@@ -145,7 +152,7 @@ begin
   result := (existing = nil);
 end;
 
-constructor TPhoto.Create(Id: string; Title: string; taken : string);
+constructor TPhoto.Create(Id: string; Title: string; taken : string; tags : string);
 begin
   FStats := TList<IStat>.Create;
   FAlbums := TList<IAlbum>.Create;
@@ -153,6 +160,7 @@ begin
   SetId(Id);
   SetTitle(Title);
   SetTaken(taken);
+  SetTags(tags);
 end;
 
 constructor TPhoto.Create;
@@ -238,6 +246,11 @@ end;
 function TPhoto.GetStats: TList<IStat>;
 begin
   result := FStats;
+end;
+
+function TPhoto.GetTags: string;
+begin
+  result := FTags;
 end;
 
 function TPhoto.getTaken: string;
@@ -346,6 +359,12 @@ begin
   FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
   FTaken := iNode.Attributes['Taken'];
 
+  try
+    FTaken := iNode.Attributes['Tags'];
+  except
+    FTaken := '';
+  end;
+
   iNode2 := iNode.ChildNodes.First;
   while iNode2 <> nil do
   begin
@@ -403,6 +422,7 @@ begin
   iNode2.Attributes['title'] := FTitle;
   iNode2.Attributes['LastUpdate'] := DateToStr(FLastUpdate);
   iNode2.Attributes['Taken'] := FTaken;
+  iNode2.Attributes['Tags'] := FTags;
   for i := 0 to FStats.count - 1 do
   begin
     FStats[i].Save(iNode2);
@@ -456,6 +476,11 @@ end;
 procedure TPhoto.SetStats(value: TList<IStat>);
 begin
   FStats := value;
+end;
+
+procedure TPhoto.SetTags(const Value: string);
+begin
+  FTags := Value;
 end;
 
 procedure TPhoto.SetTaken(const Value: string);

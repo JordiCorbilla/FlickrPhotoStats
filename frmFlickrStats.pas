@@ -660,7 +660,7 @@ procedure TfrmFlickr.RequestInformation_REST_Flickr(id: string);
 var
   Item, itemExisting: TListItem;
   response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
   views, title, likes, comments, taken: string;
   stat: IStat;
   photo, existing: IPhoto;
@@ -670,6 +670,7 @@ var
   timedout: Boolean;
   Albums: TList<IAlbum>;
   Groups: TList<IPool>;
+  tags : string;
 begin
   CoInitialize(nil);
   try
@@ -702,6 +703,7 @@ begin
       iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
       views := iXMLRootNode3.attributes['views'];
       iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <owner>
+      tags := '';
       while iXMLRootNode4 <> nil do
       begin
         if iXMLRootNode4.NodeName = 'title' then
@@ -710,6 +712,16 @@ begin
           taken := iXMLRootNode4.attributes['taken'];
         if iXMLRootNode4.NodeName = 'comments' then
           comments := iXMLRootNode4.NodeValue;
+        if iXMLRootNode4.NodeName = 'tags' then
+        begin
+          iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+          while iXMLRootNode5 <> nil do
+          begin
+            if (iXMLRootNode5.NodeName = 'tag') and (iXMLRootNode5.NodeValue <> 'jordicorbilla') and (iXMLRootNode5.NodeValue <> 'jordicorbillaphotography') then
+              tags := tags + iXMLRootNode5.NodeValue + ',';
+            iXMLRootNode5 := iXMLRootNode5.NextSibling;
+          end;
+        end;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     finally
@@ -751,7 +763,7 @@ begin
       xmlDocument := nil;
     end;
 
-    photo := TPhoto.Create(id, title, taken);
+    photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
     Albums := TList<IAlbum>.create;
     Groups := TList<IPool>.create;
@@ -804,6 +816,7 @@ begin
       photo := existing;
       photo.Title := title; //replace the title as it changes
       photo.Taken := taken;
+      photo.tags := tags;
       photo.AddStats(stat);
       photo.AddCollections(Albums, groups);
       photo.LastUpdate := Date;
@@ -830,6 +843,7 @@ begin
       Item.SubItems.Add(taken);
       Item.SubItems.Add(photo.Albums.Count.ToString());
       Item.SubItems.Add(photo.Groups.Count.ToString());
+      Item.SubItems.Add(tags);
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
     end
     else
@@ -846,6 +860,7 @@ begin
       itemExisting.SubItems.Add(taken);
       itemExisting.SubItems.Add(photo.Albums.Count.ToString());
       itemExisting.SubItems.Add(photo.Groups.Count.ToString());
+      itemExisting.SubItems.Add(tags);
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
     end;
     if chkRealTime.Checked then
@@ -1045,6 +1060,7 @@ begin
     Item.SubItems.Add(repository.photos[i].Groups.Count.ToString()); //groups
     if totalViews = 0 then
       totalViews := 1;
+    Item.SubItems.Add(repository.photos[i].tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
   end;
 
