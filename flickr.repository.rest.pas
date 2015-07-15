@@ -59,7 +59,7 @@ uses
 class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat : IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
 var
   response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
   views, title, likes, comments, taken: string;
   stat: IStat;
   photo, existing: IPhoto;
@@ -70,6 +70,7 @@ var
   Albums: TList<IAlbum>;
   Groups: TList<IPool>;
   difference : integer;
+  tags : string;
 begin
   CoInitialize(nil);
   try
@@ -102,6 +103,7 @@ begin
       iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
       views := iXMLRootNode3.attributes['views'];
       iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <owner>
+      tags := '';
       while iXMLRootNode4 <> nil do
       begin
         if iXMLRootNode4.NodeName = 'title' then
@@ -110,6 +112,16 @@ begin
           taken := iXMLRootNode4.attributes['taken'];
         if iXMLRootNode4.NodeName = 'comments' then
           comments := iXMLRootNode4.NodeValue;
+        if iXMLRootNode4.NodeName = 'tags' then
+        begin
+          iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+          while iXMLRootNode5 <> nil do
+          begin
+            if (iXMLRootNode5.NodeName = 'tag') and (iXMLRootNode5.NodeValue <> 'jordicorbilla') and (iXMLRootNode5.NodeValue <> 'jordicorbillaphotography') then
+              tags := tags + iXMLRootNode5.NodeValue + ',';
+            iXMLRootNode5 := iXMLRootNode5.NextSibling;
+          end;
+        end;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     finally
@@ -151,7 +163,7 @@ begin
       xmlDocument := nil;
     end;
 
-    photo := TPhoto.Create(id, title, taken);
+    photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
     Albums := TList<IAlbum>.create;
     Groups := TList<IPool>.create;
@@ -242,6 +254,7 @@ begin
         WriteLn('Updating : ' + title + ' previous: '+ photo.getTotalViews().ToString() + ' views: ' + views + ' difference: '+ difference.ToString());
       end;
       photo.Title := title; //replace the title as it changes
+      photo.Tags := tags;
       photo.Taken := taken;
       photo.AddStats(stat);
       photo.AddCollections(Albums, groups);
