@@ -360,9 +360,9 @@ begin
   FTaken := iNode.Attributes['Taken'];
 
   try
-    FTaken := iNode.Attributes['Tags'];
+    FTags := iNode.Attributes['Tags'];
   except
-    FTaken := '';
+    FTags := '';
   end;
 
   iNode2 := iNode.ChildNodes.First;
