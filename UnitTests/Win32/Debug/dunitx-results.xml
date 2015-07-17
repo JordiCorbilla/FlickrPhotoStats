@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<test-results name="C:\Desk\Source code\FlickrPhotoStats\trunk\UnitTests\Win32\Debug\FlickrPhotoAnalyticsTests.exe" total="5" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2015-07-14" time="12.025">
+<test-results name="C:\Desk\Source code\FlickrPhotoStats\trunk\UnitTests\Win32\Debug\FlickrPhotoAnalyticsTests.exe" total="5" errors="0" failures="0" ignored="0" inconclusive="0" not-run="0" skipped="0" invalid="0" date="2015-07-17" time="11.619">
   <environment nunit-version="DUnitX" clr-version="2.0.0.0" os-version="6.1.0.0" platform="Windows" cwd="c:\test" machine-name="mymachine" user="vincent" user-domain="finalbuilder.com"  />
   <culture-info current-culture="en" current-uiculture="en" />
-  <test-suite type="Assembly" name="FlickrPhotoAnalyticsTests.exe" executed="true" result="Success" success="True" time="12.025" asserts="0">
+  <test-suite type="Assembly" name="FlickrPhotoAnalyticsTests.exe" executed="true" result="Success" success="True" time="11.619" asserts="0">
     <results>
-        <test-suite type="Namespace" name="flickr" executed="true" result="Success" success="True" time="12.025" asserts="0" >
+        <test-suite type="Namespace" name="flickr" executed="true" result="Success" success="True" time="11.619" asserts="0" >
           <results>
+              <test-suite type="Fixture" name="TMyTestObject" executed="True" result="Success" success="True" time="11.618" >
+                <results>
+                  <test-case name="Test1.TesteMail" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                  <test-case name="TestEmail" executed="True" result="Success" success="True" time="0.027" asserts="0" />
+                  <test-case name="TestEmailHTML" executed="True" result="Success" success="True" time="11.592" asserts="0" />
+                </results>
+              </test-suite>
               <test-suite type="Fixture" name="TMyTestObject" executed="True" result="Success" success="True" time="0.000" >
                 <results>
                   <test-case name="Test1.TestA" executed="True" result="Success" success="True" time="0.000" asserts="0" />
                   <test-case name="Test1.TestB" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                </results>
-              </test-suite>
-              <test-suite type="Fixture" name="TMyTestObject" executed="True" result="Success" success="True" time="12.025" >
-                <results>
-                  <test-case name="Test1.TesteMail" executed="True" result="Success" success="True" time="0.000" asserts="0" />
-                  <test-case name="TestEmail" executed="True" result="Success" success="True" time="0.029" asserts="0" />
-                  <test-case name="TestEmailHTML" executed="True" result="Success" success="True" time="11.996" asserts="0" />
                 </results>
               </test-suite>
           </results>

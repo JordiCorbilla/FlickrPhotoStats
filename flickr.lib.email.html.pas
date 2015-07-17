@@ -48,21 +48,36 @@ var
   itemYesterday : integer;
   difference : integer;
   itemTodayx,itemToday1x, itemToday2x : double;
+  fontStyle, fontStylebig : string;
+  tableStyle : string;
+  trStyle : string;
+  thStyle, thNoBorder : string;
+  tdStyle, tdStyleText : string;
 begin
+  fontStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;"';
+  fontStylebig := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:16px;"';
+  tableStyle := ' style="border-collapse:collapse;border-spacing:0;border-color:#999;"';
+  trStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:14px;padding:10px 5px;border-width:1px;overflow:hidden;word-break:normal;border-color:#999;color:#444;"';
+  thStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:14px;font-weight:normal;';
+  thStyle := thStyle + 'padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#999;color:#fff;background-color:#26ADE4;text-align: center;"';
+  tdStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;"';
+  tdStyleText := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;text-align: center;"';
+  thNoBorder := ' style="border-style:none"';
+
   description := TStringList.create();
   try
-    description.add('<html><head></head><body><h3>Dear User,</h3>');
+    description.add('<html><head></head><body><h3 '+fontStyle+'>Dear User,</h3>');
     description.add('');
 
-    description.add('Daily Stats Report: <b>' + DateToStr(Date) + '</b><br><br>');
-    description.add('<b>Summary</b><br>');
+    description.add('<p '+fontStyle+'>Daily Stats Report: <b>' + DateToStr(Date) + '</b><br><br>');
+    description.add('<b '+fontStylebig+'>Summary</b><br>');
 
-    description.add('<table cellpadding="3" cellspacing="0" border="1" style="border:1px solid #000000">');
-    description.add('  <tr>');
-    description.add('    <td> </td>');
-    description.add('    <td><b>Yesterday</b></td>');
-    description.add('    <td><b>Today</b></td>');
-    description.add('    <td><b>Difference</b></td>');
+    description.add('<table '+tableStyle+'>');
+    description.add('  <tr '+trStyle+'>');
+    description.add('    <th '+thNoBorder+'> </th>');
+    description.add('    <th '+thStyle+'><b>Yesterday</b></th>');
+    description.add('    <th '+thStyle+'><b>Today</b></th>');
+    description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Trend</b></th>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
@@ -70,10 +85,10 @@ begin
     difference := itemToday - itemYesterday;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Views</b></td>');
-    description.add('    <td>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
@@ -81,10 +96,10 @@ begin
     difference := itemToday - itemYesterday;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Likes</b></td>');
-    description.add('    <td>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
@@ -92,26 +107,26 @@ begin
     difference := itemToday - itemYesterday;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Comments</b></td>');
-    description.add('    <td>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     description.add('</table>');
     description.add('<br>');
 
-    description.add('<b>Last 7 days summary</b><br>');
-    description.add('<table cellpadding="3" cellspacing="0" border="1" style="border:1px solid #000000">');
-    description.add('  <tr>');
-    description.add('    <td> </td>');
-    description.add('    <td><b>-6</b></td>');
-    description.add('    <td><b>-5</b></td>');
-    description.add('    <td><b>-4</b></td>');
-    description.add('    <td><b>-3</b></td>');
-    description.add('    <td><b>-2</b></td>');
-    description.add('    <td><b>-1</b></td>');
-    description.add('    <td><b>Today</b></td>');
+    description.add('<b '+fontStylebig+'>Last 7 days summary</b><br><br>');
+    description.add('<table '+tableStyle+'>');
+    description.add('  <tr '+trStyle+'>');
+    description.add('    <th '+thNoBorder+'> </td>');
+    description.add('    <th '+thStyle+'><b>-6</b></th>');
+    description.add('    <th '+thStyle+'><b>-5</b></th>');
+    description.add('    <th '+thStyle+'><b>-4</b></th>');
+    description.add('    <th '+thStyle+'><b>-3</b></th>');
+    description.add('    <th '+thStyle+'><b>-2</b></th>');
+    description.add('    <th '+thStyle+'><b>-1</b></th>');
+    description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Today</b></th>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
@@ -123,14 +138,14 @@ begin
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Views</b></td>');
-    description.add('    <td>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes - globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
@@ -142,14 +157,14 @@ begin
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].likes - globalsRepository.Globals[globalsRepository.Globals.Count-8].likes;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Likes</b></td>');
-    description.add('    <td>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
@@ -161,26 +176,26 @@ begin
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Comments</b></td>');
-    description.add('    <td>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday6.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday5.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday4.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday3.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     description.add('</table>');
     description.add('<br>');
 
-    description.add('<b>Additional Stats</b><br>');
-    description.add('<table cellpadding="3" cellspacing="0" border="1" style="border:1px solid #000000">');
-    description.add('  <tr>');
-    description.add('    <td> </td>');
-    description.add('    <td><b>Viewed</b></td>');
-    description.add('    <td><b>Omitted</b></td>');
-    description.add('    <td><b>Lost</b></td>');
+    description.add('<b '+fontStylebig+'>Additional Stats</b><br><br>');
+    description.add('<table '+tableStyle+'>');
+    description.add('  <tr '+trStyle+'>');
+    description.add('    <th '+thNoBorder+'> </td>');
+    description.add('    <th '+thStyle+'><b>Viewed</b></th>');
+    description.add('    <th '+thStyle+'><b>Omitted</b></th>');
+    description.add('    <th '+thStyle+'><b>Lost</b></th>');
     description.add('  </tr>');
 
     itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveViews * 100) / (organic.Globals[organic.Globals.Count-1].positiveViews + organic.Globals[organic.Globals.Count-1].negativeViews);
@@ -188,10 +203,10 @@ begin
     itemToday2x := 0.0;
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Views</b></td>');
-    description.add('    <td>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
 
     itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
@@ -199,10 +214,13 @@ begin
     itemToday2x := (organic.Globals[organic.Globals.Count-1].lostLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Likes</b></td>');
-    description.add('    <td>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    if itemToday2x > 0.0 then
+      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>')
+    else
+      description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
 
     itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
@@ -210,16 +228,20 @@ begin
     itemToday2x := (organic.Globals[organic.Globals.Count-1].lostComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
 
     description.add('  <tr>');
-    description.add('    <td><b>Number of Comments</b></td>');
-    description.add('    <td>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
-    description.add('    <td>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    if itemToday2x > 0.0 then
+      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>')
+    else
+      description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
+
     description.add('  </tr>');
 
     description.add('</table>');
     description.add('<br>');
 
-    description.add('<h4>Kind regards,<br>');
+    description.add('<h4 '+fontStyle+'>Kind regards,<br>');
     description.add('Flickr Analytics Service</h4>');
   finally
 
