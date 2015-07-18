@@ -197,7 +197,7 @@ begin
         WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       finally
-        repository := nil;
+        //repository := nil;
       end;
     end;
 
@@ -205,7 +205,7 @@ begin
     description := nil;
     try
       options := TOptions.New().Load;
-      description := THtmlComposer.getMessage(globalsRepository, organic);
+      description := THtmlComposer.getMessage(repository, globalsRepository, organic);
       TFlickrEmail.SendHTML(options.eMailAddress, description);
     except
       on E: Exception do
@@ -216,6 +216,7 @@ begin
     end;
 
     globalsRepository := nil;
+    repository := nil;
     description.Free;
 
     TLogger.LogFile('Finishing Batch Update');

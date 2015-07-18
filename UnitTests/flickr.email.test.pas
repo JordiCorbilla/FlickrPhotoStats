@@ -30,7 +30,7 @@ unit flickr.email.test;
 interface
 
 uses
-  DUnitX.TestFramework, flickr.time, flickr.lib.email, flickr.globals, flickr.lib.options, flickr.lib.email.html;
+  DUnitX.TestFramework, flickr.time, flickr.lib.email, flickr.globals, flickr.lib.options, flickr.lib.email.html, flickr.repository;
 
 type
 
@@ -131,15 +131,18 @@ var
   options : IOptions;
   description : TStrings;
   organic : TFlickrOrganic;
+  repository: IFlickrRepository;
 begin
   globalsRepository := TFlickrGlobals.Create();
+  repository := TFlickrRepository.create();
   organic := TFlickrOrganic.Create;
   description := nil;
   try
+    repository.Load('flickrRepository.xml');
     globalsRepository.load('flickrRepositoryGlobal.xml');
     organic.Load('flickrOrganic.xml');
     options := TOptions.New().Load;
-    description := THtmlComposer.getMessage(globalsRepository, organic);
+    description := THtmlComposer.getMessage(repository, globalsRepository, organic);
     TFlickrEmail.SendHTML(options.eMailAddress, description);
   finally
     description.free;

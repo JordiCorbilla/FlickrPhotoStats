@@ -39,60 +39,43 @@ type
   TFlickrEmail = class(TObject)
     class procedure Send(toAddress : string; text: string);
     class procedure SendHTML(toAddress : string; text: TStrings);
-    class procedure LoadOptions(var server : string; var port : string; var user : string; var password : string);
   end;
 
 implementation
 
 uses
-  System.IniFiles;
+  System.IniFiles, flickr.lib.options.email;
 
 { TFlickrEmail }
-
-class procedure TFlickrEmail.LoadOptions(var server, port, user, password: string);
-var
-  inifile : Tinifile;
-begin
-  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsEmail.ini');
-  try
-    server := inifile.ReadString('System', 'Server', 'smtp.gmail.com');
-    port := inifile.ReadString('System', 'Port', '587');
-    user := inifile.ReadString('System', 'user', 'flickrphotoanalytics@gmail.com');
-    password := inifile.ReadString('System', 'Password', '');
-
-  finally
-    inifile.Free;
-  end;
-end;
 
 class procedure TFlickrEmail.Send(toAddress : string; text: string);
 var
   IdSMTP1: TIdSMTP;
   IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
   IdMessage1: TIdMessage;
-  Server, Port, User, Password : string;
+  options : IOptionsEmail;
 begin
-  LoadOptions(Server, Port, User, Password);
+  options := TOptionsEmail.New.Load;
   IdSSLIOHandlerSocketOpenSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   IdSMTP1 := TIdSMTP.Create(nil);
   IdMessage1 := TIdMessage.Create(nil);
   try
-    IdSSLIOHandlerSocketOpenSSL1.Destination := Server + ':' + Port;
-    IdSSLIOHandlerSocketOpenSSL1.Host := Server;
-    IdSSLIOHandlerSocketOpenSSL1.Port := Port.ToInteger;
+    IdSSLIOHandlerSocketOpenSSL1.Destination := options.Server + ':' + options.Port.ToString;
+    IdSSLIOHandlerSocketOpenSSL1.Host := options.Server;
+    IdSSLIOHandlerSocketOpenSSL1.Port := options.Port;
     IdSMTP1.IOHandler := IdSSLIOHandlerSocketOpenSSL1;
-    IdSMTP1.Host := Server;
-    IdSMTP1.Password := Password;
-    IDSMTP1.Port := Port.ToInteger;
-    IdSMTP1.Username := User;
+    IdSMTP1.Host := options.Server;
+    IdSMTP1.Password := options.Password;
+    IDSMTP1.Port := options.Port;
+    IdSMTP1.Username := options.User;
     IdSMTP1.UseTLS := utUseExplicitTLS;
 
-    IdSSLIOHandlerSocketOpenSSL1.Destination :=  Server + ':' + Port;
-    IdSSLIOHandlerSocketOpenSSL1.Host := Server;
+    IdSSLIOHandlerSocketOpenSSL1.Destination :=  options.Server + ':' + options.Port.ToString;
+    IdSSLIOHandlerSocketOpenSSL1.Host := options.Server;
     IdSSLIOHandlerSocketOpenSSL1.Port := IDSMTP1.Port;
 
     IdSMTP1.Connect;
-    IdMessage1.From.Address := User;
+    IdMessage1.From.Address := options.User;
     IdMessage1.Recipients.EMailAddresses := toAddress;
     IdMessage1.Subject := 'This is your Flickr Analytics update';
     IdMessage1.Body.Text := text;
@@ -110,34 +93,33 @@ var
   IdSMTP1: TIdSMTP;
   IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
   IdMessage1: TIdMessage;
-  Server, Port, User, Password : string;
   htmtext : TIdText;
+  options : IOptionsEmail;
 begin
-  LoadOptions(Server, Port, User, Password);
+  options := TOptionsEmail.New.Load;
   IdSSLIOHandlerSocketOpenSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   IdSMTP1 := TIdSMTP.Create(nil);
   IdMessage1 := TIdMessage.Create(nil);
   try
-    IdSSLIOHandlerSocketOpenSSL1.Destination := Server + ':' + Port;
-    IdSSLIOHandlerSocketOpenSSL1.Host := Server;
-    IdSSLIOHandlerSocketOpenSSL1.Port := Port.ToInteger;
+    IdSSLIOHandlerSocketOpenSSL1.Destination := options.Server + ':' + options.Port.ToString;
+    IdSSLIOHandlerSocketOpenSSL1.Host := options.Server;
+    IdSSLIOHandlerSocketOpenSSL1.Port := options.Port;
     IdSMTP1.IOHandler := IdSSLIOHandlerSocketOpenSSL1;
-    IdSMTP1.Host := Server;
-    IdSMTP1.Password := Password;
-    IDSMTP1.Port := Port.ToInteger;
-    IdSMTP1.Username := User;
+    IdSMTP1.Host := options.Server;
+    IdSMTP1.Password := options.Password;
+    IDSMTP1.Port := options.Port;
+    IdSMTP1.Username := options.User;
     IdSMTP1.UseTLS := utUseExplicitTLS;
 
-    IdSSLIOHandlerSocketOpenSSL1.Destination :=  Server + ':' + Port;
-    IdSSLIOHandlerSocketOpenSSL1.Host := Server;
+    IdSSLIOHandlerSocketOpenSSL1.Destination :=  options.Server + ':' + options.Port.ToString;
+    IdSSLIOHandlerSocketOpenSSL1.Host := options.Server;
     IdSSLIOHandlerSocketOpenSSL1.Port := IDSMTP1.Port;
 
     IdSMTP1.Connect;
 
-    IdMessage1.From.Address := User;
+    IdMessage1.From.Address := options.User;
     IdMessage1.Recipients.EMailAddresses := toAddress;
     IdMessage1.Subject := 'This is your Flickr Analytics update';
-    //IdMessage1.Body.Text := text;
 
     htmtext := TIdText.Create(IdMessage1.MessageParts, text);
     htmtext.ContentType := 'text/html';
@@ -148,7 +130,6 @@ begin
     IdSSLIOHandlerSocketOpenSSL1.free;
     IdSMTP1.free;
     IdMessage1.free;
-    //htmtext.Free;
   end;
 end;
 

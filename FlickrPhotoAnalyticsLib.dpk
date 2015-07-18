@@ -52,6 +52,7 @@ package FlickrPhotoAnalyticsLib;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Flickr Photo Analytics library'}
 {$IMPLICITBUILD ON}
 
 requires
@@ -62,7 +63,8 @@ requires
   IndySystem,
   IndyProtocols,
   IndyCore,
-  Tee;
+  Tee,
+  soaprtl;
 
 contains
   flickr.access.token in 'flickr.access.token.pas',
@@ -94,7 +96,10 @@ contains
   flickr.lib.response in 'flickr.lib.response.pas',
   flickr.lib.email in 'flickr.lib.email.pas',
   flickr.lib.options in 'flickr.lib.options.pas',
-  flickr.lib.email.html in 'flickr.lib.email.html.pas';
+  flickr.lib.email.html in 'flickr.lib.email.html.pas',
+  flickr.lib.options.email in 'flickr.lib.options.email.pas',
+  flickr.lib.encoding in 'flickr.lib.encoding.pas';
 
 end.
+
 

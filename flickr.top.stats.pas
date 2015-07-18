@@ -69,13 +69,15 @@ type
     function GetTopXNumberOfComments(num : integer) : string;
     function GetTopXNumberofMostViewed() : TList<IPhoto>;
     function GetTopXNumberofMostLiked() : TList<IPhoto>;
+    function GetListNumberOfViews(num : integer) : TList<IPhoto>;
+    function GetListNumberOfLikes(num : integer) : TList<IPhoto>;
   end;
 
 
 implementation
 
 uses
-  Sysutils, Dialogs, System.UITypes, windows;
+  Sysutils, vcl.Dialogs, System.UITypes, windows;
 
 { TTopStats }
 
@@ -88,6 +90,58 @@ destructor TTopStats.Destroy;
 begin
   FRepository := nil;
   inherited;
+end;
+
+function TTopStats.GetListNumberOfLikes(num: integer): TList<IPhoto>;
+var
+  PhotosSorted: TList<IPhoto>;
+  PhotosResult: TList<IPhoto>;
+  IPhotoComparer : TIPhotoComparerLikes;
+  i : integer;
+begin
+  IPhotoComparer := TIPhotoComparerLikes.Create;
+  PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
+  PhotosResult := TList<IPhoto>.Create();
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    PhotosSorted.Add(FRepository.photos[i]);
+  end;
+
+  PhotosSorted.Sort;
+
+  for i := 0 to num-1 do
+  begin
+    PhotosResult.Add(PhotosSorted[i]);
+  end;
+  PhotosSorted.Free;
+  result := PhotosResult;
+end;
+
+function TTopStats.GetListNumberOfViews(num: integer): TList<IPhoto>;
+var
+  PhotosSorted: TList<IPhoto>;
+  PhotosResult: TList<IPhoto>;
+  IPhotoComparer : TIPhotoComparerViews;
+  i : integer;
+begin
+  IPhotoComparer := TIPhotoComparerViews.Create;
+  PhotosSorted := TList<IPhoto>.Create(IPhotoComparer);
+  PhotosResult := TList<IPhoto>.Create();
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    PhotosSorted.Add(FRepository.photos[i]);
+  end;
+
+  PhotosSorted.Sort;
+
+  for i := 0 to num-1 do
+  begin
+    PhotosResult.Add(PhotosSorted[i]);
+  end;
+  PhotosSorted.Free;
+  result := PhotosResult;
 end;
 
 function TTopStats.GetTopXNumberOfComments(num: integer): string;

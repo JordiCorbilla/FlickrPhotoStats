@@ -20,7 +20,15 @@ uses
   flickr.lib.options in '..\flickr.lib.options.pas',
   flickr.lib.email.html in '..\flickr.lib.email.html.pas',
   flickr.organic in '..\flickr.organic.pas',
-  flickr.organic.stats in '..\flickr.organic.stats.pas';
+  flickr.organic.stats in '..\flickr.organic.stats.pas',
+  flickr.encoding.test in 'flickr.encoding.test.pas',
+  flickr.repository in '..\flickr.repository.pas',
+  flickr.lib.options.email in '..\flickr.lib.options.email.pas',
+  flickr.lib.encoding in '..\flickr.lib.encoding.pas',
+  flickr.photos in '..\flickr.photos.pas',
+  flickr.albums in '..\flickr.albums.pas',
+  flickr.pools in '..\flickr.pools.pas',
+  flickr.top.stats in '..\flickr.top.stats.pas';
 
 var
   runner : ITestRunner;

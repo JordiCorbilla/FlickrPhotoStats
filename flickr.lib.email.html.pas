@@ -30,18 +30,18 @@ unit flickr.lib.email.html;
 interface
 
 uses
-  Flickr.globals, System.classes, System.SysUtils, FLickr.organic;
+  Flickr.globals, System.classes, System.SysUtils, FLickr.organic, flickr.repository, flickr.top.stats, Generics.Collections, Generics.defaults, flickr.photos;
 
 type
   THtmlComposer = Class(Tobject)
-    class function getMessage(globalsRepository : IFlickrGlobals; organic : IFlickrOrganic): TStrings;
+    class function getMessage(repository: IFlickrRepository; globalsRepository : IFlickrGlobals; organic : IFlickrOrganic): TStrings;
   End;
 
 implementation
 
 { THtmlComposer }
 
-class function THtmlComposer.getMessage(globalsRepository: IFlickrGlobals; organic : IFlickrOrganic): TStrings;
+class function THtmlComposer.getMessage(repository: IFlickrRepository; globalsRepository: IFlickrGlobals; organic : IFlickrOrganic): TStrings;
 var
   description : TStrings;
   itemToday,itemToday1, itemToday2, itemToday3, itemToday4, itemToday5, itemToday6 : integer;
@@ -53,6 +53,9 @@ var
   trStyle : string;
   thStyle, thNoBorder : string;
   tdStyle, tdStyleText : string;
+  topStats: TTopStats;
+  PhotosSorted : TList<IPhoto>;
+  i: integer;
 begin
   fontStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;"';
   fontStylebig := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:16px;"';
@@ -240,6 +243,58 @@ begin
 
     description.add('</table>');
     description.add('<br>');
+
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosSorted := topStats.GetListNumberOfViews(10);
+      description.add('<b '+fontStylebig+'>Top 10 Most Viewed Pictures</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle+'><b>Views</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosSorted.count-1 do
+      begin
+        description.add('  <tr>');
+        description.add('    <td '+tdStyle+'>'+PhotosSorted[i].Id+'</td>');
+        description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[PhotosSorted[i].getTotalViews.ToDouble]).Replace('.00','')+'</td>');
+        description.add('  </tr>');
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+    end;
+
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosSorted := topStats.GetListNumberOfLikes(10);
+      description.add('<b '+fontStylebig+'>Top 10 Most Liked Pictures</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle+'><b>Likes</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosSorted.count-1 do
+      begin
+        description.add('  <tr>');
+        description.add('    <td '+tdStyle+'>'+PhotosSorted[i].Id+'</td>');
+        description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[PhotosSorted[i].getTotalLikes.ToDouble]).Replace('.00','')+'</td>');
+        description.add('  </tr>');
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+    end;
 
     description.add('<h4 '+fontStyle+'>Kind regards,<br>');
     description.add('Flickr Analytics Service</h4>');

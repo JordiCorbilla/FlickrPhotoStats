@@ -129,6 +129,14 @@
         <DCCReference Include="..\flickr.lib.email.html.pas"/>
         <DCCReference Include="..\flickr.organic.pas"/>
         <DCCReference Include="..\flickr.organic.stats.pas"/>
+        <DCCReference Include="flickr.encoding.test.pas"/>
+        <DCCReference Include="..\flickr.repository.pas"/>
+        <DCCReference Include="..\flickr.lib.options.email.pas"/>
+        <DCCReference Include="..\flickr.lib.encoding.pas"/>
+        <DCCReference Include="..\flickr.photos.pas"/>
+        <DCCReference Include="..\flickr.albums.pas"/>
+        <DCCReference Include="..\flickr.pools.pas"/>
+        <DCCReference Include="..\flickr.top.stats.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

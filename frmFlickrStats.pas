@@ -41,7 +41,7 @@ uses
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
-  flickr.organic.stats;
+  flickr.organic.stats, flickr.lib.options.email, flickr.rejected;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -266,6 +266,10 @@ type
     Splitter16: TSplitter;
     Splitter17: TSplitter;
     Splitter18: TSplitter;
+    Label32: TLabel;
+    Label33: TLabel;
+    chkRejected: TCheckBox;
+    chkResponses: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -308,9 +312,7 @@ type
     procedure UncheckAll1Click(Sender: TObject);
     procedure showMarksClick(Sender: TObject);
     procedure Button9Click(Sender: TObject);
-    procedure chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries;
-      ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X,
-      Y: Integer);
+    procedure chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Button11Click(Sender: TObject);
     procedure btnLoadOptionsClick(Sender: TObject);
     procedure Button10Click(Sender: TObject);
@@ -330,7 +332,6 @@ type
     procedure UpdateGlobals();
     procedure UpdateAnalytics();
     procedure LoadHallOfFame(repository: IFlickrRepository);
-    // function MD5(apikey, secret: string): string;
     function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
     function getTotalAlbumsCounts: Integer;
     procedure Log(s: string);
@@ -348,7 +349,6 @@ type
     procedure UpdateOrganics;
     procedure UpdateLabel;
     procedure UpdateLabelGroups;
-    { Private declarations }
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -364,6 +364,8 @@ type
     endMark : integer;
     flickrChart : IFlickrChart;
     filterEnabled : boolean;
+    optionsEMail : IOptionsEmail;
+    rejected: IRejected;
   end;
 
 var
@@ -374,7 +376,7 @@ implementation
 uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
-  System.SyncObjs, generics.collections, flickr.rejected, flickr.base,
+  System.SyncObjs, generics.collections, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash;
 
@@ -1772,6 +1774,12 @@ begin
   finally
     inifile.Free;
   end;
+
+  optionsEmail.flickrApiKey := apikey.Text;
+  optionsEmail.secret := secret.Text;
+  optionsEmail.userToken := userToken;
+  optionsEmail.userTokenSecret := userTokenSecret;
+  optionsEMail.save;
 end;
 
 procedure TfrmFlickr.btnLoadOptionsClick(Sender: TObject);
@@ -1817,6 +1825,8 @@ begin
   finally
     inifile.Free;
   end;
+
+  optionsEMail := TOptionsEmail.New().load();
 end;
 
 procedure TfrmFlickr.Button1Click(Sender: TObject);
@@ -2066,9 +2076,9 @@ var
   photos: TList<string>;
   groups: TList<string>;
   timedout: Boolean;
-  rejected: IRejected;
   total : integer;
   max : string;
+  success : integer;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -2091,7 +2101,8 @@ begin
         groups.Add(listGroups.Items[i].Caption);
     end;
 
-    rejected := TRejected.Create;
+    if not chkRejected.Checked then
+      rejected := TRejected.Create;
     // add photos to the groups
     pstatus.Max := (photos.Count * groups.Count);
     pstatus.Min := 0;
@@ -2102,6 +2113,7 @@ begin
     mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into  ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
+    success := 0;
     for i := 0 to photos.Count - 1 do
     begin
       for j := 0 to groups.Count - 1 do
@@ -2143,7 +2155,23 @@ begin
         pstatus.position := k;
         Taskbar1.ProgressValue := k;
         response := TResponse.filter(response);
-        mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+        if chkResponses.Checked then
+        begin
+          if response.Contains('ok') then
+          begin
+            mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+            inc(success);
+          end;
+        end
+        else
+        begin
+          mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+          if response.Contains('ok') then
+          begin
+            inc(success);
+          end;
+        end;
+
         max := edtMaxLog.text;
         if mStatus.Lines.Count > max.ToInteger then
           mStatus.Lines.Clear;
@@ -2152,6 +2180,7 @@ begin
       end;
     end;
   finally
+    mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + 'out of ' + total.ToString());
     photos.Free;
     groups.Free;
   end;
@@ -3176,12 +3205,14 @@ procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
   repository := TFlickrRepository.Create();
   organic := TFlickrOrganic.Create();
+  rejected := TRejected.Create;
   flickrProfiles := TProfiles.Create();
   FilteredGroupList := TFilteredList.Create;
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
   PageControl1.ActivePage := Dashboard;
+  PageControl2.ActivePage := statistics;
   startMark := -1;
   endMark := -1;
   flickrChart := TFlickrChart.create;
@@ -3196,6 +3227,7 @@ begin
   FilteredGroupList := nil;
   globalsRepository := nil;
   flickrChart := nil;
+  rejected := nil;
 end;
 
 function TfrmFlickr.isInSeries(id: string): Boolean;
