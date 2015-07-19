@@ -587,7 +587,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 811
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -1959,9 +1959,9 @@ object frmFlickr: TfrmFlickr
             TabOrder = 7
           end
           object edtfilter: TEdit
-            Left = 264
+            Left = 280
             Top = 59
-            Width = 247
+            Width = 231
             Height = 21
             TabOrder = 8
           end
@@ -2012,7 +2012,7 @@ object frmFlickr: TfrmFlickr
           object ComboBox3: TComboBox
             Left = 199
             Top = 59
-            Width = 59
+            Width = 75
             Height = 21
             Style = csDropDownList
             ItemIndex = 0
@@ -2034,7 +2034,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 742
-        ActivePage = Statistics
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2477,7 +2477,7 @@ object frmFlickr: TfrmFlickr
               OnClick = Button2Click
             end
             object btnAddPhotos: TButton
-              Left = 244
+              Left = 143
               Top = 85
               Width = 170
               Height = 30
@@ -2607,6 +2607,19 @@ object frmFlickr: TfrmFlickr
               Caption = 'Check/Uncheck all'
               TabOrder = 8
               OnClick = CheckBox1Click
+            end
+            object btnRemovePhoto: TButton
+              Left = 319
+              Top = 85
+              Width = 200
+              Height = 30
+              Caption = 'Remove photos from the groups'
+              Enabled = False
+              ImageIndex = 64
+              ImageMargins.Left = 5
+              Images = ImageList1
+              TabOrder = 9
+              OnClick = btnRemovePhotoClick
             end
           end
           object PageControl3: TPageControl
@@ -3159,8 +3172,8 @@ object frmFlickr: TfrmFlickr
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 680
-    Top = 196
+    Left = 672
+    Top = 84
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -3169,21 +3182,21 @@ object frmFlickr: TfrmFlickr
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 584
-    Top = 196
+    Left = 568
+    Top = 84
   end
   object XMLDocument1: TXMLDocument
-    Left = 512
-    Top = 196
+    Left = 496
+    Top = 84
     DOMVendorDesc = 'MSXML'
   end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
-    Left = 456
-    Top = 200
+    Left = 424
+    Top = 88
     Bitmap = {
-      494C0101ED002001EC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001F40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11116,16 +11129,16 @@ object frmFlickr: TfrmFlickr
       end>
     ProgressState = Normal
     TabProperties = []
-    Left = 408
-    Top = 200
+    Left = 360
+    Top = 88
   end
   object ActionList1: TActionList
     Left = 736
-    Top = 193
+    Top = 89
   end
   object PopupMenu1: TPopupMenu
     Left = 800
-    Top = 193
+    Top = 89
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
       OnClick = MarkGroups1Click
@@ -11178,7 +11191,7 @@ object frmFlickr: TfrmFlickr
   object TeeGDIPlus1: TTeeGDIPlus
     Active = True
     TeePanel = dailyLikes
-    Left = 906
-    Top = 198
+    Left = 874
+    Top = 94
   end
 end

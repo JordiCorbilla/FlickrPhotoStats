@@ -44,6 +44,8 @@ type
     function GetexecutionTime: int64;
     function GetLostLikes: Integer;
     function getLostComments: Integer;
+    function GetFollowing: Integer;
+    function GetTotalGroups: Integer;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -55,6 +57,8 @@ type
     procedure SetLostLikes(const Value: Integer);
     procedure SetLostComments(const Value: Integer);
     property date: TDateTime read GetDate write SetDate;
+    procedure SetFollowing(const Value: integer);
+    procedure SetTotalGroups(const Value: integer);
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
     property negativeViews: Integer read GetNegativeViews write SetNegativeViews;
     property positiveLikes: Integer read GetPositiveLikes write SetPositiveLikes;
@@ -64,6 +68,8 @@ type
     property executionTime : int64 read GetexecutionTime write SetexecutionTime;
     property lostLikes : integer read GetLostLikes write SetLostLikes;
     property lostComments : integer read getLostComments write SetLostComments;
+    property Following : integer read GetFollowing write SetFollowing;
+    property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IFlickrOrganicStats);
@@ -81,6 +87,8 @@ type
     FexecutionTime: int64;
     FLostLikes : integer;
     FLostComments : integer;
+    FTotalGroups: integer;
+    FFollowing: integer;
     function GetDate: TDateTime;
     function GetNegativeComments: Integer;
     function GetNegativeLikes: Integer;
@@ -91,6 +99,8 @@ type
     function GetexecutionTime: int64;
     function GetLostLikes: Integer;
     function getLostComments: Integer;
+    function GetFollowing: Integer;
+    function GetTotalGroups: Integer;
     procedure SetDate(const Value: TDateTime);
     procedure SetNegativeComments(const Value: Integer);
     procedure SetNegativeLikes(const Value: Integer);
@@ -101,6 +111,8 @@ type
     procedure SetexecutionTime(const Value: int64);
     procedure SetLostLikes(const Value: Integer);
     procedure SetLostComments(const Value: Integer);
+    procedure SetFollowing(const Value: integer);
+    procedure SetTotalGroups(const Value: integer);
   public
     property date: TDateTime read GetDate write SetDate;
     property positiveViews: Integer read GetPositiveViews write SetPositiveViews;
@@ -112,6 +124,8 @@ type
     property negativeComments: Integer read GetNegativeComments write SetNegativeComments;
     property lostComments : integer read getLostComments write SetLostComments;
     property executionTime : int64 read GetexecutionTime write SetexecutionTime;
+    property Following : integer read GetFollowing write SetFollowing;
+    property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IFlickrOrganicStats);
@@ -135,6 +149,8 @@ begin
   SetExecutionTime(stat.executionTime);
   SetLostLikes(stat.LostLikes);
   SetLostComments(stat.lostComments);
+  SetFollowing(stat.following);
+  SetTotalGroups(stat.TotalGroups);
 end;
 
 function TFlickrOrganicStats.GetDate: TDateTime;
@@ -145,6 +161,11 @@ end;
 function TFlickrOrganicStats.GetexecutionTime: int64;
 begin
   result := FExecutionTime;
+end;
+
+function TFlickrOrganicStats.GetFollowing: Integer;
+begin
+  result := FFollowing;
 end;
 
 function TFlickrOrganicStats.getLostComments: Integer;
@@ -187,6 +208,11 @@ begin
   result := FPositiveViews;
 end;
 
+function TFlickrOrganicStats.GetTotalGroups: Integer;
+begin
+  result := FTotalGroups;
+end;
+
 procedure TFlickrOrganicStats.Load(iNode: IXMLNode);
 begin
   FDate := StrToDate(iNode.Attributes['Date']);
@@ -211,6 +237,16 @@ begin
   except
     FLostComments := 0;
   end;
+  try
+    FTotalGroups := StrToInt(iNode.Attributes['TotalGroups']);
+  except
+    FTotalGroups := 0;
+  end;
+  try
+    FFollowing := StrToInt(iNode.Attributes['Following']);
+  except
+    FFollowing := 0;
+  end;
 end;
 
 procedure TFlickrOrganicStats.Save(iNode: IXMLNode);
@@ -228,6 +264,8 @@ begin
   iNode2.Attributes['ExecutionTime'] := IntToStr(FexecutionTime);
   iNode2.Attributes['LostLikes'] := IntToStr(FLostLikes);
   iNode2.Attributes['LostComments'] := IntToStr(FLostComments);
+  iNode2.Attributes['Following'] := IntToStr(FFollowing);
+  iNode2.Attributes['TotalGroups'] := IntToStr(FTotalGroups);
 end;
 
 procedure TFlickrOrganicStats.SetDate(const Value: TDateTime);
@@ -238,6 +276,11 @@ end;
 procedure TFlickrOrganicStats.SetexecutionTime(const Value: int64);
 begin
   FexecutionTime := Value;
+end;
+
+procedure TFlickrOrganicStats.SetFollowing(const Value: integer);
+begin
+  FFollowing := Value;
 end;
 
 procedure TFlickrOrganicStats.SetLostComments(const Value: Integer);
@@ -278,6 +321,11 @@ end;
 procedure TFlickrOrganicStats.SetPositiveViews(const Value: Integer);
 begin
   FPositiveViews := value;
+end;
+
+procedure TFlickrOrganicStats.SetTotalGroups(const Value: integer);
+begin
+  FTotalGroups := Value;
 end;
 
 end.

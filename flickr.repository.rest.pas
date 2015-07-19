@@ -248,6 +248,8 @@ begin
         organicStat.positiveComments := organicStat.positiveComments + 1;
       end;
 
+      organicStat.TotalGroups := repository.getTotalSpreadGroups();
+
       if verbosity then
       begin
         difference := views.ToInteger() - photo.getTotalViews();

@@ -270,6 +270,7 @@ type
     Label33: TLabel;
     chkRejected: TCheckBox;
     chkResponses: TCheckBox;
+    btnRemovePhoto: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -322,6 +323,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure btnAboutClick(Sender: TObject);
+    procedure btnRemovePhotoClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -2180,7 +2182,7 @@ begin
       end;
     end;
   finally
-    mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + 'out of ' + total.ToString());
+    mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
     photos.Free;
     groups.Free;
   end;
@@ -2244,6 +2246,112 @@ begin
     listGroups.OnItemChecked := listGroupsItemChecked;
     listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
     UpdateLabelGroups();
+  end;
+end;
+
+procedure TfrmFlickr.btnRemovePhotoClick(Sender: TObject);
+var
+  i: Integer;
+  j: Integer;
+  k: Integer;
+  photoId: string;
+  groupId: string;
+  urlAdd, response: string;
+  photos: TList<string>;
+  groups: TList<string>;
+  timedout: Boolean;
+  total : integer;
+  max : string;
+  success : integer;
+begin
+  if (apikey.text = '') or (userToken = '') then
+  begin
+    showmessage('You are not authorized!');
+    exit;
+  end;
+  photos := TList<string>.Create;
+  groups := TList<string>.Create;
+
+  try
+    PageControl3.ActivePage := tabStatus;
+    for i := 0 to listPhotos.Items.Count - 1 do
+    begin
+      if listPhotos.Items[i].Checked then
+        photos.Add(listPhotos.Items[i].Caption);
+    end;
+    for i := 0 to listGroups.Items.Count - 1 do
+    begin
+      if listGroups.Items[i].Checked then
+        groups.Add(listGroups.Items[i].Caption);
+    end;
+
+    // add photos to the groups
+    pstatus.Max := (photos.Count * groups.Count);
+    pstatus.Min := 0;
+    Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+    Taskbar1.ProgressMaxValue := pstatus.Max;
+    k := 0;
+
+    mStatus.Lines.Add('Removing ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
+    total := photos.Count * groups.Count;
+    mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
+    success := 0;
+    for i := 0 to photos.Count - 1 do
+    begin
+      for j := 0 to groups.Count - 1 do
+      begin
+        photoId := photos[i];
+        groupId := groups[j];
+        timedout := false;
+        if (repository.isPhotoInGroup(photoId, groupId)) then
+        begin
+          urlAdd := TFlickrRest.New().getPoolsRemove(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+          while (not timedout) do
+          begin
+            try
+              response := IdHTTP1.Get(urlAdd);
+              timedout := true;
+            except
+              on e: exception do
+              begin
+                sleep(2000);
+                timedout := false;
+              end;
+            end;
+          end;
+        end;
+        inc(k);
+        pstatus.position := k;
+        Taskbar1.ProgressValue := k;
+        response := TResponse.filter(response);
+        if chkResponses.Checked then
+        begin
+          if response.Contains('ok') then
+          begin
+            mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+            inc(success);
+          end;
+        end
+        else
+        begin
+          mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+          if response.Contains('ok') then
+          begin
+            inc(success);
+          end;
+        end;
+
+        max := edtMaxLog.text;
+        if mStatus.Lines.Count > max.ToInteger then
+          mStatus.Lines.Clear;
+        Application.ProcessMessages;
+        sleep(10);
+      end;
+    end;
+  finally
+    mStatus.Lines.Add('Total number of groups removed: ' + success.ToString() + ' out of ' + total.ToString());
+    photos.Free;
+    groups.Free;
   end;
 end;
 
@@ -2357,12 +2465,14 @@ procedure TfrmFlickr.CheckBox2Click(Sender: TObject);
 var
   i: Integer;
 begin
-  listPhotos.OnItemChecked := nil;
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := nil;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
     listPhotos.Items[i].Checked := CheckBox2.Checked;
   end;
-  listPhotos.OnItemChecked := listPhotosItemChecked;
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := listPhotosItemChecked;
   if CheckBox2.Checked then
     Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected'
   else

@@ -137,6 +137,10 @@
         <DCCReference Include="..\flickr.albums.pas"/>
         <DCCReference Include="..\flickr.pools.pas"/>
         <DCCReference Include="..\flickr.top.stats.pas"/>
+        <DCCReference Include="flickr.rest.test.pas"/>
+        <DCCReference Include="..\flickr.rest.pas"/>
+        <DCCReference Include="..\flickr.signature.pas"/>
+        <DCCReference Include="..\flickr.call.methods.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

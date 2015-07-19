@@ -39,6 +39,7 @@ type
     function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
     function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
     function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
+    function getPoolsRemove(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
     function getPhotoSetsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; photosetId : string): string;
     function getContactListTotals(api_key: string; auth_token : string; secret : string; token_secret : string): string;
   end;
@@ -54,6 +55,7 @@ type
     function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
     function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
     function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
+    function getPoolsRemove(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
     function getPhotoSetsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; photosetId : string): string;
     function getContactListTotals(api_key: string; auth_token : string; secret : string; token_secret : string): string;
     class function New(): IFlickrRest;
@@ -318,6 +320,59 @@ begin
   returnURL := returnURL + '&oauth_token=' + auth_token;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.groups.pools.add';
+
+  result := returnURL;
+end;
+
+function TFlickrRest.getPoolsRemove(api_key, auth_token, secret, token_secret, photoId, groupId: string): string;
+var
+  baseURL, paramURL, encodedURL, returnURL : string;
+  ConsumerSecret : string;
+  TokenSecret : string;
+  timeStamp : string;
+begin
+  //Generate request access token needs to generate:
+
+  baseURL := 'https://api.flickr.com/services/rest';
+
+  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  timeStamp := TSignature.getTimeStamp();
+  paramURL := 'format=rest';
+  groupId := groupId.Replace('@', '%40');
+  paramURL := paramURL + '&group_id=' + groupId;
+  paramURL := paramURL + '&method=flickr.groups.pools.remove';
+  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
+  paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
+  paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
+  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_version=1.0';
+  paramURL := paramURL + '&photo_id=' + photoId;
+
+  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+
+  //Encode this to get the signature
+  encodedURL := 'GET&' + baseURL + '&' + paramURL;
+
+  //Example encoded URL:
+
+  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+
+  ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
+
+  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
+  returnURL := returnURL + '&format=rest';
+  returnURL := returnURL + '&group_id=' + groupId;
+  returnURL := returnURL + '&photo_id=' + photoId;
+  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
+  returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
+  returnURL := returnURL + '&oauth_version=1.0';
+  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
+  returnURL := returnURL + '&method=flickr.groups.pools.remove';
 
   result := returnURL;
 end;

@@ -28,7 +28,11 @@ uses
   flickr.photos in '..\flickr.photos.pas',
   flickr.albums in '..\flickr.albums.pas',
   flickr.pools in '..\flickr.pools.pas',
-  flickr.top.stats in '..\flickr.top.stats.pas';
+  flickr.top.stats in '..\flickr.top.stats.pas',
+  flickr.rest.test in 'flickr.rest.test.pas',
+  flickr.rest in '..\flickr.rest.pas',
+  flickr.signature in '..\flickr.signature.pas',
+  flickr.call.methods in '..\flickr.call.methods.pas';
 
 var
   runner : ITestRunner;
