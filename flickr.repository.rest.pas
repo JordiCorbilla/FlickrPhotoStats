@@ -40,6 +40,7 @@ type
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
     class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
     class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
+    class function getNumberOfContacts() : integer;
   end;
 
 var
@@ -52,7 +53,7 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
   System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
-  flickr.rest, System.SysUtils;
+  flickr.rest, System.SysUtils, flickr.lib.options.email;
 
 { TRepositoryRest }
 
@@ -282,6 +283,62 @@ begin
   end;
 end;
 
+
+class function TRepositoryRest.getNumberOfContacts: integer;
+var
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3: IXMLNode;
+  views: string;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  xmlDocument: IXMLDocument;
+  timedout: Boolean;
+  options : IOptionsEmail;
+begin
+  CoInitialize(nil);
+  try
+    options := TOptionsEmail.New.Load;
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    views := '-1';
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(TFlickrRest.New().getContactListTotals(options.flickrApiKey, options.userToken, options.secret, options.userTokenSecret));
+          timedout := true;
+        except
+          on e: exception do
+          begin
+            sleep(2000);
+            timedout := false;
+          end;
+        end;
+      end;
+
+      if response.Contains('<rsp stat="ok">') then
+      begin
+        xmlDocument.LoadFromXML(response);
+        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+        views := iXMLRootNode3.attributes['total'];
+      end;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+      xmlDocument := nil;
+    end;
+  finally
+    CoUninitialize;
+  end;
+  result := views.ToInteger;
+end;
 
 class function TRepositoryRest.getTotalAlbumsCounts(apikey, userId : string; verbosity: boolean): Integer;
 var

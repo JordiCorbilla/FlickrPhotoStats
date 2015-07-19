@@ -25,66 +25,43 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit frmSplash;
+unit flickr.lib.utils;
 
 interface
 
-uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Vcl.Imaging.jpeg, Vcl.ImgList;
-
 type
-  TfrmFlickrSplash = class(TForm)
-    Image1: TImage;
-    Panel1: TPanel;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    btnClose: TButton;
-    ImageList1: TImageList;
-    Label4: TLabel;
-    procedure FormShow(Sender: TObject);
-    procedure btnCloseClick(Sender: TObject);
-    procedure Label4Click(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
+  TUtils = class(TObject)
+    class function GetVersion() : string;
   end;
-
-var
-  frmFlickrSplash: TfrmFlickrSplash;
 
 implementation
 
 uses
-  ShellApi, flickr.lib.utils;
+  System.Types, Windows, SysUtils;
 
-{$R *.dfm}
+{ TUtils }
 
-procedure TfrmFlickrSplash.btnCloseClick(Sender: TObject);
-begin
-  Self.Close;
-end;
-
-procedure TfrmFlickrSplash.FormCreate(Sender: TObject);
-begin
-  Label1.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
-end;
-
-procedure TfrmFlickrSplash.FormShow(Sender: TObject);
-begin
-  SetWindowPos(Application.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOACTIVATE + SWP_NOMOVE + SWP_NOSIZE);
-end;
-
-procedure TfrmFlickrSplash.Label4Click(Sender: TObject);
+class function TUtils.GetVersion: string;
 var
-  MyLink: string;
+  Exe: string;
+  Size, Handle: DWORD;
+  Buffer: TBytes;
+  FixedPtr: PVSFixedFileInfo;
 begin
-  MyLink := 'https://github.com/JordiCorbilla/FlickrPhotoStats';
-  ShellExecute(self.WindowHandle,'open','chrome.exe', PChar(MyLink), nil, SW_SHOW);
+  Exe := ParamStr(0);
+  Size := GetFileVersionInfoSize(PChar(Exe), Handle);
+  if Size = 0 then
+    RaiseLastOSError;
+  SetLength(Buffer, Size);
+  if not GetFileVersionInfo(PChar(Exe), Handle, Size, Buffer) then
+    RaiseLastOSError;
+  if not VerQueryValue(Buffer, '\', Pointer(FixedPtr), Size) then
+    RaiseLastOSError;
+  Result := Format('%d.%d.%d.%d',
+    [LongRec(FixedPtr.dwFileVersionMS).Hi,  //major
+     LongRec(FixedPtr.dwFileVersionMS).Lo,  //minor
+     LongRec(FixedPtr.dwFileVersionLS).Hi,  //release
+     LongRec(FixedPtr.dwFileVersionLS).Lo]) //build
 end;
 
 end.

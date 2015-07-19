@@ -52,7 +52,6 @@ package FlickrPhotoAnalyticsLib;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Flickr Photo Analytics library'}
 {$IMPLICITBUILD ON}
 
 requires
@@ -98,7 +97,8 @@ contains
   flickr.lib.options in 'flickr.lib.options.pas',
   flickr.lib.email.html in 'flickr.lib.email.html.pas',
   flickr.lib.options.email in 'flickr.lib.options.email.pas',
-  flickr.lib.encoding in 'flickr.lib.encoding.pas';
+  flickr.lib.encoding in 'flickr.lib.encoding.pas',
+  flickr.lib.utils in 'flickr.lib.utils.pas';
 
 end.
 

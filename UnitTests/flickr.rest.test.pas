@@ -84,6 +84,7 @@ begin
     IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
     xmlDocument := TXMLDocument.Create(nil);
     IdHTTP := TIdHTTP.Create(nil);
+    views := '-1';
     try
       IdHTTP.IOHandler := IdIOHandler;
       timedout := false;
@@ -102,11 +103,14 @@ begin
 
       end;
 
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-      views := iXMLRootNode3.attributes['total'];
+      if response.Contains('<rsp stat="ok">') then
+      begin
+        xmlDocument.LoadFromXML(response);
+        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+        views := iXMLRootNode3.attributes['total'];
+      end;
       Assert.IsTrue(views.ToInteger > 0, 'wrong total!');
     finally
       IdIOHandler.Free;

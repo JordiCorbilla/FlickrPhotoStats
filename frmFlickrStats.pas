@@ -41,7 +41,7 @@ uses
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
-  flickr.organic.stats, flickr.lib.options.email, flickr.rejected;
+  flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -240,7 +240,7 @@ type
     organicViews: TChart;
     organicLikes: TChart;
     LineSeries5: TLineSeries;
-    organicComments: TChart;
+    groupspread: TChart;
     LineSeries6: TLineSeries;
     executionTime: TChart;
     Label28: TLabel;
@@ -271,6 +271,12 @@ type
     chkRejected: TCheckBox;
     chkResponses: TCheckBox;
     btnRemovePhoto: TButton;
+    Splitter19: TSplitter;
+    organicComments: TChart;
+    LineSeries8: TLineSeries;
+    Splitter20: TSplitter;
+    chartfollowing: TChart;
+    BarSeries6: TBarSeries;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1137,15 +1143,15 @@ begin
     organicLikes.RemoveAllSeries;
 
   SeriesPositive := flickrChart.GetNewBarSeries(organicLikes);
-  SeriesNegative := flickrChart.GetNewBarSeries(organicLikes);
+  //SeriesNegative := flickrChart.GetNewBarSeries(organicLikes);
   SeriesLost := flickrChart.GetNewBarSeries(organicLikes);
   organicLikes.AddSeries(SeriesPositive);
-  organicLikes.AddSeries(SeriesNegative);
+  //organicLikes.AddSeries(SeriesNegative);
   organicLikes.AddSeries(SeriesLost);
   SeriesPositive.MultiBar := mbStacked;
   SeriesPositive.BarWidthPercent := 25;
-  SeriesNegative.MultiBar := mbStacked;
-  SeriesNegative.BarWidthPercent := 25;
+//  SeriesNegative.MultiBar := mbStacked;
+//  SeriesNegative.BarWidthPercent := 25;
   SeriesLost.MultiBar := mbStacked;
   SeriesLost.BarWidthPercent := 25;
 
@@ -1155,7 +1161,7 @@ begin
   begin
     chartTendency.AddXY(i, Round((organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes)));
     SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clgreen);
-    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clred);
+    //SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clred);
     SeriesLost.AddXY(organic.Globals[i].date, (organic.Globals[i]. lostLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clyellow);
   end;
 
@@ -1175,15 +1181,15 @@ begin
     organicComments.RemoveAllSeries;
 
   SeriesPositive := flickrChart.GetNewBarSeries(organicComments);
-  SeriesNegative := flickrChart.GetNewBarSeries(organicComments);
+  //SeriesNegative := flickrChart.GetNewBarSeries(organicComments);
   SeriesLost := flickrChart.GetNewBarSeries(organicComments);
   organicComments.AddSeries(SeriesPositive);
-  organicComments.AddSeries(SeriesNegative);
+  //organicComments.AddSeries(SeriesNegative);
   organicComments.AddSeries(SeriesLost);
   SeriesPositive.MultiBar := mbStacked;
   SeriesPositive.BarWidthPercent := 25;
-  SeriesNegative.MultiBar := mbStacked;
-  SeriesNegative.BarWidthPercent := 25;
+//  SeriesNegative.MultiBar := mbStacked;
+//  SeriesNegative.BarWidthPercent := 25;
   SeriesLost.MultiBar := mbStacked;
   SeriesLost.BarWidthPercent := 25;
 
@@ -1193,7 +1199,7 @@ begin
   begin
     chartTendency.AddXY(i, Round((organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].negativeComments + organic.Globals[i].lostComments)));
     SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].negativeComments + organic.Globals[i].lostComments), '', clgreen);
-    SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].negativeComments + organic.Globals[i].lostComments), '', clred);
+    //SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].negativeComments + organic.Globals[i].lostComments), '', clred);
     SeriesLost.AddXY(organic.Globals[i].date, (organic.Globals[i]. lostComments * 100)/ (organic.Globals[i].positiveComments + organic.Globals[i].positiveComments + organic.Globals[i].lostComments), '', clyellow);
   end;
 
@@ -1236,6 +1242,64 @@ begin
   SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
 
   executionTime.AddSeries(SeriesTendency);
+
+  //Group spread
+  if groupspread.SeriesList.Count > 0 then
+    groupspread.RemoveAllSeries;
+
+  SeriesPositive := flickrChart.GetNewBarSeries(groupspread);
+
+  chartTendency := TTendency.Create;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    chartTendency.AddXY(i, organic.Globals[i].TotalGroups);
+    SeriesPositive.AddXY(organic.Globals[i].date, organic.Globals[i].TotalGroups, '', color);
+  end;
+
+  chartTendency.Calculate;
+  SeriesTendency := flickrChart.GetNewLineSeries(groupspread);
+  color := clYellow;
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(organic.Globals.Count-1);
+  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
+
+  groupspread.AddSeries(SeriesTendency);
+
+
+  //Following
+  if chartFollowing.SeriesList.Count > 0 then
+    chartFollowing.RemoveAllSeries;
+
+  SeriesPositive := flickrChart.GetNewBarSeries(chartFollowing);
+
+  chartTendency := TTendency.Create;
+  color := RGB(Random(255), Random(255), Random(255));
+
+  for i := 0 to organic.Globals.Count-1 do
+  begin
+    chartTendency.AddXY(i, organic.Globals[i].Following);
+    SeriesPositive.AddXY(organic.Globals[i].date, organic.Globals[i].Following, '', color);
+  end;
+
+  chartTendency.Calculate;
+  SeriesTendency := flickrChart.GetNewLineSeries(chartFollowing);
+  color := clYellow;
+
+  label32.Visible := true;
+  label33.Caption := Format('%n',[organic.Globals[organic.Globals.Count-1].Following.ToDouble]).Replace('.00','');
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(organic.Globals.Count-1);
+  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
+
+  chartFollowing.AddSeries(SeriesTendency);
 end;
 
 procedure TfrmFlickr.UpdateGlobals;
@@ -3326,6 +3390,7 @@ begin
   startMark := -1;
   endMark := -1;
   flickrChart := TFlickrChart.create;
+  frmFlickr.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);

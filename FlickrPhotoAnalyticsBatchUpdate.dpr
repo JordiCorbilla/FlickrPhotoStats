@@ -45,6 +45,7 @@ uses
   flickr.lib.options,
   flickr.lib.email,
   flickr.lib.email.html,
+  flickr.lib.utils,
   System.Classes,
   flickr.repository.rest in 'flickr.repository.rest.pas', Winapi.Windows;
 
@@ -65,13 +66,14 @@ var
   organicStat : IFlickrOrganicStats;
   options : IOptions;
   description : TStrings;
+  totalContacts : integer;
 begin
   try
     TLogger.LogFile('Starting Batch Update');
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
-    WriteLn('# version 4.4 @author: Jordi Corbilla             #');
+    WriteLn('# version '+TUtils.GetVersion+' @author: Jordi Corbilla         #');
     WriteLn('###################################################');
     verbosity := false;
     if paramstr(1) = '-v' then
@@ -129,6 +131,13 @@ begin
           finally
             organicStat.executionTime := st.ElapsedMilliseconds;
             organicStat.date := Date;
+            try
+              totalContacts := TRepositoryRest.getNumberOfContacts;
+              if totalContacts < 0 then
+                totalContacts := organic.Globals[organic.Globals.Count-1].following;
+            finally
+              organicStat.Following := totalContacts;
+            end;
             organic.AddGlobals(organicStat);
           end;
         finally
