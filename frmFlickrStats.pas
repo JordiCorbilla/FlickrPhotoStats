@@ -277,6 +277,9 @@ type
     Splitter20: TSplitter;
     chartfollowing: TChart;
     BarSeries6: TBarSeries;
+    chksorting: TCheckBox;
+    N5: TMenuItem;
+    Delete1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -330,6 +333,7 @@ type
     procedure Button7Click(Sender: TObject);
     procedure btnAboutClick(Sender: TObject);
     procedure btnRemovePhotoClick(Sender: TObject);
+    procedure Delete1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -933,10 +937,14 @@ begin
   if Assigned(repository) then
   begin
     repository := nil;
-    repository := TFlickrRepository.Create();
+    if chksorting.Checked then
+      repository := TFlickrRepository.Create(chksorting.Checked)
+    else
+      repository := TFlickrRepository.Create();
   end;
   st := TStopWatch.Create;
   st.Start;
+  repository.sorted := chksorting.Checked;
   repository.load('flickrRepository.xml');
   st.Stop;
   log('Loading repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -1292,6 +1300,7 @@ begin
 
   label32.Visible := true;
   label33.Caption := Format('%n',[organic.Globals[organic.Globals.Count-1].Following.ToDouble]).Replace('.00','');
+  label33.Visible := true;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
@@ -2079,6 +2088,7 @@ begin
   listPhotos.OnItemChecked := listPhotosItemChecked;
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   listPhotos.Visible := true;
+  chart1.SeriesList.Clear;
 end;
 
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
@@ -2562,6 +2572,25 @@ begin
   btnSaveProfile.Enabled := true;
 end;
 
+procedure TfrmFlickr.Delete1Click(Sender: TObject);
+var
+  id : string;
+  buttonSelected : integer;
+begin
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    buttonSelected := MessageDlg('Are you sure you want to remove '+id+' from the list?',mtCustom,
+                              [mbYes,mbCancel], 0);
+    if buttonSelected = mrYes then
+    begin
+      listPhotos.Items[listPhotos.ItemIndex].Delete;
+      repository.DeletePhoto(id);
+      UpdateLabel();
+    end;
+  end;
+end;
+
 // returns MD5 has for a file
 // function TfrmFlickr.MD5(apikey: string; secret: string): string;
 // var
@@ -2721,6 +2750,7 @@ begin
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddPhotos.Enabled := true;
+  btnRemovePhoto.Enabled := true;
   btnAddItems.Enabled := true;
   progressfetchinggroups.Visible := false;
   Taskbar1.ProgressValue := 0;
@@ -3377,7 +3407,10 @@ end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
 begin
-  repository := TFlickrRepository.Create();
+  if chksorting.Checked then
+    repository := TFlickrRepository.Create(chksorting.Checked)
+  else
+    repository := TFlickrRepository.Create();
   organic := TFlickrOrganic.Create();
   rejected := TRejected.Create;
   flickrProfiles := TProfiles.Create();

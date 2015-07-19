@@ -46,12 +46,16 @@ type
     function GetSecret(): string;
     procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
     procedure Load(FileName: string);
+    procedure DeletePhoto(id : string);
+    function Getsorted(): boolean;
+    procedure Setsorted(const Value: boolean);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
     function isPhotoInGroup(photo : string; groupId : string) : boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
     property Secret: string read GetSecret write SetSecret;
+    property sorted : boolean read Getsorted write Setsorted;
     function getTotalSpreadGroups() : integer;
   end;
 
@@ -61,6 +65,7 @@ type
     FUserId : String;
     FPhotos: TList<IPhoto>;
     FSecret: String;
+    Fsorted: boolean;
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
     function GetPhotos(): TList<IPhoto>;
@@ -69,12 +74,15 @@ type
     function GetUserId(): string;
     procedure SetSecret(value: string);
     function GetSecret(): string;
+    function Getsorted(): boolean;
+    procedure Setsorted(const Value: boolean);
   public
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
     function isPhotoInGroup(photo : string; groupId : string) : boolean;
-    constructor Create();
+    constructor Create(); overload;
+    constructor Create(sorting : boolean); overload;
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
     function getTotalSpreadGroups() : integer;
@@ -82,6 +90,8 @@ type
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
+    property sorted : boolean read Getsorted write Setsorted;
+    procedure DeletePhoto(id : string);
   end;
 
 implementation
@@ -89,7 +99,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -98,7 +108,24 @@ end;
 
 constructor TFlickrRepository.Create;
 begin
-  FPhotos := TList<IPhoto>.Create;
+  FPhotos := TList<IPhoto>.Create();
+end;
+
+constructor TFlickrRepository.Create(sorting: boolean);
+var
+  IPhotoComparer : TIPhotoComparerViews;
+begin
+  //need to fix this
+  IPhotoComparer := TIPhotoComparerViews.Create;
+  FPhotos := TList<IPhoto>.Create(IPhotoComparer);
+end;
+
+procedure TFlickrRepository.DeletePhoto(id: string);
+var
+  photo : IPhoto;
+begin
+  photo := GetPhoto(id);
+  FPhotos.Remove(photo);
 end;
 
 destructor TFlickrRepository.Destroy;
@@ -156,6 +183,11 @@ end;
 function TFlickrRepository.GetSecret: string;
 begin
   Result := FSecret;
+end;
+
+function TFlickrRepository.Getsorted: boolean;
+begin
+  result := FSorted;
 end;
 
 function TFlickrRepository.getTotalSpreadGroups: integer;
@@ -218,6 +250,9 @@ begin
       FPhotos.Add(photo);
       iNode := iNode.NextSibling;
     end;
+
+    if sorted then
+      FPhotos.Sort;
   finally
     Document := nil;
   end;
@@ -260,6 +295,11 @@ end;
 procedure TFlickrRepository.SetSecret(value: string);
 begin
   FSecret := value;
+end;
+
+procedure TFlickrRepository.Setsorted(const Value: boolean);
+begin
+  Fsorted := Value;
 end;
 
 procedure TFlickrRepository.SetUserId(value: string);

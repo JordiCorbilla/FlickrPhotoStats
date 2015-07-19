@@ -554,8 +554,8 @@ object frmFlickr: TfrmFlickr
       OnClick = btnGetTokenClick
     end
     object btnLoad: TButton
-      Left = 4
-      Top = 6
+      Left = -1
+      Top = 4
       Width = 49
       Height = 38
       Caption = 'Load'
@@ -2178,7 +2178,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 742
-        ActivePage = TabSheet5
+        ActivePage = TabSheet9
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3242,7 +3242,16 @@ object frmFlickr: TfrmFlickr
             Checked = True
             State = cbChecked
             TabOrder = 16
-            OnClick = showMarksClick
+          end
+          object chksorting: TCheckBox
+            Left = 384
+            Top = 135
+            Width = 201
+            Height = 17
+            Caption = 'Enable Sorting'
+            Checked = True
+            State = cbChecked
+            TabOrder = 17
           end
         end
         object TabSheet10: TTabSheet
@@ -11281,10 +11290,12 @@ object frmFlickr: TfrmFlickr
     Top = 89
   end
   object PopupMenu1: TPopupMenu
+    Images = frmFlickrSplash.ImageList1
     Left = 800
     Top = 89
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
+      ImageIndex = 22
       OnClick = MarkGroups1Click
     end
     object N1: TMenuItem
@@ -11292,10 +11303,12 @@ object frmFlickr: TfrmFlickr
     end
     object ShowListGroups1: TMenuItem
       Caption = 'Show List Groups'
+      ImageIndex = 188
       OnClick = ShowListGroups1Click
     end
     object ShowListAlbums1: TMenuItem
       Caption = 'Show List Albums'
+      ImageIndex = 188
       OnClick = ShowListAlbums1Click
     end
     object N2: TMenuItem
@@ -11303,10 +11316,12 @@ object frmFlickr: TfrmFlickr
     end
     object ShowonFlickr1: TMenuItem
       Caption = 'Show on Flickr'
+      ImageIndex = 71
       OnClick = ShowonFlickr1Click
     end
     object GotoURL1: TMenuItem
       Caption = 'Go to URL'
+      ImageIndex = 61
       OnClick = GotoURL1Click
     end
     object N3: TMenuItem
@@ -11314,10 +11329,12 @@ object frmFlickr: TfrmFlickr
     end
     object StartMarking1: TMenuItem
       Caption = 'Start Marking'
+      ImageIndex = 23
       OnClick = StartMarking1Click
     end
     object EndMarking1: TMenuItem
       Caption = 'End Marking'
+      ImageIndex = 18
       OnClick = EndMarking1Click
     end
     object N4: TMenuItem
@@ -11325,11 +11342,22 @@ object frmFlickr: TfrmFlickr
     end
     object CheckAll1: TMenuItem
       Caption = 'Check All'
+      ImageIndex = 12
       OnClick = CheckAll1Click
     end
     object UncheckAll1: TMenuItem
       Caption = 'Uncheck All'
+      ImageIndex = 63
       OnClick = UncheckAll1Click
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object Delete1: TMenuItem
+      Caption = 'Delete'
+      SubMenuImages = ImageList1
+      ImageIndex = 34
+      OnClick = Delete1Click
     end
   end
   object TeeGDIPlus1: TTeeGDIPlus
