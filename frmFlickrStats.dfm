@@ -554,8 +554,8 @@ object frmFlickr: TfrmFlickr
       OnClick = btnGetTokenClick
     end
     object btnLoad: TButton
-      Left = -1
-      Top = 4
+      Left = 4
+      Top = 6
       Width = 49
       Height = 38
       Caption = 'Load'
@@ -1140,9 +1140,6 @@ object frmFlickr: TfrmFlickr
             Align = alClient
             Color = 2763306
             TabOrder = 3
-            ExplicitLeft = 2
-            ExplicitTop = 348
-            ExplicitHeight = 146
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1358,9 +1355,6 @@ object frmFlickr: TfrmFlickr
             Align = alClient
             Color = 2763306
             TabOrder = 2
-            ExplicitLeft = 2
-            ExplicitTop = 513
-            ExplicitHeight = 149
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -3349,7 +3343,7 @@ object frmFlickr: TfrmFlickr
     Left = 424
     Top = 88
     Bitmap = {
-      494C0101ED002001F40010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001F80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

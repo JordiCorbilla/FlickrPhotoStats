@@ -55,6 +55,7 @@ var
   tdStyle, tdStyleText : string;
   topStats: TTopStats;
   PhotosSorted : TList<IPhoto>;
+  average : double;
   i: integer;
 begin
   fontStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;"';
@@ -130,6 +131,7 @@ begin
     description.add('    <th '+thStyle+'><b>-2</b></th>');
     description.add('    <th '+thStyle+'><b>-1</b></th>');
     description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Today</b></th>');
+    description.add('    <th '+thStyle+'><b>Average</b></th>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
@@ -139,6 +141,7 @@ begin
     itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
     itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
+    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
@@ -149,6 +152,7 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[average]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes - globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
@@ -158,6 +162,7 @@ begin
     itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].likes - globalsRepository.Globals[globalsRepository.Globals.Count-6].likes;
     itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].likes - globalsRepository.Globals[globalsRepository.Globals.Count-7].likes;
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].likes - globalsRepository.Globals[globalsRepository.Globals.Count-8].likes;
+    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
@@ -168,6 +173,7 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[average]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
@@ -177,6 +183,7 @@ begin
     itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
     itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
     itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
+    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
@@ -187,6 +194,7 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[average]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
     description.add('</table>');

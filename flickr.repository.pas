@@ -99,7 +99,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -231,13 +231,15 @@ begin
     Self.FApiKey := iXMLRootNode.attributes['ApiKey'];
 
     try
-      Self.FUserId := iXMLRootNode.attributes['UserId'];
+      if (iXMLRootNode.attributes['UserId'] <>  null) then
+        Self.FUserId := iXMLRootNode.attributes['UserId'];
     except
       Self.FUserId := '';
     end;
 
     try
-      Self.FSecret := iXMLRootNode.attributes['Secret'];
+      if (iXMLRootNode.attributes['Secret'] <> null) then
+        Self.FSecret := iXMLRootNode.attributes['Secret'];
     except
       Self.FSecret := '';
     end;

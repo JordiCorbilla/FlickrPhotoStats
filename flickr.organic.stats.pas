@@ -134,7 +134,7 @@ type
 implementation
 
 uses
-  System.SysUtils;
+  System.SysUtils, Variants;
 
 { TFlickrOrganicStats }
 
@@ -228,22 +228,26 @@ begin
     FexecutionTime := 0;
   end;
   try
-    FLostLikes := StrToInt(iNode.Attributes['LostLikes']);
+    if (iNode.Attributes['LostLikes'] <> null) then
+      FLostLikes := StrToInt(iNode.Attributes['LostLikes']);
   except
     FLostLikes := 0;
   end;
   try
+    if (inode.Attributes['LostComments'] <> null) then
     FLostComments := StrToInt(iNode.Attributes['LostComments']);
   except
     FLostComments := 0;
   end;
   try
-    FTotalGroups := StrToInt(iNode.Attributes['TotalGroups']);
+    if (iNode.Attributes['TotalGroups'] <> null) then
+      FTotalGroups := StrToInt(iNode.Attributes['TotalGroups']);
   except
     FTotalGroups := 0;
   end;
   try
-    FFollowing := StrToInt(iNode.Attributes['Following']);
+    if (iNode.Attributes['Following'] <> null) then
+      FFollowing := StrToInt(iNode.Attributes['Following']);
   except
     FFollowing := 0;
   end;
