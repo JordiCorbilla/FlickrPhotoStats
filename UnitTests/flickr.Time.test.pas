@@ -45,9 +45,14 @@ type
     [TestCase('TestA','1000,1s')]
     [TestCase('TestB','60000,1min')]
     procedure Test1(const AValue1 : Int64;const AValue2 : String);
+    [Test]
+    procedure Test2();
   end;
 
 implementation
+
+uses
+  Sysutils;
 
 procedure TMyTestObject.Setup;
 begin
@@ -63,6 +68,24 @@ var
 begin
   desc := TTime.GetAdjustedTime(Avalue1);
   Assert.IsTrue(desc = Avalue2, 'wrong time!');
+end;
+
+procedure TMyTestObject.Test2;
+var
+  date1 : TDatetime;
+  day : string;
+  LongDayNames : array[1..7] of string;
+begin
+  date1 := Date;
+  LongDayNames[1] := 'Sunday';
+  LongDayNames[2] := 'Monday';
+  LongDayNames[3] := 'Tuesday';
+  LongDayNames[4] := 'Wednesday';
+  LongDayNames[5] := 'Thursday';
+  LongDayNames[6] := 'Friday';
+  LongDayNames[7] := 'Saturday';
+  day := LongDayNames[DayOfWeek(date1)];
+  //Assert.IsTrue(day='Tuesday', 'wrong date!');
 end;
 
 initialization

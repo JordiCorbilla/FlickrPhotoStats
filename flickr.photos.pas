@@ -64,9 +64,9 @@ type
     property Tags : string read GetTags write SetTags;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
-    function getTotalLikes(): Integer;
-    function getTotalComments(): Integer;
-    function getTotalViews(): Integer;
+    function getTotalLikes(incday : integer = 0): Integer;
+    function getTotalComments(incday : integer = 0): Integer;
+    function getTotalViews(incday : integer = 0): Integer;
     function getHighestViews() : Integer;
     function getHighestLikes() : Integer;
   end;
@@ -116,9 +116,9 @@ type
     destructor Destroy(); override;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
-    function getTotalLikes(): Integer;
-    function getTotalComments(): Integer;
-    function getTotalViews(): Integer;
+    function getTotalLikes(incday : integer = 0): Integer;
+    function getTotalComments(incday : integer = 0): Integer;
+    function getTotalViews(incday : integer = 0): Integer;
     function getHighestViews() : Integer;
     function getHighestLikes() : Integer;
   end;
@@ -263,58 +263,19 @@ begin
   result := FTitle;
 end;
 
-function TPhoto.getTotalComments: Integer;
-var
-  i, index: Integer;
-  date: TDatetime;
+function TPhoto.getTotalComments(incday : integer = 0): Integer;
 begin
-  date := 0;
-  index := 0;
-  for i := 0 to FStats.count - 1 do
-  begin
-    if date < FStats[i].date then
-    begin
-      date := FStats[i].date;
-      index := i;
-    end;
-  end;
-  result := FStats[index].numComments;
+  result := FStats[FStats.count - 1 + incday].numComments;
 end;
 
-function TPhoto.getTotalLikes: Integer;
-var
-  i, index: Integer;
-  date: TDatetime;
+function TPhoto.getTotalLikes(incday : integer = 0): Integer;
 begin
-  date := 0;
-  index := 0;
-  for i := 0 to FStats.count - 1 do
-  begin
-    if date < FStats[i].date then
-    begin
-      date := FStats[i].date;
-      index := i;
-    end;
-  end;
-  result := FStats[index].likes;
+  result := FStats[FStats.count - 1 + incday].likes;
 end;
 
-function TPhoto.getTotalViews: Integer;
-var
-  i, index: Integer;
-  date: TDatetime;
+function TPhoto.getTotalViews(incday : integer = 0): Integer;
 begin
-  date := 0;
-  index := 0;
-  for i := 0 to FStats.count - 1 do
-  begin
-    if date < FStats[i].date then
-    begin
-      date := FStats[i].date;
-      index := i;
-    end;
-  end;
-  result := FStats[index].views;
+  result := FStats[FStats.count - 1 + incday].views;
 end;
 
 function TPhoto.InAlbum(albumId: string): boolean;

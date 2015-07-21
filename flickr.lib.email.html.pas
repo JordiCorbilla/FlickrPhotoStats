@@ -30,7 +30,8 @@ unit flickr.lib.email.html;
 interface
 
 uses
-  Flickr.globals, System.classes, System.SysUtils, FLickr.organic, flickr.repository, flickr.top.stats, Generics.Collections, Generics.defaults, flickr.photos;
+  Flickr.globals, System.classes, System.SysUtils, FLickr.organic, flickr.repository,
+  flickr.top.stats, Generics.Collections, Generics.defaults, flickr.photos, System.DateUtils;
 
 type
   THtmlComposer = Class(Tobject)
@@ -57,7 +58,18 @@ var
   PhotosSorted : TList<IPhoto>;
   average : double;
   i: integer;
+  DayNames : array[1..7] of string;
+  day : string;
+  today, yesterday : integer;
 begin
+  DayNames[1] := 'Sunday';
+  DayNames[2] := 'Monday';
+  DayNames[3] := 'Tuesday';
+  DayNames[4] := 'Wednesday';
+  DayNames[5] := 'Thursday';
+  DayNames[6] := 'Friday';
+  DayNames[7] := 'Saturday';
+
   fontStyle := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;"';
   fontStylebig := ' style="font-family:''segoe ui'',calibri,''gill sans'',helvetica,arial;font-size:16px;"';
   tableStyle := ' style="border-collapse:collapse;border-spacing:0;border-color:#999;"';
@@ -124,12 +136,18 @@ begin
     description.add('<table '+tableStyle+'>');
     description.add('  <tr '+trStyle+'>');
     description.add('    <th '+thNoBorder+'> </td>');
-    description.add('    <th '+thStyle+'><b>-6</b></th>');
-    description.add('    <th '+thStyle+'><b>-5</b></th>');
-    description.add('    <th '+thStyle+'><b>-4</b></th>');
-    description.add('    <th '+thStyle+'><b>-3</b></th>');
-    description.add('    <th '+thStyle+'><b>-2</b></th>');
-    description.add('    <th '+thStyle+'><b>-1</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -6))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -5))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -4))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -3))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -2))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
+    day := DayNames[DayOfWeek(IncDay(Date, -1))];
+    description.add('    <th '+thStyle+'><b>'+day+'</b></th>');
     description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Today</b></th>');
     description.add('    <th '+thStyle+'><b>Average</b></th>');
     description.add('  </tr>');
@@ -260,7 +278,9 @@ begin
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');
       description.add('    <th '+thStyle+'><b>Title</b></th>');
-      description.add('    <th '+thStyle+'><b>Views</b></th>');
+      description.add('    <th '+thStyle+'><b>Views Yesterday</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Views Today</b></th>');
+      description.add('    <th '+thStyle+'><b>Trend</b></th>');
       description.add('  </tr>');
 
       for i := 0 to PhotosSorted.count-1 do
@@ -268,7 +288,15 @@ begin
         description.add('  <tr>');
         description.add('    <td '+tdStyle+'>'+PhotosSorted[i].Id+'</td>');
         description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
-        description.add('    <td '+tdStyleText+'>'+Format('%n',[PhotosSorted[i].getTotalViews.ToDouble]).Replace('.00','')+'</td>');
+        yesterday := PhotosSorted[i].getTotalViews(-1);
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[yesterday.ToDouble]).Replace('.00','')+'</td>');
+        today := PhotosSorted[i].getTotalViews;
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+        difference := today - yesterday;
+        if difference <= 0 then
+          description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>')
+        else
+          description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
         description.add('  </tr>');
       end;
 
@@ -286,7 +314,9 @@ begin
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');
       description.add('    <th '+thStyle+'><b>Title</b></th>');
-      description.add('    <th '+thStyle+'><b>Likes</b></th>');
+      description.add('    <th '+thStyle+'><b>Likes Yesterday</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Likes Today</b></th>');
+      description.add('    <th '+thStyle+'><b>Trend</b></th>');
       description.add('  </tr>');
 
       for i := 0 to PhotosSorted.count-1 do
@@ -294,7 +324,15 @@ begin
         description.add('  <tr>');
         description.add('    <td '+tdStyle+'>'+PhotosSorted[i].Id+'</td>');
         description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
-        description.add('    <td '+tdStyleText+'>'+Format('%n',[PhotosSorted[i].getTotalLikes.ToDouble]).Replace('.00','')+'</td>');
+        yesterday := PhotosSorted[i].getTotalLikes(-1);
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[yesterday.ToDouble]).Replace('.00','')+'</td>');
+        today := PhotosSorted[i].getTotalLikes;
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+        difference := today - yesterday;
+        if difference <= 0 then
+          description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>')
+        else
+          description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
         description.add('  </tr>');
       end;
 
