@@ -280,6 +280,9 @@ type
     chksorting: TCheckBox;
     N5: TMenuItem;
     Delete1: TMenuItem;
+    Panel21: TPanel;
+    WebBrowser2: TWebBrowser;
+    btnShowReport: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -334,6 +337,7 @@ type
     procedure btnAboutClick(Sender: TObject);
     procedure btnRemovePhotoClick(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
+    procedure btnShowReportClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -378,6 +382,7 @@ type
     filterEnabled : boolean;
     optionsEMail : IOptionsEmail;
     rejected: IRejected;
+    RepositoryLoaded : boolean;
   end;
 
 var
@@ -390,7 +395,7 @@ uses
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
-  flickr.lib.response, flickr.lib.logging, frmSplash;
+  flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html;
 
 {$R *.dfm}
 
@@ -991,6 +996,7 @@ begin
 
   Button9Click(sender);
   btnLoadOptionsClick(Sender);
+  RepositoryLoaded := true;
 end;
 
 procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
@@ -2491,6 +2497,23 @@ begin
   LoadProfiles();
 end;
 
+procedure TfrmFlickr.btnShowReportClick(Sender: TObject);
+var
+  description : TStrings;
+begin
+  //Show the html generated report.
+  if RepositoryLoaded then
+  begin
+    description := THtmlComposer.getMessage(repository, globalsRepository, organic);
+    try
+      description.SaveToFile('flickrHtmlreport.htm');
+      WebBrowser2.Navigate('file:///' + ExtractFilePath(ParamStr(0)) + 'flickrHtmlreport.htm');
+    finally
+      description.Free;
+    end;
+  end;
+end;
+
 procedure TfrmFlickr.Button8Click(Sender: TObject);
 var
   i: Integer;
@@ -3424,6 +3447,7 @@ begin
   endMark := -1;
   flickrChart := TFlickrChart.create;
   frmFlickr.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
+  RepositoryLoaded := false;
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);

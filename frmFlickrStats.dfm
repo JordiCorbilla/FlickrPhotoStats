@@ -2172,7 +2172,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 742
-        ActivePage = TabSheet9
+        ActivePage = TabSheet10
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2569,7 +2569,7 @@ object frmFlickr: TfrmFlickr
             Align = alTop
             TabOrder = 0
             object Label5: TLabel
-              Left = 2
+              Left = 4
               Top = 124
               Width = 42
               Height = 13
@@ -3249,8 +3249,45 @@ object frmFlickr: TfrmFlickr
           end
         end
         object TabSheet10: TTabSheet
-          Caption = 'Exploring'
+          Caption = 'Report'
           ImageIndex = 11
+          object Panel21: TPanel
+            Left = 0
+            Top = 0
+            Width = 647
+            Height = 35
+            Align = alTop
+            TabOrder = 0
+            object btnShowReport: TButton
+              Left = 2
+              Top = 4
+              Width = 135
+              Height = 25
+              Caption = 'Show HTML Report'
+              ImageIndex = 188
+              ImageMargins.Left = 5
+              Images = ImageList1
+              TabOrder = 0
+              OnClick = btnShowReportClick
+            end
+          end
+          object WebBrowser2: TWebBrowser
+            Left = 0
+            Top = 35
+            Width = 647
+            Height = 679
+            Align = alClient
+            TabOrder = 1
+            ExplicitTop = 41
+            ExplicitWidth = 754
+            ExplicitHeight = 619
+            ControlData = {
+              4C000000DF4200008E4500000000000000000000000000000000000000000000
+              000000004C000000000000000000000001000000E0D057007335CF11AE690800
+              2B2E126208000000000000004C0000000114020000000000C000000000000046
+              8000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000100000000000000000000000000000000000000}
+          end
         end
       end
       object Panel3: TPanel
@@ -3343,7 +3380,7 @@ object frmFlickr: TfrmFlickr
     Left = 424
     Top = 88
     Bitmap = {
-      494C0101ED002001F80010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11357,7 +11394,7 @@ object frmFlickr: TfrmFlickr
   object TeeGDIPlus1: TTeeGDIPlus
     Active = True
     TeePanel = dailyLikes
-    Left = 874
-    Top = 94
+    Left = 706
+    Top = 150
   end
 end
