@@ -339,6 +339,7 @@ object frmFlickr: TfrmFlickr
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
+      OnDblClick = Label12DblClick
     end
     object Label13: TLabel
       Left = 489
@@ -587,7 +588,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 811
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2172,7 +2173,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 655
         Height = 742
-        ActivePage = TabSheet10
+        ActivePage = TabSheet9
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet

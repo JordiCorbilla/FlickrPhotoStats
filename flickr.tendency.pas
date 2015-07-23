@@ -96,8 +96,8 @@ end;
 
 constructor TTendency.Create;
 begin
-    x := TDoubleList.create();
-    y := TDoubleList.create();
+  x := TDoubleList.create();
+  y := TDoubleList.create();
 end;
 
 destructor TTendency.Destroy;

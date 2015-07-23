@@ -338,6 +338,7 @@ type
     procedure btnRemovePhotoClick(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
     procedure btnShowReportClick(Sender: TObject);
+    procedure Label12DblClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -3475,6 +3476,20 @@ begin
     inc(i);
   end;
   Result := found;
+end;
+
+procedure TfrmFlickr.Label12DblClick(Sender: TObject);
+var
+  Bitmap: TBitMap;
+  prefix : string;
+begin
+  Bitmap := Self.GetFormImage;
+  try
+    prefix := DateTimeToStr(Date).Replace('\','').Replace('/','').Replace(' ','').Replace(':','');
+    Bitmap.SaveToFile( prefix + 'Image.bmp' );
+  finally
+    Bitmap.Free;
+  end;
 end;
 
 procedure TfrmFlickr.Label2DblClick(Sender: TObject);
