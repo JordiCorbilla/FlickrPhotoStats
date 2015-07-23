@@ -3278,11 +3278,9 @@ object frmFlickr: TfrmFlickr
             Height = 679
             Align = alClient
             TabOrder = 1
-            ExplicitTop = 41
-            ExplicitWidth = 754
-            ExplicitHeight = 619
+            ExplicitHeight = 673
             ControlData = {
-              4C000000DF4200008E4500000000000000000000000000000000000000000000
+              4C000000DF4200002D4600000000000000000000000000000000000000000000
               000000004C000000000000000000000001000000E0D057007335CF11AE690800
               2B2E126208000000000000004C0000000114020000000000C000000000000046
               8000000000000000000000000000000000000000000000000000000000000000
@@ -3356,8 +3354,8 @@ object frmFlickr: TfrmFlickr
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 672
-    Top = 84
+    Left = 232
+    Top = 452
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -3366,21 +3364,21 @@ object frmFlickr: TfrmFlickr
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 568
-    Top = 84
+    Left = 240
+    Top = 212
   end
   object XMLDocument1: TXMLDocument
-    Left = 496
-    Top = 84
+    Left = 232
+    Top = 388
     DOMVendorDesc = 'MSXML'
   end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
-    Left = 424
-    Top = 88
+    Left = 232
+    Top = 328
     Bitmap = {
-      494C0101ED002001FC0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001000110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11313,17 +11311,17 @@ object frmFlickr: TfrmFlickr
       end>
     ProgressState = Normal
     TabProperties = []
-    Left = 360
-    Top = 88
+    Left = 232
+    Top = 272
   end
   object ActionList1: TActionList
-    Left = 736
-    Top = 89
+    Left = 392
+    Top = 273
   end
   object PopupMenu1: TPopupMenu
     Images = frmFlickrSplash.ImageList1
-    Left = 800
-    Top = 89
+    Left = 392
+    Top = 337
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
       ImageIndex = 22
@@ -11394,7 +11392,7 @@ object frmFlickr: TfrmFlickr
   object TeeGDIPlus1: TTeeGDIPlus
     Active = True
     TeePanel = dailyLikes
-    Left = 706
-    Top = 150
+    Left = 394
+    Top = 214
   end
 end

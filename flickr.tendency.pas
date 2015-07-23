@@ -30,12 +30,12 @@ unit flickr.tendency;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.lib.integerlist;
+  Contnrs, Generics.Collections, flickr.lib.integerlist, flickr.lib.doublelist;
 
 type
   ITendency = interface
-    procedure AddX(item : integer);
-    procedure AddY(item : integer);
+    procedure AddX(item : double);
+    procedure AddY(item : double);
     procedure AddXY(itemX, itemY : integer);
     procedure Calculate();
     function tendencyResult(a : integer) : integer;
@@ -51,13 +51,13 @@ type
     Ff : Double;
     Fm : Double;
     Fyb : double;
-    x : TIntegerList;
-    y : TIntegerList;
+    x : TDoubleList;
+    y : TDoubleList;
     function slope() : double;
     function interception() : double;
   public
-    procedure AddX(item : integer);
-    procedure AddY(item : integer);
+    procedure AddX(item : double);
+    procedure AddY(item : double);
     procedure AddXY(itemX, itemY : integer);
     procedure Calculate();
     function tendencyResult(a : integer) : integer;
@@ -72,18 +72,18 @@ uses
 
 { TTendency }
 
-procedure TTendency.AddX(item: integer);
+procedure TTendency.AddX(item: double);
 begin
   x.Add(item);
 end;
 
 procedure TTendency.AddXY(itemX, itemY: integer);
 begin
-  AddX(itemX);
-  AddY(itemY);
+  AddX(itemX.ToDouble);
+  AddY(itemY.ToDouble);
 end;
 
-procedure TTendency.AddY(item: integer);
+procedure TTendency.AddY(item: double);
 begin
   y.Add(item);
 end;
@@ -96,8 +96,8 @@ end;
 
 constructor TTendency.Create;
 begin
-    x := TIntegerList.create();
-    y := TIntegerList.create();
+    x := TDoubleList.create();
+    y := TDoubleList.create();
 end;
 
 destructor TTendency.Destroy;
@@ -109,8 +109,8 @@ end;
 
 function TTendency.interception: double;
 begin
-  Fe := y.Total().ToDouble;
-  ff := Fm * x.Total().ToDouble;
+  Fe := y.Total();
+  ff := Fm * x.Total();
   Fyb := (Fe - Ff) / x.Count.ToDouble;
   result := Fyb;
 end;
@@ -123,13 +123,13 @@ begin
   acc := 0.0;
   for i := 0 to x.Count-1 do
   begin
-    acc := acc + (x[i] * y[i]).ToDouble;
+    acc := acc + (x[i] * y[i]);
   end;
 
   Fa := x.Count.ToDouble * acc;
-  Fb := x.Total().ToDouble * y.Total().ToDouble;
-  Fc := x.count.ToDouble * x.Squared().ToDouble;
-  Fd := x.TotalSquared().ToDouble;
+  Fb := x.Total() * y.Total();
+  Fc := x.count.ToDouble * x.Squared();
+  Fd := x.TotalSquared();
 
   Fm := (Fa - Fb) / (Fc - Fd);
   result := Fm;

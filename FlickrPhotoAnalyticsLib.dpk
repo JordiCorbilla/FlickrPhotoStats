@@ -98,7 +98,8 @@ contains
   flickr.lib.email.html in 'flickr.lib.email.html.pas',
   flickr.lib.options.email in 'flickr.lib.options.email.pas',
   flickr.lib.encoding in 'flickr.lib.encoding.pas',
-  flickr.lib.utils in 'flickr.lib.utils.pas';
+  flickr.lib.utils in 'flickr.lib.utils.pas',
+  flickr.lib.doublelist in 'flickr.lib.doublelist.pas';
 
 end.
 
