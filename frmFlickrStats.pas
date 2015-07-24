@@ -664,7 +664,7 @@ begin
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
       if (i >= startMark) and (i <= endMark) then
-        listPhotos.Items[i].Checked := true;
+        listPhotos.Items[i].Checked := not listPhotos.Items[i].Checked;
     end;
     startMark := -1;
     endMark := -1;
@@ -3133,6 +3133,7 @@ begin
   userToken := oauth_token;
   userTokenSecret := oauth_token_secret;
   showmessage('Congratulations, application authenticated with token ' + oauth_token);
+  btnGetToken.Enabled := false;
 end;
 
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
