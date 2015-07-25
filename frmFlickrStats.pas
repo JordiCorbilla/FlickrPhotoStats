@@ -1973,7 +1973,7 @@ begin
               3: add := repository.photos[i].Id.ToExtended <= value.ToExtended;
               4: add := repository.photos[i].Id.ToExtended >= value.ToExtended;
               5: add := repository.photos[i].Id <> value;
-              6: add := repository.photos[i].Id.Contains(value);
+              6: add := repository.photos[i].Id.ToLower.Contains(value.ToLower);
             end;
           end;
           1: //Title
@@ -1981,7 +1981,7 @@ begin
             case combobox3.ItemIndex of
               0,1,2,3,4: add := repository.photos[i].title = value;
               5: add := repository.photos[i].title <> edtfilter.Text;
-              6: add := repository.photos[i].title.Contains(value);
+              6: add := repository.photos[i].title.ToLower.Contains(value.ToLower);
             end;
           end;
           2: //Views
@@ -1993,7 +1993,7 @@ begin
               3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <= value.Tointeger;
               4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views >= value.Tointeger;
               5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring.Contains(value);
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           3: //Likes
@@ -2005,7 +2005,7 @@ begin
               3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <= value.Tointeger;
               4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes >= value.Tointeger;
               5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring.Contains(value);
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           4: //Comments
@@ -2017,7 +2017,7 @@ begin
               3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <= value.Tointeger;
               4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments >= value.Tointeger;
               5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring.Contains(value);
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           5: //Last Update
@@ -2037,7 +2037,7 @@ begin
               3: add := repository.photos[i].Albums.count <= value.ToInteger;
               4: add := repository.photos[i].Albums.count >= value.ToInteger;
               5: add := repository.photos[i].Albums.count <> value.ToInteger;
-              6: add := repository.photos[i].Albums.count.ToString.Contains(value);
+              6: add := repository.photos[i].Albums.count.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           8: //Groups
@@ -2049,13 +2049,13 @@ begin
               3: add := repository.photos[i].Groups.count <= value.ToInteger;
               4: add := repository.photos[i].Groups.count >= value.ToInteger;
               5: add := repository.photos[i].Groups.count <> value.ToInteger;
-              6: add := repository.photos[i].Groups.count.ToString.Contains(value);
+              6: add := repository.photos[i].Groups.count.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           9: //Tags
           begin
             case combobox3.ItemIndex of
-              0,1,2,3,4,5,6: add := repository.photos[i].tags.Contains(value);
+              0,1,2,3,4,5,6: add := repository.photos[i].tags.ToLower.Contains(value.ToLower);
             end;
           end;
           10: //Affection

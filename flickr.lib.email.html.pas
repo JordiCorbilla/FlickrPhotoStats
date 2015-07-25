@@ -40,6 +40,9 @@ type
 
 implementation
 
+uses
+  flickr.lib.utils;
+
 { THtmlComposer }
 
 class function THtmlComposer.getMessage(repository: IFlickrRepository; globalsRepository: IFlickrGlobals; organic : IFlickrOrganic): TStrings;
@@ -343,7 +346,7 @@ begin
     end;
 
     description.add('<h4 '+fontStyle+'>Kind regards,<br>');
-    description.add('Flickr Analytics Service</h4>');
+    description.add('Flickr Analytics Service v'+TUtils.GetVersion+'</h4>');
   finally
 
   end;
