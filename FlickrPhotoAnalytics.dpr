@@ -34,7 +34,8 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
-  frmSplash in 'frmSplash.pas' {frmFlickrSplash};
+  frmSplash in 'frmSplash.pas' {frmFlickrSplash},
+  frmAuthentication in 'frmAuthentication.pas' {frmAuthenticate};
 
 {$R *.res}
 

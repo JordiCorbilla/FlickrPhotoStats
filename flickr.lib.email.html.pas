@@ -132,6 +132,28 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
+    itemToday := organic.Globals[organic.Globals.Count-1].Following;
+    itemYesterday := organic.Globals[organic.Globals.Count-2].Following;
+    difference := itemToday - itemYesterday;
+
+    description.add('  <tr>');
+    description.add('    <td '+tdStyle+'><b>Contacts</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('  </tr>');
+
+    itemToday := organic.Globals[organic.Globals.Count-1].TotalGroups;
+    itemYesterday := organic.Globals[organic.Globals.Count-2].TotalGroups;
+    difference := itemToday - itemYesterday;
+
+    description.add('  <tr>');
+    description.add('    <td '+tdStyle+'><b>Group spread</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('  </tr>');
+
     description.add('</table>');
     description.add('<br>');
 

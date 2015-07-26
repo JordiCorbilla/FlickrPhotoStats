@@ -41,7 +41,8 @@ uses
   Vcl.ActnList, IdHashMessageDigest, idHash, IdGlobal, Vcl.OleCtrls, SHDocVw,
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
-  flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils;
+  flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
+  frmAuthentication;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -56,7 +57,6 @@ type
     Taskbar1: TTaskbar;
     ActionList1: TActionList;
     Authenticate: TButton;
-    btnGetToken: TButton;
     Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -70,7 +70,6 @@ type
     ShowListGroups1: TMenuItem;
     ShowListAlbums1: TMenuItem;
     N2: TMenuItem;
-    GotoURL1: TMenuItem;
     N3: TMenuItem;
     StartMarking1: TMenuItem;
     EndMarking1: TMenuItem;
@@ -162,13 +161,6 @@ type
     mStatus: TMemo;
     TabSheet8: TTabSheet;
     mLogs: TMemo;
-    Authentication: TTabSheet;
-    WebBrowser1: TWebBrowser;
-    Panel11: TPanel;
-    Button4: TButton;
-    Button5: TButton;
-    Edit1: TEdit;
-    Button3: TButton;
     TabSheet9: TTabSheet;
     Label9: TLabel;
     Label1: TLabel;
@@ -298,7 +290,6 @@ type
     procedure btnGetGroupsClick(Sender: TObject);
     procedure AuthenticateClick(Sender: TObject);
     procedure btnExcelClick(Sender: TObject);
-    procedure btnGetTokenClick(Sender: TObject);
     procedure Label2DblClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -312,13 +303,9 @@ type
     procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure btnFilterOKClick(Sender: TObject);
     procedure btnFilterCancelClick(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
     procedure MarkGroups1Click(Sender: TObject);
     procedure ShowListGroups1Click(Sender: TObject);
     procedure ShowListAlbums1Click(Sender: TObject);
-    procedure GotoURL1Click(Sender: TObject);
     procedure StartMarking1Click(Sender: TObject);
     procedure EndMarking1Click(Sender: TObject);
     procedure CheckAll1Click(Sender: TObject);
@@ -351,7 +338,6 @@ type
     procedure LoadHallOfFame(repository: IFlickrRepository);
     function SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
     function getTotalAlbumsCounts: Integer;
-    procedure Log(s: string);
     procedure UpdateSingleStats(id: string);
     function SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
     function ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
@@ -384,6 +370,7 @@ type
     optionsEMail : IOptionsEmail;
     rejected: IRejected;
     RepositoryLoaded : boolean;
+    procedure Log(s: string);
   end;
 
 var
@@ -412,6 +399,7 @@ var
   oauth_callback_confirmed: string;
   oauth_token: string;
   oauth_token_secret: string;
+  authenticationScreen: TfrmAuthenticate;
 begin
   // apikey.text 0edf6f13dc6309c822b59ae8bb783df6
   // secret.text b9e217d1c0333300
@@ -425,7 +413,7 @@ begin
     showmessage('Secret key can''t be empty');
     exit;
   end;
-  btnGetToken.enabled := false;
+  //btnGetToken.enabled := false;
   Log('authentication started');
   // oauthr authentication
   Log('Generating request token query for ' + apikey.text + ' ' + secret.text);
@@ -465,12 +453,21 @@ begin
 
   userTokenSecret := oauth_token_secret;
 
-  PageControl2.ActivePage := Authentication;
+  authenticationScreen := TfrmAuthenticate.Create(Application);
+  try
+    authenticationScreen.NavigationUrl := NavigationUrl;
+    authenticationScreen.WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
+    authenticationScreen.ShowModal;
+  finally
+    authenticationScreen.Free;
+  end;
+
+
   Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   NavigationUrl := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
-  WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
-  showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
-  btnGetToken.enabled := true;
+  //WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
+  //showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
+  //btnGetToken.enabled := true;
 end;
 
 procedure TfrmFlickr.Log(s: string);
@@ -1927,27 +1924,6 @@ begin
     showmessage('Data saved successfully!');
 end;
 
-procedure TfrmFlickr.Button3Click(Sender: TObject);
-begin
-  WebBrowser1.Navigate(Edit1.text);
-end;
-
-procedure TfrmFlickr.Button4Click(Sender: TObject);
-begin
-  WebBrowser1.Navigate(NavigationUrl);
-end;
-
-procedure TfrmFlickr.Button5Click(Sender: TObject);
-var
-	flags: OleVariant;
-begin
-	if not WebBrowser1.Busy then
-	begin
-		flags := REFRESH_COMPLETELY;
-		WebBrowser1.Refresh2(flags);
-	end;
-end;
-
 procedure TfrmFlickr.Button6Click(Sender: TObject);
 var
   i: Integer;
@@ -2882,20 +2858,6 @@ begin
   Result := totalViews;
 end;
 
-procedure TfrmFlickr.GotoURL1Click(Sender: TObject);
-var
-  id : string;
-begin
-  //Show item in the URL view
-  //https://www.flickr.com/photos/jordicorbillaphotography/
-  if listPhotos.ItemIndex <> -1 then
-  begin
-    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
-    PageControl2.ActivePage := Authentication;
-    WebBrowser1.Navigate('https://www.flickr.com/photos/jordicorbillaphotography/' + id + '/in/photostream/lightbox/');
-  end;
-end;
-
 procedure TfrmFlickr.btnGetListClick(Sender: TObject);
 var
   Item: TListItem;
@@ -3051,89 +3013,6 @@ begin
   progressfetching.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
-end;
-
-procedure TfrmFlickr.btnGetTokenClick(Sender: TObject);
-var
-  response: string;
-  oauth_token: string;
-  oauth_verifier: string;
-  OAccessTokenUrl: string;
-  fullname: string;
-  oauth_token_secret: string;
-  user_nsid: string;
-  username: string;
-begin
-  // 'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
-  response := WebBrowser1.LocationURL;
-  Log('response url ' + response);
-  response := response.Replace('http://www.example.com/?', '');
-  response := response.Replace('oauth_token', '');
-  response := response.Replace('oauth_verifier', '');
-
-  // '=72157648370759854-32e3740fbaef246b&=d46f58e4a5780b25'
-  oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
-  // =72157648370759854-32e3740fbaef246b&
-  response := AnsiRightStr(response, length(response) - length(oauth_token));
-  // =d46f58e4a5780b25
-  oauth_verifier := response;
-
-  // Clean the parameters
-  oauth_token := oauth_token.Replace('=', '').Replace('&', '');
-  oauth_verifier := oauth_verifier.Replace('=', '').Replace('&', '');
-  Log('oauth_token= ' + oauth_token);
-  Log('oauth_verifier= ' + oauth_verifier);
-
-  // Now we have the request token
-  // we need to exchange it for an Access token
-  OAccessTokenUrl := TAccessToken.New(oauth_verifier, apikey.text, oauth_token, secret.text, userTokenSecret).GenerateRequestAccessToken();
-  Log('Calling OAuth URL ' + OAccessTokenUrl);
-  response := IdHTTP1.Get(OAccessTokenUrl);
-  Log('OAuth URL response ' + response);
-
-  // Example response
-  // fullname=Jordi%20Corbilla&
-  // oauth_token=72157639942921845-e4f73de08dc774e6&
-  // oauth_token_secret=3eefb68a488fbb63&
-  // user_nsid=96100496%40N05&
-  // username=Jordi%20Corbilla%20Photography
-
-  response := response.Replace('fullname', '');
-  response := response.Replace('oauth_token', '');
-  response := response.Replace('_secret', '');
-  response := response.Replace('user_nsid', '');
-  response := response.Replace('username', '');
-
-  fullname := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(response) - length(fullname));
-
-  oauth_token := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(response) - length(oauth_token));
-
-  oauth_token_secret := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(response) - length(oauth_token_secret));
-
-  user_nsid := AnsiLeftStr(response, AnsiPos('&', response));
-  response := AnsiRightStr(response, length(response) - length(user_nsid));
-
-  username := response;
-
-  fullname := fullname.Replace('=', '').Replace('&', '');
-  oauth_token := oauth_token.Replace('=', '').Replace('&', '');
-  oauth_token_secret := oauth_token_secret.Replace('=', '').Replace('&', '');
-  user_nsid := user_nsid.Replace('=', '').Replace('&', '');
-  username := username.Replace('=', '').Replace('&', '');
-
-  Log('fullname= ' + fullname);
-  Log('oauth_token= ' + oauth_token);
-  Log('oauth_token_secret= ' + oauth_token_secret);
-  Log('user_nsid= ' + user_nsid);
-  Log('username= ' + username);
-
-  userToken := oauth_token;
-  userTokenSecret := oauth_token_secret;
-  showmessage('Congratulations, application authenticated with token ' + oauth_token);
-  btnGetToken.Enabled := false;
 end;
 
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);

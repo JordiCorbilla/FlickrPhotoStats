@@ -32,7 +32,8 @@ uses
   flickr.rest.test in 'flickr.rest.test.pas',
   flickr.rest in '..\flickr.rest.pas',
   flickr.signature in '..\flickr.signature.pas',
-  flickr.call.methods in '..\flickr.call.methods.pas';
+  flickr.call.methods in '..\flickr.call.methods.pas',
+  flickr.lib.utils in '..\flickr.lib.utils.pas';
 
 var
   runner : ITestRunner;
