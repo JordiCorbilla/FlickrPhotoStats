@@ -96,20 +96,13 @@ type
     chkUpdate: TCheckBox;
     chkUpdateCollections: TCheckBox;
     edtfilter: TEdit;
-    Button6: TButton;
-    Button7: TButton;
+    btnAddFilter: TButton;
+    btnResetFilter: TButton;
     ComboBox2: TComboBox;
     Splitter1: TSplitter;
     PageControl2: TPageControl;
     Statistics: TTabSheet;
     Panel4: TPanel;
-    Splitter2: TSplitter;
-    Chart1: TChart;
-    Series1: TLineSeries;
-    Series2: TLineSeries;
-    Series3: TLineSeries;
-    statsDay: TChart;
-    BarSeries2: TBarSeries;
     TabSheet6: TTabSheet;
     Memo1: TMemo;
     Panel12: TPanel;
@@ -187,12 +180,6 @@ type
     listValuesLikesAlbums: TMemo;
     listValuesLikesAlbumsID: TMemo;
     TabSheet10: TTabSheet;
-    Panel3: TPanel;
-    Process: TLabel;
-    ProgressBar1: TProgressBar;
-    rbViews: TRadioButton;
-    rbLikes: TRadioButton;
-    rbComments: TRadioButton;
     Chart2: TChart;
     Series4: TBarSeries;
     Panel14: TPanel;
@@ -275,6 +262,34 @@ type
     Panel21: TPanel;
     WebBrowser2: TWebBrowser;
     btnShowReport: TButton;
+    Panel11: TPanel;
+    chartItemComments: TChart;
+    Series1: TLineSeries;
+    Series2: TLineSeries;
+    Series3: TLineSeries;
+    chartItemCommentsH: TChart;
+    BarSeries2: TBarSeries;
+    Splitter2: TSplitter;
+    Splitter21: TSplitter;
+    Panel22: TPanel;
+    Splitter22: TSplitter;
+    chartItemViews: TChart;
+    LineSeries9: TLineSeries;
+    LineSeries10: TLineSeries;
+    LineSeries11: TLineSeries;
+    ChartItemViewsH: TChart;
+    BarSeries7: TBarSeries;
+    Splitter23: TSplitter;
+    Panel23: TPanel;
+    Splitter24: TSplitter;
+    chartItemLikes: TChart;
+    LineSeries12: TLineSeries;
+    LineSeries13: TLineSeries;
+    LineSeries14: TLineSeries;
+    chartitemLikesH: TChart;
+    BarSeries8: TBarSeries;
+    ProgressBar1: TProgressBar;
+    Process: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -319,8 +334,8 @@ type
     procedure btnLoadHallClick(Sender: TObject);
     procedure ShowonFlickr1Click(Sender: TObject);
     procedure listGroupsItemChecked(Sender: TObject; Item: TListItem);
-    procedure Button6Click(Sender: TObject);
-    procedure Button7Click(Sender: TObject);
+    procedure btnAddFilterClick(Sender: TObject);
+    procedure btnResetFilterClick(Sender: TObject);
     procedure btnAboutClick(Sender: TObject);
     procedure btnRemovePhotoClick(Sender: TObject);
     procedure Delete1Click(Sender: TObject);
@@ -1664,15 +1679,19 @@ end;
 
 procedure TfrmFlickr.UpdateSingleStats(id: string);
 var
-  Series: TBarSeries;
+  SeriesViews, SeriesLikes, SeriesComments: TBarSeries;
   color: TColor;
   i: Integer;
   theDate: TDateTime;
   views: Integer;
   photo: IPhoto;
 begin
-  Series := flickrChart.GetNewBarSeries(statsDay);
-  Series.Title := id;
+  SeriesViews := flickrChart.GetNewBarSeries(chartItemViewsH);
+  SeriesLikes := flickrChart.GetNewBarSeries(chartItemLikesH);
+  SeriesComments := flickrChart.GetNewBarSeries(chartItemCommentsH);
+  SeriesViews.Title := id;
+  SeriesLikes.Title := id;
+  SeriesComments.Title := id;
   color := RGB(Random(255), Random(255), Random(255));
 
   photo := repository.GetPhoto(id);
@@ -1680,24 +1699,19 @@ begin
   for i := 1 to photo.stats.Count - 1 do
   begin
     theDate := photo.stats[i].Date;
-    if rbViews.Checked then
-    begin
-      views := photo.stats[i].views - photo.stats[i - 1].views;
-      Series.AddXY(theDate, views, '', color);
-    end;
-    if rbLikes.Checked then
-    begin
-      views := photo.stats[i].likes - photo.stats[i - 1].likes;
-      Series.AddXY(theDate, views, '', color);
-    end;
-    if rbComments.Checked then
-    begin
-      views := photo.stats[i].numComments - photo.stats[i - 1].numComments;
-      Series.AddXY(theDate, views, '', color);
-    end;
+    views := photo.stats[i].views - photo.stats[i - 1].views;
+    SeriesViews.AddXY(theDate, views, '', color);
+
+    views := photo.stats[i].likes - photo.stats[i - 1].likes;
+    SeriesLikes.AddXY(theDate, views, '', color);
+
+    views := photo.stats[i].numComments - photo.stats[i - 1].numComments;
+    SeriesComments.AddXY(theDate, views, '', color);
   end;
 
-  statsDay.AddSeries(Series);
+  chartItemViewsH.AddSeries(SeriesViews);
+  chartItemLikesH.AddSeries(SeriesLikes);
+  chartItemCommentsH.AddSeries(SeriesComments);
 end;
 
 procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
@@ -1924,7 +1938,7 @@ begin
     showmessage('Data saved successfully!');
 end;
 
-procedure TfrmFlickr.Button6Click(Sender: TObject);
+procedure TfrmFlickr.btnAddFilterClick(Sender: TObject);
 var
   i: Integer;
   add : boolean;
@@ -2058,7 +2072,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Button7Click(Sender: TObject);
+procedure TfrmFlickr.btnResetFilterClick(Sender: TObject);
 begin
   //Restore everything as it was.
   listPhotos.OnItemChecked := nil;
@@ -2071,7 +2085,12 @@ begin
   listPhotos.OnItemChecked := listPhotosItemChecked;
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   listPhotos.Visible := true;
-  chart1.SeriesList.Clear;
+  chartItemViews.SeriesList.Clear;
+  chartItemLikes.SeriesList.Clear;
+  chartItemComments.SeriesList.Clear;
+  chartItemViewsH.SeriesList.Clear;
+  chartItemLikesH.SeriesList.Clear;
+  chartItemCommentsH.SeriesList.Clear;
 end;
 
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
@@ -2555,9 +2574,13 @@ end;
 
 procedure TfrmFlickr.showMarksClick(Sender: TObject);
 begin
-  flickrChart.VisibleMarks(Chart1, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemViews, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemLikes, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemComments, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemViewsH, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemLikesH, showMarks.Checked);
+  flickrChart.VisibleMarks(chartitemCommentsH, showMarks.Checked);
   flickrChart.VisibleMarks(Chart2, showMarks.Checked);
-  flickrChart.VisibleMarks(statsDay, showMarks.Checked);
   flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
   flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
   flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
@@ -3447,11 +3470,11 @@ var
   photo: IPhoto;
   stat: IStat;
   i: Integer;
-  Series: TLineSeries;
+  Series, SeriesViews, SeriesLikes, SeriesComments: TLineSeries;
   barSeries: TBarSeries;
   colour: TColor;
-  viewsTendency : Itendency;
-  SeriesTendency : TLineSeries;
+  viewsTendency, likesTendency, commentsTendency : Itendency;
+  SeriesTendencyViews, SeriesTendencyLikes, SeriesTendencyComments : TLineSeries;
   theDate : TDateTime;
   vTendency : integer;
 begin
@@ -3467,46 +3490,77 @@ begin
     photo := repository.GetPhoto(id);
     if photo <> nil then
     begin
-      Series := flickrChart.GetNewLineSeries(Chart1);
-      Series.title := id;
+      SeriesViews := flickrChart.GetNewLineSeries(chartItemViews);
+      SeriesLikes := flickrChart.GetNewLineSeries(chartItemLikes);
+      SeriesComments := flickrChart.GetNewLineSeries(chartItemComments);
+      SeriesViews.title := id;
+      SeriesLikes.title := id;
+      SeriesComments.title := id;
       CheckedSeries.Add(id);
       viewsTendency := TTendency.Create;
+      likesTendency := TTendency.Create;
+      commentsTendency := TTendency.Create;
       colour := RGB(Random(255), Random(255), Random(255));
       for i := 0 to photo.stats.Count - 1 do
       begin
         stat := photo.stats[i];
-        if rbViews.Checked then
-        begin
-          viewsTendency.AddXY(i, stat.views);
-          Series.AddXY(stat.Date, stat.views, '', colour);
-        end;
-        if rbLikes.Checked then
-        begin
-          viewsTendency.AddXY(i, stat.likes);
-          Series.AddXY(stat.Date, stat.likes, '', colour);
-        end;
-        if rbComments.Checked then
-        begin
-          viewsTendency.AddXY(i, stat.numComments);
-          Series.AddXY(stat.Date, stat.numComments, '', colour);
-        end;
-      end;
-      Chart1.AddSeries(Series);
-      viewsTendency.Calculate;
+        viewsTendency.AddXY(i, stat.views);
+        SeriesViews.AddXY(stat.Date, stat.views, '', colour);
 
-      SeriesTendency := flickrChart.GetNewLineSeries(Chart1);
-      SeriesTendency.title := id + 'tendency';
+        likesTendency.AddXY(i, stat.likes);
+        SeriesLikes.AddXY(stat.Date, stat.likes, '', colour);
+
+        commentsTendency.AddXY(i, stat.numComments);
+        SeriesComments.AddXY(stat.Date, stat.numComments, '', colour);
+      end;
+      chartItemViews.AddSeries(SeriesViews);
+      chartItemLikes.AddSeries(SeriesLikes);
+      chartItemComments.AddSeries(SeriesComments);
+      viewsTendency.Calculate;
+      likesTendency.Calculate;
+      commentsTendency.Calculate;
+
+      SeriesTendencyViews := flickrChart.GetNewLineSeries(chartItemViews);
+      SeriesTendencyViews.title := id + 'tendency';
       color := clYellow;
 
       //Adding only first and last item
       theDate := photo.stats[0].Date;
       vTendency := viewsTendency.tendencyResult(0);
-      SeriesTendency.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyViews.AddXY(theDate, vTendency, '', color);
       theDate := photo.stats[photo.stats.Count - 1].Date;
       vTendency := viewsTendency.tendencyResult(photo.stats.Count - 1);
-      SeriesTendency.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyViews.AddXY(theDate, vTendency, '', color);
 
-      Chart1.AddSeries(SeriesTendency);
+      chartItemViews.AddSeries(SeriesTendencyViews);
+
+      SeriesTendencyLikes := flickrChart.GetNewLineSeries(chartItemLikes);
+      SeriesTendencyLikes.title := id + 'tendency';
+      color := clYellow;
+
+      //Adding only first and last item
+      theDate := photo.stats[0].Date;
+      vTendency := likesTendency.tendencyResult(0);
+      SeriesTendencyLikes.AddXY(theDate, vTendency, '', color);
+      theDate := photo.stats[photo.stats.Count - 1].Date;
+      vTendency := likesTendency.tendencyResult(photo.stats.Count - 1);
+      SeriesTendencyLikes.AddXY(theDate, vTendency, '', color);
+
+      chartItemLikes.AddSeries(SeriesTendencyLikes);
+
+      SeriesTendencyComments := flickrChart.GetNewLineSeries(chartItemComments);
+      SeriesTendencyComments.title := id + 'tendency';
+      color := clYellow;
+
+      //Adding only first and last item
+      theDate := photo.stats[0].Date;
+      vTendency := commentsTendency.tendencyResult(0);
+      SeriesTendencyComments.AddXY(theDate, vTendency, '', color);
+      theDate := photo.stats[photo.stats.Count - 1].Date;
+      vTendency := commentsTendency.tendencyResult(photo.stats.Count - 1);
+      SeriesTendencyComments.AddXY(theDate, vTendency, '', color);
+
+      chartItemComments.AddSeries(SeriesTendencyComments);
 
       UpdateSingleStats(id);
     end;
@@ -3517,40 +3571,112 @@ begin
     if isInSeries(id) then
     begin
       Series := nil;
-      for i := 0 to Chart1.SeriesList.Count - 1 do
+      for i := 0 to chartItemViews.SeriesList.Count - 1 do
       begin
-        if Chart1.SeriesList[i].title = id then
+        if chartItemViews.SeriesList[i].title = id then
         begin
-          Series := TLineSeries(Chart1.SeriesList[i]);
+          Series := TLineSeries(chartItemViews.SeriesList[i]);
           Break;
         end;
       end;
       if Series <> nil then
-        Chart1.RemoveSeries(Series);
+        chartItemViews.RemoveSeries(Series);
 
       Series := nil;
-      for i := 0 to Chart1.SeriesList.Count - 1 do
+      for i := 0 to chartItemLikes.SeriesList.Count - 1 do
       begin
-        if Chart1.SeriesList[i].title = id + 'tendency' then
+        if chartItemLikes.SeriesList[i].title = id then
         begin
-          Series := TLineSeries(Chart1.SeriesList[i]);
+          Series := TLineSeries(chartItemLikes.SeriesList[i]);
           Break;
         end;
       end;
       if Series <> nil then
-        Chart1.RemoveSeries(Series);
+        chartItemLikes.RemoveSeries(Series);
+
+      Series := nil;
+      for i := 0 to chartItemComments.SeriesList.Count - 1 do
+      begin
+        if chartItemComments.SeriesList[i].title = id then
+        begin
+          Series := TLineSeries(chartItemComments.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if Series <> nil then
+        chartItemComments.RemoveSeries(Series);
+
+      Series := nil;
+      for i := 0 to chartItemViews.SeriesList.Count - 1 do
+      begin
+        if chartItemViews.SeriesList[i].title = id + 'tendency' then
+        begin
+          Series := TLineSeries(chartItemViews.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if Series <> nil then
+        chartItemViews.RemoveSeries(Series);
+
+      Series := nil;
+      for i := 0 to chartItemLikes.SeriesList.Count - 1 do
+      begin
+        if chartItemLikes.SeriesList[i].title = id + 'tendency' then
+        begin
+          Series := TLineSeries(chartItemLikes.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if Series <> nil then
+        chartItemLikes.RemoveSeries(Series);
+
+      Series := nil;
+      for i := 0 to chartItemComments.SeriesList.Count - 1 do
+      begin
+        if chartItemComments.SeriesList[i].title = id + 'tendency' then
+        begin
+          Series := TLineSeries(chartItemComments.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if Series <> nil then
+        chartItemComments.RemoveSeries(Series);
 
       barSeries := nil;
-      for i := 0 to statsDay.SeriesList.Count - 1 do
+      for i := 0 to chartItemViewsH.SeriesList.Count - 1 do
       begin
-        if statsDay.SeriesList[i].title = id then
+        if chartItemViewsH.SeriesList[i].title = id then
         begin
-          barSeries := TBarSeries(statsDay.SeriesList[i]);
+          barSeries := TBarSeries(chartItemViewsH.SeriesList[i]);
           Break;
         end;
       end;
       if barSeries <> nil then
-        statsDay.RemoveSeries(barSeries);
+        chartItemViewsH.RemoveSeries(barSeries);
+
+      barSeries := nil;
+      for i := 0 to chartItemLikesH.SeriesList.Count - 1 do
+      begin
+        if chartItemLikesH.SeriesList[i].title = id then
+        begin
+          barSeries := TBarSeries(chartItemLikesH.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if barSeries <> nil then
+        chartItemLikesH.RemoveSeries(barSeries);
+
+      barSeries := nil;
+      for i := 0 to chartItemCommentsH.SeriesList.Count - 1 do
+      begin
+        if chartItemCommentsH.SeriesList[i].title = id then
+        begin
+          barSeries := TBarSeries(chartItemCommentsH.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if barSeries <> nil then
+        chartItemCommentsH.RemoveSeries(barSeries);
     end;
   end;
 

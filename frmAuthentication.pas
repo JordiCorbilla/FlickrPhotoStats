@@ -152,7 +152,6 @@ begin
   frmFlickr.userTokenSecret := oauth_token_secret;
   showmessage('Congratulations, application authenticated with token ' + oauth_token);
   authenticated := true;
-  //frmFlickr.btnGetToken.Enabled := false;
   Self.Close;
 end;
 
