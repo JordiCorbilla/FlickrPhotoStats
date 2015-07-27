@@ -112,7 +112,10 @@ begin
 
   for i := 0 to num-1 do
   begin
-    PhotosResult.Add(PhotosSorted[i]);
+    if i < photosSorted.count then
+    begin
+      PhotosResult.Add(PhotosSorted[i]);
+    end;
   end;
   PhotosSorted.Free;
   result := PhotosResult;
@@ -138,7 +141,10 @@ begin
 
   for i := 0 to num-1 do
   begin
-    PhotosResult.Add(PhotosSorted[i]);
+    if i < photosSorted.count then
+    begin
+      PhotosResult.Add(PhotosSorted[i]);
+    end;
   end;
   PhotosSorted.Free;
   result := PhotosResult;
@@ -164,7 +170,10 @@ begin
   description := 'Top ' + num.ToString + ' images with most Comments: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
+    if i < photosSorted.count then
+    begin
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
+    end;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;
@@ -192,9 +201,12 @@ begin
   description := 'Top ' + num.ToString + ' images with most likes: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
-    color := RGB(Random(255), Random(255), Random(255));
-    series.Add(PhotosSorted[i].getTotalLikes.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString, color);
+    if i < photosSorted.count then
+    begin
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
+      color := RGB(Random(255), Random(255), Random(255));
+      series.Add(PhotosSorted[i].getTotalLikes.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString, color);
+    end;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;
@@ -260,9 +272,12 @@ begin
   description := 'Top ' + num.ToString + ' images with most Views: ' + sLineBreak;
   for i := 0 to num-1 do
   begin
-    description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
-    color := RGB(Random(255), Random(255), Random(255));
-    series.Add(PhotosSorted[i].getTotalViews.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString, color);
+    if i < photosSorted.count then
+    begin
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
+      color := RGB(Random(255), Random(255), Random(255));
+      series.Add(PhotosSorted[i].getTotalViews.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString, color);
+    end;
   end;
   PhotosSorted.Free;
   //IPhotoComparer := nil;

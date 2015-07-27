@@ -47,6 +47,8 @@ type
     function GetuserTokenSecret() : string;
     function GetflickrApiKey() : string;
     function Getsecret() : string;
+    function GetflickrUserId() : string;
+    procedure SetflickrUserId(const Value: string);
     property server : string read Getserver write Setserver;
     property port : integer read Getport write Setport;
     property user : string read Getuser write Setuser;
@@ -55,6 +57,7 @@ type
     property userTokenSecret : string read GetuserTokenSecret write SetuserTokenSecret;
     property flickrApiKey : string read GetflickrApiKey write SetflickrApiKey;
     property secret : string read Getsecret write Setsecret;
+    property flickrUserId : string read GetflickrUserId write SetflickrUserId;
     function Load() : IOptionsEmail;
     procedure Save();
   end;
@@ -69,6 +72,7 @@ type
     Fserver: string;
     Fsecret: string;
     FflickrApiKey: string;
+    FflickrUserId: string;
     procedure Setpassword(const Value: string);
     procedure Setport(const Value: integer);
     procedure Setserver(const Value: string);
@@ -85,6 +89,8 @@ type
     function GetuserTokenSecret() : string;
     function GetflickrApiKey() : string;
     function Getsecret() : string;
+    function GetflickrUserId() : string;
+    procedure SetflickrUserId(const Value: string);
   public
     property server : string read Getserver write Setserver;
     property port : integer read Getport write Setport;
@@ -94,6 +100,7 @@ type
     property userTokenSecret : string read GetuserTokenSecret write SetuserTokenSecret;
     property flickrApiKey : string read GetflickrApiKey write SetflickrApiKey;
     property secret : string read Getsecret write Setsecret;
+    property flickrUserId : string read GetflickrUserId write SetflickrUserId;
     class function New(): IOptionsEmail;
     function Load() : IOptionsEmail;
     procedure Save();
@@ -109,6 +116,11 @@ uses
 function TOptionsEmail.GetflickrApiKey: string;
 begin
   result := FflickrApiKey;
+end;
+
+function TOptionsEmail.GetflickrUserId: string;
+begin
+  result := FflickrUserId;
 end;
 
 function TOptionsEmail.Getpassword: string;
@@ -160,6 +172,7 @@ begin
     Fserver := THelper.Decode(inifile.ReadString('System', 'Server', ''));
     FflickrApiKey := THelper.Decode(inifile.ReadString('System', 'FlickrApiKey', ''));
     FSecret := THelper.Decode(inifile.ReadString('System', 'Secret', ''));
+    FFlickrUserId := THelper.Decode(inifile.ReadString('System', 'FlickrUserId', ''));
   finally
     inifile.Free;
   end;
@@ -185,6 +198,7 @@ begin
     inifile.WriteString('System', 'Server', THelper.Encode(Fserver));
     inifile.WriteString('System', 'FlickrApiKey', THelper.Encode(FflickrApiKey));
     inifile.WriteString('System', 'Secret', THelper.Encode(FSecret));
+    inifile.WriteString('System', 'FlickrUserId', THelper.Encode(FFlickrUserId));
   finally
     inifile.Free;
   end;
@@ -193,6 +207,11 @@ end;
 procedure TOptionsEmail.SetflickrApiKey(const Value: string);
 begin
   FflickrApiKey := Value;
+end;
+
+procedure TOptionsEmail.SetflickrUserId(const Value: string);
+begin
+  FflickrUserId := Value;
 end;
 
 procedure TOptionsEmail.Setpassword(const Value: string);
