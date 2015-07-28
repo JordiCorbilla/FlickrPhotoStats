@@ -317,6 +317,8 @@ begin
           begin
             sleep(2000);
             timedout := false;
+            if e.Message.ToLower.Contains('unauthorized') then
+              timedout := true;
           end;
         end;
       end;

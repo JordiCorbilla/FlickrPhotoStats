@@ -132,7 +132,11 @@ begin
             organicStat.executionTime := st.ElapsedMilliseconds;
             organicStat.date := Date;
             try
-              totalContacts := TRepositoryRest.getNumberOfContacts;
+              try
+                totalContacts := TRepositoryRest.getNumberOfContacts;
+              except on E: Exception do
+                TLogger.LogFile('Exception reading contacts: ' + e.message);
+              end;
               if totalContacts < 0 then
                 totalContacts := organic.Globals[organic.Globals.Count-1].following;
             finally
