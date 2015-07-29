@@ -2831,6 +2831,7 @@ begin
   progressfetchinggroups.Visible := false;
   Taskbar1.ProgressValue := 0;
   listGroups.Visible := true;
+  UpdateLabelGroups();
 end;
 
 function TfrmFlickr.getTotalAlbumsCounts(): Integer;
@@ -3779,6 +3780,8 @@ begin
     if listphotos.Items[i].Checked then
       inc(count);
   end;
+  chkUpdate.Checked := (count > 0);
+
   Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 

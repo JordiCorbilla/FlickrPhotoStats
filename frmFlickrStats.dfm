@@ -1968,7 +1968,8 @@ object frmFlickr: TfrmFlickr
           ViewStyle = vsReport
           OnCustomDrawSubItem = listPhotosCustomDrawSubItem
           OnItemChecked = listPhotosItemChecked
-          ExplicitWidth = 599
+          ExplicitLeft = -1
+          ExplicitTop = 122
         end
         object Panel5: TPanel
           Left = 1
@@ -1977,7 +1978,6 @@ object frmFlickr: TfrmFlickr
           Height = 120
           Align = alTop
           TabOrder = 1
-          ExplicitWidth = 599
           object Label2: TLabel
             Left = 8
             Top = 10
@@ -2002,7 +2002,7 @@ object frmFlickr: TfrmFlickr
           object Label31: TLabel
             Left = 280
             Top = 86
-            Width = 94
+            Width = 84
             Height = 13
             Caption = 'Number of Items:'
           end
@@ -2175,14 +2175,11 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 715
         Height = 783
-        ActivePage = TabSheet3
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
-        ExplicitLeft = 604
-        ExplicitWidth = 899
         object Statistics: TTabSheet
           Caption = 'Statistics'
-          ExplicitWidth = 891
           object Panel4: TPanel
             Left = 0
             Top = 0
@@ -2190,7 +2187,6 @@ object frmFlickr: TfrmFlickr
             Height = 755
             Align = alClient
             TabOrder = 0
-            ExplicitWidth = 891
             object Splitter21: TSplitter
               Left = 249
               Top = 1
@@ -2215,8 +2211,6 @@ object frmFlickr: TfrmFlickr
               Align = alClient
               Caption = 'Panel11'
               TabOrder = 0
-              ExplicitLeft = 612
-              ExplicitWidth = 278
               object Splitter2: TSplitter
                 Left = 1
                 Top = 369
@@ -2263,7 +2257,6 @@ object frmFlickr: TfrmFlickr
                 Align = alTop
                 Color = 2763306
                 TabOrder = 0
-                ExplicitWidth = 276
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2344,7 +2337,6 @@ object frmFlickr: TfrmFlickr
                 Align = alClient
                 Color = 2763306
                 TabOrder = 1
-                ExplicitWidth = 276
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2422,7 +2414,6 @@ object frmFlickr: TfrmFlickr
                 Align = alTop
                 Color = 2763306
                 TabOrder = 0
-                ExplicitWidth = 310
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2503,7 +2494,6 @@ object frmFlickr: TfrmFlickr
                 Align = alClient
                 Color = 2763306
                 TabOrder = 1
-                ExplicitWidth = 310
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2581,7 +2571,6 @@ object frmFlickr: TfrmFlickr
                 Align = alTop
                 Color = 2763306
                 TabOrder = 0
-                ExplicitWidth = 291
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2662,7 +2651,6 @@ object frmFlickr: TfrmFlickr
                 Align = alClient
                 Color = 2763306
                 TabOrder = 1
-                ExplicitWidth = 291
                 DefaultCanvas = 'TGDIPlusCanvas'
                 PrintMargins = (
                   15
@@ -2691,7 +2679,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet6: TTabSheet
           Caption = 'Hall of Fame'
           ImageIndex = 7
-          ExplicitWidth = 891
           object Memo1: TMemo
             Left = 0
             Top = 40
@@ -2707,7 +2694,6 @@ object frmFlickr: TfrmFlickr
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 891
           end
           object Panel12: TPanel
             Left = 0
@@ -2716,7 +2702,6 @@ object frmFlickr: TfrmFlickr
             Height = 40
             Align = alTop
             TabOrder = 1
-            ExplicitWidth = 891
             object btnLoadHall: TButton
               Left = 0
               Top = 6
@@ -2734,7 +2719,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet7: TTabSheet
           Caption = 'Albums'
           ImageIndex = 9
-          ExplicitWidth = 891
           object Splitter3: TSplitter
             Left = 0
             Top = 368
@@ -2761,7 +2745,6 @@ object frmFlickr: TfrmFlickr
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 0
-            ExplicitWidth = 891
           end
           object Panel13: TPanel
             Left = 0
@@ -2770,7 +2753,6 @@ object frmFlickr: TfrmFlickr
             Height = 33
             Align = alTop
             TabOrder = 1
-            ExplicitWidth = 891
             object Button9: TButton
               Left = -1
               Top = 1
@@ -2811,13 +2793,11 @@ object frmFlickr: TfrmFlickr
             ReadOnly = True
             ScrollBars = ssVertical
             TabOrder = 2
-            ExplicitWidth = 891
           end
         end
         object TabSheet3: TTabSheet
           Caption = 'Photo List'
           ImageIndex = 2
-          ExplicitWidth = 891
           object Panel6: TPanel
             Left = 0
             Top = 0
@@ -2926,13 +2906,11 @@ object frmFlickr: TfrmFlickr
             TabOrder = 1
             ViewStyle = vsReport
             OnItemChecked = listPhotosUserItemChecked
-            ExplicitLeft = -2
           end
         end
         object TabSheet5: TTabSheet
           Caption = 'Group List'
           ImageIndex = 3
-          ExplicitWidth = 891
           object Panel8: TPanel
             Left = 0
             Top = 0
@@ -2940,7 +2918,6 @@ object frmFlickr: TfrmFlickr
             Height = 149
             Align = alTop
             TabOrder = 0
-            ExplicitWidth = 891
             object Label5: TLabel
               Left = 4
               Top = 124
@@ -3141,10 +3118,8 @@ object frmFlickr: TfrmFlickr
             ActivePage = tabList
             Align = alClient
             TabOrder = 1
-            ExplicitWidth = 891
             object tabList: TTabSheet
               Caption = 'List'
-              ExplicitWidth = 883
               object listGroups: TListView
                 Left = 0
                 Top = 0
@@ -3168,13 +3143,11 @@ object frmFlickr: TfrmFlickr
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
                 OnItemChecked = listGroupsItemChecked
-                ExplicitWidth = 883
               end
             end
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
-              ExplicitWidth = 883
               object Panel9: TPanel
                 Left = 0
                 Top = 0
@@ -3182,7 +3155,6 @@ object frmFlickr: TfrmFlickr
                 Height = 41
                 Align = alTop
                 TabOrder = 0
-                ExplicitWidth = 883
                 object Label10: TLabel
                   Left = 6
                   Top = 14
@@ -3205,7 +3177,6 @@ object frmFlickr: TfrmFlickr
                 Height = 537
                 Align = alClient
                 TabOrder = 1
-                ExplicitWidth = 883
                 object mStatus: TMemo
                   Left = 1
                   Top = 1
@@ -3221,7 +3192,6 @@ object frmFlickr: TfrmFlickr
                   ScrollBars = ssBoth
                   TabOrder = 0
                   WordWrap = False
-                  ExplicitWidth = 881
                 end
               end
             end
@@ -3230,7 +3200,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet8: TTabSheet
           Caption = 'Logs'
           ImageIndex = 6
-          ExplicitWidth = 891
           object mLogs: TMemo
             Left = 0
             Top = 0
@@ -3240,13 +3209,11 @@ object frmFlickr: TfrmFlickr
             ScrollBars = ssBoth
             TabOrder = 0
             WordWrap = False
-            ExplicitWidth = 891
           end
         end
         object TabSheet9: TTabSheet
           Caption = 'Options'
           ImageIndex = 4
-          ExplicitWidth = 891
           object Label9: TLabel
             Left = 16
             Top = 6
@@ -3562,7 +3529,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet10: TTabSheet
           Caption = 'Report'
           ImageIndex = 11
-          ExplicitWidth = 891
           object Panel21: TPanel
             Left = 0
             Top = 0
@@ -3570,7 +3536,6 @@ object frmFlickr: TfrmFlickr
             Height = 35
             Align = alTop
             TabOrder = 0
-            ExplicitWidth = 891
             object btnShowReport: TButton
               Left = 2
               Top = 4
@@ -3643,7 +3608,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001140110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001180110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
