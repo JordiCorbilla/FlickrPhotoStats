@@ -297,8 +297,8 @@ begin
 
     topStats := TTopStats.Create(repository);
     try
-      PhotosSorted := topStats.GetListNumberOfViews(10);
-      description.add('<b '+fontStylebig+'>Top 10 Most Viewed Pictures</b><br><br>');
+      PhotosSorted := topStats.GetListNumberOfViews(20);
+      description.add('<b '+fontStylebig+'>Top 20 Most Viewed Pictures</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');
@@ -333,8 +333,8 @@ begin
 
     topStats := TTopStats.Create(repository);
     try
-      PhotosSorted := topStats.GetListNumberOfLikes(10);
-      description.add('<b '+fontStylebig+'>Top 10 Most Liked Pictures</b><br><br>');
+      PhotosSorted := topStats.GetListNumberOfLikes(20);
+      description.add('<b '+fontStylebig+'>Top 20 Most Liked Pictures</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');

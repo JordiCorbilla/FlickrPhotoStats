@@ -2052,11 +2052,15 @@ begin
           end;
           5: //Last Update
           begin
-
+            case combobox3.ItemIndex of
+              0,1,2,3,4,5,6: add := FormatDateTime('dd/mm/yyyy', repository.photos[i].LastUpdate).ToLower.Contains(value.ToLower);
+            end;
           end;
           6: //Taken
           begin
-
+            case combobox3.ItemIndex of
+              0,1,2,3,4,5,6: add := repository.photos[i].Taken.ToLower.Contains(value.ToLower);
+            end;
           end;
           7: //Albums
           begin
@@ -2609,7 +2613,15 @@ begin
   if CheckBox2.Checked then
     Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected'
   else
-    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected'
+  begin
+    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
+    chartItemViews.SeriesList.Clear;
+    chartItemLikes.SeriesList.Clear;
+    chartItemComments.SeriesList.Clear;
+    chartItemViewsH.SeriesList.Clear;
+    chartItemLikesH.SeriesList.Clear;
+    chartItemCommentsH.SeriesList.Clear;
+  end;
 end;
 
 procedure TfrmFlickr.CheckBox3Click(Sender: TObject);

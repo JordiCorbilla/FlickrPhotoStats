@@ -1968,8 +1968,6 @@ object frmFlickr: TfrmFlickr
           ViewStyle = vsReport
           OnCustomDrawSubItem = listPhotosCustomDrawSubItem
           OnItemChecked = listPhotosItemChecked
-          ExplicitLeft = -1
-          ExplicitTop = 122
         end
         object Panel5: TPanel
           Left = 1
@@ -2175,7 +2173,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 715
         Height = 783
-        ActivePage = TabSheet5
+        ActivePage = Statistics
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3608,7 +3606,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001180110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020011C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
