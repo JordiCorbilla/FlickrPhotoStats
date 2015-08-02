@@ -36,7 +36,8 @@ uses
   frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
   frmSplash in 'frmSplash.pas' {frmFlickrSplash},
   frmAuthentication in 'frmAuthentication.pas' {frmAuthenticate},
-  frmSetup in 'frmSetup.pas' {frmSetupApp};
+  frmSetup in 'frmSetup.pas' {frmSetupApp},
+  frmChart in 'frmChart.pas' {frmChartViewer};
 
 {$R *.res}
 

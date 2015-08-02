@@ -573,7 +573,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 811
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -731,6 +731,7 @@ object frmFlickr: TfrmFlickr
             Align = alTop
             Color = 2763306
             TabOrder = 0
+            OnDblClick = ChartViewsDblClick
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -791,6 +792,7 @@ object frmFlickr: TfrmFlickr
             Align = alClient
             Color = 2763306
             TabOrder = 1
+            OnDblClick = ChartViewsDblClick
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -851,6 +853,7 @@ object frmFlickr: TfrmFlickr
             Align = alTop
             Color = 2763306
             TabOrder = 2
+            OnDblClick = ChartViewsDblClick
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1281,6 +1284,7 @@ object frmFlickr: TfrmFlickr
             Align = alTop
             Color = 2763306
             TabOrder = 1
+            OnDblClick = ChartViewsDblClick
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1341,6 +1345,7 @@ object frmFlickr: TfrmFlickr
             Align = alClient
             Color = 2763306
             TabOrder = 2
+            OnDblClick = ChartViewsDblClick
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1401,6 +1406,9 @@ object frmFlickr: TfrmFlickr
             Align = alTop
             Color = 2763306
             TabOrder = 3
+            OnDblClick = ChartViewsDblClick
+            ExplicitLeft = 6
+            ExplicitTop = 346
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -3606,7 +3614,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED0020011C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

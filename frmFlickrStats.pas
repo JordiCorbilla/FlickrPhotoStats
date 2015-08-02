@@ -42,7 +42,7 @@ uses
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
-  frmAuthentication, frmSetup;
+  frmAuthentication, frmSetup, frmChart;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -345,6 +345,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure CheckBox3Click(Sender: TObject);
     procedure listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
+    procedure ChartViewsDblClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -2573,6 +2574,32 @@ procedure TfrmFlickr.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartS
 begin
   if ValueIndex >= 0 then
     ShowMessage(Series.ValueMarkText[ValueIndex]);
+end;
+
+procedure TfrmFlickr.ChartViewsDblClick(Sender: TObject);
+var
+  i, j : integer;
+  frmChartViewer : TfrmChartViewer;
+  color : TColor;
+  Series : TLineSeries;
+  chartSender : TChart;
+begin
+  frmChartViewer := TfrmChartViewer.Create(nil);
+  frmChartViewer.ChartViewer.SeriesList.Clear;
+  chartSender := TChart(Sender);
+  frmChartViewer.chartViewer.Title := chartSender.Title;
+  for i := 0 to chartSender.SeriesList.Count-1 do
+  begin
+    Series := flickrChart.GetNewLineSeries(frmChartViewer.ChartViewer);
+    series.linepen.Width:= 3;
+    color := RGB(Random(255), Random(255), Random(255));
+    for j := 0 to chartSender.SeriesList[i].XValues.count -1 do
+    begin
+      Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', color);
+    end;
+    frmChartViewer.ChartViewer.AddSeries(Series);
+  end;
+  frmChartViewer.Show;
 end;
 
 procedure TfrmFlickr.CheckAll1Click(Sender: TObject);
