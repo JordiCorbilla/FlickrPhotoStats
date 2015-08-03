@@ -2577,28 +2577,9 @@ begin
 end;
 
 procedure TfrmFlickr.ChartViewsDblClick(Sender: TObject);
-var
-  i, j : integer;
-  frmChartViewer : TfrmChartViewer;
-  color : TColor;
-  Series : TLineSeries;
-  chartSender : TChart;
 begin
   frmChartViewer := TfrmChartViewer.Create(nil);
-  frmChartViewer.ChartViewer.SeriesList.Clear;
-  chartSender := TChart(Sender);
-  frmChartViewer.chartViewer.Title := chartSender.Title;
-  for i := 0 to chartSender.SeriesList.Count-1 do
-  begin
-    Series := flickrChart.GetNewLineSeries(frmChartViewer.ChartViewer);
-    series.linepen.Width:= 3;
-    color := RGB(Random(255), Random(255), Random(255));
-    for j := 0 to chartSender.SeriesList[i].XValues.count -1 do
-    begin
-      Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', color);
-    end;
-    frmChartViewer.ChartViewer.AddSeries(Series);
-  end;
+  frmChartViewer.CloneChart(TChart(Sender));
   frmChartViewer.Show;
 end;
 

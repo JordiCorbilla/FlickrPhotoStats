@@ -39,6 +39,7 @@ type
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
     function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
+    function Get(series : string; parent : TChart; marks : boolean = false) : TChartSeries;
   end;
 
   TFlickrChart = Class(TInterfacedObject, IFlickrChart)
@@ -47,11 +48,25 @@ type
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
     function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
+    function Get(series : string; parent : TChart; marks : boolean = false) : TChartSeries;
   End;
 
 implementation
 
 { TFlickrChart }
+
+function TFlickrChart.Get(series: string; parent : TChart; marks : boolean = false): TChartSeries;
+begin
+  result := nil;
+  if series = 'TLineSeries' then
+    result := GetNewLineSeries(parent, marks);
+  if series = 'TBarSeries' then
+    result := GetNewBarSeries(parent, marks);
+  if series = 'TPieSeries' then
+    result := GetNewPieSeries(parent, marks);
+  if series = 'TAreaSeries' then
+    result := GetNewAreaSeries(parent, marks);
+end;
 
 function TFlickrChart.GetNewAreaSeries(parent: TChart;
   marks: boolean): TAreaSeries;
