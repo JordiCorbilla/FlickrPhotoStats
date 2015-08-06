@@ -30,7 +30,7 @@ unit flickr.repository;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.photos;
+  Contnrs, Generics.Collections, flickr.photos, flickr.list.comparer;
 
 type
   IFlickrRepository = interface
@@ -82,7 +82,7 @@ type
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
     function isPhotoInGroup(photo : string; groupId : string) : boolean;
     constructor Create(); overload;
-    constructor Create(sorting : boolean); overload;
+    constructor Create(sorting : boolean; comparer : TCompareType); overload;
     function GetPhoto(id: string): IPhoto;
     destructor Destroy(); override;
     function getTotalSpreadGroups() : integer;
@@ -99,7 +99,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants, Generics.defaults;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -111,12 +111,21 @@ begin
   FPhotos := TList<IPhoto>.Create();
 end;
 
-constructor TFlickrRepository.Create(sorting: boolean);
+constructor TFlickrRepository.Create(sorting: boolean; comparer : TCompareType);
 var
-  IPhotoComparer : TIPhotoComparerViews;
+  IPhotoComparer : TComparer<IPhoto>;
 begin
-  //need to fix this
-  IPhotoComparer := TIPhotoComparerViews.Create;
+  case comparer of
+    tCompareId: IPhotoComparer := TIPhotoComparerId.Create;
+    tCompareLikes: IPhotoComparer := TIPhotoComparerLikes.Create;
+    tCompareViews: IPhotoComparer := TIPhotoComparerViews.Create;
+    tCompareComments: IPhotoComparer := TIPhotoComparerComments.Create;
+    tCompareTaken: IPhotoComparer := TIPhotoComparerTaken.Create;
+    tCompareAlbums: IPhotoComparer := TIPhotoComparerAlbums.Create;
+    tCompareGroups: IPhotoComparer := TIPhotoComparerGroups.Create;
+  else
+    IPhotoComparer := TIPhotoComparerViews.Create;
+  end;
   FPhotos := TList<IPhoto>.Create(IPhotoComparer);
 end;
 

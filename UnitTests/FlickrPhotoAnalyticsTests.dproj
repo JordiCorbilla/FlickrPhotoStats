@@ -142,6 +142,8 @@
         <DCCReference Include="..\flickr.signature.pas"/>
         <DCCReference Include="..\flickr.call.methods.pas"/>
         <DCCReference Include="..\flickr.lib.utils.pas"/>
+        <DCCReference Include="..\flickr.pools.list.pas"/>
+        <DCCReference Include="..\flickr.list.comparer.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

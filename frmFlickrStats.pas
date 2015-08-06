@@ -42,7 +42,7 @@ uses
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
-  frmAuthentication, frmSetup, frmChart;
+  frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -291,6 +291,16 @@ type
     CheckBox3: TCheckBox;
     btnAddItems: TButton;
     Label34: TLabel;
+    PopupMenu2: TPopupMenu;
+    ShowonFlickr2: TMenuItem;
+    GroupBox1: TGroupBox;
+    RadioButton1: TRadioButton;
+    RadioButton2: TRadioButton;
+    RadioButton3: TRadioButton;
+    RadioButton4: TRadioButton;
+    RadioButton5: TRadioButton;
+    RadioButton6: TRadioButton;
+    RadioButton7: TRadioButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -346,6 +356,7 @@ type
     procedure CheckBox3Click(Sender: TObject);
     procedure listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
     procedure ChartViewsDblClick(Sender: TObject);
+    procedure ShowonFlickr2Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -726,8 +737,9 @@ var
   xmlDocument: IXMLDocument;
   timedout: Boolean;
   Albums: TList<IAlbum>;
-  Groups: TList<IPool>;
+  Groups: TPoolList;
   tags : string;
+  photoGroups : IPhoto;
 begin
   CoInitialize(nil);
   try
@@ -823,7 +835,12 @@ begin
     photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
     Albums := TList<IAlbum>.create;
-    Groups := TList<IPool>.create;
+    //Groups := TList<IPool>.create;
+    photoGroups := repository.GetPhoto(id);
+    if photoGroups <> nil then
+      Groups := photoGroups.Groups
+    else
+      Groups := TPoolList.create;
 
     if chkUpdateCollections.checked then
     begin
@@ -858,7 +875,7 @@ begin
           if iXMLRootNode3.NodeName = 'set' then
             Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
           if iXMLRootNode3.NodeName = 'pool' then
-            Groups.add(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+            Groups.AddItem(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title'], Date));
           iXMLRootNode3 := iXMLRootNode3.NextSibling;
         end;
       finally
@@ -963,12 +980,30 @@ end;
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
 var
   st : TStopWatch;
+  comparer : TCompareType;
 begin
   if Assigned(repository) then
   begin
     repository := nil;
     if chksorting.Checked then
-      repository := TFlickrRepository.Create(chksorting.Checked)
+    begin
+      comparer := tCompareViews;
+      if radioButton1.checked then
+        comparer := tCompareId;
+      if radioButton2.checked then
+        comparer := tCompareViews;
+      if radioButton3.checked then
+        comparer := tCompareLikes;
+      if radioButton4.checked then
+        comparer := tCompareComments;
+      if radioButton5.checked then
+        comparer := tCompareTaken;
+      if radioButton6.checked then
+        comparer := tCompareAlbums;
+      if radioButton7.checked then
+        comparer := tCompareGroups;
+      repository := TFlickrRepository.Create(chksorting.Checked, comparer)
+    end
     else
       repository := TFlickrRepository.Create();
   end;
@@ -3395,6 +3430,19 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.ShowonFlickr2Click(Sender: TObject);
+var
+  id : string;
+begin
+  //Show item in the URL view
+  //https://www.flickr.com/photos/jordicorbillaphotography/
+  if listGroups.ItemIndex <> -1 then
+  begin
+    id := listGroups.Items[listGroups.ItemIndex].Caption;
+    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/groups/' + id), nil, SW_SHOW);
+  end;
+end;
+
 procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
 begin
   if listPhotos.ItemIndex <> -1 then
@@ -3410,9 +3458,28 @@ begin
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
+var
+  comparer : TCompareType;
 begin
   if chksorting.Checked then
-    repository := TFlickrRepository.Create(chksorting.Checked)
+  begin
+    comparer := tCompareViews;
+    if radioButton1.checked then
+      comparer := tCompareId;
+    if radioButton2.checked then
+      comparer := tCompareViews;
+    if radioButton3.checked then
+      comparer := tCompareLikes;
+    if radioButton4.checked then
+      comparer := tCompareComments;
+    if radioButton5.checked then
+      comparer := tCompareTaken;
+    if radioButton6.checked then
+      comparer := tCompareAlbums;
+    if radioButton7.checked then
+      comparer := tCompareGroups;
+    repository := TFlickrRepository.Create(chksorting.Checked, comparer);
+  end
   else
     repository := TFlickrRepository.Create();
   organic := TFlickrOrganic.Create();

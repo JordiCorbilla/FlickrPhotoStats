@@ -36,34 +36,47 @@ type
   IPool = interface
     function GetId: string;
     function GetTitle: string;
+    function GetAdded: TDateTime;
     procedure SetId(const Value: string);
     procedure SetTitle(const Value: string);
+    procedure SetAdded(const Value : TDateTime);
     property Id: string read GetId write SetId;
     property Title: string read GetTitle write SetTitle;
+    property Added : TDateTime read GetAdded write SetAdded;
   end;
 
   TPool = class(TInterfacedObject, IPool)
   private
     FId : string;
     FTitle : string;
+    FAdded : TDatetime;
     function GetId: string;
     function GetTitle: string;
+    function GetAdded: TDateTime;
     procedure SetId(const Value: string);
     procedure SetTitle(const Value: string);
+    procedure SetAdded(const Value : TDateTime);
   public
     property Id: string read GetId write SetId;
     property Title: string read GetTitle write SetTitle;
-    constructor Create (id, title : string);
+    property Added : TDateTime read GetAdded write SetAdded;
+    constructor Create (id, title : string; added : TDateTime);
   end;
 
 implementation
 
 { TPool }
 
-constructor TPool.Create(id, title: string);
+constructor TPool.Create(id, title: string; added : TDateTime);
 begin
   SetId(id);
   SetTitle(title);
+  SetAdded(Added);
+end;
+
+function TPool.GetAdded: TDateTime;
+begin
+  result := FAdded;
 end;
 
 function TPool.GetId: string;
@@ -74,6 +87,11 @@ end;
 function TPool.GetTitle: string;
 begin
   result := FTitle;
+end;
+
+procedure TPool.SetAdded(const Value: TDateTime);
+begin
+  FAdded := Value;
 end;
 
 procedure TPool.SetId(const Value: string);

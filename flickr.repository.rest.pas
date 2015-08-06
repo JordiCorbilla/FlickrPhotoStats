@@ -53,7 +53,7 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
   System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
-  flickr.rest, System.SysUtils, flickr.lib.options.email;
+  flickr.rest, System.SysUtils, flickr.lib.options.email, flickr.pools.list;
 
 { TRepositoryRest }
 
@@ -69,9 +69,10 @@ var
   xmlDocument: IXMLDocument;
   timedout: Boolean;
   Albums: TList<IAlbum>;
-  Groups: TList<IPool>;
+  Groups: TPoolList;
   difference : integer;
   tags : string;
+  photoGroups : IPhoto;
 begin
   CoInitialize(nil);
   try
@@ -167,7 +168,14 @@ begin
     photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
     Albums := TList<IAlbum>.create;
-    Groups := TList<IPool>.create;
+
+    EnterCriticalSection(CritSect);
+    photoGroups := repository.GetPhoto(id);
+    if photoGroups <> nil then
+      Groups := photoGroups.Groups
+    else
+      Groups := TPoolList.create;
+    LeaveCriticalSection(CritSect);
 
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
     IdIOHandler.ReadTimeout := IdTimeoutInfinite;
@@ -200,7 +208,11 @@ begin
         if iXMLRootNode3.NodeName = 'set' then
           Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
         if iXMLRootNode3.NodeName = 'pool' then
-          Groups.add(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+        begin
+          EnterCriticalSection(CritSect);
+          Groups.AddItem(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title'], date));
+          LeaveCriticalSection(CritSect);
+        end;
         iXMLRootNode3 := iXMLRootNode3.NextSibling;
       end;
     finally

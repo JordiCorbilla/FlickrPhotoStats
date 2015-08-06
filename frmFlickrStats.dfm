@@ -573,7 +573,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 811
-    ActivePage = Dashboard
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2191,7 +2191,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 715
         Height = 783
-        ActivePage = Statistics
+        ActivePage = TabSheet9
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3161,6 +3161,7 @@ object frmFlickr: TfrmFlickr
                 GridLines = True
                 ReadOnly = True
                 RowSelect = True
+                PopupMenu = PopupMenu2
                 TabOrder = 0
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
@@ -3236,6 +3237,8 @@ object frmFlickr: TfrmFlickr
         object TabSheet9: TTabSheet
           Caption = 'Options'
           ImageIndex = 4
+          ExplicitLeft = 2
+          ExplicitTop = 34
           object Label9: TLabel
             Left = 16
             Top = 6
@@ -3547,6 +3550,72 @@ object frmFlickr: TfrmFlickr
             State = cbChecked
             TabOrder = 17
           end
+          object GroupBox1: TGroupBox
+            Left = 495
+            Top = 135
+            Width = 209
+            Height = 74
+            Caption = 'Sorting'
+            TabOrder = 18
+            object RadioButton1: TRadioButton
+              Left = 16
+              Top = 16
+              Width = 113
+              Height = 17
+              Caption = 'Id'
+              TabOrder = 0
+            end
+            object RadioButton2: TRadioButton
+              Left = 16
+              Top = 31
+              Width = 113
+              Height = 17
+              Caption = 'Views'
+              Checked = True
+              TabOrder = 1
+              TabStop = True
+            end
+            object RadioButton3: TRadioButton
+              Left = 16
+              Top = 47
+              Width = 113
+              Height = 17
+              Caption = 'Likes'
+              TabOrder = 2
+            end
+            object RadioButton4: TRadioButton
+              Left = 103
+              Top = 39
+              Width = 113
+              Height = 17
+              Caption = 'Albums'
+              TabOrder = 3
+            end
+            object RadioButton5: TRadioButton
+              Left = 103
+              Top = 24
+              Width = 113
+              Height = 17
+              Caption = 'Taken'
+              TabOrder = 4
+            end
+            object RadioButton6: TRadioButton
+              Left = 103
+              Top = 9
+              Width = 113
+              Height = 17
+              Caption = 'Comments'
+              TabOrder = 5
+            end
+            object RadioButton7: TRadioButton
+              Left = 104
+              Top = 54
+              Width = 113
+              Height = 17
+              Caption = 'Groups'
+              TabOrder = 6
+            end
+          end
         end
         object TabSheet10: TTabSheet
           Caption = 'Report'
@@ -3630,7 +3699,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001240110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001300110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11641,5 +11710,13 @@ object frmFlickr: TfrmFlickr
     TeePanel = dailyLikes
     Left = 394
     Top = 214
+  end
+  object PopupMenu2: TPopupMenu
+    Left = 500
+    Top = 272
+    object ShowonFlickr2: TMenuItem
+      Caption = 'Show on Flickr'
+      OnClick = ShowonFlickr2Click
+    end
   end
 end

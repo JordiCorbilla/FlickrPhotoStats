@@ -25,74 +25,48 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit frmChart;
+unit flickr.pools.list;
 
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, VCLTee.TeEngine,
-  VCLTee.Series, Vcl.ExtCtrls, VCLTee.TeeProcs, VCLTee.Chart;
+  Contnrs, Generics.Collections, flickr.pools;
 
 type
-  TfrmChartViewer = class(TForm)
-    ChartViewer: TChart;
-    LineSeries4: TLineSeries;
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
-  private
-    { Private declarations }
+  TPoolList = class(TList<IPool>)
   public
-    procedure CloneChart(chartSender : TChart);
+    function AddItem(const pool : IPool) : integer;
+    function Exists(const pool : IPool; var existing: IPool) : boolean;
   end;
-
-var
-  frmChartViewer: TfrmChartViewer;
 
 implementation
 
-{$R *.dfm}
+{ TPoolList }
 
-uses
-  flickr.charts;
-
-{ TfrmChartViewer }
-
-procedure TfrmChartViewer.CloneChart(chartSender : TChart);
+function TPoolList.AddItem(const pool: IPool): integer;
 var
-  flickrChart : IFlickrChart;
-  i,j : integer;
-  Series : TChartSeries;
+  poolRet : IPool;
 begin
-  chartViewer.Title := chartSender.Title;
-  for i := 0 to chartSender.SeriesList.Count-1 do
+  result := 0;
+  if not Exists(pool, poolRet) then
+    result := Add(pool);
+end;
+
+function TPoolList.Exists(const pool: IPool; var existing: IPool): boolean;
+var
+  i: Integer;
+  found: boolean;
+begin
+  i := 0;
+  found := false;
+  while (not found) and (i < Self.count) do
   begin
-    flickrChart := TFlickrChart.create;
-    Series := flickrChart.Get(chartSender.SeriesList[i].ClassName, ChartViewer);
-    for j := 0 to chartSender.SeriesList[i].XValues.count -1 do
-    begin
-      Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', chartSender.SeriesList[i].Color);
-    end;
-    ChartViewer.AddSeries(Series);
+    found := Self[i].id = pool.id;
+    inc(i);
   end;
-end;
-
-procedure TfrmChartViewer.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-  Self.destroy;
-end;
-
-procedure TfrmChartViewer.FormCreate(Sender: TObject);
-begin
-  ChartViewer.SeriesList.Clear;
-end;
-
-procedure TfrmChartViewer.FormDestroy(Sender: TObject);
-begin
-  ChartViewer.SeriesList.Clear;
-  ChartViewer.FreeAllSeries();
-  ChartViewer.Free;
+  if found then
+    existing := Self[i - 1];
+  result := found;
 end;
 
 end.
