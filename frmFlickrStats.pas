@@ -301,6 +301,8 @@ type
     RadioButton5: TRadioButton;
     RadioButton6: TRadioButton;
     RadioButton7: TRadioButton;
+    N6: TMenuItem;
+    BanUnbanforgroupAddition1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -357,6 +359,7 @@ type
     procedure listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
     procedure ChartViewsDblClick(Sender: TObject);
     procedure ShowonFlickr2Click(Sender: TObject);
+    procedure BanUnbanforgroupAddition1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -500,6 +503,20 @@ begin
   //WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   //showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
   //btnGetToken.enabled := true;
+end;
+
+procedure TfrmFlickr.BanUnbanforgroupAddition1Click(Sender: TObject);
+var
+  id : string;
+  photo : IPhoto;
+begin
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    photo := repository.GetPhoto(id);
+    photo.banned := not photo.banned;
+    listPhotos.Items[listPhotos.ItemIndex].SubItems[10] := photo.banned.ToString();
+  end;
 end;
 
 procedure TfrmFlickr.Log(s: string);
@@ -919,6 +936,7 @@ begin
       Item.SubItems.Add(photo.Groups.Count.ToString());
       Item.SubItems.Add(tags);
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
+      Item.SubItems.Add(photo.banned.ToString());
     end
     else
     begin
@@ -936,6 +954,7 @@ begin
       itemExisting.SubItems.Add(photo.Groups.Count.ToString());
       itemExisting.SubItems.Add(tags);
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
+      itemExisting.SubItems.Add(photo.banned.ToString());
     end;
     if chkRealTime.Checked then
       UpdateTotals(true);
@@ -1159,6 +1178,7 @@ begin
       totalViews := 1;
     Item.SubItems.Add(repository.photos[i].tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
+    Item.SubItems.Add(repository.photos[i].banned.ToString());
   end;
 
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
@@ -2147,6 +2167,7 @@ begin
         Item.SubItems.Add(repository.photos[i].Groups.Count.ToString());
         Item.SubItems.Add(repository.photos[i].Tags);
         Item.SubItems.Add(FormatFloat('0.##%', (repository.photos[i].stats[repository.photos[i].stats.Count-1].likes / repository.photos[i].stats[repository.photos[i].stats.Count-1].views) * 100.0));
+        Item.SubItems.Add(repository.photos[i].banned.ToString());
       end;
       Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
   end;
@@ -2237,6 +2258,7 @@ var
   total : integer;
   max : string;
   success : integer;
+  photoToCheck : IPhoto;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -2279,32 +2301,35 @@ begin
         photoId := photos[i];
         groupId := groups[j];
         timedout := false;
-        if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId)) then
+        if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId, photoToCheck)) then
         begin
-          urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-          while (not timedout) do
+          if not (photoToCheck.banned) then
           begin
-            try
-              response := IdHTTP1.Get(urlAdd);
-              if response.Contains('Photo limit reached') or response.Contains('Maximum') then
-              begin
-                mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
-                rejected.Add(groupId);
-              end;
-              if not chkPending.Checked then
-              begin
-                if response.Contains('Pending Queue') then
+            urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+            while (not timedout) do
+            begin
+              try
+                response := IdHTTP1.Get(urlAdd);
+                if response.Contains('Photo limit reached') or response.Contains('Maximum') then
                 begin
                   mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
                   rejected.Add(groupId);
                 end;
-              end;
-              timedout := true;
-            except
-              on e: exception do
-              begin
-                sleep(2000);
-                timedout := false;
+                if not chkPending.Checked then
+                begin
+                  if response.Contains('Pending Queue') then
+                  begin
+                    mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
+                    rejected.Add(groupId);
+                  end;
+                end;
+                timedout := true;
+              except
+                on e: exception do
+                begin
+                  sleep(2000);
+                  timedout := false;
+                end;
               end;
             end;
           end;
@@ -2419,6 +2444,7 @@ var
   total : integer;
   max : string;
   success : integer;
+  resultPhoto : IPhoto;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -2459,7 +2485,7 @@ begin
         photoId := photos[i];
         groupId := groups[j];
         timedout := false;
-        if (repository.isPhotoInGroup(photoId, groupId)) then
+        if (repository.isPhotoInGroup(photoId, groupId, resultPhoto)) then
         begin
           urlAdd := TFlickrRest.New().getPoolsRemove(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
           while (not timedout) do
@@ -3622,6 +3648,11 @@ begin
     if ((Item.SubItems.Strings[1].ToInteger >= 10000)) then
     begin
       Sender.Canvas.Font.color := clRed;
+      Sender.Canvas.Brush.color := Color2;
+    end;
+    if ((Item.SubItems.Strings[10].ToBoolean)) then
+    begin
+      Sender.Canvas.Font.color := clYellow;
       Sender.Canvas.Brush.color := Color2;
     end;
   end

@@ -134,7 +134,7 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <VerInfo_Build>22</VerInfo_Build>
+        <VerInfo_Build>24</VerInfo_Build>
         <Debugger_RunParams>-v -r -g</Debugger_RunParams>
         <VerInfo_MinorVer>4</VerInfo_MinorVer>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
@@ -142,7 +142,7 @@
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.4;FileVersion=4.4.0.22;InternalName=Flickr Photo Stats v4.4;LegalCopyright=Flickr Photo Stats v4.4;LegalTrademarks=Flickr Photo Stats v4.4;OriginalFilename=Flickr Photo Stats v4.4;ProductName=Flickr Photo Stats v4.4;ProductVersion=4.0.0.4;Comments=Flickr Photo Stats v4.4</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.4;FileVersion=4.4.0.24;InternalName=Flickr Photo Stats v4.4;LegalCopyright=Flickr Photo Stats v4.4;LegalTrademarks=Flickr Photo Stats v4.4;OriginalFilename=Flickr Photo Stats v4.4;ProductName=Flickr Photo Stats v4.4;ProductVersion=4.0.0.4;Comments=Flickr Photo Stats v4.4</VerInfo_Keys>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

@@ -50,7 +50,7 @@ type
     function Getsorted(): boolean;
     procedure Setsorted(const Value: boolean);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
-    function isPhotoInGroup(photo : string; groupId : string) : boolean;
+    function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
@@ -80,7 +80,7 @@ type
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
-    function isPhotoInGroup(photo : string; groupId : string) : boolean;
+    function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
     constructor Create(); overload;
     constructor Create(sorting : boolean; comparer : TCompareType); overload;
     function GetPhoto(id: string): IPhoto;
@@ -217,11 +217,12 @@ begin
   Result := FUserId;
 end;
 
-function TFlickrRepository.isPhotoInGroup(photo, groupId: string): boolean;
+function TFlickrRepository.isPhotoInGroup(photo, groupId: string; var resPhoto : IPhoto): boolean;
 var
   p : IPhoto;
 begin
   p := GetPhoto(photo);
+  resPhoto := p;
   result := p.InGroup(groupid);
 end;
 

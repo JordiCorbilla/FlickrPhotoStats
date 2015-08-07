@@ -30,7 +30,8 @@ unit flickr.photos;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools, flickr.albums, flickr.pools.list;
+  Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools,
+  flickr.albums, flickr.pools.list, winapi.msxml;
 
 type
   IPhoto = interface
@@ -52,6 +53,8 @@ type
     function GetTags: string;
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
+    function getBanned: boolean;
+    procedure SetBanned(const Value: boolean);
     procedure SetTaken(const Value: string);
     procedure SetTags(const Value: string);
     property Id: string read getId write SetId;
@@ -62,6 +65,7 @@ type
     property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
+    property banned : boolean read getBanned write SetBanned;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(incday : integer = 0): Integer;
@@ -81,6 +85,7 @@ type
     FLastUpdate: TDatetime;
     FTaken : string;
     FTags: string;
+    FBanned : boolean;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -98,12 +103,15 @@ type
     procedure SetAlbums(Value: TList<IAlbum>);
     procedure SetGroups(Value: TPoolList);
     procedure SetTags(const Value: string);
+    function getBanned: boolean;
+    procedure SetBanned(const Value: boolean);
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
     property stats: TList<IStat>read GetStats write SetStats;
     property Taken : string read getTaken write SetTaken;
+    property banned : boolean read getBanned write SetBanned;
     property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
@@ -161,6 +169,7 @@ begin
   SetTitle(Title);
   SetTaken(taken);
   SetTags(tags);
+  SetBanned(false);
 end;
 
 constructor TPhoto.Create;
@@ -198,6 +207,11 @@ end;
 function TPhoto.GetAlbums: TList<IAlbum>;
 begin
   result := FAlbums;
+end;
+
+function TPhoto.getBanned: boolean;
+begin
+  result := FBanned;
 end;
 
 function TPhoto.GetGroups: TPoolList;
@@ -324,9 +338,21 @@ begin
   FTaken := iNode.Attributes['Taken'];
 
   try
-    FTags := iNode.Attributes['Tags'];
+    if iNode.Attributes['Tags'] <> null then
+      FTags := iNode.Attributes['Tags']
+    else
+      FTags := '';
   except
     FTags := '';
+  end;
+
+  try
+    if iNode.Attributes['Banned'] <> null then
+      FBanned := iNode.Attributes['Banned']
+    else
+      FBanned := false;
+  except
+    FBanned := false;
   end;
 
   iNode2 := iNode.ChildNodes.First;
@@ -392,6 +418,7 @@ begin
   iNode2.Attributes['title'] := FTitle;
   iNode2.Attributes['LastUpdate'] := DateToStr(FLastUpdate);
   iNode2.Attributes['Taken'] := FTaken;
+  iNode2.Attributes['Banned'] := FBanned;
   iNode2.Attributes['Tags'] := FTags;
   for i := 0 to FStats.count - 1 do
   begin
@@ -427,6 +454,11 @@ end;
 procedure TPhoto.SetAlbums(Value: TList<IAlbum>);
 begin
   FAlbums := Value;
+end;
+
+procedure TPhoto.SetBanned(const Value: boolean);
+begin
+  FBanned := Value;
 end;
 
 procedure TPhoto.SetGroups(Value: TPoolList);

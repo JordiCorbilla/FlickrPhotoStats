@@ -1975,6 +1975,10 @@ object frmFlickr: TfrmFlickr
             item
               Caption = ' Affection'
               Width = 80
+            end
+            item
+              Caption = 'Banned'
+              Width = 20
             end>
           FlatScrollBars = True
           GridLines = True
@@ -2191,7 +2195,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 715
         Height = 783
-        ActivePage = TabSheet9
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3237,8 +3241,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet9: TTabSheet
           Caption = 'Options'
           ImageIndex = 4
-          ExplicitLeft = 2
-          ExplicitTop = 34
           object Label9: TLabel
             Left = 16
             Top = 6
@@ -3699,7 +3701,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001300110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11696,6 +11698,14 @@ object frmFlickr: TfrmFlickr
       OnClick = UncheckAll1Click
     end
     object N5: TMenuItem
+      Caption = '-'
+    end
+    object BanUnbanforgroupAddition1: TMenuItem
+      Caption = 'Ban/Unban for group Addition'
+      ImageIndex = 137
+      OnClick = BanUnbanforgroupAddition1Click
+    end
+    object N6: TMenuItem
       Caption = '-'
     end
     object Delete1: TMenuItem
