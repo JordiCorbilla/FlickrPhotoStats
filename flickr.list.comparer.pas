@@ -83,7 +83,7 @@ type
 implementation
 
 uses
-  Sysutils, vcl.Dialogs, System.UITypes, windows;
+  Sysutils, vcl.Dialogs, System.UITypes, windows, DateUtils;
 
 { TIPhotoComparer }
 
@@ -156,11 +156,11 @@ end;
 
 function TIPhotoComparerTaken.Compare(const Left, Right: IPhoto): Integer;
 var
-  LeftTerm, RightTerm: integer;
+  LeftTerm, RightTerm: TDateTime;
 begin
-  LeftTerm := Left.Taken.ToInteger;
-  RightTerm := Right.Taken.ToInteger;
-  Result := RightTerm - LeftTerm;
+  LeftTerm := StrToDateTime(Left.Taken);
+  RightTerm := StrToDateTime(Right.Taken);
+  Result := DaysBetween(LeftTerm, RightTerm);
 end;
 
 { TIPhotoComparerAlbums }
