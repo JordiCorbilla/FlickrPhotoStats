@@ -72,7 +72,7 @@ begin
     Series := flickrChart.Get(chartSender.SeriesList[i].ClassName, ChartViewer);
     for j := 0 to chartSender.SeriesList[i].XValues.count -1 do
     begin
-      Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', chartSender.SeriesList[i].Color);
+      Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', chartSender.SeriesList[i].ValueColor[j]);
     end;
     ChartViewer.AddSeries(Series);
   end;

@@ -2941,7 +2941,7 @@ object frmFlickr: TfrmFlickr
             Left = 0
             Top = 0
             Width = 707
-            Height = 149
+            Height = 167
             Align = alTop
             TabOrder = 0
             object Label5: TLabel
@@ -3009,28 +3009,6 @@ object frmFlickr: TfrmFlickr
               Width = 319
               Height = 21
               TabOrder = 4
-            end
-            object btnFilterOK: TButton
-              Left = 371
-              Top = 119
-              Width = 34
-              Height = 25
-              ImageIndex = 218
-              ImageMargins.Left = 5
-              Images = ImageList1
-              TabOrder = 5
-              OnClick = btnFilterOKClick
-            end
-            object btnFilterCancel: TButton
-              Left = 405
-              Top = 119
-              Width = 34
-              Height = 25
-              ImageIndex = 63
-              ImageMargins.Left = 5
-              Images = ImageList1
-              TabOrder = 6
-              OnClick = btnFilterCancelClick
             end
             object Profiles: TGroupBox
               Left = 2
@@ -3115,7 +3093,7 @@ object frmFlickr: TfrmFlickr
             end
             object CheckBox1: TCheckBox
               Left = 2
-              Top = 98
+              Top = 146
               Width = 127
               Height = 17
               Caption = 'Check/Uncheck all'
@@ -3135,22 +3113,66 @@ object frmFlickr: TfrmFlickr
               TabOrder = 9
               OnClick = btnRemovePhotoClick
             end
+            object RadioButton8: TRadioButton
+              Left = 192
+              Top = 144
+              Width = 113
+              Height = 19
+              Caption = 'Sort by Members'
+              Checked = True
+              TabOrder = 10
+              TabStop = True
+            end
+            object RadioButton9: TRadioButton
+              Left = 304
+              Top = 142
+              Width = 153
+              Height = 24
+              Caption = 'Sort by Number of Photos'
+              TabOrder = 11
+            end
+            object btnFilterOK: TButton
+              Left = 371
+              Top = 119
+              Width = 34
+              Height = 25
+              ImageIndex = 218
+              ImageMargins.Left = 5
+              Images = ImageList1
+              TabOrder = 5
+              OnClick = btnFilterOKClick
+            end
+            object btnFilterCancel: TButton
+              Left = 405
+              Top = 119
+              Width = 34
+              Height = 25
+              ImageIndex = 63
+              ImageMargins.Left = 5
+              Images = ImageList1
+              TabOrder = 6
+              OnClick = btnFilterCancelClick
+            end
           end
           object PageControl3: TPageControl
             Left = 0
-            Top = 149
+            Top = 167
             Width = 707
-            Height = 606
+            Height = 588
             ActivePage = tabList
             Align = alClient
             TabOrder = 1
+            ExplicitLeft = 2
+            ExplicitTop = 150
+            ExplicitHeight = 606
             object tabList: TTabSheet
               Caption = 'List'
+              ExplicitHeight = 578
               object listGroups: TListView
                 Left = 0
                 Top = 0
                 Width = 699
-                Height = 578
+                Height = 560
                 Align = alClient
                 Checkboxes = True
                 Columns = <
@@ -3160,7 +3182,15 @@ object frmFlickr: TfrmFlickr
                   end
                   item
                     Caption = 'Title'
-                    Width = 450
+                    Width = 350
+                  end
+                  item
+                    Caption = 'Photos'
+                    Width = 100
+                  end
+                  item
+                    Caption = 'Members'
+                    Width = 100
                   end>
                 GridLines = True
                 ReadOnly = True
@@ -3170,11 +3200,13 @@ object frmFlickr: TfrmFlickr
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
                 OnItemChecked = listGroupsItemChecked
+                ExplicitHeight = 578
               end
             end
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
+              ExplicitHeight = 578
               object Panel9: TPanel
                 Left = 0
                 Top = 0
@@ -3201,14 +3233,15 @@ object frmFlickr: TfrmFlickr
                 Left = 0
                 Top = 41
                 Width = 699
-                Height = 537
+                Height = 519
                 Align = alClient
                 TabOrder = 1
+                ExplicitHeight = 537
                 object mStatus: TMemo
                   Left = 1
                   Top = 1
                   Width = 697
-                  Height = 535
+                  Height = 517
                   Align = alClient
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clLime
@@ -3219,6 +3252,7 @@ object frmFlickr: TfrmFlickr
                   ScrollBars = ssBoth
                   TabOrder = 0
                   WordWrap = False
+                  ExplicitHeight = 535
                 end
               end
             end
@@ -3701,7 +3735,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001340110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

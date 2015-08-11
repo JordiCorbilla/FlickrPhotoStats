@@ -33,10 +33,16 @@ type
   IBase = interface
     function GetId: string;
     function GetTitle: string;
+    function GetPhotos: Int64;
+    function GetMembers: Int64;
     procedure SetId(const Value: string);
     procedure SetTitle(const Value: string);
+    procedure SetMembers(const Value: Int64);
+    procedure SetPhotos(const Value: Int64);
     property Id : string read GetId write SetId;
     property Title : string read GetTitle write SetTitle;
+    property Photos : Int64 read GetPhotos write SetPhotos;
+    property Members : Int64 read GetMembers write SetMembers;
   end;
 
   //Base class as Id-title pair.
@@ -44,26 +50,36 @@ type
   private
     FId : string;
     FTitle : string;
+    FPhotos: Int64;
+    FMembers: Int64;
     function GetId: string;
     function GetTitle: string;
+    function GetPhotos: Int64;
+    function GetMembers: Int64;
     procedure SetId(const Value: string);
     procedure SetTitle(const Value: string);
+    procedure SetMembers(const Value: Int64);
+    procedure SetPhotos(const Value: Int64);
   public
     property Id : string read GetId write SetId;
     property Title : string read GetTitle write SetTitle;
-    constructor Create(id, title : string);
+    property Photos : Int64 read GetPhotos write SetPhotos;
+    property Members : Int64 read GetMembers write SetMembers;
+    constructor Create(id, title : string; photos, members : Int64);
     destructor Destroy; override;
-    class function New(id, title : string) : IBase;
+    class function New(id, title : string; photos, members : Int64) : IBase;
   end;
 
 implementation
 
 { TGroup }
 
-constructor TBase.Create(id, title: string);
+constructor TBase.Create(id, title: string; photos, members : Int64);
 begin
   SetId(id);
   SetTitle(title);
+  SetPhotos(photos);
+  SetMembers(members);
 end;
 
 destructor TBase.Destroy;
@@ -77,19 +93,39 @@ begin
   result := FId;
 end;
 
+function TBase.GetMembers: Int64;
+begin
+  result := FMembers;
+end;
+
+function TBase.GetPhotos: Int64;
+begin
+  result := FPhotos;
+end;
+
 function TBase.GetTitle: string;
 begin
   result := FTitle;
 end;
 
-class function TBase.New(id, title: string): IBase;
+class function TBase.New(id, title : string; photos, members : Int64): IBase;
 begin
-  result := Create(id, title);
+  result := Create(id, title, photos, members);
 end;
 
 procedure TBase.SetId(const Value: string);
 begin
   FId := value;
+end;
+
+procedure TBase.SetMembers(const Value: Int64);
+begin
+  FMembers := Value;
+end;
+
+procedure TBase.SetPhotos(const Value: Int64);
+begin
+  FPhotos := Value;
 end;
 
 procedure TBase.SetTitle(const Value: string);

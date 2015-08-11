@@ -49,6 +49,9 @@ class function THtmlComposer.getMessage(repository: IFlickrRepository; globalsRe
 var
   description : TStrings;
   itemToday,itemToday1, itemToday2, itemToday3, itemToday4, itemToday5, itemToday6 : integer;
+  itemTodayViews, itemYesterdayViews : integer;
+  itemTodayLikes, itemYesterdayLikes : integer;
+  itemTodayPhotos, itemYesterdayPhotos : integer;
   itemYesterday : integer;
   difference : integer;
   itemTodayx,itemToday1x, itemToday2x : double;
@@ -99,25 +102,25 @@ begin
     description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Trend</b></th>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
-    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
-    difference := itemToday - itemYesterday;
+    itemTodayViews := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
+    itemYesterdayViews := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+    difference := itemTodayViews - itemYesterdayViews;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterdayViews.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayViews.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
-    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
-    difference := itemToday - itemYesterday;
+    itemTodayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
+    itemYesterdayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+    difference := itemTodayLikes - itemYesterdayLikes;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterdayLikes.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayLikes.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
@@ -149,6 +152,39 @@ begin
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Group spread</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('  </tr>');
+
+    itemTodayPhotos := repository.photos.Count;
+    itemYesterdayPhotos := repository.photos.Count;
+    difference := itemTodayPhotos - itemYesterdayPhotos;
+
+    description.add('  <tr>');
+    description.add('    <td '+tdStyle+'><b>Photos</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterdayPhotos.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayPhotos.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('  </tr>');
+
+    itemToday := Round(itemTodayViews / itemTodayPhotos);
+    itemYesterday := Round(itemYesterdayViews / itemYesterdayPhotos);
+    difference := itemToday - itemYesterday;
+
+    description.add('  <tr>');
+    description.add('    <td '+tdStyle+'><b>Views per Photo</b></td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+    description.add('  </tr>');
+
+    itemToday := Round(itemTodayLikes / itemTodayPhotos);
+    itemYesterday := Round(itemYesterdayLikes / itemYesterdayPhotos);
+    difference := itemToday - itemYesterday;
+
+    description.add('  <tr>');
+    description.add('    <td '+tdStyle+'><b>Likes per Photo</b></td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemYesterday.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday.ToDouble]).Replace('.00','')+'</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');

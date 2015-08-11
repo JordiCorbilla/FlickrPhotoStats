@@ -30,7 +30,7 @@ unit flickr.filtered.list;
 interface
 
 uses
-  generics.collections, flickr.base;
+  generics.collections, flickr.base, flickr.list.comparer;
 
 type
   IFilteredList = interface
@@ -38,6 +38,7 @@ type
     procedure SetList(const Value: TList<IBase>);
     procedure Add(item : IBase);
     property List : TList<IBase> read GetList write SetList;
+    procedure Sort;
   end;
 
   TFilteredList = Class(TInterfacedObject, IFilteredList)
@@ -48,14 +49,15 @@ type
   public
     procedure Add(item : IBase);
     property List : TList<IBase> read GetList write SetList;
-    constructor Create();
+    constructor Create(comparer : TCompareType);
+    procedure Sort;
     destructor Destroy(); override;
   End;
 
 implementation
 
 uses
-  SysUtils;
+  SysUtils, Generics.defaults;
 
 { TFilteredList }
 
@@ -64,9 +66,17 @@ begin
   FList.add(item);
 end;
 
-constructor TFilteredList.Create;
+constructor TFilteredList.Create(comparer : TCompareType);
+var
+  IPhotoComparer : TComparer<IBase>;
 begin
-  Flist := TList<IBase>.create;
+  case comparer of
+    tCompareMembers: IPhotoComparer := TIPoolComparerMembers.Create;
+    tComparePoolSize: IPhotoComparer := TIPoolComparerPoolSize.Create;
+  else
+    IPhotoComparer := TIPoolComparerMembers.Create;
+  end;
+  Flist := TList<IBase>.create(IPhotoComparer);
 end;
 
 destructor TFilteredList.Destroy;
@@ -83,6 +93,11 @@ end;
 procedure TFilteredList.SetList(const Value: TList<IBase>);
 begin
   Flist := value;
+end;
+
+procedure TFilteredList.Sort;
+begin
+  FList.Sort;
 end;
 
 end.

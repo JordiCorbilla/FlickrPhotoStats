@@ -39,7 +39,8 @@ type
   private
     { Private declarations }
   public
-    procedure AddItem( Id, title : string);
+    procedure AddItem( Id, title : string); overload;
+    procedure AddItem( Id, title, Added : string); overload;
   end;
 
 var
@@ -58,6 +59,16 @@ begin
   Item := ListView1.Items.add;
   item.Caption := id;
   item.SubItems.Add(title);
+end;
+
+procedure TfrmFlickrContext.AddItem(Id, title, Added: string);
+var
+  Item: TListItem;
+begin
+  Item := ListView1.Items.add;
+  item.Caption := id;
+  item.SubItems.Add(title);
+  item.SubItems.Add(Added);
 end;
 
 end.

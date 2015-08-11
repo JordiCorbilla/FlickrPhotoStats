@@ -30,10 +30,10 @@ unit flickr.list.comparer;
 interface
 
 uses
-  Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series;
+  Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series, flickr.base;
 
 type
-  TCompareType = (tCompareId, tCompareLikes, tCompareViews, tCompareComments, tCompareTaken, tCompareAlbums, tCompareGroups);
+  TCompareType = (tCompareId, tCompareLikes, tCompareViews, tCompareComments, tCompareTaken, tCompareAlbums, tCompareGroups, tCompareMembers, tComparePoolSize);
 
   TIPhotoComparerID = class(TComparer<IPhoto>)
   public
@@ -78,6 +78,16 @@ type
   TIPhotoComparerMostViews = class(TComparer<IPhoto>)
   public
     function Compare(const Left, Right: IPhoto): Integer; override;
+  end;
+
+  TIPoolComparerMembers = class(TComparer<IBase>)
+  public
+    function Compare(const Left, Right: IBase): Integer; override;
+  end;
+
+  TIPoolComparerPoolSize = class(TComparer<IBase>)
+  public
+    function Compare(const Left, Right: IBase): Integer; override;
   end;
 
 implementation
@@ -182,6 +192,28 @@ var
 begin
   LeftTerm := Left.Groups.Count;
   RightTerm := Right.Groups.Count;
+  Result := RightTerm - LeftTerm;
+end;
+
+{ TIPoolComparerMembers }
+
+function TIPoolComparerMembers.Compare(const Left, Right: IBase): Integer;
+var
+  LeftTerm, RightTerm: integer;
+begin
+  LeftTerm := Left.Members;
+  RightTerm := Right.Members;
+  Result := RightTerm - LeftTerm;
+end;
+
+{ TIPoolComparerPoolSize }
+
+function TIPoolComparerPoolSize.Compare(const Left, Right: IBase): Integer;
+var
+  LeftTerm, RightTerm: integer;
+begin
+  LeftTerm := Left.Photos;
+  RightTerm := Right.Photos;
   Result := RightTerm - LeftTerm;
 end;
 

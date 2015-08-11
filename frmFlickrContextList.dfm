@@ -5,7 +5,7 @@ object frmFlickrContext: TfrmFlickrContext
   BorderStyle = bsDialog
   Caption = 'Show items'
   ClientHeight = 569
-  ClientWidth = 467
+  ClientWidth = 589
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,7 +19,7 @@ object frmFlickrContext: TfrmFlickrContext
   object ListView1: TListView
     Left = 0
     Top = 0
-    Width = 467
+    Width = 589
     Height = 569
     Align = alClient
     Columns = <
@@ -30,9 +30,13 @@ object frmFlickrContext: TfrmFlickrContext
       item
         Caption = 'Title'
         Width = 330
+      end
+      item
+        Caption = 'Added'
       end>
     RowSelect = True
     TabOrder = 0
     ViewStyle = vsReport
+    ExplicitWidth = 467
   end
 end

@@ -303,6 +303,8 @@ type
     RadioButton7: TRadioButton;
     N6: TMenuItem;
     BanUnbanforgroupAddition1: TMenuItem;
+    RadioButton8: TRadioButton;
+    RadioButton9: TRadioButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -2211,6 +2213,8 @@ begin
     Item := listGroups.Items.Add;
     Item.Caption := FilteredGroupList.list[i].id;
     Item.SubItems.Add(FilteredGroupList.list[i].title);
+    Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
   end;
 
   listGroups.OnItemChecked := listGroupsItemChecked;
@@ -2238,6 +2242,8 @@ begin
       Item := listGroups.Items.Add;
       Item.Caption := FilteredGroupList.list[i].id;
       Item.SubItems.Add(FilteredGroupList.list[i].title);
+      Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
     end;
   end;
   listGroups.Visible := true;
@@ -2400,6 +2406,8 @@ begin
             Item := listGroups.Items.Add;
             Item.Caption := FilteredGroupList.list[i].id;
             Item.SubItems.Add(FilteredGroupList.list[i].title);
+            Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
             Item.checked := true;
           end;
         end;
@@ -2773,6 +2781,9 @@ var
   i: Integer;
   timedout: Boolean;
   st : TStopWatch;
+  photos : string;
+  members : string;
+  comparer : TCompareType;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -2787,7 +2798,12 @@ begin
   if Assigned(FilteredGroupList) then
   begin
     FilteredGroupList := nil;
-    FilteredGroupList := TFilteredList.Create();
+    comparer := tCompareMembers;
+    if RadioButton8.Checked then
+      comparer := tCompareMembers;
+    if RadioButton9.Checked then
+      comparer := tComparePoolSize;
+    FilteredGroupList := TFilteredList.Create(comparer);
   end;
   pagecontrol3.TabIndex := 0;
   btnLoad.Enabled := false;
@@ -2835,8 +2851,10 @@ begin
       id := iXMLRootNode4.attributes['id'];
       ismember := iXMLRootNode4.attributes['member'];
       title := iXMLRootNode4.attributes['name'];
+      photos := iXMLRootNode4.attributes['photos'];
+      members := iXMLRootNode4.attributes['member_count'];
       if ismember = '1' then
-        FilteredGroupList.Add(TBase.New(id, title));
+        FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
     end;
     progressfetchinggroups.position := progressfetchinggroups.position + 1;
     Taskbar1.ProgressValue := progressfetchinggroups.position;
@@ -2879,8 +2897,10 @@ begin
         id := iXMLRootNode4.attributes['id'];
         ismember := iXMLRootNode4.attributes['member'];
         title := iXMLRootNode4.attributes['name'];
+        photos := iXMLRootNode4.attributes['photos'];
+        members := iXMLRootNode4.attributes['member_count'];
         if ismember = '1' then
-          FilteredGroupList.Add(TBase.New(id, title));
+          FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
       end;
       progressfetchinggroups.position := progressfetchinggroups.position + 1;
       Taskbar1.ProgressValue := progressfetchinggroups.position;
@@ -2890,6 +2910,7 @@ begin
   end;
   // Add items to the listview
   st := TStopWatch.Create;
+  FilteredGroupList.sort;
   st.Start;
   listGroups.OnItemChecked := nil;
   listgroups.OnCustomDrawItem := nil;
@@ -2898,6 +2919,8 @@ begin
     Item := listGroups.Items.Add;
     Item.Caption := FilteredGroupList.list[i].id;
     Item.SubItems.Add(FilteredGroupList.list[i].title);
+    Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
   end;
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
@@ -3437,7 +3460,7 @@ begin
     photo := repository.GetPhoto(id);
     for i := 0 to photo.Groups.Count-1 do
     begin
-      ListDisplay.AddItem(photo.groups[i].id, photo.groups[i].title);
+      ListDisplay.AddItem(photo.groups[i].id, photo.groups[i].title, DateToStr(photo.groups[i].Added));
     end;
   end;
   ListDisplay.Show;
@@ -3511,7 +3534,14 @@ begin
   organic := TFlickrOrganic.Create();
   rejected := TRejected.Create;
   flickrProfiles := TProfiles.Create();
-  FilteredGroupList := TFilteredList.Create;
+
+  comparer := tCompareMembers;
+  if RadioButton8.Checked then
+    comparer := tCompareMembers;
+  if RadioButton9.Checked then
+    comparer := tComparePoolSize;
+  FilteredGroupList := TFilteredList.Create(comparer);
+
   globalsRepository := TFlickrGlobals.Create();
   CheckedSeries := TStringList.Create;
   Process.Visible := false;
@@ -3652,7 +3682,7 @@ begin
     end;
     if ((Item.SubItems.Strings[10].ToBoolean)) then
     begin
-      Sender.Canvas.Font.color := clYellow;
+      Sender.Canvas.Font.color := clNavy;
       Sender.Canvas.Brush.color := Color2;
     end;
   end
