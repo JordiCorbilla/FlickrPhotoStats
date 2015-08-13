@@ -33,6 +33,7 @@ object frmFlickrContext: TfrmFlickrContext
       end
       item
         Caption = 'Added'
+        Width = 120
       end>
     RowSelect = True
     TabOrder = 0

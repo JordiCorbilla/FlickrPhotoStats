@@ -305,6 +305,7 @@ type
     BanUnbanforgroupAddition1: TMenuItem;
     RadioButton8: TRadioButton;
     RadioButton9: TRadioButton;
+    ClearSelection1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -362,6 +363,7 @@ type
     procedure ChartViewsDblClick(Sender: TObject);
     procedure ShowonFlickr2Click(Sender: TObject);
     procedure BanUnbanforgroupAddition1Click(Sender: TObject);
+    procedure ClearSelection1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -574,6 +576,7 @@ procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
   st : TStopWatch;
+  min, max : integer;
 begin
   if apikey.text = '' then
   begin
@@ -593,7 +596,17 @@ begin
   listPhotos.OnCustomDrawSubItem := nil;
   ProgressBar1.Min := 0;
   ProgressBar1.Max := listPhotos.Items.Count;
-  for i := 0 to listPhotos.Items.Count - 1 do
+  if (startmark <> -1) and (endmark <> -1) then
+  begin
+    min := startmark;
+    max := endmark;
+  end
+  else
+  begin
+    min := 0;
+    max := listPhotos.Items.Count - 1;
+  end;
+  for i := min to max do
   begin
     Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' + listPhotos.Items.Count.ToString;
     ProgressBar1.position := i;
@@ -720,8 +733,8 @@ begin
       if (i >= startMark) and (i <= endMark) then
         listPhotos.Items[i].Checked := not listPhotos.Items[i].Checked;
     end;
-    startMark := -1;
-    endMark := -1;
+    //startMark := -1;
+    //endMark := -1;
   end;
   UpdateLabel();
 end;
@@ -2047,6 +2060,8 @@ begin
   filterEnabled := true;
   btnSave.Enabled := false;
   btnLoad.Enabled := false;
+  startMark := -1;
+  endMark := -1;
   value := edtFilter.text;
   for i := 0 to repository.photos.count-1 do
   begin
@@ -2178,6 +2193,8 @@ end;
 procedure TfrmFlickr.btnResetFilterClick(Sender: TObject);
 begin
   //Restore everything as it was.
+  startMark := -1;
+  endMark := -1;
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
   filterEnabled := false;
@@ -2712,6 +2729,23 @@ begin
   end;
   listgroups.OnItemChecked := listPhotosUserItemChecked;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
+end;
+
+procedure TfrmFlickr.ClearSelection1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  if (startMark <> -1) and (endMark <> -1) then
+  begin
+    endMark :=  listPhotos.ItemIndex;
+    for i := startMark to endMark do
+    begin
+        listPhotos.Items[i].Checked := not listPhotos.Items[i].Checked;
+    end;
+    startMark := -1;
+    endMark := -1;
+  end;
+  UpdateLabel();
 end;
 
 procedure TfrmFlickr.showMarksClick(Sender: TObject);
@@ -3495,7 +3529,10 @@ end;
 procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
 begin
   if listPhotos.ItemIndex <> -1 then
+  begin
     startMark :=  listPhotos.ItemIndex;
+    endMark := -1;
+  end;
 end;
 
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);

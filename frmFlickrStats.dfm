@@ -2195,7 +2195,7 @@ object frmFlickr: TfrmFlickr
         Top = 0
         Width = 715
         Height = 783
-        ActivePage = TabSheet5
+        ActivePage = TabSheet10
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3162,12 +3162,8 @@ object frmFlickr: TfrmFlickr
             ActivePage = tabList
             Align = alClient
             TabOrder = 1
-            ExplicitLeft = 2
-            ExplicitTop = 150
-            ExplicitHeight = 606
             object tabList: TTabSheet
               Caption = 'List'
-              ExplicitHeight = 578
               object listGroups: TListView
                 Left = 0
                 Top = 0
@@ -3200,13 +3196,11 @@ object frmFlickr: TfrmFlickr
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
                 OnItemChecked = listGroupsItemChecked
-                ExplicitHeight = 578
               end
             end
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
-              ExplicitHeight = 578
               object Panel9: TPanel
                 Left = 0
                 Top = 0
@@ -3236,7 +3230,6 @@ object frmFlickr: TfrmFlickr
                 Height = 519
                 Align = alClient
                 TabOrder = 1
-                ExplicitHeight = 537
                 object mStatus: TMemo
                   Left = 1
                   Top = 1
@@ -3252,7 +3245,6 @@ object frmFlickr: TfrmFlickr
                   ScrollBars = ssBoth
                   TabOrder = 0
                   WordWrap = False
-                  ExplicitHeight = 535
                 end
               end
             end
@@ -3735,7 +3727,7 @@ object frmFlickr: TfrmFlickr
     Left = 232
     Top = 328
     Bitmap = {
-      494C0101ED002001380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001400110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11717,6 +11709,11 @@ object frmFlickr: TfrmFlickr
       Caption = 'End Marking'
       ImageIndex = 18
       OnClick = EndMarking1Click
+    end
+    object ClearSelection1: TMenuItem
+      Caption = 'Clear Selection'
+      ImageIndex = 198
+      OnClick = ClearSelection1Click
     end
     object N4: TMenuItem
       Caption = '-'

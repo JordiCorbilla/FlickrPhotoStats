@@ -41,7 +41,7 @@ type
 implementation
 
 uses
-  flickr.lib.utils;
+  flickr.lib.utils, flickr.photo.trend.info;
 
 { THtmlComposer }
 
@@ -62,6 +62,7 @@ var
   tdStyle, tdStyleText : string;
   topStats: TTopStats;
   PhotosSorted : TList<IPhoto>;
+  PhotosTrend : TList<IPhotoTrend>;
   average : double;
   i: integer;
   DayNames : array[1..7] of string;
@@ -331,6 +332,7 @@ begin
     description.add('</table>');
     description.add('<br>');
 
+    PhotosSorted := nil;
     topStats := TTopStats.Create(repository);
     try
       PhotosSorted := topStats.GetListNumberOfViews(20);
@@ -365,6 +367,7 @@ begin
       description.add('<br>');
     finally
       topStats.Free;
+      PhotosSorted.Free;
     end;
 
     topStats := TTopStats.Create(repository);
@@ -401,6 +404,92 @@ begin
       description.add('<br>');
     finally
       topStats.Free;
+      PhotosSorted.Free;
+    end;
+
+    PhotosTrend := nil;
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosTrend := topStats.GetListTrendingActivityViews(20);
+      description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Views Today</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosTrend.count-1 do
+      begin
+        description.add('  <tr>');
+        description.add('    <td '+tdStyle+'>'+PhotosTrend[i].Id+'</td>');
+        description.add('    <td '+tdStyleText+'>'+PhotosTrend[i].Title+'</td>');
+        today := PhotosTrend[i].value;
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+        description.add('  </tr>');
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+      PhotosTrend.Free;
+    end;
+
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosTrend := topStats.GetListTrendingActivityLikes(20);
+      description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Likes Today</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosTrend.count-1 do
+      begin
+        description.add('  <tr>');
+        description.add('    <td '+tdStyle+'>'+PhotosTrend[i].Id+'</td>');
+        description.add('    <td '+tdStyleText+'>'+PhotosTrend[i].Title+'</td>');
+        today := PhotosTrend[i].value;
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+        description.add('  </tr>');
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+      PhotosTrend.Free;
+    end;
+
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosTrend := topStats.GetListTrendingActivityComments(20);
+      description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Comments Today</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosTrend.count-1 do
+      begin
+        description.add('  <tr>');
+        description.add('    <td '+tdStyle+'>'+PhotosTrend[i].Id+'</td>');
+        description.add('    <td '+tdStyleText+'>'+PhotosTrend[i].Title+'</td>');
+        today := PhotosTrend[i].value;
+        description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+        description.add('  </tr>');
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+      PhotosTrend.Free;
     end;
 
     description.add('<h4 '+fontStyle+'>Kind regards,<br>');

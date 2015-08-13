@@ -101,7 +101,8 @@ contains
   flickr.lib.utils in 'flickr.lib.utils.pas',
   flickr.lib.doublelist in 'flickr.lib.doublelist.pas',
   flickr.pools.list in 'flickr.pools.list.pas',
-  flickr.list.comparer in 'flickr.list.comparer.pas';
+  flickr.list.comparer in 'flickr.list.comparer.pas',
+  flickr.photo.trend.info in 'flickr.photo.trend.info.pas';
 
 end.
 

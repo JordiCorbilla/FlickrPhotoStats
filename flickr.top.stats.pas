@@ -30,7 +30,7 @@ unit flickr.top.stats;
 interface
 
 uses
-  Flickr.repository, Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series;
+  Flickr.repository, Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series, flickr.photo.trend.info;
 
 type
   TTopStats = class(TObject)
@@ -46,6 +46,9 @@ type
     function GetTopXNumberofMostLiked() : TList<IPhoto>;
     function GetListNumberOfViews(num : integer) : TList<IPhoto>;
     function GetListNumberOfLikes(num : integer) : TList<IPhoto>;
+    function GetListTrendingActivityViews(num : integer) : TList<IPhotoTrend>;
+    function GetListTrendingActivityLikes(num : integer) : TList<IPhotoTrend>;
+    function GetListTrendingActivityComments(num : integer) : TList<IPhotoTrend>;
   end;
 
 
@@ -123,6 +126,105 @@ begin
   end;
   PhotosSorted.Free;
   result := PhotosResult;
+end;
+
+function TTopStats.GetListTrendingActivityComments(num: integer): TList<IPhotoTrend>;
+var
+  PhotosResult, PhotosTransfer: TList<IPhotoTrend>;
+  IPhotoComparer : TIPhotoTrendComparer;
+  i : integer;
+  iTrend : IPhotoTrend;
+begin
+  IPhotoComparer := TIPhotoTrendComparer.Create;
+  PhotosResult := TList<IPhotoTrend>.Create(IPhotoComparer);
+  PhotosTransfer := TList<IPhotoTrend>.Create();
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    iTrend := TPhotoTrend.Create;
+    iTrend.Id := FRepository.photos[i].Id;
+    iTrend.Title := FRepository.photos[i].Title;
+    iTrend.Value := FRepository.photos[i].getTotalComments() - FRepository.photos[i].getTotalComments(-1);
+    PhotosResult.Add(iTrend);
+  end;
+
+  PhotosResult.Sort;
+
+  for i := 0 to num-1 do
+  begin
+    if i < PhotosResult.count then
+    begin
+      PhotosTransfer.Add(PhotosResult[i]);
+    end;
+  end;
+  PhotosResult.Free;
+  result := PhotosTransfer;
+end;
+
+function TTopStats.GetListTrendingActivityLikes(num: integer): TList<IPhotoTrend>;
+var
+  PhotosResult, PhotosTransfer: TList<IPhotoTrend>;
+  IPhotoComparer : TIPhotoTrendComparer;
+  i : integer;
+  iTrend : IPhotoTrend;
+begin
+  IPhotoComparer := TIPhotoTrendComparer.Create;
+  PhotosResult := TList<IPhotoTrend>.Create(IPhotoComparer);
+  PhotosTransfer := TList<IPhotoTrend>.Create();
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    iTrend := TPhotoTrend.Create;
+    iTrend.Id := FRepository.photos[i].Id;
+    iTrend.Title := FRepository.photos[i].Title;
+    iTrend.Value := FRepository.photos[i].getTotalLikes() - FRepository.photos[i].getTotalLikes(-1);
+    PhotosResult.Add(iTrend);
+  end;
+
+  PhotosResult.Sort;
+
+  for i := 0 to num-1 do
+  begin
+    if i < PhotosResult.count then
+    begin
+      PhotosTransfer.Add(PhotosResult[i]);
+    end;
+  end;
+  PhotosResult.Free;
+  result := PhotosTransfer;
+end;
+
+function TTopStats.GetListTrendingActivityViews(num: integer): TList<IPhotoTrend>;
+var
+  PhotosResult, PhotosTransfer: TList<IPhotoTrend>;
+  IPhotoComparer : TIPhotoTrendComparer;
+  i : integer;
+  iTrend : IPhotoTrend;
+begin
+  IPhotoComparer := TIPhotoTrendComparer.Create;
+  PhotosResult := TList<IPhotoTrend>.Create(IPhotoComparer);
+  PhotosTransfer := TList<IPhotoTrend>.Create();
+
+  for I := 0 to FRepository.photos.Count-1 do
+  begin
+    iTrend := TPhotoTrend.Create;
+    iTrend.Id := FRepository.photos[i].Id;
+    iTrend.Title := FRepository.photos[i].Title;
+    iTrend.Value := FRepository.photos[i].getTotalViews() - FRepository.photos[i].getTotalViews(-1);
+    PhotosResult.Add(iTrend);
+  end;
+
+  PhotosResult.Sort;
+
+  for i := 0 to num-1 do
+  begin
+    if i < PhotosResult.count then
+    begin
+      PhotosTransfer.Add(PhotosResult[i]);
+    end;
+  end;
+  PhotosResult.Free;
+  result := PhotosTransfer;
 end;
 
 function TTopStats.GetTopXNumberOfComments(num: integer): string;
