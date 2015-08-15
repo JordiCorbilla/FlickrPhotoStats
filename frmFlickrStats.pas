@@ -103,15 +103,6 @@ type
     PageControl2: TPageControl;
     Statistics: TTabSheet;
     Panel4: TPanel;
-    TabSheet6: TTabSheet;
-    Memo1: TMemo;
-    Panel12: TPanel;
-    btnLoadHall: TButton;
-    TabSheet7: TTabSheet;
-    listAlbums: TMemo;
-    Panel13: TPanel;
-    Button9: TButton;
-    Button10: TButton;
     TabSheet3: TTabSheet;
     Panel6: TPanel;
     Label4: TLabel;
@@ -150,34 +141,6 @@ type
     pstatus: TProgressBar;
     Panel10: TPanel;
     mStatus: TMemo;
-    TabSheet8: TTabSheet;
-    mLogs: TMemo;
-    TabSheet9: TTabSheet;
-    Label9: TLabel;
-    Label1: TLabel;
-    Label8: TLabel;
-    Label21: TLabel;
-    Label22: TLabel;
-    Label23: TLabel;
-    Label24: TLabel;
-    Label25: TLabel;
-    Label26: TLabel;
-    Label27: TLabel;
-    edtMax: TEdit;
-    apikey: TEdit;
-    secret: TEdit;
-    Button1: TButton;
-    showMarks: TCheckBox;
-    chkPending: TCheckBox;
-    edtMaxLog: TEdit;
-    chkRealTime: TCheckBox;
-    Button11: TButton;
-    listValuesViewsAlbums: TMemo;
-    listValuesViewsAlbumsID: TMemo;
-    btnLoadOptions: TButton;
-    listValuesLikesAlbums: TMemo;
-    listValuesLikesAlbumsID: TMemo;
-    TabSheet10: TTabSheet;
     Chart2: TChart;
     Series4: TBarSeries;
     Panel14: TPanel;
@@ -205,8 +168,6 @@ type
     Series5: TPieSeries;
     chartHallViews: TChart;
     PieSeries2: TPieSeries;
-    Splitter3: TSplitter;
-    Memo2: TMemo;
     ShowonFlickr1: TMenuItem;
     Splitter4: TSplitter;
     Panel20: TPanel;
@@ -222,8 +183,6 @@ type
     executionTime: TChart;
     Label28: TLabel;
     Label29: TLabel;
-    Label30: TLabel;
-    edtEmail: TEdit;
     Label31: TLabel;
     ComboBox3: TComboBox;
     LineSeries3: TLineSeries;
@@ -245,8 +204,6 @@ type
     Splitter18: TSplitter;
     Label32: TLabel;
     Label33: TLabel;
-    chkRejected: TCheckBox;
-    chkResponses: TCheckBox;
     btnRemovePhoto: TButton;
     Splitter19: TSplitter;
     organicComments: TChart;
@@ -254,12 +211,8 @@ type
     Splitter20: TSplitter;
     chartfollowing: TChart;
     BarSeries6: TBarSeries;
-    chksorting: TCheckBox;
     N5: TMenuItem;
     Delete1: TMenuItem;
-    Panel21: TPanel;
-    WebBrowser2: TWebBrowser;
-    btnShowReport: TButton;
     Panel11: TPanel;
     chartItemComments: TChart;
     Series1: TLineSeries;
@@ -293,6 +246,40 @@ type
     Label34: TLabel;
     PopupMenu2: TPopupMenu;
     ShowonFlickr2: TMenuItem;
+    N6: TMenuItem;
+    BanUnbanforgroupAddition1: TMenuItem;
+    RadioButton8: TRadioButton;
+    RadioButton9: TRadioButton;
+    ClearSelection1: TMenuItem;
+    TabSheet1: TTabSheet;
+    Panel12: TPanel;
+    btnLoadHall: TButton;
+    Memo1: TMemo;
+    TabSheet4: TTabSheet;
+    Panel13: TPanel;
+    Button9: TButton;
+    Button10: TButton;
+    listAlbums: TMemo;
+    Splitter3: TSplitter;
+    Memo2: TMemo;
+    TabSheet6: TTabSheet;
+    mLogs: TMemo;
+    TabSheet7: TTabSheet;
+    Label9: TLabel;
+    edtMax: TEdit;
+    Button1: TButton;
+    Label1: TLabel;
+    apikey: TEdit;
+    Label8: TLabel;
+    secret: TEdit;
+    Label30: TLabel;
+    edtEmail: TEdit;
+    showMarks: TCheckBox;
+    chkPending: TCheckBox;
+    chkRealTime: TCheckBox;
+    chkRejected: TCheckBox;
+    chkResponses: TCheckBox;
+    chksorting: TCheckBox;
     GroupBox1: TGroupBox;
     RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
@@ -301,11 +288,24 @@ type
     RadioButton5: TRadioButton;
     RadioButton6: TRadioButton;
     RadioButton7: TRadioButton;
-    N6: TMenuItem;
-    BanUnbanforgroupAddition1: TMenuItem;
-    RadioButton8: TRadioButton;
-    RadioButton9: TRadioButton;
-    ClearSelection1: TMenuItem;
+    Label21: TLabel;
+    edtMaxLog: TEdit;
+    Label22: TLabel;
+    Label23: TLabel;
+    Label24: TLabel;
+    listValuesViewsAlbums: TMemo;
+    listValuesViewsAlbumsID: TMemo;
+    Label25: TLabel;
+    Label26: TLabel;
+    Label27: TLabel;
+    listValuesLikesAlbums: TMemo;
+    listValuesLikesAlbumsID: TMemo;
+    btnLoadOptions: TButton;
+    Button11: TButton;
+    TabSheet8: TTabSheet;
+    Panel21: TPanel;
+    btnShowReport: TButton;
+    WebBrowser2: TWebBrowser;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -364,6 +364,9 @@ type
     procedure ShowonFlickr2Click(Sender: TObject);
     procedure BanUnbanforgroupAddition1Click(Sender: TObject);
     procedure ClearSelection1Click(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure Splitter1Moved(Sender: TObject);
+    procedure Splitter6Moved(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -391,6 +394,7 @@ type
     procedure UpdateLabel;
     procedure UpdateLabelGroups;
     procedure UpdateLabelPhotos;
+    procedure ResizeChartsDashBoard;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -2737,7 +2741,6 @@ var
 begin
   if (startMark <> -1) and (endMark <> -1) then
   begin
-    endMark :=  listPhotos.ItemIndex;
     for i := startMark to endMark do
     begin
         listPhotos.Items[i].Checked := not listPhotos.Items[i].Checked;
@@ -3526,6 +3529,21 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.Splitter1Moved(Sender: TObject);
+begin
+  chartItemViews.Height := round(panel4.Height / 2);
+  chartItemLikes.Height := round(panel4.Height / 2);
+  chartItemComments.Height := round(panel4.Height / 2);
+  panel22.Width := round(panel4.Width / 3);
+  panel23.Width := round(panel4.Width / 3);
+  panel11.Width := round(panel4.Width / 3);
+end;
+
+procedure TfrmFlickr.Splitter6Moved(Sender: TObject);
+begin
+  ResizeChartsDashBoard();
+end;
+
 procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
 begin
   if listPhotos.ItemIndex <> -1 then
@@ -3603,6 +3621,49 @@ begin
   globalsRepository := nil;
   flickrChart := nil;
   rejected := nil;
+end;
+
+procedure TfrmFlickr.ResizeChartsDashBoard();
+begin
+  //First Page
+  panel14.Width := round(dashboard.Width * 0.55);
+  panel17.width := round(panel14.Width * 0.33);
+  panel18.width := round(panel14.Width * 0.33);
+
+  chartViews.Height := round(panel17.Height * 0.40);
+  chartLikes.Height := round(panel17.Height * 0.30);
+
+  executionTime.Height := round(panel18.Height * 0.20);
+  mostViewsChart.Height := round(panel18.Height * 0.20);
+  mostLikeschart.Height:= round(panel18.Height * 0.20);
+
+  OrganicViews.Height := round(panel20.Height * 0.20);
+  OrganicLikes.Height := round(panel20.Height * 0.20);
+  OrganicComments.Height:= round(panel20.Height * 0.20);
+
+  dailyViews.Height := round(panel16.Height * 0.50);
+  dailyLikes.Height := round(panel16.Height * 0.25);
+
+  chartAlbum.Height := round(panel19.Height * 0.33);
+  chartHallViews.Height := round(panel19.Height * 0.33);
+  panel16.Width := round(panel15.Width * 0.7);
+end;
+
+procedure TfrmFlickr.FormResize(Sender: TObject);
+begin
+  //Resize additional components
+  ResizeChartsDashBoard();
+
+  //Second page
+  panel2.Height := round (tabsheet2.Height * 0.6);
+  if (tabsheet2.Height - panel2.Height - splitter1.Height) > 0 then
+    pagecontrol2.Height := tabsheet2.Height - panel2.Height - splitter1.Height;
+  chartItemViews.Height := round(panel4.Height / 2);
+  chartItemLikes.Height := round(panel4.Height / 2);
+  chartItemComments.Height := round(panel4.Height / 2);
+  panel22.Width := round(panel4.Width / 3);
+  panel23.Width := round(panel4.Width / 3);
+  panel11.Width := round(panel4.Width / 3);
 end;
 
 procedure TfrmFlickr.FormShow(Sender: TObject);

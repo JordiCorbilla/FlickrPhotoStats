@@ -410,7 +410,7 @@ begin
     PhotosTrend := nil;
     topStats := TTopStats.Create(repository);
     try
-      PhotosTrend := topStats.GetListTrendingActivityViews(20);
+      PhotosTrend := topStats.GetListTrendingActivityViews(10);
       description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
@@ -438,7 +438,7 @@ begin
 
     topStats := TTopStats.Create(repository);
     try
-      PhotosTrend := topStats.GetListTrendingActivityLikes(20);
+      PhotosTrend := topStats.GetListTrendingActivityLikes(10);
       description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
@@ -466,7 +466,7 @@ begin
 
     topStats := TTopStats.Create(repository);
     try
-      PhotosTrend := topStats.GetListTrendingActivityComments(20);
+      PhotosTrend := topStats.GetListTrendingActivityComments(10);
       description.add('<b '+fontStylebig+'>Top 20 Trending Pictures Today</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
