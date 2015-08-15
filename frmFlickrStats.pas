@@ -92,7 +92,6 @@ type
     batchUpdate: TButton;
     btnExcel: TButton;
     chkAddItem: TCheckBox;
-    CheckBox2: TCheckBox;
     chkUpdate: TCheckBox;
     chkUpdateCollections: TCheckBox;
     edtfilter: TEdit;
@@ -306,6 +305,7 @@ type
     Panel21: TPanel;
     btnShowReport: TButton;
     WebBrowser2: TWebBrowser;
+    RadioButton10: TRadioButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -329,7 +329,6 @@ type
     procedure btnSaveProfileClick(Sender: TObject);
     procedure btnLoadProfileClick(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
-    procedure CheckBox2Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure btnFilterOKClick(Sender: TObject);
@@ -1040,6 +1039,8 @@ begin
         comparer := tCompareAlbums;
       if radioButton7.checked then
         comparer := tCompareGroups;
+      if radioButton10.Checked then
+        comparer := tCompareTrend;
       repository := TFlickrRepository.Create(chksorting.Checked, comparer)
     end
     else
@@ -1198,6 +1199,7 @@ begin
     Item.SubItems.Add(repository.photos[i].tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
     Item.SubItems.Add(repository.photos[i].banned.ToString());
+    Item.SubItems.Add(repository.photos[i].getTrend.ToString());
   end;
 
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
@@ -1508,10 +1510,23 @@ procedure TfrmFlickr.UncheckAll1Click(Sender: TObject);
 var
   i: Integer;
 begin
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := nil;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
     listPhotos.Items[i].Checked := false;
   end;
+
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := listPhotosItemChecked;
+
+  Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
+  chartItemViews.SeriesList.Clear;
+  chartItemLikes.SeriesList.Clear;
+  chartItemComments.SeriesList.Clear;
+  chartItemViewsH.SeriesList.Clear;
+  chartItemLikesH.SeriesList.Clear;
+  chartItemCommentsH.SeriesList.Clear;
 end;
 
 procedure TfrmFlickr.UpdateDailyViewsChart();
@@ -1950,6 +1965,7 @@ procedure TfrmFlickr.Button11Click(Sender: TObject);
 var
   iniFile : TInifile;
   i: Integer;
+  comparer : integer;
 begin
   inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
   try
@@ -1959,6 +1975,27 @@ begin
     inifile.WriteBool('System', 'UpdateCountsRealTime', chkRealTime.Checked);
     inifile.WriteString('System', 'MaxNumberOfLinesLog', edtMaxLog.Text);
     inifile.WriteString('System', 'eMailAddress', edtEmail.Text);
+    inifile.WriteBool('System', 'SortingEnabled', chksorting.Checked);
+
+    comparer := 0;
+    if radioButton1.checked then
+      comparer := 0;
+    if radioButton2.checked then
+      comparer := 2;
+    if radioButton3.checked then
+      comparer := 1;
+    if radioButton4.checked then
+      comparer := 3;
+    if radioButton5.checked then
+      comparer := 4;
+    if radioButton6.checked then
+      comparer := 5;
+    if radioButton7.checked then
+      comparer := 6;
+    if radioButton10.Checked then
+      comparer := 9;
+
+    inifile.WriteInteger('System', 'SortedBy', comparer);
 
     inifile.WriteInteger('AlbumViews', 'MaxItems', listValuesViewsAlbums.Lines.count);
 
@@ -2677,10 +2714,15 @@ procedure TfrmFlickr.CheckAll1Click(Sender: TObject);
 var
   i: Integer;
 begin
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := nil;
   for i := 0 to listPhotos.Items.Count - 1 do
   begin
     listPhotos.Items[i].Checked := true;
   end;
+  Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected';
+  if chkAddItem.Checked then
+    listPhotos.OnItemChecked := listPhotosItemChecked;
 end;
 
 procedure TfrmFlickr.CheckBox1Click(Sender: TObject);
@@ -2694,32 +2736,6 @@ begin
   end;
   listgroups.OnItemChecked := listGroupsItemChecked;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
-end;
-
-procedure TfrmFlickr.CheckBox2Click(Sender: TObject);
-var
-  i: Integer;
-begin
-  if chkAddItem.Checked then
-    listPhotos.OnItemChecked := nil;
-  for i := 0 to listPhotos.Items.Count - 1 do
-  begin
-    listPhotos.Items[i].Checked := CheckBox2.Checked;
-  end;
-  if chkAddItem.Checked then
-    listPhotos.OnItemChecked := listPhotosItemChecked;
-  if CheckBox2.Checked then
-    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + InttoStr(listphotos.Items.Count) + ') selected'
-  else
-  begin
-    Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
-    chartItemViews.SeriesList.Clear;
-    chartItemLikes.SeriesList.Clear;
-    chartItemComments.SeriesList.Clear;
-    chartItemViewsH.SeriesList.Clear;
-    chartItemLikesH.SeriesList.Clear;
-    chartItemCommentsH.SeriesList.Clear;
-  end;
 end;
 
 procedure TfrmFlickr.CheckBox3Click(Sender: TObject);

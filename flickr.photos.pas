@@ -51,12 +51,14 @@ type
     function GetGroups(): TPoolList;
     function getTaken: string;
     function GetTags: string;
+    function GetTodayTrend : integer;
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
     function getBanned: boolean;
     procedure SetBanned(const Value: boolean);
     procedure SetTaken(const Value: string);
     procedure SetTags(const Value: string);
+    procedure SetTodayTrend(const Value : integer);
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
@@ -66,11 +68,13 @@ type
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
     property banned : boolean read getBanned write SetBanned;
+    property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(incday : integer = 0): Integer;
     function getTotalComments(incday : integer = 0): Integer;
     function getTotalViews(incday : integer = 0): Integer;
+    function getTrend() : integer;
     function getHighestViews() : Integer;
     function getHighestLikes() : Integer;
   end;
@@ -86,6 +90,7 @@ type
     FTaken : string;
     FTags: string;
     FBanned : boolean;
+    FTodayTrend : integer;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -94,6 +99,7 @@ type
     procedure SetLastUpdate(value: TDatetime);
     function getTitle(): string;
     function GetStats(): TList<IStat>;
+    function GetTodayTrend : integer;
     function ExistStat(stat: IStat; var existing: IStat): boolean;
     function getTaken: string;
     function GetTags: string;
@@ -105,6 +111,7 @@ type
     procedure SetTags(const Value: string);
     function getBanned: boolean;
     procedure SetBanned(const Value: boolean);
+    procedure SetTodayTrend(const Value : integer);
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -115,6 +122,7 @@ type
     property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
+    property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TList<IAlbum>; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
@@ -127,6 +135,7 @@ type
     function getTotalLikes(incday : integer = 0): Integer;
     function getTotalComments(incday : integer = 0): Integer;
     function getTotalViews(incday : integer = 0): Integer;
+    function getTrend() : integer;
     function getHighestViews() : Integer;
     function getHighestLikes() : Integer;
   end;
@@ -277,19 +286,44 @@ begin
   result := FTitle;
 end;
 
+function TPhoto.GetTodayTrend: integer;
+begin
+  result := FTodayTrend;
+end;
+
 function TPhoto.getTotalComments(incday : integer = 0): Integer;
 begin
-  result := FStats[FStats.count - 1 + incday].numComments;
+  if (FStats.count - 1 + incday) >= 0 then
+    result := FStats[FStats.count - 1 + incday].numComments
+  else
+    result := 0;
 end;
 
 function TPhoto.getTotalLikes(incday : integer = 0): Integer;
 begin
-  result := FStats[FStats.count - 1 + incday].likes;
+  if (FStats.count - 1 + incday) >= 0 then
+    result := FStats[FStats.count - 1 + incday].likes
+  else
+    result := 0;
 end;
 
 function TPhoto.getTotalViews(incday : integer = 0): Integer;
 begin
-  result := FStats[FStats.count - 1 + incday].views;
+  if (FStats.count - 1 + incday) >= 0 then
+    result := FStats[FStats.count - 1 + incday].views
+  else
+    result := 0;
+end;
+
+function TPhoto.getTrend: integer;
+var
+  numViews, numLikes, numComments : integer;
+begin
+  numViews := getTotalViews(0) - getTotalViews(-1);
+  numLikes := getTotalLikes(0) - getTotalLikes(-1);
+  numComments := getTotalComments(0) - getTotalComments(-1);
+  SetTodayTrend(numViews + numLikes + numComments);
+  result := FTodayTrend;
 end;
 
 function TPhoto.InAlbum(albumId: string): boolean;
@@ -494,6 +528,11 @@ end;
 procedure TPhoto.SetTitle(value: string);
 begin
   FTitle := value;
+end;
+
+procedure TPhoto.SetTodayTrend(const Value: integer);
+begin
+  FTodayTrend := value;
 end;
 
 end.

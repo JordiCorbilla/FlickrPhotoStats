@@ -123,6 +123,7 @@ begin
     tCompareTaken: IPhotoComparer := TIPhotoComparerTaken.Create;
     tCompareAlbums: IPhotoComparer := TIPhotoComparerAlbums.Create;
     tCompareGroups: IPhotoComparer := TIPhotoComparerGroups.Create;
+    tCompareTrend: IPhotoComparer := TIPhotoComparerTrend.Create;
   else
     IPhotoComparer := TIPhotoComparerViews.Create;
   end;

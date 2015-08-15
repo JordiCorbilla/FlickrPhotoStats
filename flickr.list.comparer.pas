@@ -33,7 +33,7 @@ uses
   Contnrs, Generics.Collections, Generics.defaults, flickr.photos, vcltee.series, flickr.base;
 
 type
-  TCompareType = (tCompareId, tCompareLikes, tCompareViews, tCompareComments, tCompareTaken, tCompareAlbums, tCompareGroups, tCompareMembers, tComparePoolSize);
+  TCompareType = (tCompareId, tCompareLikes, tCompareViews, tCompareComments, tCompareTaken, tCompareAlbums, tCompareGroups, tCompareMembers, tComparePoolSize, tCompareTrend);
 
   TIPhotoComparerID = class(TComparer<IPhoto>)
   public
@@ -66,6 +66,11 @@ type
   end;
 
   TIPhotoComparerGroups = class(TComparer<IPhoto>)
+  public
+    function Compare(const Left, Right: IPhoto): Integer; override;
+  end;
+
+  TIPhotoComparerTrend = class(TComparer<IPhoto>)
   public
     function Compare(const Left, Right: IPhoto): Integer; override;
   end;
@@ -214,6 +219,17 @@ var
 begin
   LeftTerm := Left.Photos;
   RightTerm := Right.Photos;
+  Result := RightTerm - LeftTerm;
+end;
+
+{ TIPhotoComparerTrend }
+
+function TIPhotoComparerTrend.Compare(const Left, Right: IPhoto): Integer;
+var
+  LeftTerm, RightTerm: integer;
+begin
+  LeftTerm := Left.getTrend;
+  RightTerm := Right.getTrend;
   Result := RightTerm - LeftTerm;
 end;
 
