@@ -574,7 +574,7 @@ object frmFlickr: TfrmFlickr
     Top = 48
     Width = 1511
     Height = 811
-    ActivePage = TabSheet7
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2254,7 +2254,7 @@ object frmFlickr: TfrmFlickr
               TabOrder = 0
               object Splitter2: TSplitter
                 Left = 1
-                Top = 176
+                Top = 156
                 Width = 480
                 Height = 3
                 Cursor = crVSplit
@@ -2266,7 +2266,7 @@ object frmFlickr: TfrmFlickr
                 Left = 1
                 Top = 1
                 Width = 480
-                Height = 175
+                Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2345,9 +2345,9 @@ object frmFlickr: TfrmFlickr
               end
               object chartItemCommentsH: TChart
                 Left = 1
-                Top = 179
+                Top = 159
                 Width = 480
-                Height = 129
+                Height = 149
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2413,7 +2413,7 @@ object frmFlickr: TfrmFlickr
               TabOrder = 1
               object Splitter22: TSplitter
                 Left = 1
-                Top = 177
+                Top = 156
                 Width = 526
                 Height = 3
                 Cursor = crVSplit
@@ -2425,7 +2425,7 @@ object frmFlickr: TfrmFlickr
                 Left = 1
                 Top = 1
                 Width = 526
-                Height = 176
+                Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2504,9 +2504,9 @@ object frmFlickr: TfrmFlickr
               end
               object ChartItemViewsH: TChart
                 Left = 1
-                Top = 180
+                Top = 159
                 Width = 526
-                Height = 128
+                Height = 149
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2572,7 +2572,7 @@ object frmFlickr: TfrmFlickr
               TabOrder = 2
               object Splitter24: TSplitter
                 Left = 1
-                Top = 176
+                Top = 156
                 Width = 475
                 Height = 3
                 Cursor = crVSplit
@@ -2584,7 +2584,7 @@ object frmFlickr: TfrmFlickr
                 Left = 1
                 Top = 1
                 Width = 475
-                Height = 175
+                Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2663,9 +2663,9 @@ object frmFlickr: TfrmFlickr
               end
               object chartitemLikesH: TChart
                 Left = 1
-                Top = 179
+                Top = 159
                 Width = 475
-                Height = 129
+                Height = 149
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -3765,7 +3765,7 @@ object frmFlickr: TfrmFlickr
     Left = 1088
     Top = 400
     Bitmap = {
-      494C0101ED002001480110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001500110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

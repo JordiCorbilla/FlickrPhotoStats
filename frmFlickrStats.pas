@@ -425,7 +425,8 @@ uses
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
   System.SyncObjs, generics.collections, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
-  flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html;
+  flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
+  flickr.pools.histogram;
 
 {$R *.dfm}
 
@@ -955,6 +956,7 @@ begin
       Item.SubItems.Add(tags);
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       Item.SubItems.Add(photo.banned.ToString());
+      Item.SubItems.Add(photo.getTrend.ToString());
     end
     else
     begin
@@ -973,6 +975,7 @@ begin
       itemExisting.SubItems.Add(tags);
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       itemExisting.SubItems.Add(photo.banned.ToString());
+      itemExisting.SubItems.Add(photo.getTrend.ToString());
     end;
     if chkRealTime.Checked then
       UpdateTotals(true);
@@ -2226,6 +2229,7 @@ begin
         Item.SubItems.Add(repository.photos[i].Tags);
         Item.SubItems.Add(FormatFloat('0.##%', (repository.photos[i].stats[repository.photos[i].stats.Count-1].likes / repository.photos[i].stats[repository.photos[i].stats.Count-1].views) * 100.0));
         Item.SubItems.Add(repository.photos[i].banned.ToString());
+        Item.SubItems.Add(repository.photos[i].getTrend.ToString());
       end;
       Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
   end;
@@ -2748,7 +2752,7 @@ begin
     listPhotosUser.Items[i].Checked := CheckBox3.Checked;
   end;
   listgroups.OnItemChecked := listPhotosUserItemChecked;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (' + InttoStr(listgroups.Items.Count) + ') selected';
 end;
 
 procedure TfrmFlickr.ClearSelection1Click(Sender: TObject);
@@ -3089,6 +3093,8 @@ begin
   progressfetching.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
+  listAlbums.Lines.Add('******************************************');
+  listAlbums.Lines.Add('Total views: ' + totalViews.ToString());
   Result := totalViews;
 end;
 
@@ -3814,12 +3820,16 @@ var
   stat: IStat;
   i: Integer;
   Series, SeriesViews, SeriesLikes, SeriesComments: TLineSeries;
+  Series2 : TAreaSeries;
+  SeriesPool : TAreaSeries;
   barSeries: TBarSeries;
   colour: TColor;
   viewsTendency, likesTendency, commentsTendency : Itendency;
   SeriesTendencyViews, SeriesTendencyLikes, SeriesTendencyComments : TLineSeries;
   theDate : TDateTime;
   vTendency : integer;
+  poolHistogram : TPoolHistogram;
+  histogram :  TList<IItem>;
 begin
   if (Item.Checked) and (not chkAddItem.Checked) then
   begin
@@ -3834,8 +3844,10 @@ begin
     if photo <> nil then
     begin
       SeriesViews := flickrChart.GetNewLineSeries(chartItemViews);
+      SeriesPool := flickrChart.GetNewAreaSeries(chartItemLikes);
       SeriesLikes := flickrChart.GetNewLineSeries(chartItemLikes);
       SeriesComments := flickrChart.GetNewLineSeries(chartItemComments);
+      SeriesPool.Title := id + 'pool';
       SeriesViews.title := id;
       SeriesLikes.title := id;
       SeriesComments.title := id;
@@ -3856,7 +3868,19 @@ begin
         commentsTendency.AddXY(i, stat.numComments);
         SeriesComments.AddXY(stat.Date, stat.numComments, '', colour);
       end;
+
+      poolHistogram := TPoolHistogram.Create(photo.Groups);
+      colour := RGB(Random(255), Random(255), Random(255));
+      histogram := poolHistogram.Histogram;
+      for i := 0 to histogram.Count-1 do
+      begin
+        SeriesPool.AddXY(histogram[i].date, histogram[i].count, '', colour);
+      end;
+      histogram.Free;
+      poolHistogram.Free;
+
       chartItemViews.AddSeries(SeriesViews);
+      chartItemLikes.AddSeries(SeriesPool);
       chartItemLikes.AddSeries(SeriesLikes);
       chartItemComments.AddSeries(SeriesComments);
       viewsTendency.Calculate;
@@ -3936,6 +3960,18 @@ begin
       end;
       if Series <> nil then
         chartItemLikes.RemoveSeries(Series);
+
+      Series2 := nil;
+      for i := 0 to chartItemLikes.SeriesList.Count - 1 do
+      begin
+        if chartItemLikes.SeriesList[i].title = id + 'pool' then
+        begin
+          Series2 := TAreaSeries(chartItemLikes.SeriesList[i]);
+          Break;
+        end;
+      end;
+      if Series2 <> nil then
+        chartItemLikes.RemoveSeries(Series2);
 
       Series := nil;
       for i := 0 to chartItemComments.SeriesList.Count - 1 do
@@ -4058,7 +4094,7 @@ begin
     if listgroups.Items[i].Checked then
       inc(count);
   end;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + count.ToString + ') selected';
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
 procedure TfrmFlickr.UpdateLabelPhotos();
@@ -4072,7 +4108,7 @@ begin
     if listPhotosUser.Items[i].Checked then
       inc(count);
   end;
-  Label34.Caption := 'Number of items: ' + InttoStr(listPhotosUser.Items.Count) + '(' + count.ToString + ') selected';
+  Label34.Caption := 'Number of items: ' + InttoStr(listPhotosUser.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
 end.

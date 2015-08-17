@@ -174,6 +174,7 @@
         <DCCReference Include="flickr.pools.list.pas"/>
         <DCCReference Include="flickr.list.comparer.pas"/>
         <DCCReference Include="flickr.photo.trend.info.pas"/>
+        <DCCReference Include="flickr.pools.histogram.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
