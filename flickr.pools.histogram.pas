@@ -118,14 +118,8 @@ end;
 
 function TPoolHistogram.Histogram: TList<IItem>;
 var
-  dictionary : TDictionary<TDateTime, IItem>;
-  i: Integer;
+  i : integer;
   item : IItem;
-  IComparer : TComparer<IItem>;
-  FList : TList<IItem>;
-  KeyName : TDateTime;
-  date : TDateTime;
-  count : integer;
   FHistogram : TItemList;
   accumulated : integer;
 begin
@@ -144,46 +138,10 @@ begin
       item := TItem.Create;
       item.date := FGroupPool[i].Added;
       item.count := item.count + 1 + accumulated;
-      //accumulated := 0;
       FHistogram.Add(item);
     end;
   end;
 
-//  dictionary := TDictionary<TDateTime, IItem>.create;
-//
-//  for i := 0 to FGroupPool.Count-1 do
-//  begin
-//    if dictionary.TryGetValue(FGroupPool[i].Added, item) then
-//    begin
-//      item.count := item.count + 1;
-//    end
-//    else
-//    begin
-//      item := TItem.Create;
-//      item.date := FGroupPool[i].Added;
-//      item.count := item.count + 1;
-//      dictionary.Add(item.date, item);
-//    end;
-//  end;
-//  IComparer := TITemComparerDate.Create;
-//  FList := TList<IItem>.Create(IComparer);
-//
-//  for KeyName in dictionary.Keys do
-//  begin
-//    dictionary.TryGetValue(KeyName, item);
-//    Flist.Add(item);
-//  end;
-//
-//  Flist.Sort;
-//
-//  //Accumulate values;
-//  for i := Flist.count-1 downto 1 do
-//  begin
-//    date := Flist.Items[i].date;
-//    count := Flist.Items[i].count;
-//    Flist.Items[i].count := Flist.Items[i].count + Flist.Items[i-1].count
-//  end;
-//
   result := FHistogram;
 end;
 
