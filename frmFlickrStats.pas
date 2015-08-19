@@ -306,6 +306,7 @@ type
     btnShowReport: TButton;
     WebBrowser2: TWebBrowser;
     RadioButton10: TRadioButton;
+    btnBanGroups: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -366,6 +367,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure Splitter1Moved(Sender: TObject);
     procedure Splitter6Moved(Sender: TObject);
+    procedure btnBanGroupsClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -957,6 +959,7 @@ begin
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       Item.SubItems.Add(photo.banned.ToString());
       Item.SubItems.Add(photo.getTrend.ToString());
+      Item.SubItems.Add(photo.OmitGroups);
     end
     else
     begin
@@ -976,6 +979,7 @@ begin
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       itemExisting.SubItems.Add(photo.banned.ToString());
       itemExisting.SubItems.Add(photo.getTrend.ToString());
+      itemExisting.SubItems.Add(photo.OmitGroups);
     end;
     if chkRealTime.Checked then
       UpdateTotals(true);
@@ -1203,6 +1207,7 @@ begin
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
     Item.SubItems.Add(repository.photos[i].banned.ToString());
     Item.SubItems.Add(repository.photos[i].getTrend.ToString());
+    Item.SubItems.Add(repository.photos[i].OmitGroups);
   end;
 
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
@@ -2230,6 +2235,7 @@ begin
         Item.SubItems.Add(FormatFloat('0.##%', (repository.photos[i].stats[repository.photos[i].stats.Count-1].likes / repository.photos[i].stats[repository.photos[i].stats.Count-1].views) * 100.0));
         Item.SubItems.Add(repository.photos[i].banned.ToString());
         Item.SubItems.Add(repository.photos[i].getTrend.ToString());
+        Item.SubItems.Add(repository.photos[i].OmitGroups);
       end;
       Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
   end;
@@ -2371,7 +2377,7 @@ begin
         timedout := false;
         if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId, photoToCheck)) then
         begin
-          if not (photoToCheck.banned) then
+          if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(groupId)) then
           begin
             urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
             while (not timedout) do
@@ -2400,7 +2406,9 @@ begin
                 end;
               end;
             end;
-          end;
+          end
+          else
+            mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + groupId);
         end;
         inc(k);
         pstatus.position := k;
@@ -2435,6 +2443,50 @@ begin
     photos.Free;
     groups.Free;
   end;
+end;
+
+procedure TfrmFlickr.btnBanGroupsClick(Sender: TObject);
+var
+  photos: TList<string>;
+  groups: TList<string>;
+  i : integer;
+  j : integer;
+  photoId: string;
+  groupId: string;
+  p : IPhoto;
+  OmitGroups : string;
+begin
+  //Ban these groups in the photos selected.
+  photos := TList<string>.Create;
+  groups := TList<string>.Create;
+
+  for i := 0 to listPhotos.Items.Count - 1 do
+  begin
+    if listPhotos.Items[i].Checked then
+      photos.Add(listPhotos.Items[i].Caption);
+  end;
+  for i := 0 to listGroups.Items.Count - 1 do
+  begin
+    if listGroups.Items[i].Checked then
+      groups.Add(listGroups.Items[i].Caption);
+  end;
+
+  for i := 0 to photos.Count - 1 do
+  begin
+    photoId := photos[i];
+    p := repository.GetPhoto(photoId);
+    OmitGroups := p.OmitGroups;
+    for j := 0 to groups.Count - 1 do
+    begin
+      groupId := groups[j];
+      if not OmitGroups.Contains(groupId) then
+      begin
+        OmitGroups := OmitGroups + groupId + ',';
+      end;
+    end;
+    p.OmitGroups := OmitGroups;
+  end;
+
 end;
 
 procedure TfrmFlickr.btnLoadProfileClick(Sender: TObject);
@@ -2988,6 +3040,7 @@ begin
   batchUpdate.Enabled := true;
   btnAddPhotos.Enabled := true;
   btnRemovePhoto.Enabled := true;
+  btnBanGroups.Enabled := true;
   btnAddItems.Enabled := true;
   progressfetchinggroups.Visible := false;
   Taskbar1.ProgressValue := 0;
@@ -3325,6 +3378,9 @@ begin
     Sheet.Cells[1, 9] := 'Groups';
     Sheet.Cells[1, 10] := 'Tags';
     Sheet.Cells[1, 11] := 'Affection';
+    Sheet.Cells[1, 12] := 'Banned';
+    Sheet.Cells[1, 13] := 'Trend';
+    Sheet.Cells[1, 14] := 'Omit Groups';
 
     Row := 2;
     for i := 0 to AView.Items.Count - 1 do
@@ -3340,6 +3396,9 @@ begin
       Sheet.Cells[Row, 9] := AView.Items.Item[i].SubItems[7];
       Sheet.Cells[Row, 10] := AView.Items.Item[i].SubItems[8];
       Sheet.Cells[Row, 11] := AView.Items.Item[i].SubItems[9];
+      Sheet.Cells[Row, 12] := AView.Items.Item[i].SubItems[10];
+      Sheet.Cells[Row, 13] := AView.Items.Item[i].SubItems[11];
+      Sheet.Cells[Row, 14] := AView.Items.Item[i].SubItems[12];
       inc(Row);
     end;
 

@@ -55,6 +55,8 @@ type
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
     function getBanned: boolean;
+    function GetOmitGroups : string;
+    procedure SetOmitGroups(const Value : string);
     procedure SetBanned(const Value: boolean);
     procedure SetTaken(const Value: string);
     procedure SetTags(const Value: string);
@@ -69,6 +71,7 @@ type
     property Tags : string read GetTags write SetTags;
     property banned : boolean read getBanned write SetBanned;
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
+    property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(incday : integer = 0): Integer;
@@ -91,6 +94,7 @@ type
     FTags: string;
     FBanned : boolean;
     FTodayTrend : integer;
+    FOmitGroups : string;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -112,6 +116,8 @@ type
     function getBanned: boolean;
     procedure SetBanned(const Value: boolean);
     procedure SetTodayTrend(const Value : integer);
+    function GetOmitGroups : string;
+    procedure SetOmitGroups(const Value : string);
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -123,6 +129,7 @@ type
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
+    property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TList<IAlbum>; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
@@ -266,6 +273,11 @@ begin
   result := FLastUpdate;
 end;
 
+function TPhoto.GetOmitGroups: string;
+begin
+  result := FOmitGroups;
+end;
+
 function TPhoto.GetStats: TList<IStat>;
 begin
   result := FStats;
@@ -381,6 +393,15 @@ begin
   end;
 
   try
+    if iNode.Attributes['OmitGroups'] <> null then
+      FOmitGroups := iNode.Attributes['OmitGroups']
+    else
+      FOmitGroups := '';
+  except
+    FOmitGroups := '';
+  end;
+
+  try
     if iNode.Attributes['Banned'] <> null then
       FBanned := iNode.Attributes['Banned']
     else
@@ -454,6 +475,7 @@ begin
   iNode2.Attributes['Taken'] := FTaken;
   iNode2.Attributes['Banned'] := FBanned;
   iNode2.Attributes['Tags'] := FTags;
+  iNode2.Attributes['OmitGroups'] := FOmitGroups;
   for i := 0 to FStats.count - 1 do
   begin
     FStats[i].Save(iNode2);
@@ -508,6 +530,11 @@ end;
 procedure TPhoto.SetLastUpdate(value: TDatetime);
 begin
   FLastUpdate := value;
+end;
+
+procedure TPhoto.SetOmitGroups(const Value: string);
+begin
+  FOmitGroups := value;
 end;
 
 procedure TPhoto.SetStats(value: TList<IStat>);

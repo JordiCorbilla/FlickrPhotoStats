@@ -1979,7 +1979,7 @@ object frmFlickr: TfrmFlickr
             end
             item
               Caption = 'Tags'
-              Width = 380
+              Width = 200
             end
             item
               Caption = ' Affection'
@@ -1991,6 +1991,10 @@ object frmFlickr: TfrmFlickr
             item
               Caption = 'Trend Today'
               Width = 100
+            end
+            item
+              Caption = 'Banned Groups'
+              Width = 200
             end>
           FlatScrollBars = True
           GridLines = True
@@ -2216,7 +2220,7 @@ object frmFlickr: TfrmFlickr
         Top = 444
         Width = 1503
         Height = 339
-        ActivePage = Statistics
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -2907,9 +2911,9 @@ object frmFlickr: TfrmFlickr
             object btnAddPhotos: TButton
               Left = 144
               Top = 28
-              Width = 170
+              Width = 101
               Height = 30
-              Caption = 'Add photos to the groups'
+              Caption = 'Add photos'
               Enabled = False
               ImageIndex = 117
               ImageMargins.Left = 5
@@ -3015,11 +3019,11 @@ object frmFlickr: TfrmFlickr
               OnClick = CheckBox1Click
             end
             object btnRemovePhoto: TButton
-              Left = 320
+              Left = 259
               Top = 28
-              Width = 200
+              Width = 131
               Height = 30
-              Caption = 'Remove photos from the groups'
+              Caption = 'Remove photos'
               Enabled = False
               ImageIndex = 64
               ImageMargins.Left = 5
@@ -3066,6 +3070,19 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 6
               OnClick = btnFilterCancelClick
+            end
+            object btnBanGroups: TButton
+              Left = 410
+              Top = 28
+              Width = 101
+              Height = 30
+              Caption = 'Ban groups'
+              Enabled = False
+              ImageIndex = 137
+              ImageMargins.Left = 5
+              Images = ImageList1
+              TabOrder = 12
+              OnClick = btnBanGroupsClick
             end
           end
           object PageControl3: TPageControl
@@ -3765,7 +3782,7 @@ object frmFlickr: TfrmFlickr
     Left = 1088
     Top = 400
     Bitmap = {
-      494C0101ED002001500110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001540110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
