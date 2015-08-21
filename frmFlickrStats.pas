@@ -104,18 +104,13 @@ type
     Panel4: TPanel;
     TabSheet3: TTabSheet;
     Panel6: TPanel;
-    Label4: TLabel;
-    lblfetching: TLabel;
     btnGetList: TButton;
-    edtUserId: TEdit;
-    progressfetching: TProgressBar;
     listPhotosUser: TListView;
     TabSheet5: TTabSheet;
     Panel8: TPanel;
     Label5: TLabel;
     Label11: TLabel;
     btnGetGroups: TButton;
-    progressfetchinggroups: TProgressBar;
     Button2: TButton;
     btnAddPhotos: TButton;
     edtFilterGroup: TEdit;
@@ -130,14 +125,10 @@ type
     btnSaveProfile: TButton;
     chkReplaceProfile: TCheckBox;
     chkDisplayOnly: TCheckBox;
-    CheckBox1: TCheckBox;
     PageControl3: TPageControl;
     tabList: TTabSheet;
     listGroups: TListView;
     tabStatus: TTabSheet;
-    Panel9: TPanel;
-    Label10: TLabel;
-    pstatus: TProgressBar;
     Panel10: TPanel;
     mStatus: TMemo;
     Chart2: TChart;
@@ -238,9 +229,7 @@ type
     LineSeries14: TLineSeries;
     chartitemLikesH: TChart;
     BarSeries8: TBarSeries;
-    ProgressBar1: TProgressBar;
     Process: TLabel;
-    CheckBox3: TCheckBox;
     btnAddItems: TButton;
     Label34: TLabel;
     PopupMenu2: TPopupMenu;
@@ -264,20 +253,24 @@ type
     TabSheet6: TTabSheet;
     mLogs: TMemo;
     TabSheet7: TTabSheet;
+    TabSheet8: TTabSheet;
+    Panel21: TPanel;
+    btnShowReport: TButton;
+    WebBrowser2: TWebBrowser;
+    btnBanGroups: TButton;
+    Panel3: TPanel;
+    Panel7: TPanel;
+    btnLoadOptions: TButton;
+    Button11: TButton;
     Label9: TLabel;
     edtMax: TEdit;
-    Button1: TButton;
     Label1: TLabel;
     apikey: TEdit;
-    Label8: TLabel;
-    secret: TEdit;
     Label30: TLabel;
     edtEmail: TEdit;
     showMarks: TCheckBox;
     chkPending: TCheckBox;
     chkRealTime: TCheckBox;
-    chkRejected: TCheckBox;
-    chkResponses: TCheckBox;
     chksorting: TCheckBox;
     GroupBox1: TGroupBox;
     RadioButton1: TRadioButton;
@@ -287,26 +280,35 @@ type
     RadioButton5: TRadioButton;
     RadioButton6: TRadioButton;
     RadioButton7: TRadioButton;
+    RadioButton10: TRadioButton;
     Label21: TLabel;
     edtMaxLog: TEdit;
+    chkResponses: TCheckBox;
+    chkRejected: TCheckBox;
+    Label8: TLabel;
+    secret: TEdit;
+    Button1: TButton;
     Label22: TLabel;
     Label23: TLabel;
     Label24: TLabel;
     listValuesViewsAlbums: TMemo;
     listValuesViewsAlbumsID: TMemo;
-    Label25: TLabel;
     Label26: TLabel;
     Label27: TLabel;
     listValuesLikesAlbums: TMemo;
     listValuesLikesAlbumsID: TMemo;
-    btnLoadOptions: TButton;
-    Button11: TButton;
-    TabSheet8: TTabSheet;
-    Panel21: TPanel;
-    btnShowReport: TButton;
-    WebBrowser2: TWebBrowser;
-    RadioButton10: TRadioButton;
-    btnBanGroups: TButton;
+    Label25: TLabel;
+    Label35: TLabel;
+    edtUrlName: TEdit;
+    Label4: TLabel;
+    edtUserId: TEdit;
+    ProgressBar1: TProgressBar;
+    PopupMenu3: TPopupMenu;
+    MenuItem1: TMenuItem;
+    UncheckAll2: TMenuItem;
+    CheckAll2: TMenuItem;
+    UncheckAll3: TMenuItem;
+    N7: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -329,7 +331,6 @@ type
     procedure Button8Click(Sender: TObject);
     procedure btnSaveProfileClick(Sender: TObject);
     procedure btnLoadProfileClick(Sender: TObject);
-    procedure CheckBox1Click(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
     procedure btnFilterOKClick(Sender: TObject);
@@ -358,7 +359,6 @@ type
     procedure btnShowReportClick(Sender: TObject);
     procedure Label12DblClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure CheckBox3Click(Sender: TObject);
     procedure listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
     procedure ChartViewsDblClick(Sender: TObject);
     procedure ShowonFlickr2Click(Sender: TObject);
@@ -368,6 +368,10 @@ type
     procedure Splitter1Moved(Sender: TObject);
     procedure Splitter6Moved(Sender: TObject);
     procedure btnBanGroupsClick(Sender: TObject);
+    procedure MenuItem1Click(Sender: TObject);
+    procedure UncheckAll2Click(Sender: TObject);
+    procedure CheckAll2Click(Sender: TObject);
+    procedure UncheckAll3Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -576,6 +580,19 @@ begin
     end;
     end;
   end;
+end;
+
+procedure TfrmFlickr.MenuItem1Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  listPhotosUser.OnItemChecked := nil;
+  for i := 0 to listPhotosUser.Items.Count - 1 do
+  begin
+    listPhotosUser.Items[i].Checked := true;
+  end;
+  Label34.Caption := 'Number of items: ' + InttoStr(listPhotosUser.Items.Count) + ' (' + InttoStr(listPhotosUser.Items.Count) + ') selected';
+  listPhotosUser.OnItemChecked := listPhotosItemChecked;
 end;
 
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
@@ -873,7 +890,7 @@ begin
     photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
     Albums := TList<IAlbum>.create;
-    //Groups := TList<IPool>.create;
+
     photoGroups := repository.GetPhoto(id);
     if photoGroups <> nil then
       Groups := photoGroups.Groups
@@ -1026,6 +1043,7 @@ var
   st : TStopWatch;
   comparer : TCompareType;
 begin
+  btnLoadOptionsClick(Sender);
   if Assigned(repository) then
   begin
     repository := nil;
@@ -1101,7 +1119,6 @@ begin
   log('Loading Profiles: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   Button9Click(sender);
-  btnLoadOptionsClick(Sender);
   RepositoryLoaded := true;
 end;
 
@@ -1535,6 +1552,32 @@ begin
   chartItemViewsH.SeriesList.Clear;
   chartItemLikesH.SeriesList.Clear;
   chartItemCommentsH.SeriesList.Clear;
+end;
+
+procedure TfrmFlickr.UncheckAll2Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  listPhotosUser.OnItemChecked := nil;
+  for i := 0 to listPhotosUser.Items.Count - 1 do
+  begin
+    listPhotosUser.Items[i].Checked := false;
+  end;
+  listPhotosUser.OnItemChecked := listPhotosItemChecked;
+  Label34.Caption := 'Number of items: ' + InttoStr(listPhotosUser.Items.Count) + ' (0) selected';
+end;
+
+procedure TfrmFlickr.UncheckAll3Click(Sender: TObject);
+var
+  i: Integer;
+begin
+  listgroups.OnItemChecked := nil;
+  for i := 0 to listGroups.Items.Count - 1 do
+  begin
+    listGroups.Items[i].Checked := false;
+  end;
+  listgroups.OnItemChecked := listGroupsItemChecked;
+  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
 end;
 
 procedure TfrmFlickr.UpdateDailyViewsChart();
@@ -1978,6 +2021,7 @@ begin
   inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
   try
     inifile.WriteString('System', 'MaxItemsListGlobals', edtMax.Text);
+    inifile.WriteString('System', 'UrlName', edtUrlName.Text);
     inifile.WriteBool('System', 'ShowMarksInGraphs', showMarks.Checked);
     inifile.WriteBool('System', 'ConsiderPendingQueueItems', chkPending.Checked);
     inifile.WriteBool('System', 'UpdateCountsRealTime', chkRealTime.Checked);
@@ -2039,6 +2083,7 @@ var
   maxAlbumLikes : integer;
   i : integer;
   value : string;
+  comparer : integer;
 begin
   inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
   try
@@ -2048,8 +2093,22 @@ begin
     chkRealTime.Checked := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
     edtMaxLog.Text := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
     edtEmail.Text := inifile.ReadString('System', 'eMailAddress', '');
-
+    edtUrlName.Text := inifile.ReadString('System', 'UrlName', '');
     maxAlbumViews := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
+
+    chksorting.Checked := inifile.ReadBool('System', 'SortingEnabled', true);
+    comparer := inifile.ReadInteger('System', 'SortedBy', 0);
+
+    case comparer of
+      0: radioButton1.checked := true;
+      2: radioButton2.checked := true;
+      1: radioButton3.checked := true;
+      3: radioButton4.checked := true;
+      4: radioButton5.checked := true;
+      5: radioButton6.checked := true;
+      6: radioButton7.checked := true;
+      9: radioButton10.Checked := true;
+    end;
 
     listValuesViewsAlbums.Lines.Clear;
     listValuesViewsAlbumsID.Lines.Clear;
@@ -2358,10 +2417,10 @@ begin
     if not chkRejected.Checked then
       rejected := TRejected.Create;
     // add photos to the groups
-    pstatus.Max := (photos.Count * groups.Count);
-    pstatus.Min := 0;
+    progressbar1.Max := (photos.Count * groups.Count);
+    progressbar1.Min := 0;
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-    Taskbar1.ProgressMaxValue := pstatus.Max;
+    Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
 
     mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into  ' + groups.Count.ToString + ' groups each.');
@@ -2411,7 +2470,7 @@ begin
             mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + groupId);
         end;
         inc(k);
-        pstatus.position := k;
+        progressbar1.position := k;
         Taskbar1.ProgressValue := k;
         response := TResponse.filter(response);
         if chkResponses.Checked then
@@ -2590,10 +2649,10 @@ begin
     end;
 
     // add photos to the groups
-    pstatus.Max := (photos.Count * groups.Count);
-    pstatus.Min := 0;
+    progressbar1.Max := (photos.Count * groups.Count);
+    progressbar1.Min := 0;
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-    Taskbar1.ProgressMaxValue := pstatus.Max;
+    Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
 
     mStatus.Lines.Add('Removing ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
@@ -2625,7 +2684,7 @@ begin
           end;
         end;
         inc(k);
-        pstatus.position := k;
+        progressbar1.position := k;
         Taskbar1.ProgressValue := k;
         response := TResponse.filter(response);
         if chkResponses.Checked then
@@ -2781,30 +2840,17 @@ begin
     listPhotos.OnItemChecked := listPhotosItemChecked;
 end;
 
-procedure TfrmFlickr.CheckBox1Click(Sender: TObject);
+procedure TfrmFlickr.CheckAll2Click(Sender: TObject);
 var
   i: Integer;
 begin
   listgroups.OnItemChecked := nil;
   for i := 0 to listGroups.Items.Count - 1 do
   begin
-    listGroups.Items[i].Checked := CheckBox1.Checked;
+    listGroups.Items[i].Checked := true;
   end;
   listgroups.OnItemChecked := listGroupsItemChecked;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
-end;
-
-procedure TfrmFlickr.CheckBox3Click(Sender: TObject);
-var
-  i: Integer;
-begin
-  listPhotosUser.OnItemChecked := nil;
-  for i := 0 to listPhotosUser.Items.Count - 1 do
-  begin
-    listPhotosUser.Items[i].Checked := CheckBox3.Checked;
-  end;
-  listgroups.OnItemChecked := listPhotosUserItemChecked;
-  Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (' + InttoStr(listgroups.Items.Count) + ') selected';
 end;
 
 procedure TfrmFlickr.ClearSelection1Click(Sender: TObject);
@@ -2920,7 +2966,7 @@ begin
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listGroups.Visible := false;
-  progressfetchinggroups.Visible := true;
+  progressbar1.Visible := true;
   Application.ProcessMessages;
   urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text, userTokenSecret);
   timedout := false;
@@ -2949,10 +2995,10 @@ begin
   iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
   listGroups.Clear;
   // numTotal := total.ToInteger();
-  progressfetchinggroups.Max := totalitems.ToInteger();
+  progressbar1.Max := totalitems.ToInteger();
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
   Taskbar1.ProgressMaxValue := totalitems.ToInteger();
-  progressfetchinggroups.position := 0;
+  progressbar1.position := 0;
   while iXMLRootNode4 <> nil do
   begin
     if iXMLRootNode4.NodeName = 'group' then
@@ -2965,8 +3011,8 @@ begin
       if ismember = '1' then
         FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
     end;
-    progressfetchinggroups.position := progressfetchinggroups.position + 1;
-    Taskbar1.ProgressValue := progressfetchinggroups.position;
+    progressbar1.position := progressbar1.position + 1;
+    Taskbar1.ProgressValue := progressbar1.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
@@ -3011,8 +3057,8 @@ begin
         if ismember = '1' then
           FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
       end;
-      progressfetchinggroups.position := progressfetchinggroups.position + 1;
-      Taskbar1.ProgressValue := progressfetchinggroups.position;
+      progressbar1.position := progressbar1.position + 1;
+      Taskbar1.ProgressValue := progressbar1.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -3042,7 +3088,7 @@ begin
   btnRemovePhoto.Enabled := true;
   btnBanGroups.Enabled := true;
   btnAddItems.Enabled := true;
-  progressfetchinggroups.Visible := false;
+  progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listGroups.Visible := true;
   UpdateLabelGroups();
@@ -3070,8 +3116,7 @@ begin
 
 
   listPhotosUser.Visible := false;
-  lblfetching.Visible := true;
-  progressfetching.Visible := true;
+  progressbar1.Visible := true;
   listAlbums.Clear;
   Application.ProcessMessages;
   response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, '1', '500'));
@@ -3083,10 +3128,10 @@ begin
   total := iXMLRootNode3.attributes['total'];
   iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
   numTotal := total.ToInteger();
-  progressfetching.Max := numTotal;
+  progressbar1.Max := numTotal;
   Taskbar1.ProgressState := TTaskBarProgressState.Normal;
   Taskbar1.ProgressMaxValue := numTotal;
-  progressfetching.position := 0;
+  progressbar1.position := 0;
   totalViews := 0;
   while iXMLRootNode4 <> nil do
   begin
@@ -3099,11 +3144,11 @@ begin
       title := iXMLRootNode5.text;
       totalViews := totalViews + countViews;
     end;
-    progressfetching.position := progressfetching.position + 1;
+    progressbar1.position := progressbar1.position + 1;
     listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     color := RGB(Random(255), Random(255), Random(255));
     Series.Add(countViews.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
-    Taskbar1.ProgressValue := progressfetching.position;
+    Taskbar1.ProgressValue := progressbar1.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
   end;
@@ -3130,11 +3175,11 @@ begin
         title := iXMLRootNode5.text;
         totalViews := totalViews + countViews;
       end;
-      progressfetching.position := progressfetching.position + 1;
+      progressbar1.position := progressbar1.position + 1;
       listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       color := RGB(Random(255), Random(255), Random(255));
       Series.Add(countViews.ToDouble, 'Id: ' + photosetId + slinebreak + ' title: ' + title + slinebreak + ' Photos: ' + numPhotos.ToString() + slinebreak + ' Views: ' + countViews.ToString(), color);
-      Taskbar1.ProgressValue := progressfetching.position;
+      Taskbar1.ProgressValue := progressbar1.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;
     end;
@@ -3142,8 +3187,7 @@ begin
 
   chartAlbum.AddSeries(Series);
 
-  lblfetching.Visible := false;
-  progressfetching.Visible := false;
+  progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
   listAlbums.Lines.Add('******************************************');
@@ -3179,8 +3223,7 @@ begin
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listPhotosUser.Visible := false;
-  lblfetching.Visible := true;
-  progressfetching.Visible := true;
+  progressbar1.Visible := true;
   Application.ProcessMessages;
 
   IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
@@ -3213,10 +3256,10 @@ begin
       iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photo>
       listPhotosUser.Clear;
       numTotal := total.ToInteger();
-      progressfetching.Max := numTotal;
+      progressbar1.Max := numTotal;
       Taskbar1.ProgressState := TTaskBarProgressState.Normal;
       Taskbar1.ProgressMaxValue := numTotal;
-      progressfetching.position := 0;
+      progressbar1.position := 0;
       while iXMLRootNode4 <> nil do
       begin
         if iXMLRootNode4.NodeName = 'photo' then
@@ -3231,8 +3274,8 @@ begin
             Item.SubItems.Add(title);
           end;
         end;
-        progressfetching.position := progressfetching.position + 1;
-        Taskbar1.ProgressValue := progressfetching.position;
+        progressbar1.position := progressbar1.position + 1;
+        Taskbar1.ProgressValue := progressbar1.position;
         Application.ProcessMessages;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
@@ -3287,8 +3330,8 @@ begin
               Item.SubItems.Add(title);
             end;
           end;
-          progressfetching.position := progressfetching.position + 1;
-          Taskbar1.ProgressValue := progressfetching.position;
+          progressbar1.position := progressbar1.position + 1;
+          Taskbar1.ProgressValue := progressbar1.position;
           Application.ProcessMessages;
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
@@ -3302,8 +3345,7 @@ begin
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddItems.Enabled := true;
-  lblfetching.Visible := false;
-  progressfetching.Visible := false;
+  progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
 end;
@@ -3588,12 +3630,14 @@ procedure TfrmFlickr.ShowonFlickr1Click(Sender: TObject);
 var
   id : string;
 begin
+  if edtUrlName.text = '' then
+    ShowMessage('Url Name needs to be populated.');
   //Show item in the URL view
   //https://www.flickr.com/photos/jordicorbillaphotography/
   if listPhotos.ItemIndex <> -1 then
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
-    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/photos/jordicorbillaphotography/' + id + '/in/photostream/lightbox/'), nil, SW_SHOW);
+    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/photos/'+edtUrlName.text+'/' + id + '/in/photostream/lightbox/'), nil, SW_SHOW);
   end;
 end;
 
