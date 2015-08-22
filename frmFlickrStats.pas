@@ -2417,6 +2417,7 @@ begin
     if not chkRejected.Checked then
       rejected := TRejected.Create;
     // add photos to the groups
+    progressbar1.Visible := true;
     progressbar1.Max := (photos.Count * groups.Count);
     progressbar1.Min := 0;
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
@@ -2499,6 +2500,7 @@ begin
     end;
   finally
     mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
+    progressbar1.Visible := false;
     photos.Free;
     groups.Free;
   end;
@@ -2545,7 +2547,6 @@ begin
     end;
     p.OmitGroups := OmitGroups;
   end;
-
 end;
 
 procedure TfrmFlickr.btnLoadProfileClick(Sender: TObject);
@@ -2649,6 +2650,7 @@ begin
     end;
 
     // add photos to the groups
+    progressbar1.Visible := true;
     progressbar1.Max := (photos.Count * groups.Count);
     progressbar1.Min := 0;
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
@@ -2713,6 +2715,7 @@ begin
     end;
   finally
     mStatus.Lines.Add('Total number of groups removed: ' + success.ToString() + ' out of ' + total.ToString());
+    progressbar1.Visible := false;
     photos.Free;
     groups.Free;
   end;
@@ -3562,12 +3565,16 @@ begin
 
     Sheet.Cells[1, 1] := 'Id';
     Sheet.Cells[1, 2] := 'Title';
+    Sheet.Cells[1, 2] := 'Photos';
+    Sheet.Cells[1, 2] := 'Members';
 
     Row := 2;
     for i := 0 to AView.Items.Count - 1 do
     begin
       Sheet.Cells[Row, 1] := AView.Items.Item[i].Caption;
       Sheet.Cells[Row, 2] := AView.Items.Item[i].SubItems[0];
+      Sheet.Cells[Row, 3] := AView.Items.Item[i].SubItems[1];
+      Sheet.Cells[Row, 4] := AView.Items.Item[i].SubItems[2];
       inc(Row);
     end;
 
