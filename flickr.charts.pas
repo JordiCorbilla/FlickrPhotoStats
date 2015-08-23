@@ -136,7 +136,7 @@ begin
   Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := marks;
   Series.SeriesColor := 10708548;
-  Series.LinePen.Width := 1;
+  Series.LinePen.Width := 2;
   Series.LinePen.color := 10708548;
   Series.Pointer.InflateMargins := true;
   Series.Pointer.Style := psRectangle;

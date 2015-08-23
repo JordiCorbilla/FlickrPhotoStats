@@ -91,9 +91,6 @@ type
     btnAdd: TButton;
     batchUpdate: TButton;
     btnExcel: TButton;
-    chkAddItem: TCheckBox;
-    chkUpdate: TCheckBox;
-    chkUpdateCollections: TCheckBox;
     edtfilter: TEdit;
     btnAddFilter: TButton;
     btnResetFilter: TButton;
@@ -309,6 +306,8 @@ type
     CheckAll2: TMenuItem;
     UncheckAll3: TMenuItem;
     N7: TMenuItem;
+    chkUpdateCollections: TCheckBox;
+    chkAddItem: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -372,6 +371,7 @@ type
     procedure UncheckAll2Click(Sender: TObject);
     procedure CheckAll2Click(Sender: TObject);
     procedure UncheckAll3Click(Sender: TObject);
+    procedure photoIdChange(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -400,6 +400,7 @@ type
     procedure UpdateLabelGroups;
     procedure UpdateLabelPhotos;
     procedure ResizeChartsDashBoard;
+    procedure ClearAllCharts;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -595,83 +596,74 @@ begin
   listPhotosUser.OnItemChecked := listPhotosItemChecked;
 end;
 
+procedure TfrmFlickr.photoIdChange(Sender: TObject);
+begin
+  btnAdd.Enabled := photoId.Text <> '';
+end;
+
 procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
   st : TStopWatch;
-  min, max : integer;
+  photos: TList<string>;
 begin
   if apikey.text = '' then
   begin
     showmessage('Api key can''t be empty');
     exit;
   end;
-  batchUpdate.Enabled := false;
-  btnLoad.Enabled := false;
-  btnGetList.Enabled := false;
-  ProgressBar1.Visible := true;
-  photoId.Enabled := false;
-  btnAdd.Enabled := false;
-  Process.Visible := true;
-  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  Taskbar1.ProgressMaxValue := listPhotos.Items.Count;
-  listPhotos.OnItemChecked := nil;
-  listPhotos.OnCustomDrawSubItem := nil;
-  ProgressBar1.Min := 0;
-  ProgressBar1.Max := listPhotos.Items.Count;
-  if (startmark <> -1) and (endmark <> -1) then
-  begin
-    min := startmark;
-    max := endmark;
-  end
-  else
-  begin
-    min := 0;
-    max := listPhotos.Items.Count - 1;
-  end;
-  for i := min to max do
-  begin
-    Process.Caption := 'Processing image: ' + listPhotos.Items[i].Caption + ' ' + i.ToString + ' out of ' + listPhotos.Items.Count.ToString;
-    ProgressBar1.position := i;
-    Taskbar1.ProgressValue := i;
-    Application.ProcessMessages;
-    if chkUpdate.checked then
+  photos := TList<string>.Create;
+  try
+    for i := 0 to listPhotos.Items.Count - 1 do
     begin
-      if listPhotos.items[i].checked then
-      begin
-        st := TStopWatch.Create;
-        st.Start;
-        RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
-        st.Stop;
-        log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
-      end;
-    end
-    else
+      if (listPhotos.Items[i].Checked) then
+        photos.Add(listPhotos.Items[i].Caption);
+    end;
+    batchUpdate.Enabled := false;
+    btnLoad.Enabled := false;
+    btnGetList.Enabled := false;
+    ProgressBar1.Visible := true;
+    photoId.Enabled := false;
+    btnAdd.Enabled := false;
+    Process.Visible := true;
+    Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+    Taskbar1.ProgressMaxValue := listPhotos.Items.Count;
+    listPhotos.OnItemChecked := nil;
+    listPhotos.OnCustomDrawSubItem := nil;
+    ProgressBar1.Min := 0;
+    ProgressBar1.Max := photos.Count;
+    for i := 0 to photos.Count-1 do
     begin
+      Process.Caption := 'Processing image: ' + photos[i] + ' ' + i.ToString + ' out of ' + photos.Count.ToString;
+      ProgressBar1.position := i;
+      Taskbar1.ProgressValue := i;
+      Application.ProcessMessages;
       st := TStopWatch.Create;
       st.Start;
-      RequestInformation_REST_Flickr(listPhotos.Items[i].Caption);
+      RequestInformation_REST_Flickr(photos[i]);
       st.Stop;
-      log('Getting history for ' + listPhotos.Items[i].Caption + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      log('Getting history for ' + photos[i] + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
     end;
-  end;
 
-  ProgressBar1.Visible := false;
-  Process.Visible := false;
-  if not filterEnabled then
-  begin
-    UpdateTotals(false);
-    LoadHallOfFame(repository);
+    ProgressBar1.Visible := false;
+    Process.Visible := false;
+    if not filterEnabled then
+    begin
+      UpdateTotals(false);
+      LoadHallOfFame(repository);
+    end;
+    listPhotos.OnItemChecked := listPhotosItemChecked;
+    listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
+    btnSave.Enabled := true;
+    photoId.Enabled := true;
+    btnLoad.Enabled := true;
+    btnAdd.Enabled := true;
+    Taskbar1.ProgressValue := 0;
+    btnGetList.Enabled := true;
+    batchUpdate.Enabled := true;
+  finally
+    photos.Free;
   end;
-  listPhotos.OnItemChecked := listPhotosItemChecked;
-  listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
-  btnSave.Enabled := true;
-  photoId.Enabled := true;
-  btnLoad.Enabled := true;
-  btnAdd.Enabled := true;
-  Taskbar1.ProgressValue := 0;
-  btnGetList.Enabled := true;
-  batchUpdate.Enabled := true;
 end;
 
 procedure TfrmFlickr.UpdateTotals(onlyLabels : boolean);
@@ -756,8 +748,6 @@ begin
       if (i >= startMark) and (i <= endMark) then
         listPhotos.Items[i].Checked := not listPhotos.Items[i].Checked;
     end;
-    //startMark := -1;
-    //endMark := -1;
   end;
   UpdateLabel();
 end;
@@ -2305,6 +2295,7 @@ begin
   //Restore everything as it was.
   startMark := -1;
   endMark := -1;
+  edtFilter.Text := '';
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
   filterEnabled := false;
@@ -2423,7 +2414,7 @@ begin
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
     Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
-
+    mStatus.Lines.Add('******************************************************************');
     mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into  ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
@@ -2500,6 +2491,7 @@ begin
     end;
   finally
     mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
+    mStatus.Lines.Add('******************************************************************');
     progressbar1.Visible := false;
     photos.Free;
     groups.Free;
@@ -2516,36 +2508,49 @@ var
   groupId: string;
   p : IPhoto;
   OmitGroups : string;
+  total : integer;
 begin
   //Ban these groups in the photos selected.
+  PageControl3.ActivePage := tabStatus;
   photos := TList<string>.Create;
   groups := TList<string>.Create;
-
-  for i := 0 to listPhotos.Items.Count - 1 do
-  begin
-    if listPhotos.Items[i].Checked then
-      photos.Add(listPhotos.Items[i].Caption);
-  end;
-  for i := 0 to listGroups.Items.Count - 1 do
-  begin
-    if listGroups.Items[i].Checked then
-      groups.Add(listGroups.Items[i].Caption);
-  end;
-
-  for i := 0 to photos.Count - 1 do
-  begin
-    photoId := photos[i];
-    p := repository.GetPhoto(photoId);
-    OmitGroups := p.OmitGroups;
-    for j := 0 to groups.Count - 1 do
+  try
+    for i := 0 to listPhotos.Items.Count - 1 do
     begin
-      groupId := groups[j];
-      if not OmitGroups.Contains(groupId) then
-      begin
-        OmitGroups := OmitGroups + groupId + ',';
-      end;
+      if listPhotos.Items[i].Checked then
+        photos.Add(listPhotos.Items[i].Caption);
     end;
-    p.OmitGroups := OmitGroups;
+    for i := 0 to listGroups.Items.Count - 1 do
+    begin
+      if listGroups.Items[i].Checked then
+        groups.Add(listGroups.Items[i].Caption);
+    end;
+    mStatus.Lines.Add('******************************************************************');
+    mStatus.Lines.Add('Banning ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
+    total := photos.Count * groups.Count;
+    mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
+    for i := 0 to photos.Count - 1 do
+    begin
+      photoId := photos[i];
+      p := repository.GetPhoto(photoId);
+      OmitGroups := p.OmitGroups;
+      for j := 0 to groups.Count - 1 do
+      begin
+        groupId := groups[j];
+        if not OmitGroups.Contains(groupId) then
+        begin
+          OmitGroups := OmitGroups + groupId + ',';
+          mStatus.Lines.Add('Adding group to banned list for  : ' + photoId + ': ' + OmitGroups);
+        end
+        else
+          mStatus.Lines.Add('Group already in the banned list : ' + groupId);
+      end;
+      p.OmitGroups := OmitGroups;
+    end;
+  finally
+    mStatus.Lines.Add('******************************************************************');
+    photos.Free;
+    groups.Free;
   end;
 end;
 
@@ -2558,6 +2563,7 @@ var
   Item: TListItem;
 begin
   try
+    chkReplaceProfile.Checked := false;
     pagecontrol3.TabIndex := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
     profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
@@ -2656,7 +2662,7 @@ begin
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
     Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
-
+    mStatus.Lines.Add('******************************************************************');
     mStatus.Lines.Add('Removing ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
@@ -2715,6 +2721,7 @@ begin
     end;
   finally
     mStatus.Lines.Add('Total number of groups removed: ' + success.ToString() + ' out of ' + total.ToString());
+    mStatus.Lines.Add('******************************************************************');
     progressbar1.Visible := false;
     photos.Free;
     groups.Free;
@@ -2725,6 +2732,7 @@ procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);
 var
   profile: IProfile;
   i: Integer;
+  option : integer;
 begin
   if edtProfile.text = '' then
   begin
@@ -2732,30 +2740,19 @@ begin
     exit;
   end;
 
-  // Give me the profile
-  profile := flickrProfiles.getProfile(edtProfile.text);
-
-  if profile = nil then
+  option := mrOK;
+  if chkReplaceProfile.Checked then
   begin
-    // New Profile
-    profile := TProfile.Create;
-    profile.Name := edtProfile.text;
-    for i := 0 to listGroups.Items.Count - 1 do
-    begin
-      if listGroups.Items[i].Checked then
-      begin
-        profile.AddId(listGroups.Items[i].Caption);
-      end;
-    end;
-    flickrProfiles.Add(profile);
-  end
-  else
-  begin
-    if chkReplaceProfile.Checked then
-    begin
-      flickrProfiles.list.Remove(profile);
-      profile := nil;
+    option := MessageDlg('Replace profile is ticked, do you really want to override the entire profile?',mtInformation, mbOKCancel, 0);
+  end;
 
+  if option = mrOK then
+  begin
+    // Give me the profile
+    profile := flickrProfiles.getProfile(edtProfile.text);
+
+    if profile = nil then
+    begin
       // New Profile
       profile := TProfile.Create;
       profile.Name := edtProfile.text;
@@ -2770,17 +2767,37 @@ begin
     end
     else
     begin
-      for i := 0 to listGroups.Items.Count - 1 do
+      if chkReplaceProfile.Checked then
       begin
-        if listGroups.Items[i].Checked then
+        flickrProfiles.list.Remove(profile);
+        profile := nil;
+
+        // New Profile
+        profile := TProfile.Create;
+        profile.Name := edtProfile.text;
+        for i := 0 to listGroups.Items.Count - 1 do
         begin
-          profile.AddId(listGroups.Items[i].Caption);
+          if listGroups.Items[i].Checked then
+          begin
+            profile.AddId(listGroups.Items[i].Caption);
+          end;
+        end;
+        flickrProfiles.Add(profile);
+      end
+      else
+      begin
+        for i := 0 to listGroups.Items.Count - 1 do
+        begin
+          if listGroups.Items[i].Checked then
+          begin
+            profile.AddId(listGroups.Items[i].Caption);
+          end;
         end;
       end;
     end;
+    flickrProfiles.save('flickrProfiles.xml');
+    LoadProfiles();
   end;
-  flickrProfiles.save('flickrProfiles.xml');
-  LoadProfiles();
 end;
 
 procedure TfrmFlickr.btnShowReportClick(Sender: TObject);
@@ -3741,6 +3758,35 @@ begin
   RepositoryLoaded := false;
   if not fileExists(ExtractFilePath(ParamStr(0)) + 'flickrRepository.xml') then
     btnLoad.Enabled := false;
+  ClearAllCharts();
+end;
+
+procedure TfrmFlickr.ClearAllCharts();
+begin
+  chart2.RemoveAllSeries;
+  ChartViews.RemoveAllSeries;
+  ChartLikes.RemoveAllSeries;
+  ChartComments.RemoveAllSeries;
+  executionTime.RemoveAllSeries;
+  mostviewschart.RemoveAllSeries;
+  mostlikeschart.RemoveAllSeries;
+  chartfollowing.RemoveAllSeries;
+  organicViews.RemoveAllSeries;
+  organicLikes.RemoveAllSeries;
+  organicComments.RemoveAllSeries;
+  groupspread.RemoveAllSeries;
+  dailyViews.RemoveAllSeries;
+  dailyLikes.RemoveAllSeries;
+  dailyComments.RemoveAllSeries;
+  chartAlbum.RemoveAllSeries;
+  chartHallViews.RemoveAllSeries;
+  ChartHallLikes.RemoveAllSeries;
+  chartItemViews.RemoveAllSeries;
+  chartItemLikes.RemoveAllSeries;
+  chartItemComments.RemoveAllSeries;
+  chartItemViewsH.RemoveAllSeries;
+  chartItemLikesH.RemoveAllSeries;
+  chartItemCommentsH.RemoveAllSeries
 end;
 
 procedure TfrmFlickr.FormDestroy(Sender: TObject);
@@ -4188,8 +4234,6 @@ begin
     if listphotos.Items[i].Checked then
       inc(count);
   end;
-  chkUpdate.Checked := (count > 0);
-
   Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
