@@ -17,15 +17,15 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **Dashboard**:
 
-![](http://3.bp.blogspot.com/-Wuf66X97Lac/VYh1ezan0tI/AAAAAAAAE58/lr1ECQ4Bjpc/s640/dashboard.png)
+![](http://2.bp.blogspot.com/-pOsbaNlGn8A/VdzVz5L3CJI/AAAAAAAAE_U/TSorHxtJO40/s640/version.png)
 
 **Processing**:
 
-![](http://4.bp.blogspot.com/-CEV0jQ6qLfc/VYh55Oj3_rI/AAAAAAAAE6Q/3lpyMGmQS00/s640/dashboard2.png)
+![](http://3.bp.blogspot.com/-L0tJYC6NnH4/VdzWXMZCCcI/AAAAAAAAE_c/HYShnUDk0TY/s640/proces.png)
 
 **Authentication**:
 
-![](http://1.bp.blogspot.com/-qqAYuDjdP6w/VYiAROWt6NI/AAAAAAAAE64/HtLd_lIz26Q/s640/auth.png)
+![](http://2.bp.blogspot.com/-buVw7akFPG4/VdzYG7JkCcI/AAAAAAAAE_w/qolCi6kzKDY/s640/auth2.png)
 
 It will keep a list of all the photos you add to keep track of them automatically.
 The following information will be saved:
@@ -63,13 +63,15 @@ Version 4.1 (beta):
 
 Version 4.3 (RC):
 
-- FlickrPhotoStats(x86) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
 - FlickrPhotoStats(x64) v4.3. (https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435)
+
+Version 4.4 (RC):
+
+- FlickrPhotoStats(x64) v4.4. (https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7)
 
 Latest release candidate can be found here:
 
-- FlickrPhotoStats(x86) v4.4. (https://app.box.com/s/zyv0thasrnrjhi2jvh7359u7lvpdfuh2)
-- FlickrPhotoStats(x64) v4.4. (https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7)
+- FlickrPhotoStats(x64) v4.4.0.82. (https://app.box.com/s/1l6otaof0iefazqt8tp1602bv98bji9r)
 
 ## Changelog
 ### Features for version 3.1:
