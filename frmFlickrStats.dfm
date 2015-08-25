@@ -522,7 +522,6 @@ object frmFlickr: TfrmFlickr
       Smooth = True
       TabOrder = 4
       Visible = False
-      ExplicitTop = 49
     end
     object btnSave: TButton
       Left = 54
@@ -592,6 +591,10 @@ object frmFlickr: TfrmFlickr
     TabOrder = 1
     object Dashboard: TTabSheet
       Caption = 'Dashboard'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter6: TSplitter
         Left = 0
         Top = 129
@@ -2020,8 +2023,6 @@ object frmFlickr: TfrmFlickr
           ViewStyle = vsReport
           OnCustomDrawSubItem = listPhotosCustomDrawSubItem
           OnItemChecked = listPhotosItemChecked
-          ExplicitTop = 81
-          ExplicitHeight = 359
         end
         object Panel5: TPanel
           Left = 1
@@ -2219,6 +2220,10 @@ object frmFlickr: TfrmFlickr
         TabOrder = 1
         object Statistics: TTabSheet
           Caption = 'Statistics'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
             Top = 0
@@ -2724,6 +2729,10 @@ object frmFlickr: TfrmFlickr
         object TabSheet3: TTabSheet
           Caption = 'Flickr Photo List'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel6: TPanel
             Left = 0
             Top = 0
@@ -3080,6 +3089,10 @@ object frmFlickr: TfrmFlickr
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -3112,6 +3125,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet1: TTabSheet
       Caption = 'Hall of Fame'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel12: TPanel
         Left = 0
         Top = 0
@@ -3155,6 +3172,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet4: TTabSheet
       Caption = 'Albums'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 376
@@ -3237,6 +3258,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet6: TTabSheet
       Caption = 'Logs'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mLogs: TMemo
         Left = 0
         Top = 0
@@ -3251,6 +3276,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet7: TTabSheet
       Caption = 'Options'
       ImageIndex = 5
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3726,6 +3755,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet8: TTabSheet
       Caption = 'Report'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel21: TPanel
         Left = 0
         Top = 0
@@ -3807,7 +3840,7 @@ object frmFlickr: TfrmFlickr
     Left = 1088
     Top = 400
     Bitmap = {
-      494C0101ED002001600110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001640110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
