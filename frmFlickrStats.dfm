@@ -557,7 +557,7 @@ object frmFlickr: TfrmFlickr
       Top = 6
       Width = 50
       Height = 38
-      Caption = 'Load'
+      Caption = 'Open'
       ImageAlignment = iaTop
       ImageIndex = 58
       ImageMargins.Top = 5
@@ -600,7 +600,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = Dashboard
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2862,6 +2862,7 @@ object frmFlickr: TfrmFlickr
               Width = 50
               Height = 38
               Caption = 'Load'
+              Enabled = False
               ImageAlignment = iaTop
               ImageIndex = 188
               ImageMargins.Top = 5
@@ -3045,6 +3046,7 @@ object frmFlickr: TfrmFlickr
               Width = 50
               Height = 38
               Caption = 'Stop'
+              Enabled = False
               ImageAlignment = iaTop
               ImageIndex = 183
               ImageMargins.Top = 5
@@ -3147,6 +3149,7 @@ object frmFlickr: TfrmFlickr
           Width = 50
           Height = 38
           Caption = 'Load'
+          Enabled = False
           ImageAlignment = iaTop
           ImageIndex = 117
           ImageMargins.Top = 5
@@ -3199,6 +3202,7 @@ object frmFlickr: TfrmFlickr
           Width = 50
           Height = 38
           Caption = 'Load'
+          Enabled = False
           ImageAlignment = iaTop
           ImageIndex = 117
           ImageMargins.Top = 5
@@ -3213,6 +3217,7 @@ object frmFlickr: TfrmFlickr
           Width = 63
           Height = 38
           Caption = 'Organise'
+          Enabled = False
           ImageAlignment = iaTop
           ImageIndex = 163
           ImageMargins.Top = 5
@@ -3809,6 +3814,7 @@ object frmFlickr: TfrmFlickr
           Width = 50
           Height = 38
           Caption = 'Show'
+          Enabled = False
           ImageAlignment = iaTop
           ImageIndex = 188
           ImageMargins.Top = 5

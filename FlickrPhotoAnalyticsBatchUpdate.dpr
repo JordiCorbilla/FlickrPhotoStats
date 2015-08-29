@@ -205,6 +205,8 @@ begin
         WriteLn('Update flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         st := TStopWatch.Create;
         st.Start;
+        WriteLn('Saving flickrRepositoryGlobal');
+        TLogger.LogFile('Saving flickrRepositoryGlobal');
         globalsRepository.save('flickrRepositoryGlobal.xml');
         st.Stop;
         WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -218,7 +220,7 @@ begin
     description := nil;
     try
       options := TOptions.New().Load;
-      description := THtmlComposer.getMessage(repository, globalsRepository, organic);
+      description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
       TFlickrEmail.SendHTML(options.eMailAddress, description);
     except
       on E: Exception do

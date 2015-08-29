@@ -142,7 +142,7 @@ begin
     globalsRepository.load('flickrRepositoryGlobal.xml');
     organic.Load('flickrOrganic.xml');
     options := TOptions.New().Load;
-    description := THtmlComposer.getMessage(repository, globalsRepository, organic);
+    description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
     TFlickrEmail.SendHTML(options.eMailAddress, description);
   finally
     description.free;

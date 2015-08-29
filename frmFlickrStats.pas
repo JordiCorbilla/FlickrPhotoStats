@@ -547,7 +547,6 @@ begin
     authenticationScreen.Free;
   end;
 
-
   Log('Navigating to ' + 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   NavigationUrl := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
   //WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
@@ -1110,7 +1109,7 @@ var
   st : TStopWatch;
   comparer : TCompareType;
 begin
-  btnLoadOptionsClick(Sender);
+  LoadOptions;
   if Assigned(repository) then
   begin
     repository := nil;
@@ -1187,6 +1186,9 @@ begin
 
   Button9Click(sender);
   RepositoryLoaded := true;
+  btnShowReport.Enabled := true;
+  Button9.Enabled := true;
+  btnLoadHall.Enabled := true;
 end;
 
 procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
@@ -2149,6 +2151,7 @@ begin
   optionsEmail.flickrUserId := edtUserId.Text;
   optionsEMail.save;
   showmessage('Options Saved sucessfully');
+  FDirtyOptions := false;
 end;
 
 procedure TfrmFlickr.LoadOptions();
@@ -2923,7 +2926,7 @@ begin
   //Show the html generated report.
   if RepositoryLoaded then
   begin
-    description := THtmlComposer.getMessage(repository, globalsRepository, organic);
+    description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, true);
     try
       description.SaveToFile('flickrHtmlreport.htm');
       WebBrowser2.Navigate('file:///' + ExtractFilePath(ParamStr(0)) + 'flickrHtmlreport.htm');
