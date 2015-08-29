@@ -600,7 +600,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = TabSheet7
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -3272,6 +3272,7 @@ object frmFlickr: TfrmFlickr
     object TabSheet7: TTabSheet
       Caption = 'Options'
       ImageIndex = 5
+      OnExit = TabSheet7Exit
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3492,6 +3493,7 @@ object frmFlickr: TfrmFlickr
           Height = 21
           TabOrder = 0
           Text = '80'
+          OnChange = edtMaxChange
         end
         object apikey: TEdit
           Left = 176
@@ -3507,7 +3509,7 @@ object frmFlickr: TfrmFlickr
           Width = 233
           Height = 21
           TabOrder = 2
-          OnChange = apikeyChange
+          OnChange = edtEmailChange
         end
         object showMarks: TCheckBox
           Left = 176
@@ -3527,7 +3529,7 @@ object frmFlickr: TfrmFlickr
           Checked = True
           State = cbChecked
           TabOrder = 4
-          OnClick = showMarksClick
+          OnClick = chkPendingClick
         end
         object chkRealTime: TCheckBox
           Left = 176
@@ -3536,7 +3538,7 @@ object frmFlickr: TfrmFlickr
           Height = 17
           Caption = 'Update counts real time'
           TabOrder = 5
-          OnClick = showMarksClick
+          OnClick = chkRealTimeClick
         end
         object chksorting: TCheckBox
           Left = 176
@@ -3547,6 +3549,7 @@ object frmFlickr: TfrmFlickr
           Checked = True
           State = cbChecked
           TabOrder = 6
+          OnClick = chksortingClick
         end
         object GroupBox1: TGroupBox
           Left = 191
@@ -3562,6 +3565,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Id'
             TabOrder = 0
+            OnClick = RadioButton1Click
           end
           object RadioButton2: TRadioButton
             Left = 15
@@ -3572,6 +3576,7 @@ object frmFlickr: TfrmFlickr
             Checked = True
             TabOrder = 1
             TabStop = True
+            OnClick = RadioButton1Click
           end
           object RadioButton3: TRadioButton
             Left = 15
@@ -3580,6 +3585,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Likes'
             TabOrder = 2
+            OnClick = RadioButton1Click
           end
           object RadioButton4: TRadioButton
             Left = 103
@@ -3588,6 +3594,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Albums'
             TabOrder = 3
+            OnClick = RadioButton1Click
           end
           object RadioButton5: TRadioButton
             Left = 103
@@ -3596,6 +3603,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Taken'
             TabOrder = 4
+            OnClick = RadioButton1Click
           end
           object RadioButton6: TRadioButton
             Left = 15
@@ -3604,6 +3612,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Comments'
             TabOrder = 5
+            OnClick = RadioButton1Click
           end
           object RadioButton7: TRadioButton
             Left = 103
@@ -3612,6 +3621,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Groups'
             TabOrder = 6
+            OnClick = RadioButton1Click
           end
           object RadioButton10: TRadioButton
             Left = 103
@@ -3620,6 +3630,7 @@ object frmFlickr: TfrmFlickr
             Height = 17
             Caption = 'Trend'
             TabOrder = 7
+            OnClick = RadioButton1Click
           end
         end
         object edtMaxLog: TEdit
@@ -3629,6 +3640,7 @@ object frmFlickr: TfrmFlickr
           Height = 21
           TabOrder = 8
           Text = '30000'
+          OnChange = edtMaxLogChange
         end
         object chkResponses: TCheckBox
           Left = 176
@@ -3639,6 +3651,7 @@ object frmFlickr: TfrmFlickr
           Checked = True
           State = cbChecked
           TabOrder = 9
+          OnClick = chkResponsesClick
         end
         object chkRejected: TCheckBox
           Left = 176
@@ -3649,6 +3662,7 @@ object frmFlickr: TfrmFlickr
           Checked = True
           State = cbChecked
           TabOrder = 10
+          OnClick = chkRejectedClick
         end
         object secret: TEdit
           Left = 176
@@ -3656,7 +3670,7 @@ object frmFlickr: TfrmFlickr
           Width = 233
           Height = 21
           TabOrder = 11
-          OnChange = apikeyChange
+          OnChange = secretChange
         end
         object Button1: TButton
           Left = 415
@@ -3680,6 +3694,7 @@ object frmFlickr: TfrmFlickr
           ScrollBars = ssBoth
           TabOrder = 13
           WordWrap = False
+          OnChange = listValuesViewsAlbumsChange
         end
         object listValuesViewsAlbumsID: TMemo
           Left = 1087
@@ -3689,6 +3704,7 @@ object frmFlickr: TfrmFlickr
           ScrollBars = ssBoth
           TabOrder = 14
           WordWrap = False
+          OnChange = listValuesViewsAlbumsIDChange
         end
         object listValuesLikesAlbums: TMemo
           Left = 928
@@ -3698,6 +3714,7 @@ object frmFlickr: TfrmFlickr
           ScrollBars = ssBoth
           TabOrder = 15
           WordWrap = False
+          OnChange = listValuesLikesAlbumsChange
         end
         object listValuesLikesAlbumsID: TMemo
           Left = 1087
@@ -3707,6 +3724,7 @@ object frmFlickr: TfrmFlickr
           ScrollBars = ssBoth
           TabOrder = 16
           WordWrap = False
+          OnChange = listValuesLikesAlbumsIDChange
         end
         object edtUrlName: TEdit
           Left = 176
@@ -3714,7 +3732,7 @@ object frmFlickr: TfrmFlickr
           Width = 233
           Height = 21
           TabOrder = 17
-          OnChange = apikeyChange
+          OnChange = edtUrlNameChange
         end
         object edtUserId: TEdit
           Left = 176
@@ -3722,7 +3740,7 @@ object frmFlickr: TfrmFlickr
           Width = 233
           Height = 21
           TabOrder = 18
-          OnChange = apikeyChange
+          OnChange = edtUserIdChange
         end
         object chkUpdateCollections: TCheckBox
           Left = 176
@@ -3733,6 +3751,7 @@ object frmFlickr: TfrmFlickr
           Checked = True
           State = cbChecked
           TabOrder = 19
+          OnClick = chkUpdateCollectionsClick
         end
         object chkAddItem: TCheckBox
           Left = 176
@@ -3741,6 +3760,7 @@ object frmFlickr: TfrmFlickr
           Height = 17
           Caption = 'Disable Trend Display'
           TabOrder = 20
+          OnClick = chkAddItemClick
         end
         object GroupBox2: TGroupBox
           Left = 191
@@ -3758,6 +3778,7 @@ object frmFlickr: TfrmFlickr
             Checked = True
             TabOrder = 0
             TabStop = True
+            OnClick = RadioButton8Click
           end
           object RadioButton9: TRadioButton
             Left = 17
@@ -3766,6 +3787,7 @@ object frmFlickr: TfrmFlickr
             Height = 24
             Caption = 'Sort by Number of Photos'
             TabOrder = 1
+            OnClick = RadioButton8Click
           end
         end
       end
@@ -3854,7 +3876,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED0020016C0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001700110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

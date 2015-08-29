@@ -54,10 +54,10 @@ type
     procedure SetsortingEnabled(const Value: boolean);
     function GetSortedBy(): integer;
     procedure SetSortedBy(const Value: integer);
-    function GetAlbumViews(): TStrings;
-    procedure SetAlbumViews(const Value: TStrings);
-    function GetAlbumLikes(): TStrings;
-    procedure SetAlbumLikes(const Value: TStrings);
+    function GetAlbumViews(): TStringList;
+    procedure SetAlbumViews(const Value: TStringList);
+    function GetAlbumLikes(): TStringList;
+    procedure SetAlbumLikes(const Value: TStringList);
     function GetSortedByGropus(): integer;
     procedure SetSortedByGropus(const Value: integer);
     procedure SetDisableTrendDisplay(const Value: boolean);
@@ -68,10 +68,10 @@ type
     function GetDisplaySuccessfulResponses() : boolean;
     function GetUpdateCollections() : boolean;
     function GetDisableTrendDisplay() : boolean;
-    function GetAlbumViewsID(): TStrings;
-    procedure SetAlbumViewsID(const Value: TStrings);
-    function GetAlbumLikesID(): TStrings;
-    procedure SetAlbumLikesID(const Value: TStrings);
+    function GetAlbumViewsID(): TStringList;
+    procedure SetAlbumViewsID(const Value: TStringList);
+    function GetAlbumLikesID(): TStringList;
+    procedure SetAlbumLikesID(const Value: TStringList);
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
     property ConsiderPendingQueueItems : boolean read GetConsiderPendingQueueItems write SetConsiderPendingQueueItems;
@@ -82,15 +82,15 @@ type
     property urlName : string read GeturlName write SeturlName;
     property sortingEnabled : boolean read GetsortingEnabled write SetsortingEnabled;
     property SortedBy : integer read GetSortedBy write SetSortedBy;
-    property AlbumViews : TStrings read GetAlbumViews write SetAlbumViews;
-    property AlbumLikes : TStrings read GetAlbumLikes write SetAlbumLikes;
+    property AlbumViews : TStringList read GetAlbumViews write SetAlbumViews;
+    property AlbumLikes : TStringList read GetAlbumLikes write SetAlbumLikes;
     property SortedByGropus : integer read GetSortedByGropus write SetSortedByGropus;
     property KeepRejectedListAlive: boolean read GetKeepRejectedListAlive write SetKeepRejectedListAlive;
     property DisplaySuccessfulResponses: boolean read GetDisplaySuccessfulResponses write SetDisplaySuccessfulResponses;
     property UpdateCollections: boolean read GetUpdateCollections write SetUpdateCollections;
     property DisableTrendDisplay: boolean read GetDisableTrendDisplay write SetDisableTrendDisplay;
-    property AlbumViewsID : TStrings read GetAlbumViewsID write SetAlbumViewsID;
-    property AlbumLikesID : TStrings read GetAlbumLikesID write SetAlbumLikesID;
+    property AlbumViewsID : TStringList read GetAlbumViewsID write SetAlbumViewsID;
+    property AlbumLikesID : TStringList read GetAlbumLikesID write SetAlbumLikesID;
     function Load() : IOptions;
     procedure Save();
   End;
@@ -107,10 +107,10 @@ type
     FurlName: string;
     FSortingEnabled : boolean;
     FSortedBy : integer;
-    FAlbumViews : TStrings;
-    FAlbumLikes : TStrings;
-    FAlbumViewsID : TStrings;
-    FAlbumLikesID : TStrings;
+    FAlbumViews : TStringList;
+    FAlbumLikes : TStringList;
+    FAlbumViewsID : TStringList;
+    FAlbumLikesID : TStringList;
     FSortedByGroups : integer;
     FKeepRejectedListAlive: boolean;
     FDisplaySuccessfulResponses: boolean;
@@ -138,14 +138,14 @@ type
     procedure SetSortedBy(const Value: integer);
     function GetSortedByGropus(): integer;
     procedure SetSortedByGropus(const Value: integer);
-    function GetAlbumViews(): TStrings;
-    procedure SetAlbumViews(const Value: TStrings);
-    function GetAlbumLikes(): TStrings;
-    procedure SetAlbumLikes(const Value: TStrings);
-    function GetAlbumViewsID(): TStrings;
-    procedure SetAlbumViewsID(const Value: TStrings);
-    function GetAlbumLikesID(): TStrings;
-    procedure SetAlbumLikesID(const Value: TStrings);
+    function GetAlbumViews(): TStringList;
+    procedure SetAlbumViews(const Value: TStringList);
+    function GetAlbumLikes(): TStringList;
+    procedure SetAlbumLikes(const Value: TStringList);
+    function GetAlbumViewsID(): TStringList;
+    procedure SetAlbumViewsID(const Value: TStringList);
+    function GetAlbumLikesID(): TStringList;
+    procedure SetAlbumLikesID(const Value: TStringList);
     procedure SetDisableTrendDisplay(const Value: boolean);
     procedure SetDisplaySuccessfulResponses(const Value: boolean);
     procedure SetKeepRejectedListAlive(const Value: boolean);
@@ -166,10 +166,10 @@ type
     property sortingEnabled : boolean read GetsortingEnabled write SetsortingEnabled;
     property SortedBy : integer read GetSortedBy write SetSortedBy;
     property SortedByGropus : integer read GetSortedByGropus write SetSortedByGropus;
-    property AlbumViews : TStrings read GetAlbumViews write SetAlbumViews;
-    property AlbumLikes : TStrings read GetAlbumLikes write SetAlbumLikes;
-    property AlbumViewsID : TStrings read GetAlbumViewsID write SetAlbumViewsID;
-    property AlbumLikesID : TStrings read GetAlbumLikesID write SetAlbumLikesID;
+    property AlbumViews : TStringList read GetAlbumViews write SetAlbumViews;
+    property AlbumLikes : TStringList read GetAlbumLikes write SetAlbumLikes;
+    property AlbumViewsID : TStringList read GetAlbumViewsID write SetAlbumViewsID;
+    property AlbumLikesID : TStringList read GetAlbumLikesID write SetAlbumLikesID;
     property KeepRejectedListAlive: boolean read GetKeepRejectedListAlive write SetKeepRejectedListAlive;
     property DisplaySuccessfulResponses: boolean read GetDisplaySuccessfulResponses write SetDisplaySuccessfulResponses;
     property UpdateCollections: boolean read GetUpdateCollections write SetUpdateCollections;
@@ -190,41 +190,41 @@ uses
 
 constructor TOptions.Create;
 begin
-  FAlbumViews := TStrings.Create;
-  FAlbumLikes := TStrings.Create;
-  FAlbumViewsID := TStrings.Create;
-  FAlbumLikesID := TStrings.Create;
+  FAlbumViews := TStringList.Create;
+  FAlbumLikes := TStringList.Create;
+  FAlbumViewsID := TStringList.Create;
+  FAlbumLikesID := TStringList.Create;
 end;
 
 destructor TOptions.Destroy;
 begin
-//  if assigned(FAlbumViews) then
-//    FAlbumViews.Free;
-//  if assigned(FAlbumLikes) then
-//    FAlbumLikes.Free;
-//  if assigned(FAlbumViewsID) then
-//    FAlbumViewsID.Free;
-//  if assigned(FAlbumLikesID) then
-//    FAlbumLikesID.Free;
+  if assigned(FAlbumViews) then
+    FAlbumViews.Free;
+  if assigned(FAlbumLikes) then
+    FAlbumLikes.Free;
+  if assigned(FAlbumViewsID) then
+    FAlbumViewsID.Free;
+  if assigned(FAlbumLikesID) then
+    FAlbumLikesID.Free;
   inherited;
 end;
 
-function TOptions.GetAlbumLikes: TStrings;
+function TOptions.GetAlbumLikes: TStringList;
 begin
   result := FAlbumLikes;
 end;
 
-function TOptions.GetAlbumLikesID: TStrings;
+function TOptions.GetAlbumLikesID: TStringList;
 begin
   result := FAlbumLikesID;
 end;
 
-function TOptions.GetAlbumViews: TStrings;
+function TOptions.GetAlbumViews: TStringList;
 begin
   result := FAlbumViews;
 end;
 
-function TOptions.GetAlbumViewsID: TStrings;
+function TOptions.GetAlbumViewsID: TStringList;
 begin
   result := FAlbumViewsID;
 end;
@@ -307,17 +307,50 @@ end;
 function TOptions.Load : IOptions;
 var
   inifile : Tinifile;
+  i : integer;
+  value : string;
 begin
   inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
   try
     FMaxItemsListGlobals := inifile.ReadString('System', 'MaxItemsListGlobals', '80');
+    FUrlName := inifile.ReadString('System', 'UrlName', '');
     FShowMarksInGraphs := inifile.ReadBool('System', 'ShowMarksInGraphs', false);
     FConsiderPendingQueueItems := inifile.ReadBool('System', 'ConsiderPendingQueueItems', true);
     FUpdateCountsRealTime := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
     FMaxNumberOfLinesLog := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
     FeMailAddress := inifile.ReadString('System', 'eMailAddress', '');
+    FSortingEnabled := inifile.ReadBool('System', 'SortingEnabled', true);
+
+    FKeepRejectedListAlive := inifile.ReadBool('System', 'KeepRejectedListAlive', true);
+    FDisplaySuccessfulResponses := inifile.ReadBool('System', 'DisplaySuccessfulResponses', true);
+    FUpdateCollections := inifile.ReadBool('System', 'UpdateCollections', true);
+    FDisableTrendDisplay := inifile.ReadBool('System', 'DisableTrendDisplay', false);
+
+    FSortedBy := inifile.ReadInteger('System', 'SortedBy', 0);
 
     FMaxItems := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
+
+    FAlbumViews.Clear;
+    FAlbumViewsID.Clear;
+    for i := 0 to FMaxItems - 1 do
+    begin
+      value := inifile.ReadString('AlbumViews', 'Value' + i.ToString(), '');
+      FAlbumViews.Add(value);
+      value := inifile.ReadString('AlbumViews', 'ValueID' + i.ToString(), '');
+      FAlbumViewsID.Add(value);
+    end;
+
+    FMaxItems := inifile.ReadInteger('AlbumLikes', 'MaxItems', 0);
+
+    FAlbumLikes.Clear;
+    FAlbumLikesID.Clear;
+    for i := 0 to FMaxItems - 1 do
+    begin
+      value := inifile.ReadString('AlbumLikes', 'Value' + i.ToString(), '');
+      FAlbumLikes.Add(value);
+      value := inifile.ReadString('AlbumLikes', 'ValueID' + i.ToString(), '');
+      FAlbumLikesID.Add(value);
+    end;
   finally
     inifile.Free;
   end;
@@ -371,32 +404,40 @@ begin
   end;
 end;
 
-procedure TOptions.SetAlbumLikes(const Value: TStrings);
+procedure TOptions.SetAlbumLikes(const Value: TStringList);
+var
+  i: Integer;
 begin
-  if Assigned(FAlbumLikes) then
-    FAlbumLikes.Free;
-  FAlbumLikes := value;
+  FAlbumLikes.Clear;
+  for i := 0 to Value.Count-1 do
+    FAlbumLikes.Add(Value[i]);
 end;
 
-procedure TOptions.SetAlbumLikesID(const Value: TStrings);
+procedure TOptions.SetAlbumLikesID(const Value: TStringList);
+var
+  i: Integer;
 begin
-  if Assigned(FAlbumLikesID) then
-    FAlbumLikesID.Free;
-  FAlbumLikesID := value;
+  FAlbumLikesID.Clear;
+  for i := 0 to Value.Count-1 do
+    FAlbumLikesID.Add(Value[i]);
 end;
 
-procedure TOptions.SetAlbumViews(const Value: TStrings);
+procedure TOptions.SetAlbumViews(const Value: TStringList);
+var
+  i: Integer;
 begin
-  if Assigned(FAlbumViews) then
-    FAlbumViews.Free;
-  FAlbumViews := Value;
+  FAlbumViews.Clear;
+  for i := 0 to Value.Count-1 do
+    FAlbumViews.Add(Value[i]);
 end;
 
-procedure TOptions.SetAlbumViewsID(const Value: TStrings);
+procedure TOptions.SetAlbumViewsID(const Value: TStringList);
+var
+  i: Integer;
 begin
-  if Assigned(FAlbumViewsID) then
-    FAlbumViewsID.Free;
-  FAlbumViewsID := Value;
+  FAlbumViewsID.Clear;
+  for i := 0 to Value.Count-1 do
+    FAlbumViewsID.Add(Value[i]);
 end;
 
 procedure TOptions.SetConsiderPendingQueueItems(const Value: boolean);

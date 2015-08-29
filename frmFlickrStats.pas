@@ -380,6 +380,26 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure edtMaxChange(Sender: TObject);
+    procedure edtMaxLogChange(Sender: TObject);
+    procedure secretChange(Sender: TObject);
+    procedure edtUrlNameChange(Sender: TObject);
+    procedure edtUserIdChange(Sender: TObject);
+    procedure edtEmailChange(Sender: TObject);
+    procedure TabSheet7Exit(Sender: TObject);
+    procedure chkPendingClick(Sender: TObject);
+    procedure chkRealTimeClick(Sender: TObject);
+    procedure chkRejectedClick(Sender: TObject);
+    procedure chkResponsesClick(Sender: TObject);
+    procedure chkUpdateCollectionsClick(Sender: TObject);
+    procedure chkAddItemClick(Sender: TObject);
+    procedure chksortingClick(Sender: TObject);
+    procedure RadioButton1Click(Sender: TObject);
+    procedure RadioButton8Click(Sender: TObject);
+    procedure listValuesViewsAlbumsChange(Sender: TObject);
+    procedure listValuesViewsAlbumsIDChange(Sender: TObject);
+    procedure listValuesLikesAlbumsChange(Sender: TObject);
+    procedure listValuesLikesAlbumsIDChange(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -409,6 +429,7 @@ type
     procedure UpdateLabelPhotos;
     procedure ResizeChartsDashBoard;
     procedure ClearAllCharts;
+    procedure LoadOptions;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -430,6 +451,7 @@ type
     FProcessingStop : boolean;
     FGroupStop : boolean;
     RepositoryLoaded : boolean;
+    FDirtyOptions : boolean;
     procedure Log(s: string);
   end;
 
@@ -451,6 +473,8 @@ uses
 procedure TfrmFlickr.apikeyChange(Sender: TObject);
 begin
   btnSave.Enabled := true;
+  if optionsEMail.flickrApiKey <> apikey.text then
+    FDirtyOptions := true;
 end;
 
 procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
@@ -782,6 +806,44 @@ begin
   if found then
     Item := listPhotos.Items[i - 1];
   Result := found;
+end;
+
+procedure TfrmFlickr.RadioButton1Click(Sender: TObject);
+var
+  comparer : integer;
+begin
+  comparer := 0;
+  if radioButton1.checked then
+    comparer := 0;
+  if radioButton2.checked then
+    comparer := 2;
+  if radioButton3.checked then
+    comparer := 1;
+  if radioButton4.checked then
+    comparer := 3;
+  if radioButton5.checked then
+    comparer := 4;
+  if radioButton6.checked then
+    comparer := 5;
+  if radioButton7.checked then
+    comparer := 6;
+  if radioButton10.Checked then
+    comparer := 9;
+  if options.SortedBy <> comparer then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.RadioButton8Click(Sender: TObject);
+var
+  comparerGroups : integer;
+begin
+  comparerGroups := 0;
+  if RadioButton8.Checked then
+    comparerGroups := 7;
+  if RadioButton9.Checked then
+    comparerGroups := 8;
+  if options.SortedByGropus <> comparerGroups then
+    FDirtyOptions := true;
 end;
 
 procedure TfrmFlickr.RequestInformation_REST_Flickr(id: string);
@@ -2021,6 +2083,17 @@ procedure TfrmFlickr.btnSaveOptionsClick(Sender: TObject);
 var
   comparer, comparerGroups : integer;
 begin
+  if listValuesViewsAlbums.Lines.Count <> listValuesViewsAlbumsID.Lines.count then
+  begin
+    showMessage('Album views list must contain the same amount of items');
+    exit;
+  end;
+  if listValuesLikesAlbums.Lines.Count <> listValuesLikesAlbumsID.Lines.count then
+  begin
+    showMessage('Album likes list must contain the same amount of items');
+    exit;
+  end;
+
   options.MaxItemsListGlobals := edtMax.Text;
   options.urlName := edtUrlName.Text;
 
@@ -2063,10 +2136,10 @@ begin
     comparerGroups := 8;
 
   options.SortedByGropus := comparerGroups;
-  options.AlbumViews := listValuesViewsAlbums.Lines;
-  options.AlbumLikes := listValuesLikesAlbums.Lines;
-  options.AlbumViewsID := listValuesViewsAlbumsID.Lines;
-  options.AlbumLikesID := listValuesLikesAlbumsID.Lines;
+  options.AlbumViews := TStringList(listValuesViewsAlbums.Lines);
+  options.AlbumLikes := TStringList(listValuesLikesAlbums.Lines);
+  options.AlbumViewsID := TStringList(listValuesViewsAlbumsID.Lines);
+  options.AlbumLikesID := TStringList(listValuesLikesAlbumsID.Lines);
   options.Save;
 
   optionsEmail.flickrApiKey := apikey.Text;
@@ -2075,72 +2148,77 @@ begin
   optionsEmail.userTokenSecret := userTokenSecret;
   optionsEmail.flickrUserId := edtUserId.Text;
   optionsEMail.save;
+  showmessage('Options Saved sucessfully');
 end;
 
-procedure TfrmFlickr.btnLoadOptionsClick(Sender: TObject);
+procedure TfrmFlickr.LoadOptions();
 var
-  inifile : Tinifile;
-  maxAlbumViews : integer;
-  maxAlbumLikes : integer;
   i : integer;
-  value : string;
-  comparer : integer;
+  comparer, comparerGroups : integer;
 begin
-  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
-  try
-    edtMax.Text := inifile.ReadString('System', 'MaxItemsListGlobals', '80');
-    showMarks.Checked := inifile.ReadBool('System', 'ShowMarksInGraphs', false);
-    chkPending.Checked := inifile.ReadBool('System', 'ConsiderPendingQueueItems', true);
-    chkRealTime.Checked := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
-    edtMaxLog.Text := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
-    edtEmail.Text := inifile.ReadString('System', 'eMailAddress', '');
-    edtUrlName.Text := inifile.ReadString('System', 'UrlName', '');
-    maxAlbumViews := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
+  options := TOptions.New().Load();
 
-    chksorting.Checked := inifile.ReadBool('System', 'SortingEnabled', true);
-    comparer := inifile.ReadInteger('System', 'SortedBy', 0);
+  edtMax.Text := options.MaxItemsListGlobals;
+  edtUrlName.Text := options.urlName;
 
-    case comparer of
-      0: radioButton1.checked := true;
-      2: radioButton2.checked := true;
-      1: radioButton3.checked := true;
-      3: radioButton4.checked := true;
-      4: radioButton5.checked := true;
-      5: radioButton6.checked := true;
-      6: radioButton7.checked := true;
-      9: radioButton10.Checked := true;
-    end;
+  showMarks.Checked := options.ShowMarksInGraphs;
+  chkPending.Checked := options.ConsiderPendingQueueItems;
+  chkRealTime.Checked := options.UpdateCountsRealTime;
+  chkRejected.Checked := options.KeepRejectedListAlive;
+  chkResponses.Checked := options.DisplaySuccessfulResponses;
+  chkUpdateCollections.Checked := options.UpdateCollections;
+  chkAddItem.Checked := options.DisableTrendDisplay;
+  chksorting.Checked := options.sortingEnabled;
 
-    listValuesViewsAlbums.Lines.Clear;
-    listValuesViewsAlbumsID.Lines.Clear;
-    for i := 0 to maxAlbumViews - 1 do
-    begin
-      value := inifile.ReadString('AlbumViews', 'Value' + i.ToString(), '');
-      listValuesViewsAlbums.Lines.Add(value);
-      value := inifile.ReadString('AlbumViews', 'ValueID' + i.ToString(), '');
-      listValuesViewsAlbumsID.Lines.Add(value);
-    end;
+  edtMaxLog.Text := options.MaxNumberOfLinesLog;
+  edtEmail.Text := options.eMailAddress;
 
-    maxAlbumLikes := inifile.ReadInteger('AlbumLikes', 'MaxItems', 0);
+  comparer := options.SortedBy;
 
-    listValuesLikesAlbums.Lines.Clear;
-    listValuesLikesAlbumsID.Lines.Clear;
-    for i := 0 to maxAlbumLikes - 1 do
-    begin
-      value := inifile.ReadString('AlbumLikes', 'Value' + i.ToString(), '');
-      listValuesLikesAlbums.Lines.Add(value);
-      value := inifile.ReadString('AlbumLikes', 'ValueID' + i.ToString(), '');
-      listValuesLikesAlbumsID.Lines.Add(value);
-    end;
-  finally
-    inifile.Free;
+  case comparer of
+    0: radioButton1.checked := true;
+    2: radioButton2.checked := true;
+    1: radioButton3.checked := true;
+    3: radioButton4.checked := true;
+    4: radioButton5.checked := true;
+    5: radioButton6.checked := true;
+    6: radioButton7.checked := true;
+    9: radioButton10.Checked := true;
   end;
 
-  options := TOptions.New().Load();
+  comparerGroups := options.SortedByGropus;
+
+  case comparerGroups of
+    7: RadioButton8.checked := true;
+    8: RadioButton9.checked := true;
+  end;
+
+  listValuesViewsAlbums.Lines.Clear;
+  listValuesViewsAlbumsID.Lines.Clear;
+  for i := 0 to options.AlbumViews.count - 1 do
+  begin
+    listValuesViewsAlbums.Lines.Add(options.AlbumViews[i]);
+    listValuesViewsAlbumsID.Lines.Add(options.AlbumViewsID[i]);
+  end;
+
+  listValuesLikesAlbums.Lines.Clear;
+  listValuesLikesAlbumsID.Lines.Clear;
+  for i := 0 to options.AlbumLikes.count - 1 do
+  begin
+    listValuesLikesAlbums.Lines.Add(options.AlbumLikes[i]);
+    listValuesLikesAlbumsID.Lines.Add(options.AlbumLikesID[i]);
+  end;
+
   optionsEMail := TOptionsEmail.New().load();
   apikey.Text := optionsEmail.flickrApiKey;
   secret.Text := optionsEMail.secret;
   edtUserId.Text := optionsEmail.flickrUserId;
+end;
+
+procedure TfrmFlickr.btnLoadOptionsClick(Sender: TObject);
+begin
+  LoadOptions();
+  showmessage('Options Loaded sucessfully');
 end;
 
 procedure TfrmFlickr.Button1Click(Sender: TObject);
@@ -2911,6 +2989,48 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
 end;
 
+procedure TfrmFlickr.chkAddItemClick(Sender: TObject);
+begin
+  if options.DisableTrendDisplay <> chkAddItem.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chkPendingClick(Sender: TObject);
+begin
+  if options.ConsiderPendingQueueItems <> chkPending.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chkRealTimeClick(Sender: TObject);
+begin
+  if options.UpdateCountsRealTime <> chkRealTime.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chkRejectedClick(Sender: TObject);
+begin
+  if options.KeepRejectedListAlive <> chkRejected.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chkResponsesClick(Sender: TObject);
+begin
+  if options.DisplaySuccessfulResponses <> chkResponses.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chksortingClick(Sender: TObject);
+begin
+  if options.sortingEnabled <> chksorting.Checked then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.chkUpdateCollectionsClick(Sender: TObject);
+begin
+  if options.UpdateCollections <> chkUpdateCollections.Checked then
+    FDirtyOptions := true;
+end;
+
 procedure TfrmFlickr.ClearSelection1Click(Sender: TObject);
 var
   i: Integer;
@@ -2941,6 +3061,8 @@ begin
   flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
   flickrChart.VisibleMarks(dailyViews, showMarks.Checked);
   flickrChart.VisibleMarks(dailyLikes, showMarks.Checked);
+  if options.ShowMarksInGraphs <> showMarks.Checked then
+    FDirtyOptions := true;
 end;
 
 procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
@@ -2969,19 +3091,35 @@ begin
   end;
 end;
 
-// returns MD5 has for a file
-// function TfrmFlickr.MD5(apikey: string; secret: string): string;
-// var
-// idmd5: TIdHashMessageDigest5;
-// begin
-// idmd5 := TIdHashMessageDigest5.Create;
-// try
-// Result := idmd5.HashStringAsHex(secret + 'api_key' + apikey + 'permswrite',
-// IndyTextEncoding_OSDefault());
-// finally
-// idmd5.Free;
-// end;
-// end;
+procedure TfrmFlickr.edtEmailChange(Sender: TObject);
+begin
+  if options.eMailAddress <> edtEmail.text then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtMaxChange(Sender: TObject);
+begin
+  if options.MaxItemsListGlobals <> edtMax.text then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtMaxLogChange(Sender: TObject);
+begin
+  if options.MaxNumberOfLinesLog <> edtMaxLog.text then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtUrlNameChange(Sender: TObject);
+begin
+  if options.urlName <> edtUrlName.text then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtUserIdChange(Sender: TObject);
+begin
+  if optionsEMail.flickrUserId <> edtUserId.text then
+    FDirtyOptions := true;
+end;
 
 procedure TfrmFlickr.btnGetGroupsClick(Sender: TObject);
 var
@@ -3650,6 +3788,12 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.secretChange(Sender: TObject);
+begin
+  if optionsEMail.secret <> secret.text then
+    FDirtyOptions := true;
+end;
+
 procedure TfrmFlickr.ShowListAlbums1Click(Sender: TObject);
 var
   id : string;
@@ -3740,6 +3884,21 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.TabSheet7Exit(Sender: TObject);
+var
+  option : Integer;
+begin
+  if FDirtyOptions then
+  begin
+    option := MessageDlg('There are changes pending to be saved, do you want to save them?',mtInformation, mbOKCancel, 0);
+    if option = mrOK then
+      btnSaveOptionsClick(sender)
+    else
+      LoadOptions;
+    FDirtyOptions := false;
+  end;
+end;
+
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
   if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
@@ -3797,6 +3956,7 @@ begin
   if not fileExists(ExtractFilePath(ParamStr(0)) + 'flickrRepository.xml') then
     btnLoad.Enabled := false;
   ClearAllCharts();
+  FDirtyOptions := false;
 end;
 
 procedure TfrmFlickr.ClearAllCharts();
@@ -3837,6 +3997,8 @@ begin
   globalsRepository := nil;
   flickrChart := nil;
   rejected := nil;
+  options := nil;
+  optionsEMail := nil;
 end;
 
 procedure TfrmFlickr.ResizeChartsDashBoard();
@@ -3886,7 +4048,7 @@ procedure TfrmFlickr.FormShow(Sender: TObject);
 var
   setup: TfrmSetupApp;
 begin
-  btnLoadOptionsClick(sender);
+  LoadOptions;
   if (Apikey.Text = '') or (secret.Text = '') or (edtUserId.Text = '') then
   begin
     setup := TfrmSetupApp.Create(Application);
@@ -4259,6 +4421,34 @@ end;
 procedure TfrmFlickr.listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
 begin
   UpdateLabelPhotos();
+end;
+
+procedure TfrmFlickr.listValuesLikesAlbumsChange(Sender: TObject);
+begin
+  if not assigned(options) then exit;
+  if TUtils.StringListToString(options.AlbumLikes) <> TUtils.StringListToString(TStringList(listValuesLikesAlbums.Lines)) then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.listValuesLikesAlbumsIDChange(Sender: TObject);
+begin
+  if not assigned(options) then exit;
+  if TUtils.StringListToString(options.AlbumLikesID) <> TUtils.StringListToString(TStringList(listValuesLikesAlbumsID.Lines)) then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.listValuesViewsAlbumsChange(Sender: TObject);
+begin
+  if not assigned(options) then exit;
+  if TUtils.StringListToString(options.AlbumViews) <> TUtils.StringListToString(TStringList(listValuesViewsAlbums.Lines)) then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.listValuesViewsAlbumsIDChange(Sender: TObject);
+begin
+  if not assigned(options) then exit;
+  if TUtils.StringListToString(options.AlbumViewsID) <> TUtils.StringListToString(TStringList(listValuesViewsAlbumsID.Lines)) then
+    FDirtyOptions := true;
 end;
 
 procedure TfrmFlickr.UpdateLabel();

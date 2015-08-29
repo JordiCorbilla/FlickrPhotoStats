@@ -29,9 +29,13 @@ unit flickr.lib.utils;
 
 interface
 
+uses
+  System.Classes;
+
 type
   TUtils = class(TObject)
     class function GetVersion() : string;
+    class function StringListToString(const value : TStringList) : string;
   end;
 
 implementation
@@ -62,6 +66,19 @@ begin
      LongRec(FixedPtr.dwFileVersionMS).Lo,  //minor
      LongRec(FixedPtr.dwFileVersionLS).Hi,  //release
      LongRec(FixedPtr.dwFileVersionLS).Lo]) //build
+end;
+
+class function TUtils.StringListToString(const value: TStringList): string;
+var
+  s : string;
+  i: Integer;
+begin
+  s := '';
+  for i := 0 to value.Count-1 do
+  begin
+    s := s + value[i];
+  end;
+  result := s.Trim;
 end;
 
 end.
