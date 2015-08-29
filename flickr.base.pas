@@ -125,14 +125,11 @@ begin
 end;
 
 procedure TBase.Load(iNode: IXMLNode);
-var
-  iNode2: IXMLNode;
 begin
-  iNode2 := iNode.ChildNodes.First;
-  Fid := iNode2.Attributes['id'];
-  Ftitle := iNode2.Attributes['title'];
-  Fphotos := StrToInt(iNode2.Attributes['photos']);
-  Fmembers := StrToInt(iNode2.Attributes['members']);
+  Fid := iNode.Attributes['id'];
+  Ftitle := iNode.Attributes['title'];
+  Fphotos := StrToInt(iNode.Attributes['photos']);
+  Fmembers := StrToInt(iNode.Attributes['members']);
 end;
 
 class function TBase.New(id, title : string; photos, members : Int64): IBase;
