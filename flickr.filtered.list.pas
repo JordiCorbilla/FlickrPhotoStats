@@ -39,6 +39,8 @@ type
     procedure Add(item : IBase);
     property List : TList<IBase> read GetList write SetList;
     procedure Sort;
+    procedure Save(FileName: string);
+    procedure Load(FileName: string);
   end;
 
   TFilteredList = Class(TInterfacedObject, IFilteredList)
@@ -51,13 +53,15 @@ type
     property List : TList<IBase> read GetList write SetList;
     constructor Create(comparer : TCompareType);
     procedure Sort;
+    procedure Save(FileName: string);
+    procedure Load(FileName: string);
     destructor Destroy(); override;
   End;
 
 implementation
 
 uses
-  SysUtils, Generics.defaults;
+  SysUtils, Generics.defaults, XMLDoc, xmldom, XMLIntf, Dialogs;
 
 { TFilteredList }
 
@@ -88,6 +92,53 @@ end;
 function TFilteredList.GetList: TList<IBase>;
 begin
   result := FList;
+end;
+
+procedure TFilteredList.Load(FileName: string);
+var
+  Document: IXMLDocument;
+  iXMLRootNode, iNode: IXMLNode;
+  base: IBase;
+begin
+  if fileExists(ExtractFilePath(ParamStr(0)) + FileName) then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode := iXMLRootNode.ChildNodes.first;
+      while iNode <> nil do
+      begin
+        base := TBase.Create();
+        base.Load(iNode);
+        FList.Add(base);
+        iNode := iNode.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
+//  else
+//    ShowMessage('File does not exists in location: ' +
+//      ExtractFilePath(ParamStr(0)) + FileName);
+end;
+
+procedure TFilteredList.Save(FileName: string);
+var
+  XMLDoc: TXMLDocument;
+  iNode: IXMLNode;
+  i: integer;
+begin
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('Groups');
+
+  for i := 0 to FList.count - 1 do
+  begin
+    FList[i].Save(iNode);
+  end;
+  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + FileName);
 end;
 
 procedure TFilteredList.SetList(const Value: TList<IBase>);

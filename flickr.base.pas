@@ -29,6 +29,9 @@ unit flickr.base;
 
 interface
 
+uses
+  XMLDoc, xmldom, XMLIntf;
+
 type
   IBase = interface
     function GetId: string;
@@ -43,6 +46,8 @@ type
     property Title : string read GetTitle write SetTitle;
     property Photos : Int64 read GetPhotos write SetPhotos;
     property Members : Int64 read GetMembers write SetMembers;
+    procedure Save(iNode: IXMLNode);
+    procedure Load(iNode: IXMLNode);
   end;
 
   //Base class as Id-title pair.
@@ -65,12 +70,18 @@ type
     property Title : string read GetTitle write SetTitle;
     property Photos : Int64 read GetPhotos write SetPhotos;
     property Members : Int64 read GetMembers write SetMembers;
-    constructor Create(id, title : string; photos, members : Int64);
+    constructor Create(id, title : string; photos, members : Int64); overload;
+    constructor Create(); overload;
     destructor Destroy; override;
+    procedure Save(iNode: IXMLNode);
+    procedure Load(iNode: IXMLNode);
     class function New(id, title : string; photos, members : Int64) : IBase;
   end;
 
 implementation
+
+uses
+  Sysutils;
 
 { TGroup }
 
@@ -80,6 +91,11 @@ begin
   SetTitle(title);
   SetPhotos(photos);
   SetMembers(members);
+end;
+
+constructor TBase.Create;
+begin
+
 end;
 
 destructor TBase.Destroy;
@@ -108,9 +124,31 @@ begin
   result := FTitle;
 end;
 
+procedure TBase.Load(iNode: IXMLNode);
+var
+  iNode2: IXMLNode;
+begin
+  iNode2 := iNode.ChildNodes.First;
+  Fid := iNode2.Attributes['id'];
+  Ftitle := iNode2.Attributes['title'];
+  Fphotos := StrToInt(iNode2.Attributes['photos']);
+  Fmembers := StrToInt(iNode2.Attributes['members']);
+end;
+
 class function TBase.New(id, title : string; photos, members : Int64): IBase;
 begin
   result := Create(id, title, photos, members);
+end;
+
+procedure TBase.Save(iNode: IXMLNode);
+var
+  iNode2: IXMLNode;
+begin
+  iNode2 := iNode.AddChild('Group');
+  iNode2.Attributes['id'] := Fid;
+  iNode2.Attributes['title'] := Ftitle;
+  iNode2.Attributes['photos'] := Fphotos.toString;
+  iNode2.Attributes['members'] := Fmembers.ToString;
 end;
 
 procedure TBase.SetId(const Value: string);

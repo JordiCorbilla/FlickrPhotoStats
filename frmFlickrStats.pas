@@ -648,6 +648,10 @@ begin
   end;
   photos := TList<string>.Create;
   try
+    btnGetGroups.Enabled := false;
+    btnAddPhotos.Enabled := false;
+    btnRemovePhoto.Enabled := false;
+    btnBanGroups.Enabled := false;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
       if (listPhotos.Items[i].Checked) then
@@ -700,6 +704,10 @@ begin
     btnGetList.Enabled := true;
     batchUpdate.Enabled := true;
   finally
+    btnGetGroups.Enabled := true;
+    btnAddPhotos.Enabled := true;
+    btnRemovePhoto.Enabled := true;
+    btnBanGroups.Enabled := true;
     photos.Free;
   end;
 end;
@@ -1165,6 +1173,18 @@ begin
   organic.load('flickrOrganic.xml');
   st.Stop;
   log('Loading repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
+  if Assigned(FilteredGroupList) then
+  begin
+    FilteredGroupList := nil;
+    FilteredGroupList := TFilteredList.Create(tCompareMembers);
+  end;
+  st := TStopWatch.Create;
+  st.Start;
+  FilteredGroupList.load('flickrGroups.xml');
+  btnFilterCancelClick(sender);
+  st.Stop;
+  log('Loading repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   st := TStopWatch.Create;
   st.Start;
@@ -1989,11 +2009,19 @@ begin
     repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
     st.Stop;
     log('Saving repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
     st := TStopWatch.Create;
     st.Start;
     globalsRepository.save('flickrRepositoryGlobal.xml');
     st.Stop;
     log('Saving repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
+    st := TStopWatch.Create;
+    st.Start;
+    FilteredGroupList.save('flickrGroups.xml');
+    st.Stop;
+    log('Saving repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
     btnSave.Enabled := false;
     btnLoad.Enabled := true;
   end;
@@ -2502,6 +2530,7 @@ begin
   groups := TList<string>.Create;
   FGroupStop := false;
   try
+    batchUpdate.Enabled := false;
     PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
@@ -2603,6 +2632,7 @@ begin
         break;
    end;
   finally
+    batchUpdate.Enabled := true;
     mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
     mStatus.Lines.Add('******************************************************************');
     progressbar1.Visible := false;
@@ -2629,6 +2659,7 @@ begin
   photos := TList<string>.Create;
   groups := TList<string>.Create;
   try
+    batchUpdate.Enabled := false;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
       if listPhotos.Items[i].Checked then
@@ -2662,6 +2693,7 @@ begin
       p.OmitGroups := OmitGroups;
     end;
   finally
+    batchUpdate.Enabled := true;
     mStatus.Lines.Add('******************************************************************');
     photos.Free;
     groups.Free;
@@ -2757,6 +2789,7 @@ begin
   groups := TList<string>.Create;
   FGroupStop := false;
   try
+    batchUpdate.Enabled := false;
     PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
@@ -2838,6 +2871,7 @@ begin
         break;
     end;
   finally
+    batchUpdate.Enabled := true;
     mStatus.Lines.Add('Total number of groups removed: ' + success.ToString() + ' out of ' + total.ToString());
     mStatus.Lines.Add('******************************************************************');
     progressbar1.Visible := false;
@@ -3159,6 +3193,7 @@ begin
       comparer := tComparePoolSize;
     FilteredGroupList := TFilteredList.Create(comparer);
   end;
+  batchUpdate.Enabled := false;
   pagecontrol3.TabIndex := 0;
   btnLoad.Enabled := false;
   btnAdd.Enabled := false;
@@ -3938,6 +3973,7 @@ begin
   organic := TFlickrOrganic.Create();
   rejected := TRejected.Create;
   flickrProfiles := TProfiles.Create();
+  FilteredGroupList := TFilteredList.Create(tCompareMembers);
 
   comparer := tCompareMembers;
   if RadioButton8.Checked then
