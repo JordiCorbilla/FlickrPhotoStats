@@ -42,7 +42,8 @@ uses
   flickr.profiles, flickr.profile, flickr.filtered.list, Vcl.Menus,
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
-  frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer;
+  frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
+  flickr.lib.options;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -233,8 +234,6 @@ type
     ShowonFlickr2: TMenuItem;
     N6: TMenuItem;
     BanUnbanforgroupAddition1: TMenuItem;
-    RadioButton8: TRadioButton;
-    RadioButton9: TRadioButton;
     ClearSelection1: TMenuItem;
     TabSheet1: TTabSheet;
     Panel12: TPanel;
@@ -258,7 +257,7 @@ type
     Panel3: TPanel;
     Panel7: TPanel;
     btnLoadOptions: TButton;
-    Button11: TButton;
+    btnSaveOptions: TButton;
     Label9: TLabel;
     edtMax: TEdit;
     Label1: TLabel;
@@ -308,6 +307,12 @@ type
     N7: TMenuItem;
     chkUpdateCollections: TCheckBox;
     chkAddItem: TCheckBox;
+    GroupBox2: TGroupBox;
+    RadioButton8: TRadioButton;
+    RadioButton9: TRadioButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -344,7 +349,7 @@ type
     procedure showMarksClick(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
-    procedure Button11Click(Sender: TObject);
+    procedure btnSaveOptionsClick(Sender: TObject);
     procedure btnLoadOptionsClick(Sender: TObject);
     procedure Button10Click(Sender: TObject);
     procedure btnLoadHallClick(Sender: TObject);
@@ -372,6 +377,9 @@ type
     procedure CheckAll2Click(Sender: TObject);
     procedure UncheckAll3Click(Sender: TObject);
     procedure photoIdChange(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -417,7 +425,10 @@ type
     flickrChart : IFlickrChart;
     filterEnabled : boolean;
     optionsEMail : IOptionsEmail;
+    options : IOptions;
     rejected: IRejected;
+    FProcessingStop : boolean;
+    FGroupStop : boolean;
     RepositoryLoaded : boolean;
     procedure Log(s: string);
   end;
@@ -620,6 +631,7 @@ begin
         photos.Add(listPhotos.Items[i].Caption);
     end;
     batchUpdate.Enabled := false;
+    FProcessingStop := false;
     btnLoad.Enabled := false;
     btnGetList.Enabled := false;
     ProgressBar1.Visible := true;
@@ -643,8 +655,11 @@ begin
       RequestInformation_REST_Flickr(photos[i]);
       st.Stop;
       log('Getting history for ' + photos[i] + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      if FProcessingStop then
+        break;
     end;
 
+    FProcessingStop := false;
     ProgressBar1.Visible := false;
     Process.Visible := false;
     if not filterEnabled then
@@ -2002,61 +2017,57 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Button11Click(Sender: TObject);
+procedure TfrmFlickr.btnSaveOptionsClick(Sender: TObject);
 var
-  iniFile : TInifile;
-  i: Integer;
-  comparer : integer;
+  comparer, comparerGroups : integer;
 begin
-  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.ini');
-  try
-    inifile.WriteString('System', 'MaxItemsListGlobals', edtMax.Text);
-    inifile.WriteString('System', 'UrlName', edtUrlName.Text);
-    inifile.WriteBool('System', 'ShowMarksInGraphs', showMarks.Checked);
-    inifile.WriteBool('System', 'ConsiderPendingQueueItems', chkPending.Checked);
-    inifile.WriteBool('System', 'UpdateCountsRealTime', chkRealTime.Checked);
-    inifile.WriteString('System', 'MaxNumberOfLinesLog', edtMaxLog.Text);
-    inifile.WriteString('System', 'eMailAddress', edtEmail.Text);
-    inifile.WriteBool('System', 'SortingEnabled', chksorting.Checked);
+  options.MaxItemsListGlobals := edtMax.Text;
+  options.urlName := edtUrlName.Text;
 
+  options.ShowMarksInGraphs := showMarks.Checked;
+  options.ConsiderPendingQueueItems := chkPending.Checked;
+  options.UpdateCountsRealTime := chkRealTime.Checked;
+  options.KeepRejectedListAlive := chkRejected.Checked;
+  options.DisplaySuccessfulResponses := chkResponses.Checked;
+  options.UpdateCollections := chkUpdateCollections.Checked;
+  options.DisableTrendDisplay := chkAddItem.Checked;
+  options.sortingEnabled := chksorting.Checked;
+
+  options.MaxNumberOfLinesLog := edtMaxLog.Text;
+  options.eMailAddress := edtEmail.Text;
+
+  comparer := 0;
+  if radioButton1.checked then
     comparer := 0;
-    if radioButton1.checked then
-      comparer := 0;
-    if radioButton2.checked then
-      comparer := 2;
-    if radioButton3.checked then
-      comparer := 1;
-    if radioButton4.checked then
-      comparer := 3;
-    if radioButton5.checked then
-      comparer := 4;
-    if radioButton6.checked then
-      comparer := 5;
-    if radioButton7.checked then
-      comparer := 6;
-    if radioButton10.Checked then
-      comparer := 9;
+  if radioButton2.checked then
+    comparer := 2;
+  if radioButton3.checked then
+    comparer := 1;
+  if radioButton4.checked then
+    comparer := 3;
+  if radioButton5.checked then
+    comparer := 4;
+  if radioButton6.checked then
+    comparer := 5;
+  if radioButton7.checked then
+    comparer := 6;
+  if radioButton10.Checked then
+    comparer := 9;
 
-    inifile.WriteInteger('System', 'SortedBy', comparer);
+  options.SortedBy := comparer;
 
-    inifile.WriteInteger('AlbumViews', 'MaxItems', listValuesViewsAlbums.Lines.count);
+  comparerGroups := 0;
+  if RadioButton8.Checked then
+    comparerGroups := 7;
+  if RadioButton9.Checked then
+    comparerGroups := 8;
 
-    for i := 0 to listValuesViewsAlbums.Lines.Count-1 do
-    begin
-      inifile.WriteString('AlbumViews', 'Value' + i.ToString(), listValuesViewsAlbums.Lines[i]);
-      inifile.WriteString('AlbumViews', 'ValueID' + i.ToString(), listValuesViewsAlbumsID.Lines[i]);
-    end;
-
-    inifile.WriteInteger('AlbumLikes', 'MaxItems', listValuesLikesAlbums.Lines.count);
-
-    for i := 0 to listValuesLikesAlbums.Lines.Count-1 do
-    begin
-      inifile.WriteString('AlbumLikes', 'Value' + i.ToString(), listValuesLikesAlbums.Lines[i]);
-      inifile.WriteString('AlbumLikes', 'ValueID' + i.ToString(), listValuesLikesAlbumsID.Lines[i]);
-    end;
-  finally
-    inifile.Free;
-  end;
+  options.SortedByGropus := comparerGroups;
+  options.AlbumViews := listValuesViewsAlbums.Lines;
+  options.AlbumLikes := listValuesLikesAlbums.Lines;
+  options.AlbumViewsID := listValuesViewsAlbumsID.Lines;
+  options.AlbumLikesID := listValuesLikesAlbumsID.Lines;
+  options.Save;
 
   optionsEmail.flickrApiKey := apikey.Text;
   optionsEmail.secret := secret.Text;
@@ -2125,6 +2136,7 @@ begin
     inifile.Free;
   end;
 
+  options := TOptions.New().Load();
   optionsEMail := TOptionsEmail.New().load();
   apikey.Text := optionsEmail.flickrApiKey;
   secret.Text := optionsEMail.secret;
@@ -2145,6 +2157,22 @@ procedure TfrmFlickr.Button2Click(Sender: TObject);
 begin
   if SaveToExcelGroups(listGroups, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsGroups.xls') then
     showmessage('Data saved successfully!');
+end;
+
+procedure TfrmFlickr.Button3Click(Sender: TObject);
+begin
+  //Show help page in the blog
+  ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics-v44.html'), nil, SW_SHOW);
+end;
+
+procedure TfrmFlickr.Button4Click(Sender: TObject);
+begin
+  FProcessingStop := true;
+end;
+
+procedure TfrmFlickr.Button5Click(Sender: TObject);
+begin
+  FGroupStop := true;
 end;
 
 procedure TfrmFlickr.btnAddFilterClick(Sender: TObject);
@@ -2292,7 +2320,7 @@ end;
 
 procedure TfrmFlickr.btnResetFilterClick(Sender: TObject);
 begin
-  //Restore everything as it was.
+  //Restore everything like it was.
   startMark := -1;
   endMark := -1;
   edtFilter.Text := '';
@@ -2391,7 +2419,7 @@ begin
   end;
   photos := TList<string>.Create;
   groups := TList<string>.Create;
-
+  FGroupStop := false;
   try
     PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
@@ -2486,9 +2514,13 @@ begin
         if mStatus.Lines.Count > max.ToInteger then
           mStatus.Lines.Clear;
         Application.ProcessMessages;
+        if FGroupStop then
+          break;
         sleep(10);
       end;
-    end;
+      if FGroupStop then
+        break;
+   end;
   finally
     mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
     mStatus.Lines.Add('******************************************************************');
@@ -2496,6 +2528,7 @@ begin
     photos.Free;
     groups.Free;
   end;
+  FGroupStop := false;
 end;
 
 procedure TfrmFlickr.btnBanGroupsClick(Sender: TObject);
@@ -2641,7 +2674,7 @@ begin
   end;
   photos := TList<string>.Create;
   groups := TList<string>.Create;
-
+  FGroupStop := false;
   try
     PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
@@ -2716,8 +2749,12 @@ begin
         if mStatus.Lines.Count > max.ToInteger then
           mStatus.Lines.Clear;
         Application.ProcessMessages;
+        if FGroupStop then
+          break;
         sleep(10);
       end;
+      if FGroupStop then
+        break;
     end;
   finally
     mStatus.Lines.Add('Total number of groups removed: ' + success.ToString() + ' out of ' + total.ToString());
@@ -2726,6 +2763,7 @@ begin
     photos.Free;
     groups.Free;
   end;
+  FGroupStop := false;
 end;
 
 procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);

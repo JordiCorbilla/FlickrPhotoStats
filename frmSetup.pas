@@ -54,7 +54,7 @@ begin
   frmFlickr.secret.Text := secret.Text;
   frmFlickr.edtuserid.Text := edtuserid.Text;
   //Save the file
-  frmFlickr.Button11Click(sender);
+  frmFlickr.btnSaveOptionsClick(sender);
   //Create the new folders
   if ForceDirectories(ExtractFilePath(ParamStr(0)) + 'Albums') then
     if ForceDirectories(ExtractFilePath(ParamStr(0)) + 'Groups') then
