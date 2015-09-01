@@ -31,23 +31,23 @@ interface
 
 uses
   Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools,
-  flickr.albums, flickr.pools.list, winapi.msxml;
+  flickr.albums, flickr.pools.list, winapi.msxml, flickr.albums.list;
 
 type
   IPhoto = interface
     function AddStats(stat: IStat): boolean;
-    procedure AddCollections(albums: TList<IAlbum>; groups : TPoolList);
+    procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function getLastUpdate(): TDatetime;
     procedure SetId(value: string);
     procedure SetTitle(value: string);
     procedure SetStats(value: TList<IStat>);
     procedure SetLastUpdate(value: TDatetime);
-    procedure SetAlbums(value: TList<IAlbum>);
+    procedure SetAlbums(value: TAlbumList);
     procedure SetGroups(value: TPoolList);
     function getId(): string;
     function getTitle(): string;
     function GetStats(): TList<IStat>;
-    function GetAlbums(): TList<IAlbum>;
+    function GetAlbums(): TAlbumList;
     function GetGroups(): TPoolList;
     function getTaken: string;
     function GetTags: string;
@@ -66,7 +66,7 @@ type
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
     property stats: TList<IStat>read GetStats write SetStats;
     property Taken : string read getTaken write SetTaken;
-    property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
+    property Albums : TAlbumList read GetAlbums write SetAlbums;
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
     property banned : boolean read getBanned write SetBanned;
@@ -85,7 +85,7 @@ type
   TPhoto = class(TInterfacedObject, IPhoto)
   private
     FStats: TList<IStat>;
-    FAlbums: TList<IAlbum>;
+    FAlbums: TAlbumList;
     FGroups: TPoolList;
     FId: string;
     FTitle: string;
@@ -108,9 +108,9 @@ type
     function getTaken: string;
     function GetTags: string;
     procedure SetTaken(const Value: string);
-    function GetAlbums: TList<IAlbum>;
+    function GetAlbums: TAlbumList;
     function GetGroups: TPoolList;
-    procedure SetAlbums(Value: TList<IAlbum>);
+    procedure SetAlbums(Value: TAlbumList);
     procedure SetGroups(Value: TPoolList);
     procedure SetTags(const Value: string);
     function getBanned: boolean;
@@ -125,13 +125,13 @@ type
     property stats: TList<IStat>read GetStats write SetStats;
     property Taken : string read getTaken write SetTaken;
     property banned : boolean read getBanned write SetBanned;
-    property Albums : TList<IAlbum> read GetAlbums write SetAlbums;
+    property Albums : TAlbumList read GetAlbums write SetAlbums;
     property Groups : TPoolList read GetGroups write SetGroups;
     property Tags : string read GetTags write SetTags;
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     function AddStats(stat: IStat): boolean;
-    procedure AddCollections(albums: TList<IAlbum>; groups : TPoolList);
+    procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
     constructor Create(); overload;
@@ -154,14 +154,14 @@ implementation
 uses
   SysUtils, System.Variants, DateUtils;
 
-procedure TPhoto.AddCollections(albums: TList<IAlbum>; groups: TPoolList);
+procedure TPhoto.AddCollections(albums: TAlbumList; groups: TPoolList);
 begin
   if Assigned(FAlbums) then
     FAlbums.Free;
   FAlbums := albums;
 //  if Assigned(FGroups) then
 //    FGroups.Free;
-  FGroups := groups;
+  //FGroups := groups;
 end;
 
 function TPhoto.AddStats(stat: IStat): boolean;
@@ -179,7 +179,7 @@ end;
 constructor TPhoto.Create(Id: string; Title: string; taken : string; tags : string);
 begin
   FStats := TList<IStat>.Create;
-  FAlbums := TList<IAlbum>.Create;
+  FAlbums := TAlbumList.Create;
   FGroups := TPoolList.Create;
   SetId(Id);
   SetTitle(Title);
@@ -191,7 +191,7 @@ end;
 constructor TPhoto.Create;
 begin
   FStats := TList<IStat>.Create;
-  FAlbums := TList<IAlbum>.Create;
+  FAlbums := TAlbumList.Create;
   FGroups := TPoolList.Create;
 end;
 
@@ -220,7 +220,7 @@ begin
   result := found;
 end;
 
-function TPhoto.GetAlbums: TList<IAlbum>;
+function TPhoto.GetAlbums: TAlbumList;
 begin
   result := FAlbums;
 end;
@@ -507,7 +507,7 @@ begin
   XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml');
 end;
 
-procedure TPhoto.SetAlbums(Value: TList<IAlbum>);
+procedure TPhoto.SetAlbums(Value: TAlbumList);
 begin
   FAlbums := Value;
 end;

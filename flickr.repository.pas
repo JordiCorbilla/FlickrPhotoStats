@@ -49,7 +49,8 @@ type
     procedure DeletePhoto(id : string);
     function Getsorted(): boolean;
     procedure Setsorted(const Value: boolean);
-    function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
+    function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean; overload;
+    function ExistPhoto(id: string; var existing: IPhoto): Boolean; overload;
     function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
@@ -79,7 +80,8 @@ type
   public
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
-    function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean;
+    function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean; overload;
+    function ExistPhoto(id: string; var existing: IPhoto): Boolean; overload;
     function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
     constructor Create(); overload;
     constructor Create(sorting : boolean; comparer : TCompareType); overload;
@@ -154,6 +156,23 @@ begin
   while (not found) and (i < FPhotos.count) do
   begin
     found := FPhotos[i].id = photo.id;
+    inc(i);
+  end;
+  if found then
+    existing := FPhotos[i - 1];
+  Result := found;
+end;
+
+function TFlickrRepository.ExistPhoto(id: string; var existing: IPhoto): Boolean;
+var
+  i: integer;
+  found: Boolean;
+begin
+  i := 0;
+  found := false;
+  while (not found) and (i < FPhotos.count) do
+  begin
+    found := FPhotos[i].id = id;
     inc(i);
   end;
   if found then

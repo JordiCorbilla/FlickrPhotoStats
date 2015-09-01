@@ -43,7 +43,7 @@ uses
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
-  flickr.lib.options;
+  flickr.lib.options, flickr.albums.list;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -865,7 +865,7 @@ var
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
-  Albums: TList<IAlbum>;
+  Albums: TAlbumList;
   Groups: TPoolList;
   tags : string;
   photoGroups : IPhoto;
@@ -961,15 +961,20 @@ begin
       xmlDocument := nil;
     end;
 
-    photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
-    Albums := TList<IAlbum>.create;
 
     photoGroups := repository.GetPhoto(id);
     if photoGroups <> nil then
-      Groups := photoGroups.Groups
+    begin
+      Groups := photoGroups.Groups;
+      Albums := photoGroups.Albums;
+    end
     else
-      Groups := TPoolList.create;
+    begin
+      photo := TPhoto.Create(id, title, taken, tags);
+      Groups := photo.Groups;
+      Albums := photo.Albums;
+    end;
 
     if chkUpdateCollections.checked then
     begin
@@ -1014,21 +1019,19 @@ begin
       end;
     end;
 
-    if repository.ExistPhoto(photo, existing) then
+    if repository.ExistPhoto(id, existing) then
     begin
       photo := existing;
       photo.Title := title; //replace the title as it changes
       photo.Taken := taken;
       photo.tags := tags;
       photo.AddStats(stat);
-      photo.AddCollections(Albums, groups);
       photo.LastUpdate := Date;
     end
     else
     begin
       photo.AddStats(stat);
       photo.LastUpdate := Date;
-      photo.AddCollections(Albums, groups);
       repository.AddPhoto(photo);
     end;
 
