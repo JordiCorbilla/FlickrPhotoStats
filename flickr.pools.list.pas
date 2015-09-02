@@ -35,7 +35,7 @@ uses
 type
   TPoolList = class(TList<IPool>)
   public
-    function AddItem(const pool : IPool) : integer;
+    function AddItem(pool : IPool) : integer;
     function Exists(const pool : IPool; var existing: IPool) : boolean;
   end;
 
@@ -43,13 +43,15 @@ implementation
 
 { TPoolList }
 
-function TPoolList.AddItem(const pool: IPool): integer;
+function TPoolList.AddItem(pool: IPool): integer;
 var
   poolRet : IPool;
 begin
   result := 0;
   if not Exists(pool, poolRet) then
-    result := Add(pool);
+    result := Add(pool)
+  else
+    pool := nil;
 end;
 
 function TPoolList.Exists(const pool: IPool; var existing: IPool): boolean;

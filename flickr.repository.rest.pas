@@ -53,7 +53,7 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
   System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
-  flickr.rest, System.SysUtils, flickr.lib.options.email, flickr.pools.list;
+  flickr.rest, System.SysUtils, flickr.lib.options.email, flickr.pools.list, flickr.albums.list;
 
 { TRepositoryRest }
 
@@ -68,7 +68,7 @@ var
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
-  Albums: TList<IAlbum>;
+  Albums: TAlbumList;
   Groups: TPoolList;
   difference : integer;
   tags : string;
@@ -165,16 +165,21 @@ begin
       xmlDocument := nil;
     end;
 
-    photo := TPhoto.Create(id, title, taken, tags);
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
-    Albums := TList<IAlbum>.create;
 
     EnterCriticalSection(CritSect);
     photoGroups := repository.GetPhoto(id);
     if photoGroups <> nil then
-      Groups := photoGroups.Groups
+    begin
+      Groups := photoGroups.Groups;
+      Albums := photoGroups.Albums;
+    end
     else
-      Groups := TPoolList.create;
+    begin
+      photo := TPhoto.Create(id, title, taken, tags);
+      Groups := photo.Groups;
+      Albums := photo.Albums;
+    end;
     LeaveCriticalSection(CritSect);
 
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
@@ -206,7 +211,11 @@ begin
       while iXMLRootNode3 <> nil do
       begin
         if iXMLRootNode3.NodeName = 'set' then
+        begin
+          EnterCriticalSection(CritSect);
           Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+          LeaveCriticalSection(CritSect);
+        end;
         if iXMLRootNode3.NodeName = 'pool' then
         begin
           EnterCriticalSection(CritSect);
@@ -223,7 +232,7 @@ begin
 
     EnterCriticalSection(CritSect);
 
-    if repository.ExistPhoto(photo, existing) then
+    if repository.ExistPhoto(id, existing) then
     begin
       photo := existing;
       if photo.getTotalViews() >= views.ToInteger() then
@@ -272,14 +281,12 @@ begin
       photo.Tags := tags;
       photo.Taken := taken;
       photo.AddStats(stat);
-      photo.AddCollections(Albums, groups);
       photo.LastUpdate := Date;
     end
     else
     begin
       photo.AddStats(stat);
       photo.LastUpdate := Date;
-      photo.AddCollections(Albums, groups);
       repository.AddPhoto(photo);
       if verbosity then
       begin
