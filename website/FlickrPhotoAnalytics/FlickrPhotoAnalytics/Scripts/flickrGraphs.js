@@ -1,12 +1,65 @@
 ﻿$(document).ready(function () {
-    var line1 = [['2008-08-12 4:00PM', 4], ['2008-09-12 4:00PM', 6.5], ['2008-10-12 4:00PM', 5.7], ['2008-11-12 4:00PM', 9], ['2008-12-12 4:00PM', 8.2]];
-    var plot1 = $.jqplot('chart1', [line1], {
-        title: 'Default Date Axis',
-        axes: {
-            xaxis: {
-                renderer: $.jqplot.DateAxisRenderer
-            }
-        },
-        series: [{ lineWidth: 4, markerOptions: { style: 'square'}}]
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchData?id=1",  
+        type: 'GET',  
+        success: function (result) {  
+            AddPlot('chart1', result.stats, result.days);  
+        },  
+        error: function () {  
+        }
     });
-});
+
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchData?id=2",
+        type: 'GET',
+        success: function (result) {
+            AddPlot('chart2', result.stats, result.days);
+        },
+        error: function () {
+        }
+    });
+
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchData?id=3",
+        type: 'GET',
+        success: function (result) {
+            AddPlot('chart3', result.stats, result.days);
+        },
+        error: function () {
+        }
+    });
+
+    function AddPlot(chart, stats, days) {
+        $.jqplot(chart, [stats], {
+            axes: {
+                xaxis: {
+                    //ticks: days,  
+                    renderer: $.jqplot.DateAxisRenderer
+//                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+//                    tickInterval: '6 months',
+//                    tickOptions: {
+//                        angle: -30
+//                    }
+                }
+//                ,
+//                yaxis: {
+//                    renderer: $.jqplot.LogAxisRenderer,
+//                    tickOptions: { prefix: '$' }
+//                } 
+        },
+                cursor: {
+                    show: true,
+                    zoom: true
+                } 
+            ,
+            series: [{
+                lineWidth: 1, shadow: false,
+                rendererOptions: { smooth: false },
+                markerOptions: { show: true, shadow: false, size: 2 } 
+//                renderer: $.jqplot.OHLCRenderer,
+//                lineWidth: 2
+//                , markerOptions: { style: 'square' }
+                }]
+        });
+    } 
+});  

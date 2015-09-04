@@ -19,7 +19,7 @@ namespace FlickrPhotoAnalytics.Tests.Controllers
             HomeController controller = new HomeController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = null; //controller.Index() as ViewResult;
 
             // Assert
             ViewDataDictionary viewData = result.ViewData;
