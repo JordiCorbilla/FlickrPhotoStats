@@ -9,4 +9,5 @@
     <p>
         To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
     </p>
+    <div id="chart1" style="height:300px; width:650px;"></div>
 </asp:Content>

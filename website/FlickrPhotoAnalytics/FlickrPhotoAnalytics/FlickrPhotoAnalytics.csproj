@@ -76,6 +76,75 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\flickrGraphs.js" />
+    <Content Include="Scripts\jplot.1250\excanvas.js" />
+    <Content Include="Scripts\jplot.1250\excanvas.min.js" />
+    <Content Include="Scripts\jplot.1250\jquery.jqplot.css" />
+    <Content Include="Scripts\jplot.1250\jquery.jqplot.js" />
+    <Content Include="Scripts\jplot.1250\jquery.jqplot.min.css" />
+    <Content Include="Scripts\jplot.1250\jquery.jqplot.min.js" />
+    <Content Include="Scripts\jplot.1250\jquery.js" />
+    <Content Include="Scripts\jplot.1250\jquery.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.barRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.barRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.BezierCurveRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.BezierCurveRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.blockRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.blockRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.bubbleRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.bubbleRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasAxisLabelRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasAxisTickRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasOverlay.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasOverlay.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasTextRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.canvasTextRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.categoryAxisRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.ciParser.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.ciParser.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.cursor.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.cursor.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.dateAxisRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.donutRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.donutRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.dragable.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.dragable.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.enhancedLegendRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.funnelRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.funnelRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.highlighter.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.highlighter.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.json2.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.json2.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.logAxisRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.logAxisRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mekkoAxisRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mekkoRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mekkoRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.meterGaugeRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.meterGaugeRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mobile.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.mobile.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.ohlcRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.ohlcRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pieRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pieRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pointLabels.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pointLabels.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidAxisRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidGridRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidGridRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidRenderer.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.pyramidRenderer.min.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.trendline.js" />
+    <Content Include="Scripts\jplot.1250\plugins\jqplot.trendline.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -123,12 +192,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3198</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/FlickrPhotoAnalytics</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
