@@ -14,6 +14,8 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts") %>/jplot.1250/plugins/jqplot.canvasAxisTickRenderer.js"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts") %>/jplot.1250/plugins/jqplot.ohlcRenderer.js"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/Scripts") %>/jplot.1250/plugins/jqplot.cursor.js"></script>
+    <script src="<%= ResolveClientUrl("~/Scripts") %>/jplot.1250/plugins/jqplot.barRenderer.min.js" type="text/javascript"></script>  
+    <script src="<%= ResolveClientUrl("~/Scripts") %>/jplot.1250/plugins/jqplot.categoryAxisRenderer.min.js" type="text/javascript"></script>  
     <link rel="stylesheet" type="text/css" href="../../Scripts/jplot.1250/jquery.jqplot.css" />
 </head>
 

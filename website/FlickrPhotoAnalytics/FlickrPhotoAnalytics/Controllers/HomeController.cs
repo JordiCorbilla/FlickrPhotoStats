@@ -24,6 +24,12 @@ namespace FlickrPhotoAnalytics.Controllers
             return View();
         }
 
+        public class SingleStats
+        {
+            public String Date;
+            public Nullable<int> Value;
+        }
+
         public ActionResult fetchData(int id)
         {
             XmlDocument doc = new XmlDocument();
@@ -43,21 +49,23 @@ namespace FlickrPhotoAnalytics.Controllers
                 data.Add(s);
             }
 
-            var amountList = new List<int>();
-            var dayList = new List<string>();
+            var list = new List<SingleStats>();
 
             foreach (var item in data)
             {
-                dayList.Add(item.date.ToString("d-MMM-yyyy"));
+                SingleStats stat = new SingleStats();
+                stat.Date = item.date.ToString("d-MMM-yyyy");
+
                 if (id == 1)
-                    amountList.Add(item.views);
+                    stat.Value = item.views;
                 else if (id == 2)
-                    amountList.Add(item.likes);
+                    stat.Value = item.likes;
                 else if (id == 3)
-                    amountList.Add(item.comments);
+                    stat.Value = item.comments;
+                list.Add(stat);
             }
 
-            return Json(new { stats = amountList, days = dayList }, JsonRequestBehavior.AllowGet);  
+            return Json(new { stats = list }, JsonRequestBehavior.AllowGet);  
         }
     }
 }
