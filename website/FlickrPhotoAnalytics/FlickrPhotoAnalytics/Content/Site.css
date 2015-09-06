@@ -343,3 +343,7 @@ div#title
 {
     width: 6em;
 }
+
+.ui-wrapper-content {
+	background: rgb(57,57,57);
+}

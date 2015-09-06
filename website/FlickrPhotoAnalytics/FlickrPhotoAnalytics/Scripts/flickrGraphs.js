@@ -45,24 +45,63 @@ $(document).ready(function () {
         }
 
         var line1 = arr;
-        var plot2 = $.jqplot(chart, [line1], {  
+        $.jqplot.config.enablePlugins = true;
+        var plot2 = $.jqplot(chart, [line1], {
+            seriesColors: ["rgba(78, 135, 194, 0.7)"],
+            title: gtitle,
+            grid: {
+                background: 'rgba(57,57,57,0.0)',
+                drawBorder: false,
+                shadow: false,
+                gridLineColor: '#666666',
+                gridLineWidth: 2
+            },
+            seriesDefaults: {
+                rendererOptions: {
+                    smooth: true,
+                    animation: {
+                        show: true
+                    }
+                },
+                showMarker: false
+            },
+            axesDefaults: {
+                rendererOptions: {
+                    baselineWidth: 1.5,
+                    baselineColor: '#444444',
+                    drawBaseline: false
+                }
+            },
             cursor: {
                     show: true,
                     zoom: true
-                },
-                title: gtitle,  
+            },
             axes: {  
-                xaxis: {  
-                    renderer: $.jqplot.DateAxisRenderer,  
-                    tickOptions: { formatString: '%b %#d, %y' },  
+                xaxis: {
+                    renderer: $.jqplot.DateAxisRenderer,
+                    tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+                    tickOptions: {
+                        formatString: '%#d/%#m/%y',
+                        angle: -30,
+                        textColor: '#dddddd'
+                        },  
                     pad: 0  
-                },  
-                yaxis: {  
-                }  
-                },  
+                },
+                yaxis: {
+                    renderer: $.jqplot.LogAxisRenderer,
+                    min: 0
+                }
+            },
+            highlighter: {
+                sizeAdjust: 10,
+                tooltipLocation: 'n',
+                tooltipAxes: 'y',
+                tooltipFormatString: '<b><i><span style="color:red;">Value</span></i></b> %.2f',
+                useAxesFormatters: false
+            },
             series: [{ lineWidth: 2  
-                ,markerOptions: { style: 'filledCircle', size: 0}  
-                }]  
-        });  
+                ,markerOptions: { style: 'filledCircle', size: 1}  
+                }]
+        });
     }
 });  

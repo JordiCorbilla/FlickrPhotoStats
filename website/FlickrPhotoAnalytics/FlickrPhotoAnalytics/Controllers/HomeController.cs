@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using FlickrPhotoAnalytics.Models;
 using System.Xml;
 using FlickrPhotoAnalytics.lib;
+using FlickrPhotoAnalytics.Models;
 
 namespace FlickrPhotoAnalytics.Controllers
 {
@@ -36,7 +34,7 @@ namespace FlickrPhotoAnalytics.Controllers
             doc.Load("c:\\temp\\flickrRepositoryGlobal.xml");
             var data = new List<IStat>();
 
-            // cycle through each child noed 
+            // cycle through each child noed
             foreach (XmlNode node in doc.DocumentElement.ChildNodes)
             {
                 IStat s = new Stat();
@@ -65,7 +63,7 @@ namespace FlickrPhotoAnalytics.Controllers
                 list.Add(stat);
             }
 
-            return Json(new { stats = list }, JsonRequestBehavior.AllowGet);  
+            return Json(new { stats = list }, JsonRequestBehavior.AllowGet);
         }
     }
 }
