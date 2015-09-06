@@ -99,8 +99,11 @@ $(document).ready(function () {
                 tooltipFormatString: '<b><i><span style="color:red;">Value</span></i></b> %.2f',
                 useAxesFormatters: false
             },
-            series: [{ lineWidth: 2  
-                ,markerOptions: { style: 'filledCircle', size: 1}  
+            series: [{ lineWidth: 2
+                , markerOptions: { style: 'filledCircle', size: 1 },  
+                trendline: {
+                    color: 'rgb(211, 235, 59)'
+                }
                 }]
         });
     }
