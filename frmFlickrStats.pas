@@ -1247,7 +1247,7 @@ begin
     flickrProfiles := nil;
     flickrProfiles := TProfiles.Create();
   end;
-  flickrProfiles.load('flickrProfiles.xml');
+  flickrProfiles.load(options.workspace + '\flickrProfiles.xml');
   for i := 0 to flickrProfiles.list.Count - 1 do
   begin
     ComboBox1.AddItem(flickrProfiles.list[i].Name + ' (' + flickrProfiles.list[i].GroupId.Count.ToString + ')', nil);
@@ -2981,7 +2981,7 @@ begin
         end;
       end;
     end;
-    flickrProfiles.save('flickrProfiles.xml');
+    flickrProfiles.save(options.workspace + '\flickrProfiles.xml');
     LoadProfiles();
   end;
 end;
