@@ -116,11 +116,11 @@ var
   iXMLRootNode, iNode: IXMLNode;
   Stats: IStat;
 begin
-  if fileExists(ExtractFilePath(ParamStr(0)) + FileName) then
+  if fileExists(FileName) then
   begin
   Document := TXMLDocument.Create(nil);
   try
-    Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
+    Document.LoadFromFile(FileName);
     iXMLRootNode := Document.ChildNodes.first;
 
     iNode := iXMLRootNode.ChildNodes.first;
@@ -136,7 +136,7 @@ begin
   end;
   end
   else
-    ShowMessage('File does not exists in location: ' + ExtractFilePath(ParamStr(0)) + FileName);
+    ShowMessage('File does not exists in location: ' + FileName);
 end;
 
 procedure TFlickrGlobals.Save(FileName: string);
@@ -154,7 +154,7 @@ begin
   begin
     FGlobal[i].Save(iNode);
   end;
-  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + FileName);
+  XMLDoc.SaveToFile(FileName);
 end;
 
 procedure TFlickrGlobals.SetGlobals(value: TList<IStat>);

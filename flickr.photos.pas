@@ -61,6 +61,8 @@ type
     procedure SetTaken(const Value: string);
     procedure SetTags(const Value: string);
     procedure SetTodayTrend(const Value : integer);
+    procedure SetFolder(const Value: string);
+    function GetFolder() : string;
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
@@ -72,6 +74,7 @@ type
     property banned : boolean read getBanned write SetBanned;
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
+    property Folder : string read GetFolder write SetFolder;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikes(incday : integer = 0): Integer;
@@ -95,6 +98,7 @@ type
     FBanned : boolean;
     FTodayTrend : integer;
     FOmitGroups : string;
+    FFolder: string;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -118,6 +122,8 @@ type
     procedure SetTodayTrend(const Value : integer);
     function GetOmitGroups : string;
     procedure SetOmitGroups(const Value : string);
+    procedure SetFolder(const Value: string);
+    function GetFolder() : string;
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -130,6 +136,7 @@ type
     property Tags : string read GetTags write SetTags;
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
+    property Folder : string read GetFolder write SetFolder;
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
@@ -228,6 +235,11 @@ end;
 function TPhoto.getBanned: boolean;
 begin
   result := FBanned;
+end;
+
+function TPhoto.GetFolder: string;
+begin
+  result := FFolder;
 end;
 
 function TPhoto.GetGroups: TPoolList;
@@ -420,11 +432,11 @@ begin
   end;
 
   FAlbums.Clear;
-  if fileExists(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml') then
+  if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
   begin
     Document := TXMLDocument.Create(nil);
     try
-      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml');
+      Document.LoadFromFile(FFolder + 'Albums\'+ FId + '.xml');
       iXMLRootNode := Document.ChildNodes.first;
       iNode2 := iXMLRootNode.ChildNodes.first;
       while iNode2 <> nil do
@@ -438,11 +450,11 @@ begin
   end;
 
   FGroups.Clear;
-  if fileExists(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml') then
+  if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
   begin
     Document := TXMLDocument.Create(nil);
     try
-      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml');
+      Document.LoadFromFile(FFolder + 'Groups\'+ FId + '.xml');
       iXMLRootNode := Document.ChildNodes.first;
       iNode2 := iXMLRootNode.ChildNodes.first;
       while iNode2 <> nil do
@@ -491,7 +503,7 @@ begin
     iNode2.Attributes['id'] := FAlbums[i].Id;
     iNode2.Attributes['title'] := FAlbums[i].Title;
   end;
-  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Albums\'+ FId + '.xml');
+  XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml');
 
   // Create the XML file
   XMLDoc := TXMLDocument.Create(nil);
@@ -504,7 +516,7 @@ begin
     iNode2.Attributes['title'] := FGroups[i].Title;
     iNode2.Attributes['added'] := FGroups[i].Added;
   end;
-  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Groups\'+ FId + '.xml');
+  XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml');
 end;
 
 procedure TPhoto.SetAlbums(Value: TAlbumList);
@@ -515,6 +527,11 @@ end;
 procedure TPhoto.SetBanned(const Value: boolean);
 begin
   FBanned := Value;
+end;
+
+procedure TPhoto.SetFolder(const Value: string);
+begin
+  FFolder := Value;
 end;
 
 procedure TPhoto.SetGroups(Value: TPoolList);

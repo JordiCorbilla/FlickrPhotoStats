@@ -1,4 +1,5 @@
 ﻿//****************************************************************************
+// flickrGraphs.js
 // jQuery Flickr Graph
 // @Author: J Corbilla.
 // @Description: This unit uses jqplot to display the content of the xml file

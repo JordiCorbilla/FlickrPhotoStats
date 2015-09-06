@@ -600,7 +600,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = TabSheet2
+    ActivePage = TabSheet7
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -3337,7 +3337,7 @@ object frmFlickr: TfrmFlickr
         end
         object Label1: TLabel
           Left = 16
-          Top = 65
+          Top = 87
           Width = 78
           Height = 13
           Caption = 'Flickr Api Key:'
@@ -3350,7 +3350,7 @@ object frmFlickr: TfrmFlickr
         end
         object Label30: TLabel
           Left = 16
-          Top = 174
+          Top = 196
           Width = 82
           Height = 13
           Caption = 'eMail Address:'
@@ -3376,7 +3376,7 @@ object frmFlickr: TfrmFlickr
         end
         object Label8: TLabel
           Left = 16
-          Top = 92
+          Top = 114
           Width = 73
           Height = 13
           Caption = 'Flickr Secret:'
@@ -3467,7 +3467,7 @@ object frmFlickr: TfrmFlickr
         end
         object Label35: TLabel
           Left = 16
-          Top = 119
+          Top = 141
           Width = 87
           Height = 13
           Caption = 'Flickr Url Name:'
@@ -3480,10 +3480,23 @@ object frmFlickr: TfrmFlickr
         end
         object Label4: TLabel
           Left = 16
-          Top = 146
+          Top = 168
           Width = 77
           Height = 13
           Caption = 'Flickr User Id:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label10: TLabel
+          Left = 16
+          Top = 62
+          Width = 66
+          Height = 13
+          Caption = 'Workspace:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -3502,7 +3515,7 @@ object frmFlickr: TfrmFlickr
         end
         object apikey: TEdit
           Left = 176
-          Top = 62
+          Top = 84
           Width = 233
           Height = 21
           TabOrder = 1
@@ -3510,7 +3523,7 @@ object frmFlickr: TfrmFlickr
         end
         object edtEmail: TEdit
           Left = 176
-          Top = 171
+          Top = 193
           Width = 233
           Height = 21
           TabOrder = 2
@@ -3518,7 +3531,7 @@ object frmFlickr: TfrmFlickr
         end
         object showMarks: TCheckBox
           Left = 176
-          Top = 198
+          Top = 220
           Width = 169
           Height = 17
           Caption = 'Show Marks in Graphs'
@@ -3527,7 +3540,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkPending: TCheckBox
           Left = 176
-          Top = 221
+          Top = 243
           Width = 169
           Height = 17
           Caption = 'Consider Pending Queue items'
@@ -3538,7 +3551,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkRealTime: TCheckBox
           Left = 176
-          Top = 244
+          Top = 266
           Width = 169
           Height = 17
           Caption = 'Update counts real time'
@@ -3547,7 +3560,7 @@ object frmFlickr: TfrmFlickr
         end
         object chksorting: TCheckBox
           Left = 176
-          Top = 355
+          Top = 377
           Width = 201
           Height = 17
           Caption = 'Enable Sorting'
@@ -3558,7 +3571,7 @@ object frmFlickr: TfrmFlickr
         end
         object GroupBox1: TGroupBox
           Left = 191
-          Top = 378
+          Top = 400
           Width = 209
           Height = 100
           Caption = 'List Sorting'
@@ -3649,7 +3662,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkResponses: TCheckBox
           Left = 176
-          Top = 290
+          Top = 312
           Width = 201
           Height = 17
           Caption = 'Display only successful responses'
@@ -3660,7 +3673,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkRejected: TCheckBox
           Left = 176
-          Top = 267
+          Top = 289
           Width = 169
           Height = 17
           Caption = 'Keep Rejected list alive'
@@ -3671,7 +3684,7 @@ object frmFlickr: TfrmFlickr
         end
         object secret: TEdit
           Left = 176
-          Top = 89
+          Top = 111
           Width = 233
           Height = 21
           TabOrder = 11
@@ -3679,7 +3692,7 @@ object frmFlickr: TfrmFlickr
         end
         object Button1: TButton
           Left = 415
-          Top = 62
+          Top = 84
           Width = 90
           Height = 48
           Caption = 'Test REST Login'
@@ -3733,7 +3746,7 @@ object frmFlickr: TfrmFlickr
         end
         object edtUrlName: TEdit
           Left = 176
-          Top = 116
+          Top = 138
           Width = 233
           Height = 21
           TabOrder = 17
@@ -3741,7 +3754,7 @@ object frmFlickr: TfrmFlickr
         end
         object edtUserId: TEdit
           Left = 176
-          Top = 143
+          Top = 165
           Width = 233
           Height = 21
           TabOrder = 18
@@ -3749,7 +3762,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkUpdateCollections: TCheckBox
           Left = 176
-          Top = 312
+          Top = 334
           Width = 144
           Height = 17
           Caption = 'Update Collections'
@@ -3760,7 +3773,7 @@ object frmFlickr: TfrmFlickr
         end
         object chkAddItem: TCheckBox
           Left = 176
-          Top = 334
+          Top = 356
           Width = 127
           Height = 17
           Caption = 'Disable Trend Display'
@@ -3769,7 +3782,7 @@ object frmFlickr: TfrmFlickr
         end
         object GroupBox2: TGroupBox
           Left = 191
-          Top = 484
+          Top = 506
           Width = 209
           Height = 61
           Caption = 'Group Sorting'
@@ -3794,6 +3807,23 @@ object frmFlickr: TfrmFlickr
             TabOrder = 1
             OnClick = RadioButton8Click
           end
+        end
+        object edtWorkspace: TEdit
+          Left = 176
+          Top = 59
+          Width = 233
+          Height = 21
+          TabOrder = 22
+          OnChange = edtWorkspaceChange
+        end
+        object btnLoadDirectory: TButton
+          Left = 384
+          Top = 59
+          Width = 25
+          Height = 21
+          Caption = '...'
+          TabOrder = 23
+          OnClick = btnLoadDirectoryClick
         end
       end
     end
@@ -3882,7 +3912,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001780110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

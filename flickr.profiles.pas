@@ -111,11 +111,11 @@ var
   iXMLRootNode, iNode: IXMLNode;
   profile: IProfile;
 begin
-  if fileExists(ExtractFilePath(ParamStr(0)) + FileName) then
+  if fileExists(FileName) then
   begin
     Document := TXMLDocument.Create(nil);
     try
-      Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
+      Document.LoadFromFile(FileName);
       iXMLRootNode := Document.ChildNodes.first;
       iNode := iXMLRootNode.ChildNodes.first;
       while iNode <> nil do
@@ -130,8 +130,7 @@ begin
     end;
   end
   else
-    ShowMessage('File does not exists in location: ' +
-      ExtractFilePath(ParamStr(0)) + FileName);
+    ShowMessage('File does not exists in location: ' + FileName);
 end;
 
 procedure TProfiles.Save(FileName: string);
@@ -149,7 +148,7 @@ begin
   begin
     FList[i].Save(iNode);
   end;
-  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + FileName);
+  XMLDoc.SaveToFile(FileName);
 end;
 
 procedure TProfiles.setList(const Value: TList<IProfile>);

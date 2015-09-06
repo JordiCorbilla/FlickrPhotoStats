@@ -72,6 +72,8 @@ type
     procedure SetAlbumViewsID(const Value: TStringList);
     function GetAlbumLikesID(): TStringList;
     procedure SetAlbumLikesID(const Value: TStringList);
+    procedure SetWorkspace(const Value: string);
+    function GetWorkspace() : string;
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
     property ConsiderPendingQueueItems : boolean read GetConsiderPendingQueueItems write SetConsiderPendingQueueItems;
@@ -91,6 +93,7 @@ type
     property DisableTrendDisplay: boolean read GetDisableTrendDisplay write SetDisableTrendDisplay;
     property AlbumViewsID : TStringList read GetAlbumViewsID write SetAlbumViewsID;
     property AlbumLikesID : TStringList read GetAlbumLikesID write SetAlbumLikesID;
+    property Workspace : string read GetWorkspace write SetWorkspace;
     function Load() : IOptions;
     procedure Save();
   End;
@@ -116,6 +119,7 @@ type
     FDisplaySuccessfulResponses: boolean;
     FUpdateCollections: boolean;
     FDisableTrendDisplay: boolean;
+    FWorkspace: string;
     procedure SetConsiderPendingQueueItems(const Value: boolean);
     procedure SeteMailAddress(const Value: string);
     procedure SetMaxItems(const Value: integer);
@@ -154,6 +158,8 @@ type
     function GetDisplaySuccessfulResponses() : boolean;
     function GetUpdateCollections() : boolean;
     function GetDisableTrendDisplay() : boolean;
+    procedure SetWorkspace(const Value: string);
+    function GetWorkspace() : string;
   public
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
@@ -174,6 +180,7 @@ type
     property DisplaySuccessfulResponses: boolean read GetDisplaySuccessfulResponses write SetDisplaySuccessfulResponses;
     property UpdateCollections: boolean read GetUpdateCollections write SetUpdateCollections;
     property DisableTrendDisplay: boolean read GetDisableTrendDisplay write SetDisableTrendDisplay;
+    property Workspace : string read GetWorkspace write SetWorkspace;
     class function New(): IOptions;
     function Load() : IOptions;
     procedure Save();
@@ -304,6 +311,11 @@ begin
   result := FUrlName;
 end;
 
+function TOptions.GetWorkspace: string;
+begin
+  result := FWorksPace;
+end;
+
 function TOptions.Load : IOptions;
 var
   inifile : Tinifile;
@@ -314,6 +326,7 @@ begin
   try
     FMaxItemsListGlobals := inifile.ReadString('System', 'MaxItemsListGlobals', '80');
     FUrlName := inifile.ReadString('System', 'UrlName', '');
+    FWorkspace := inifile.ReadString('System', 'Workspace', '');
     FShowMarksInGraphs := inifile.ReadBool('System', 'ShowMarksInGraphs', false);
     FConsiderPendingQueueItems := inifile.ReadBool('System', 'ConsiderPendingQueueItems', true);
     FUpdateCountsRealTime := inifile.ReadBool('System', 'UpdateCountsRealTime', false);
@@ -371,6 +384,7 @@ begin
   try
     inifile.WriteString('System', 'MaxItemsListGlobals', FMaxItemsListGlobals);
     inifile.WriteString('System', 'UrlName', FUrlName);
+    inifile.WriteString('System', 'Workspace', FWorkspace);
     inifile.WriteBool('System', 'ShowMarksInGraphs', FShowMarksInGraphs);
     inifile.WriteBool('System', 'ConsiderPendingQueueItems', FConsiderPendingQueueItems);
     inifile.WriteBool('System', 'UpdateCountsRealTime', FUpdateCountsRealTime);
@@ -513,6 +527,11 @@ end;
 procedure TOptions.SeturlName(const Value: string);
 begin
   FurlName := Value;
+end;
+
+procedure TOptions.SetWorkspace(const Value: string);
+begin
+  FWorkspace := Value;
 end;
 
 end.

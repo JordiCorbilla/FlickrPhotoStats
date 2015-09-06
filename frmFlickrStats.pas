@@ -43,7 +43,7 @@ uses
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
-  flickr.lib.options, flickr.albums.list;
+  flickr.lib.options, flickr.albums.list, flickr.lib.folder;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -313,6 +313,9 @@ type
     Button3: TButton;
     Button4: TButton;
     Button5: TButton;
+    Label10: TLabel;
+    edtWorkspace: TEdit;
+    btnLoadDirectory: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -400,6 +403,8 @@ type
     procedure listValuesViewsAlbumsIDChange(Sender: TObject);
     procedure listValuesLikesAlbumsChange(Sender: TObject);
     procedure listValuesLikesAlbumsIDChange(Sender: TObject);
+    procedure btnLoadDirectoryClick(Sender: TObject);
+    procedure edtWorkspaceChange(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -1121,6 +1126,11 @@ var
   comparer : TCompareType;
 begin
   LoadOptions;
+  if not fileExists(options.Workspace + '\flickrRepository.xml') then
+  begin
+    showMessage('There are no saved repositories, please save one first!');
+    exit;
+  end;
   if Assigned(repository) then
   begin
     repository := nil;
@@ -1151,7 +1161,7 @@ begin
   st := TStopWatch.Create;
   st.Start;
   repository.sorted := chksorting.Checked;
-  repository.load('flickrRepository.xml');
+  repository.load(options.Workspace + '\flickrRepository.xml');
   st.Stop;
   log('Loading repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
@@ -1162,7 +1172,7 @@ begin
   end;
   st := TStopWatch.Create;
   st.Start;
-  globalsRepository.load('flickrRepositoryGlobal.xml');
+  globalsRepository.load(options.Workspace + '\flickrRepositoryGlobal.xml');
   st.Stop;
   log('Loading repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
@@ -1173,7 +1183,7 @@ begin
   end;
   st := TStopWatch.Create;
   st.Start;
-  organic.load('flickrOrganic.xml');
+  organic.load(options.Workspace + '\flickrOrganic.xml');
   st.Stop;
   log('Loading repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
@@ -1184,7 +1194,7 @@ begin
   end;
   st := TStopWatch.Create;
   st.Start;
-  FilteredGroupList.load('flickrGroups.xml');
+  FilteredGroupList.load(options.Workspace + '\flickrGroups.xml');
   btnFilterCancelClick(sender);
   st.Stop;
   log('Loading repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -1212,6 +1222,14 @@ begin
   btnShowReport.Enabled := true;
   Button9.Enabled := true;
   btnLoadHall.Enabled := true;
+end;
+
+procedure TfrmFlickr.btnLoadDirectoryClick(Sender: TObject);
+var
+  myFolder : string;
+begin
+  myFolder := TFolder.BrowseForFolder;
+  edtWorkspace.Text := myFolder;
 end;
 
 procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
@@ -2009,19 +2027,19 @@ begin
   begin
     st := TStopWatch.Create;
     st.Start;
-    repository.save(apikey.text, secret.text, edtUserId.text, 'flickrRepository.xml');
+    repository.save(apikey.text, secret.text, edtUserId.text, options.Workspace + '\flickrRepository.xml');
     st.Stop;
     log('Saving repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     st := TStopWatch.Create;
     st.Start;
-    globalsRepository.save('flickrRepositoryGlobal.xml');
+    globalsRepository.save(options.Workspace + '\flickrRepositoryGlobal.xml');
     st.Stop;
     log('Saving repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     st := TStopWatch.Create;
     st.Start;
-    FilteredGroupList.save('flickrGroups.xml');
+    FilteredGroupList.save(options.Workspace + '\flickrGroups.xml');
     st.Stop;
     log('Saving repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
@@ -2126,6 +2144,16 @@ begin
     showMessage('Album likes list must contain the same amount of items');
     exit;
   end;
+  if edtWorkspace.Text = '' then
+  begin
+    showMessage('Workspace needs to be defined');
+    exit;
+  end;
+  if not DirectoryExists(edtWorkspace.Text) then
+  begin
+    showMessage('Workspace needs to be defined with a valid directory');
+    exit;
+  end;
 
   options.MaxItemsListGlobals := edtMax.Text;
   options.urlName := edtUrlName.Text;
@@ -2138,6 +2166,8 @@ begin
   options.UpdateCollections := chkUpdateCollections.Checked;
   options.DisableTrendDisplay := chkAddItem.Checked;
   options.sortingEnabled := chksorting.Checked;
+
+  options.workspace := edtWorkspace.Text;
 
   options.MaxNumberOfLinesLog := edtMaxLog.Text;
   options.eMailAddress := edtEmail.Text;
@@ -2194,7 +2224,7 @@ begin
 
   edtMax.Text := options.MaxItemsListGlobals;
   edtUrlName.Text := options.urlName;
-
+  edtWorkspace.Text := options.workspace;
   showMarks.Checked := options.ShowMarksInGraphs;
   chkPending.Checked := options.ConsiderPendingQueueItems;
   chkRealTime.Checked := options.UpdateCountsRealTime;
@@ -2267,7 +2297,7 @@ end;
 
 procedure TfrmFlickr.Button2Click(Sender: TObject);
 begin
-  if SaveToExcelGroups(listGroups, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsGroups.xls') then
+  if SaveToExcelGroups(listGroups, 'Flickr Analytics', options.Workspace + '\FlickrAnalyticsGroups.xls') then
     showmessage('Data saved successfully!');
 end;
 
@@ -2965,8 +2995,8 @@ begin
   begin
     description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, true);
     try
-      description.SaveToFile('flickrHtmlreport.htm');
-      WebBrowser2.Navigate('file:///' + ExtractFilePath(ParamStr(0)) + 'flickrHtmlreport.htm');
+      description.SaveToFile(options.Workspace + '\flickrHtmlreport.htm');
+      WebBrowser2.Navigate('file:///' + options.Workspace + '\flickrHtmlreport.htm');
     finally
       description.Free;
     end;
@@ -3158,6 +3188,12 @@ end;
 procedure TfrmFlickr.edtUserIdChange(Sender: TObject);
 begin
   if optionsEMail.flickrUserId <> edtUserId.text then
+    FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtWorkspaceChange(Sender: TObject);
+begin
+  if options.Workspace <> edtWorkspace.text then
     FDirtyOptions := true;
 end;
 
@@ -3942,10 +3978,10 @@ end;
 
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
-  if SaveToExcel(listPhotos, 'Flickr Analytics', ExtractFilePath(ParamStr(0)) + 'FlickrAnalytics.xls') then
+  if SaveToExcel(listPhotos, 'Flickr Analytics', options.Workspace + '\FlickrAnalytics.xls') then
     showmessage('Data saved successfully!');
-  ExportGraphToExcel(TotalViews, 'Total Views History',ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsTotalViews.xls');
-  ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsTotalViewsHistogram.xls');
+  ExportGraphToExcel(TotalViews, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViews.xls');
+  ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViewsHistogram.xls');
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
@@ -3995,8 +4031,6 @@ begin
   flickrChart := TFlickrChart.create;
   frmFlickr.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
   RepositoryLoaded := false;
-  if not fileExists(ExtractFilePath(ParamStr(0)) + 'flickrRepository.xml') then
-    btnLoad.Enabled := false;
   ClearAllCharts();
   FDirtyOptions := false;
 end;
@@ -4091,7 +4125,7 @@ var
   setup: TfrmSetupApp;
 begin
   LoadOptions;
-  if (Apikey.Text = '') or (secret.Text = '') or (edtUserId.Text = '') then
+  if (Apikey.Text = '') or (secret.Text = '') or (edtUserId.Text = '')  or (edtWorkspace.Text = '') then
   begin
     setup := TfrmSetupApp.Create(Application);
     try
@@ -4101,6 +4135,8 @@ begin
         setup.secret.Text := secret.Text;
       if edtUserId.Text <> '' then
         setup.edtUserId.Text := edtUserId.Text;
+      if edtWorkspace.Text <> '' then
+        setup.edtWorkspace.Text := edtWorkspace.Text;
       setup.ShowModal;
     finally
       setup.Free;

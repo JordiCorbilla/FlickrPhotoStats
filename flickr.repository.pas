@@ -252,11 +252,11 @@ var
   iXMLRootNode, iNode: IXMLNode;
   photo: IPhoto;
 begin
-  if fileExists(ExtractFilePath(ParamStr(0)) + FileName) then
+  if fileExists(FileName) then
   begin
   Document := TXMLDocument.Create(nil);
   try
-    Document.LoadFromFile(ExtractFilePath(ParamStr(0)) + FileName);
+    Document.LoadFromFile(FileName);
     iXMLRootNode := Document.ChildNodes.first;
     Self.FApiKey := iXMLRootNode.attributes['ApiKey'];
 
@@ -278,6 +278,7 @@ begin
     while iNode <> nil do
     begin
       photo := TPhoto.Create();
+      photo.folder := ExtractFilePath(FileName);
       photo.Load(iNode);
       FPhotos.Add(photo);
       iNode := iNode.NextSibling;
@@ -290,7 +291,7 @@ begin
   end;
   end
   else
-    ShowMessage('File does not exists in location: ' + ExtractFilePath(ParamStr(0)) + FileName);
+    ShowMessage('File does not exists in location: ' + FileName);
 end;
 
 procedure TFlickrRepository.Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
@@ -309,9 +310,10 @@ begin
 
   for i := 0 to FPhotos.count - 1 do
   begin
+    FPhotos[i].folder := ExtractFilePath(FileName);
     FPhotos[i].Save(iNode);
   end;
-  XMLDoc.SaveToFile(ExtractFilePath(ParamStr(0)) + FileName);
+  XMLDoc.SaveToFile(FileName);
 end;
 
 procedure TFlickrRepository.SetApiKey(value: string);

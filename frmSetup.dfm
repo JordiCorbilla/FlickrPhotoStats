@@ -4,7 +4,7 @@ object frmSetupApp: TfrmSetupApp
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Application Set up, first steps.'
-  ClientHeight = 320
+  ClientHeight = 408
   ClientWidth = 807
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -139,6 +139,32 @@ object frmSetupApp: TfrmSetupApp
     Font.Style = []
     ParentFont = False
   end
+  object Label9: TLabel
+    Left = 28
+    Top = 325
+    Width = 66
+    Height = 13
+    Caption = 'Workspace:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object Label10: TLabel
+    Left = 16
+    Top = 288
+    Width = 451
+    Height = 19
+    Caption = 'Then define your workspace, where all your files will be placed:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+  end
   object apikey: TEdit
     Left = 120
     Top = 57
@@ -155,7 +181,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object btnConfirm: TButton
     Left = 702
-    Top = 279
+    Top = 365
     Width = 49
     Height = 38
     Caption = 'Confirm'
@@ -169,7 +195,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object btnDeny: TButton
     Left = 752
-    Top = 279
+    Top = 365
     Width = 50
     Height = 38
     Caption = 'Deny'
@@ -188,13 +214,29 @@ object frmSetupApp: TfrmSetupApp
     Height = 21
     TabOrder = 4
   end
+  object edtWorkspace: TEdit
+    Left = 120
+    Top = 322
+    Width = 233
+    Height = 21
+    TabOrder = 5
+  end
+  object btnLoadDirectory: TButton
+    Left = 328
+    Top = 321
+    Width = 25
+    Height = 23
+    Caption = '...'
+    TabOrder = 6
+    OnClick = btnLoadDirectoryClick
+  end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
     Left = 448
     Top = 68
     Bitmap = {
-      494C0101ED002001180110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
