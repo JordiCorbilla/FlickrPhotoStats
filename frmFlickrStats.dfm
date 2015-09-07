@@ -313,6 +313,7 @@ object frmFlickr: TfrmFlickr
     3007003F0000FF003FFF003F0000FF003FFF003F0000FF003FFF003F0000FF00
     3FFF003F0000FF003FFF007F0000FF003FFF007F0000FF003FFFFFFF0000FF00
     3FFFFFFF0000FF003FFFFFFF0000FF007FFFFFFF0000FFFFFFFFFFFF0000}
+  Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
   OnCreate = FormCreate
@@ -600,7 +601,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = TabSheet7
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2104,7 +2105,7 @@ object frmFlickr: TfrmFlickr
             OnChange = photoIdChange
           end
           object btnAdd: TButton
-            Left = -1
+            Left = 2
             Top = 1
             Width = 50
             Height = 38
@@ -3811,7 +3812,7 @@ object frmFlickr: TfrmFlickr
         object edtWorkspace: TEdit
           Left = 176
           Top = 59
-          Width = 233
+          Width = 209
           Height = 21
           TabOrder = 22
           OnChange = edtWorkspaceChange
@@ -3912,7 +3913,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001800110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001840110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -11973,6 +11974,56 @@ object frmFlickr: TfrmFlickr
       Caption = 'Uncheck All'
       ImageIndex = 63
       OnClick = UncheckAll2Click
+    end
+  end
+  object MainMenu1: TMainMenu
+    Images = ImageList1
+    Left = 700
+    Top = 311
+    object File1: TMenuItem
+      Caption = 'File'
+      object Open1: TMenuItem
+        Caption = 'Open'
+        ImageIndex = 58
+        OnClick = btnLoadClick
+      end
+      object Save1: TMenuItem
+        Caption = 'Save'
+        ImageIndex = 221
+        OnClick = btnSaveClick
+      end
+      object N8: TMenuItem
+        Caption = '-'
+      end
+      object Exit1: TMenuItem
+        Caption = 'Exit'
+        ImageIndex = 63
+        OnClick = Exit1Click
+      end
+    end
+    object Authenticate1: TMenuItem
+      Caption = 'Authentication'
+      object AuthenticateSession1: TMenuItem
+        Caption = 'Authenticate Session'
+        ImageIndex = 26
+        OnClick = AuthenticateClick
+      end
+    end
+    object About1: TMenuItem
+      Caption = 'About'
+      object AboutFlickrPhotoAnalytics1: TMenuItem
+        Caption = 'About Flickr Photo Analytics'
+        ImageIndex = 3
+        OnClick = btnAboutClick
+      end
+    end
+    object Help1: TMenuItem
+      Caption = 'Help'
+      object OnlineHelp1: TMenuItem
+        Caption = 'Online Help'
+        ImageIndex = 157
+        OnClick = Button3Click
+      end
     end
   end
 end

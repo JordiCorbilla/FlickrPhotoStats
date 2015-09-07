@@ -13,7 +13,7 @@ object frmSetupApp: TfrmSetupApp
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poMainFormCenter
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
   object lblText: TLabel
@@ -217,7 +217,7 @@ object frmSetupApp: TfrmSetupApp
   object edtWorkspace: TEdit
     Left = 120
     Top = 322
-    Width = 233
+    Width = 210
     Height = 21
     TabOrder = 5
   end
@@ -236,7 +236,7 @@ object frmSetupApp: TfrmSetupApp
     Left = 448
     Top = 68
     Bitmap = {
-      494C0101ED002001200110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001280110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

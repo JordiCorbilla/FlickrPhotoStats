@@ -316,6 +316,18 @@ type
     Label10: TLabel;
     edtWorkspace: TEdit;
     btnLoadDirectory: TButton;
+    MainMenu1: TMainMenu;
+    File1: TMenuItem;
+    Open1: TMenuItem;
+    Save1: TMenuItem;
+    Authenticate1: TMenuItem;
+    About1: TMenuItem;
+    Help1: TMenuItem;
+    AboutFlickrPhotoAnalytics1: TMenuItem;
+    OnlineHelp1: TMenuItem;
+    N8: TMenuItem;
+    Exit1: TMenuItem;
+    AuthenticateSession1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -405,6 +417,7 @@ type
     procedure listValuesLikesAlbumsIDChange(Sender: TObject);
     procedure btnLoadDirectoryClick(Sender: TObject);
     procedure edtWorkspaceChange(Sender: TObject);
+    procedure Exit1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -818,6 +831,11 @@ begin
   if found then
     Item := listPhotos.Items[i - 1];
   Result := found;
+end;
+
+procedure TfrmFlickr.Exit1Click(Sender: TObject);
+begin
+  Close;
 end;
 
 procedure TfrmFlickr.RadioButton1Click(Sender: TObject);

@@ -8,7 +8,7 @@
 
 $(document).ready(function () {
     $.ajax({
-        url: "/FlickrPhotoAnalytics/home/fetchData?id=1",  
+        url: "/FlickrPhotoAnalytics/home/fetchTotals?view=views",  
         type: 'GET',  
         success: function (result) {  
             AddPlot('chart1', result, 'Number of Views');  
@@ -18,7 +18,7 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: "/FlickrPhotoAnalytics/home/fetchData?id=2",
+        url: "/FlickrPhotoAnalytics/home/fetchTotals?view=likes",
         type: 'GET',
         success: function (result) {
             AddPlot('chart2', result, 'Number of Likes');
@@ -28,10 +28,40 @@ $(document).ready(function () {
     });
 
     $.ajax({
-        url: "/FlickrPhotoAnalytics/home/fetchData?id=3",
+        url: "/FlickrPhotoAnalytics/home/fetchTotals?view=comments",
         type: 'GET',
         success: function (result) {
             AddPlot('chart3', result, 'Number of Comments');
+        },
+        error: function () {
+        }
+    });
+
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchPartials?view=views",
+        type: 'GET',
+        success: function (result) {
+            AddPlot('chart4', result, 'Number of Views');
+        },
+        error: function () {
+        }
+    });
+
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchPartials?view=likes",
+        type: 'GET',
+        success: function (result) {
+            AddPlot('chart5', result, 'Number of Likes');
+        },
+        error: function () {
+        }
+    });
+
+    $.ajax({
+        url: "/FlickrPhotoAnalytics/home/fetchPartials?view=comments",
+        type: 'GET',
+        success: function (result) {
+            AddPlot('chart6', result, 'Number of Comments');
         },
         error: function () {
         }
@@ -47,7 +77,7 @@ $(document).ready(function () {
 
         var line1 = arr;
         $.jqplot.config.enablePlugins = true;
-        var plot2 = $.jqplot(chart, [line1], {
+        $.jqplot(chart, [line1], {
             seriesColors: ["rgba(78, 135, 194, 0.7)"],
             title: gtitle,
             grid: {
