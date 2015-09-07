@@ -25,14 +25,14 @@
         }
     </style>
     <div class="ui-wrapper-content">
-        <div id="chart1" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 9px;"></div>
-        <div id="chart2" style="height:300px; width:33%; float: left; background: rgb(57,57,57); "></div>
-        <div id="chart3" style="height:300px; width:33%; float: right; background: rgb(57,57,57); "></div>
+        <div id="chart1" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 3px;"></div>
+        <div id="chart2" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 3px;"></div>
+        <div id="chart3" style="height:300px; width:33%; float: left; background: rgb(57,57,57); "></div>
     </div>
     <div class="ui-wrapper-content">
-        <div id="chart4" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 9px; margin-top: 20px;"></div>
-        <div id="chart5" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-top: 20px;"></div>
-        <div id="chart6" style="height:300px; width:33%; float: right; background: rgb(57,57,57); margin-top: 20px;"></div>
+        <div id="chart4" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 3px; margin-top: 20px;"></div>
+        <div id="chart5" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-right: 3px; margin-top: 20px;"></div>
+        <div id="chart6" style="height:300px; width:33%; float: left; background: rgb(57,57,57); margin-top: 20px;"></div>
     </div>
     <script>
         var $contentOfChart = "<%=Model.values%>";
