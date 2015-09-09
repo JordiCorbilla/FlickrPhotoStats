@@ -3,6 +3,8 @@ FlickrPhotoStats
 
 Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API.
 
+[![Latest Stable Version](https://poser.pugx.org/badges/poser/version.svg)]
+
 **License:** GNU General Public License.
 
 The app only needs a valid *API Key* that can be requested in the App Garden where my application is already [published](https://www.flickr.com/services/apps/72157639602915254/):
@@ -119,7 +121,7 @@ Developed with Delphi XE6 and C#.
 - Additional photo filtering.
 - Speed improvements.
 
-### Version 4.5: version | 1.2.3
+### Version 4.5:
 - Authentication improvements.
 - Pool improvements.
 
