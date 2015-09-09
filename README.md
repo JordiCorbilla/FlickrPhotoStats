@@ -1,7 +1,7 @@
 FlickrPhotoStats
 ================
 
-Flickr Photo stats provides the ability to request information from your Flickr pool using the Web REST API.
+Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API.
 
 **License:** GNU General Public License.
 
@@ -68,10 +68,11 @@ Version 4.3 (RC):
 Version 4.4 (RC):
 
 - FlickrPhotoStats(x64) v4.4. (https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7)
+- FlickrPhotoStats(x64) v4.4.0.82. (https://app.box.com/s/1l6otaof0iefazqt8tp1602bv98bji9r)
 
 Latest release candidate can be found here:
 
-- FlickrPhotoStats(x64) v4.4.0.82. (https://app.box.com/s/1l6otaof0iefazqt8tp1602bv98bji9r)
+- FlickrPhotoStats(x64) v4.5.0.27. (https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n)
 
 ## Changelog
 ### Features for version 3.1:
@@ -96,22 +97,34 @@ Latest release candidate can be found here:
 - splash screen.
 - Photo filtering.
 
+### Features for version 4.5:
+- Dashboard upgrade.
+- Double click on graphs to expand.
+- Performance improvements.
+- BatchUpdate to send emails out to users.
+- emails support HTML.
+- splash screen.
+- Photo filtering.
+- Memory leaks.
+- Web dashboard using ASP.NET MVC.
+
 Source code is available here.
 
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
 
-Developed with Delphi XE6.
+Developed with Delphi XE6 and C#.
 
 ## Roadmap
 ### Version 4.4:
 - Additional photo filtering.
 - Speed improvements.
 
-### Version 4.5:
-- Saving the repository in a SQL DB (MySQL, SQL Server).
+### Version 4.5: version | 1.2.3
 - Authentication improvements.
+- Pool improvements.
 
 ### Version 5:
+- Saving the repository in a SQL DB (MySQL, SQL Server).
 - For version 5 I will start my hosted version where I will be able to take users on-board and just email the results back.
 
 ## Sponsors
