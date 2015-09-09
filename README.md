@@ -114,7 +114,7 @@ Source code is available here.
 
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
 
-Developed with Delphi XE6 and C#.
+Developed with Delphi XE6 and C# and using OpenSSL(https://www.openssl.org/) libraries..
 
 ## Roadmap
 ### Version 4.4:
