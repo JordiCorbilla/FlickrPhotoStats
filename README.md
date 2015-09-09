@@ -3,7 +3,7 @@ FlickrPhotoStats
 
 Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API.
 
-[![Latest Stable Version](https://poser.pugx.org/badges/poser/version.svg)]
+[![Latest Stable Version](https://poser.pugx.org/badges/poser/version.svg)](https://packagist.org/packages/badges/poser)
 
 **License:** GNU General Public License.
 
