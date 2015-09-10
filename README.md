@@ -4,6 +4,7 @@ FlickrPhotoStats
 Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API.
 
 Download the latest version here:
+
 [![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![Stable Release](https://img.shields.io/badge/version-4.5.0.27rc-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n)
 
 **Additional libraries required:**
