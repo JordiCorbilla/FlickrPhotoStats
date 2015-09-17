@@ -102,12 +102,12 @@
         <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.4;FileVersion=4.0.0.4;InternalName=Flickr Photo Stats v4.4;LegalCopyright=Jordi Corbilla;LegalTrademarks=Flickr Photo Stats v4.4;OriginalFilename=Flickr Photo Stats v4.4;ProductName=Flickr Photo Stats v4.4;ProductVersion=4.0.0.4;Comments=Flickr Photo Stats v4.4</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
-        <VerInfo_Build>27</VerInfo_Build>
+        <VerInfo_Build>28</VerInfo_Build>
         <VerInfo_MinorVer>5</VerInfo_MinorVer>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.5;FileVersion=4.5.0.27;InternalName=Flickr Photo Stats v4.5;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.5;ProductName=Flickr Photo Stats v4.5;ProductVersion=4.5.0.0;Comments=Flickr Photo Stats v4.5</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.5;FileVersion=4.5.0.28;InternalName=Flickr Photo Stats v4.5;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.5;ProductName=Flickr Photo Stats v4.5;ProductVersion=4.5.0.0;Comments=Flickr Photo Stats v4.5</VerInfo_Keys>
         <VerInfo_MajorVer>4</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

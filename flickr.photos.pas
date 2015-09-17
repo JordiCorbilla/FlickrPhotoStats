@@ -441,7 +441,7 @@ begin
       iNode2 := iXMLRootNode.ChildNodes.first;
       while iNode2 <> nil do
       begin
-        FAlbums.Add(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
+        FAlbums.AddItem(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
         iNode2 := iNode2.NextSibling;
       end;
     finally
@@ -465,7 +465,7 @@ begin
           added := StrToDate(iNode2.attributes['added'])
         else
           added := Yesterday;
-        FGroups.Add(TPool.create(id, title, added));
+        FGroups.AddItem(TPool.create(id, title, added));
         iNode2 := iNode2.NextSibling;
       end;
     finally

@@ -213,7 +213,7 @@ begin
         if iXMLRootNode3.NodeName = 'set' then
         begin
           EnterCriticalSection(CritSect);
-          Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+          Albums.AddItem(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
           LeaveCriticalSection(CritSect);
         end;
         if iXMLRootNode3.NodeName = 'pool' then

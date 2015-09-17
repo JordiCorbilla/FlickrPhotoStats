@@ -1030,7 +1030,7 @@ begin
         while iXMLRootNode3 <> nil do
         begin
           if iXMLRootNode3.NodeName = 'set' then
-            Albums.add(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
+            Albums.AddItem(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
           if iXMLRootNode3.NodeName = 'pool' then
             Groups.AddItem(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title'], Date));
           iXMLRootNode3 := iXMLRootNode3.NextSibling;
