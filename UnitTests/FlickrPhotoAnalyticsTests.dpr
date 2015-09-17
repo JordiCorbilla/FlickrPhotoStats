@@ -37,7 +37,8 @@ uses
   flickr.pools.list in '..\flickr.pools.list.pas',
   flickr.list.comparer in '..\flickr.list.comparer.pas',
   flickr.base in '..\flickr.base.pas',
-  flickr.photo.trend.info in '..\flickr.photo.trend.info.pas';
+  flickr.photo.trend.info in '..\flickr.photo.trend.info.pas',
+  flickr.albums.list in '..\flickr.albums.list.pas';
 
 var
   runner : ITestRunner;

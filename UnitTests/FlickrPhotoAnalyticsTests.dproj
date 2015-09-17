@@ -150,6 +150,7 @@
         <DCCReference Include="..\flickr.list.comparer.pas"/>
         <DCCReference Include="..\flickr.base.pas"/>
         <DCCReference Include="..\flickr.photo.trend.info.pas"/>
+        <DCCReference Include="..\flickr.albums.list.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

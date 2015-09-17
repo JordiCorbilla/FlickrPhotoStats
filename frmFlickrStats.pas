@@ -1377,6 +1377,9 @@ begin
   if organicViews.SeriesList.Count > 0 then
     organicViews.RemoveAllSeries;
 
+  if organic.Globals.Count = 0 then
+    exit;
+
   SeriesPositive := flickrChart.GetNewBarSeries(organicViews);
   OrganicViews.AddSeries(SeriesPositive);
   SeriesPositive.MultiBar := mbStacked;

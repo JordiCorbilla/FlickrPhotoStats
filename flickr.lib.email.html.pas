@@ -139,13 +139,26 @@ begin
       description.add('            }');
       description.add('          ],');
 
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
-      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].views - globalsRepository.Globals[globalsRepository.Globals.Count-3].views;
-      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].views - globalsRepository.Globals[globalsRepository.Globals.Count-4].views;
-      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].views - globalsRepository.Globals[globalsRepository.Globals.Count-5].views;
-      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
-      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
-      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
+      if globalsRepository.Globals.Count > 0 then
+      begin
+        itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+        itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].views - globalsRepository.Globals[globalsRepository.Globals.Count-3].views;
+        itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].views - globalsRepository.Globals[globalsRepository.Globals.Count-4].views;
+        itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].views - globalsRepository.Globals[globalsRepository.Globals.Count-5].views;
+        itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
+        itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
+        itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
+      end
+      else
+      begin
+        itemToday := 0;
+        itemToday1 := 0;
+        itemToday2 := 0;
+        itemToday3 := 0;
+        itemToday4 := 0;
+        itemTOday5 := 0;
+        itemToday6 := 0;
+      end;
 
       description.add('          "dataProvider": [');
       description.add('            {');
@@ -197,9 +210,15 @@ begin
     description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Trend</b></th>');
     description.add('  </tr>');
 
-    itemTodayViews := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
-    itemYesterdayViews := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
-    difference := itemTodayViews - itemYesterdayViews;
+    itemTodayViews := 0;
+    itemYesterdayViews := 0;
+    difference := 0;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemTodayViews := globalsRepository.Globals[globalsRepository.Globals.Count-1].views;
+      itemYesterdayViews := globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+      difference := itemTodayViews - itemYesterdayViews;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
@@ -208,9 +227,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemTodayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
-    itemYesterdayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
-    difference := itemTodayLikes - itemYesterdayLikes;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemTodayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes;
+      itemYesterdayLikes := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+      difference := itemTodayLikes - itemYesterdayLikes;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
@@ -219,9 +241,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
-    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
-    difference := itemToday - itemYesterday;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
+      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+      difference := itemToday - itemYesterday;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
@@ -230,9 +255,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := organic.Globals[organic.Globals.Count-1].Following;
-    itemYesterday := organic.Globals[organic.Globals.Count-2].Following;
-    difference := itemToday - itemYesterday;
+    if organic.Globals.Count > 0 then
+    begin
+      itemToday := organic.Globals[organic.Globals.Count-1].Following;
+      itemYesterday := organic.Globals[organic.Globals.Count-2].Following;
+      difference := itemToday - itemYesterday;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Contacts</b></td>');
@@ -241,9 +269,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := organic.Globals[organic.Globals.Count-1].TotalGroups;
-    itemYesterday := organic.Globals[organic.Globals.Count-2].TotalGroups;
-    difference := itemToday - itemYesterday;
+    if organic.Globals.Count > 0 then
+    begin
+      itemToday := organic.Globals[organic.Globals.Count-1].TotalGroups;
+      itemYesterday := organic.Globals[organic.Globals.Count-2].TotalGroups;
+      difference := itemToday - itemYesterday;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Group spread</b></td>');
@@ -252,9 +283,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemTodayPhotos := repository.photos.Count;
-    itemYesterdayPhotos := repository.photos.Count;
-    difference := itemTodayPhotos - itemYesterdayPhotos;
+    if repository.photos.Count > 0 then
+    begin
+      itemTodayPhotos := repository.photos.Count;
+      itemYesterdayPhotos := repository.photos.Count;
+      difference := itemTodayPhotos - itemYesterdayPhotos;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Photos</b></td>');
@@ -263,9 +297,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := Round(itemTodayViews / itemTodayPhotos);
-    itemYesterday := Round(itemYesterdayViews / itemYesterdayPhotos);
-    difference := itemToday - itemYesterday;
+    if (itemTodayPhotos >0) and (itemYesterdayPhotos >0) then
+    begin
+      itemToday := Round(itemTodayViews / itemTodayPhotos);
+      itemYesterday := Round(itemYesterdayViews / itemYesterdayPhotos);
+      difference := itemToday - itemYesterday;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Views per Photo</b></td>');
@@ -274,9 +311,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := Round(itemTodayLikes / itemTodayPhotos);
-    itemYesterday := Round(itemYesterdayLikes / itemYesterdayPhotos);
-    difference := itemToday - itemYesterday;
+    if (itemTodayPhotos >0) and (itemYesterdayPhotos >0) then
+    begin
+      itemToday := Round(itemTodayLikes / itemTodayPhotos);
+      itemYesterday := Round(itemYesterdayLikes / itemYesterdayPhotos);
+      difference := itemToday - itemYesterday;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Likes per Photo</b></td>');
@@ -309,14 +349,19 @@ begin
     description.add('    <th '+thStyle+'><b>Average</b></th>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
-    itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].views - globalsRepository.Globals[globalsRepository.Globals.Count-3].views;
-    itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].views - globalsRepository.Globals[globalsRepository.Globals.Count-4].views;
-    itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].views - globalsRepository.Globals[globalsRepository.Globals.Count-5].views;
-    itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
-    itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
-    itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
-    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].views - globalsRepository.Globals[globalsRepository.Globals.Count-2].views;
+      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].views - globalsRepository.Globals[globalsRepository.Globals.Count-3].views;
+      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].views - globalsRepository.Globals[globalsRepository.Globals.Count-4].views;
+      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].views - globalsRepository.Globals[globalsRepository.Globals.Count-5].views;
+      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
+      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
+      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
+      average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    end
+    else
+      average :=0;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
@@ -330,14 +375,17 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[average]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes - globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
-    itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes - globalsRepository.Globals[globalsRepository.Globals.Count-3].likes;
-    itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].likes - globalsRepository.Globals[globalsRepository.Globals.Count-4].likes;
-    itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].likes - globalsRepository.Globals[globalsRepository.Globals.Count-5].likes;
-    itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].likes - globalsRepository.Globals[globalsRepository.Globals.Count-6].likes;
-    itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].likes - globalsRepository.Globals[globalsRepository.Globals.Count-7].likes;
-    itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].likes - globalsRepository.Globals[globalsRepository.Globals.Count-8].likes;
-    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes - globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes - globalsRepository.Globals[globalsRepository.Globals.Count-3].likes;
+      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].likes - globalsRepository.Globals[globalsRepository.Globals.Count-4].likes;
+      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].likes - globalsRepository.Globals[globalsRepository.Globals.Count-5].likes;
+      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].likes - globalsRepository.Globals[globalsRepository.Globals.Count-6].likes;
+      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].likes - globalsRepository.Globals[globalsRepository.Globals.Count-7].likes;
+      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].likes - globalsRepository.Globals[globalsRepository.Globals.Count-8].likes;
+      average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
@@ -351,14 +399,17 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[average]).Replace('.00','')+'</td>');
     description.add('  </tr>');
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
-    itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments;
-    itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments;
-    itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments;
-    itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
-    itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
-    itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
-    average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    if globalsRepository.Globals.Count > 0 then
+    begin
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments;
+      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments;
+      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments;
+      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
+      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
+      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
+      average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
@@ -384,9 +435,15 @@ begin
     description.add('    <th '+thStyle+'><b>Lost</b></th>');
     description.add('  </tr>');
 
-    itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveViews * 100) / (organic.Globals[organic.Globals.Count-1].positiveViews + organic.Globals[organic.Globals.Count-1].negativeViews);
-    itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeViews * 100) / (organic.Globals[organic.Globals.Count-1].positiveViews + organic.Globals[organic.Globals.Count-1].negativeViews);
-    itemToday2x := 0.0;
+    itemTodayx := 0;
+    itemToday1x := 0;
+    itemToday2x := 0;
+    if organic.Globals.Count > 0 then
+    begin
+      itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveViews * 100) / (organic.Globals[organic.Globals.Count-1].positiveViews + organic.Globals[organic.Globals.Count-1].negativeViews);
+      itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeViews * 100) / (organic.Globals[organic.Globals.Count-1].positiveViews + organic.Globals[organic.Globals.Count-1].negativeViews);
+      itemToday2x := 0.0;
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
@@ -395,9 +452,12 @@ begin
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
 
-    itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
-    itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
-    itemToday2x := (organic.Globals[organic.Globals.Count-1].lostLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
+    if organic.Globals.Count > 0 then
+    begin
+      itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
+      itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
+      itemToday2x := (organic.Globals[organic.Globals.Count-1].lostLikes * 100) / (organic.Globals[organic.Globals.Count-1].positiveLikes + organic.Globals[organic.Globals.Count-1].negativeLikes + organic.Globals[organic.Globals.Count-1].lostLikes);
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
@@ -409,9 +469,12 @@ begin
       description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
 
-    itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
-    itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
-    itemToday2x := (organic.Globals[organic.Globals.Count-1].lostComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
+    if organic.Globals.Count > 0 then
+    begin
+      itemTodayx := (organic.Globals[organic.Globals.Count-1].positiveComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
+      itemToday1x := (organic.Globals[organic.Globals.Count-1].negativeComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
+      itemToday2x := (organic.Globals[organic.Globals.Count-1].lostComments * 100) / (organic.Globals[organic.Globals.Count-1].positiveComments + organic.Globals[organic.Globals.Count-1].negativeComments + organic.Globals[organic.Globals.Count-1].lostComments);
+    end;
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
