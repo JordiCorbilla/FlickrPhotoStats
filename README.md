@@ -5,14 +5,14 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![Stable Release](https://img.shields.io/badge/version-4.5.0.27rc-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n)
+[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/sfjwsbrywmoo6v1obfi62fjcbpw7wyge) [![Stable Release](https://img.shields.io/badge/version-4.5.0.29rc-blue.svg)](https://app.box.com/s/sfjwsbrywmoo6v1obfi62fjcbpw7wyge) [![License](https://img.shields.io/badge/license-GPL-blue.svg)]https://app.box.com/s/sfjwsbrywmoo6v1obfi62fjcbpw7wyge) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/sfjwsbrywmoo6v1obfi62fjcbpw7wyge)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
 Remember to download the following libraries and place them in the application root:
 
-- [OpenSSL v1.02 64bits](http://indy.fulgan.com/SSL/openssl-1.0.2d-i386-win32.zip).
-- [OpenSSL v1.02 32bits](http://indy.fulgan.com/SSL/openssl-1.0.2d-x64_86-win64.zip).
+- [OpenSSL v1.02 32bits](http://indy.fulgan.com/SSL/openssl-1.0.2d-i386-win32.zip).
+- [OpenSSL v1.02 64bits](http://indy.fulgan.com/SSL/openssl-1.0.2d-x64_86-win64.zip).
 
 **License:** GNU General Public License.
 
@@ -83,7 +83,7 @@ Version 4.4 (RC):
 
 Latest release candidate can be found here:
 
-- [FlickrPhotoStats(x64) v4.5.0.27](https://app.box.com/s/7h8gfagbvxds3jq7vp3mf98pemwiqy1n).
+- [FlickrPhotoStats(x64) v4.5.0.29](https://app.box.com/s/sfjwsbrywmoo6v1obfi62fjcbpw7wyge).
 
 ## Changelog
 ### Features for version 3.1:
