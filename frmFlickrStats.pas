@@ -43,7 +43,7 @@ uses
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
-  flickr.lib.options, flickr.albums.list, flickr.lib.folder;
+  flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -418,10 +418,11 @@ type
     procedure btnLoadDirectoryClick(Sender: TObject);
     procedure edtWorkspaceChange(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
+    procedure edtProfileChange(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
-    procedure RequestInformation_REST_Flickr(id: string);
+    procedure RequestInformation_REST_Flickr(id: string; organicStat : IFlickrOrganicStats);
     procedure UpdateCounts;
     procedure UpdateTotals(onlyLabels : boolean);
     procedure UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
@@ -657,7 +658,11 @@ procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
   st : TStopWatch;
+  stGeneral : TStopWatch;
   photos: TList<string>;
+  generalUpdate : boolean;
+  organicStat : IFlickrOrganicStats;
+  totalContacts : integer;
 begin
   if apikey.text = '' then
   begin
@@ -675,6 +680,7 @@ begin
       if (listPhotos.Items[i].Checked) then
         photos.Add(listPhotos.Items[i].Caption);
     end;
+    generalUpdate := (listPhotos.Items.Count = photos.Count) and (photos.Count > 0);
     batchUpdate.Enabled := false;
     FProcessingStop := false;
     btnLoad.Enabled := false;
@@ -689,6 +695,13 @@ begin
     listPhotos.OnCustomDrawSubItem := nil;
     ProgressBar1.Min := 0;
     ProgressBar1.Max := photos.Count;
+    organicStat := nil;
+    if generalUpdate then
+    begin
+      stGeneral := TStopWatch.Create;
+      stGeneral.Start;
+      organicStat := TFlickrOrganicStats.create();
+    end;
     for i := 0 to photos.Count-1 do
     begin
       Process.Caption := 'Processing image: ' + photos[i] + ' ' + i.ToString + ' out of ' + photos.Count.ToString;
@@ -697,11 +710,33 @@ begin
       Application.ProcessMessages;
       st := TStopWatch.Create;
       st.Start;
-      RequestInformation_REST_Flickr(photos[i]);
+      RequestInformation_REST_Flickr(photos[i], organicStat);
       st.Stop;
       log('Getting history for ' + photos[i] + ': ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       if FProcessingStop then
         break;
+    end;
+    if generalUpdate then
+    begin
+      stGeneral.Stop;
+      organicStat.executionTime := stGeneral.ElapsedMilliseconds;
+      organicStat.date := Date;
+      try
+        totalContacts := 0;
+        if userToken <> '' then
+        begin
+          try
+            totalContacts := TRepositoryRest.getNumberOfContacts;
+          except on E: Exception do
+            log('Exception reading contacts: ' + e.message);
+          end;
+          if totalContacts < 0 then
+            totalContacts := organic.Globals[organic.Globals.Count-1].following;
+        end;
+      finally
+        organicStat.Following := totalContacts;
+      end;
+      organic.AddGlobals(organicStat);
     end;
 
     FProcessingStop := false;
@@ -876,7 +911,7 @@ begin
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.RequestInformation_REST_Flickr(id: string);
+procedure TfrmFlickr.RequestInformation_REST_Flickr(id: string; organicStat : IFlickrOrganicStats);
 var
   Item, itemExisting: TListItem;
   response: string;
@@ -1045,6 +1080,31 @@ begin
     if repository.ExistPhoto(id, existing) then
     begin
       photo := existing;
+
+      if organicStat <> nil then
+      begin
+        if photo.getTotalViews() >= views.ToInteger() then
+          organicStat.negativeViews := organicStat.negativeViews + 1
+        else
+          organicStat.positiveViews := organicStat.positiveViews + 1;
+
+        if photo.getTotalLikes() > likes.ToInteger() then
+          organicStat.lostLikes := organicStat.lostLikes + 1
+        else if photo.getTotalLikes() = likes.ToInteger() then
+          organicStat.negativeLikes := organicStat.negativeLikes + 1
+        else
+          organicStat.positiveLikes := organicStat.positiveLikes + 1;
+
+        if photo.getTotalComments() > comments.ToInteger() then
+          organicStat.lostComments := organicStat.lostComments + 1
+        else if photo.getTotalComments() = comments.ToInteger() then
+          organicStat.negativeComments := organicStat.negativeComments + 1
+        else
+          organicStat.positiveComments := organicStat.positiveComments + 1;
+
+        organicStat.TotalGroups := repository.getTotalSpreadGroups();
+      end;
+
       photo.Title := title; //replace the title as it changes
       photo.Taken := taken;
       photo.tags := tags;
@@ -1129,7 +1189,7 @@ begin
   end;
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
-  RequestInformation_REST_Flickr(photoId.text);
+  RequestInformation_REST_Flickr(photoId.text, nil);
   photoId.text := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
@@ -2057,6 +2117,12 @@ begin
     globalsRepository.save(options.Workspace + '\flickrRepositoryGlobal.xml');
     st.Stop;
     log('Saving repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
+    st := TStopWatch.Create;
+    st.Start;
+    organic.save(options.Workspace + '\flickrOrganic.xml');
+    st.Stop;
+    log('Saving repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     st := TStopWatch.Create;
     st.Start;
@@ -3159,7 +3225,7 @@ end;
 procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
 begin
   btnLoadProfile.Enabled := true;
-  edtProfile.Enabled := true;
+  //edtProfile.Enabled := true;
   btnSaveProfile.Enabled := true;
 end;
 
@@ -3198,6 +3264,11 @@ procedure TfrmFlickr.edtMaxLogChange(Sender: TObject);
 begin
   if options.MaxNumberOfLinesLog <> edtMaxLog.text then
     FDirtyOptions := true;
+end;
+
+procedure TfrmFlickr.edtProfileChange(Sender: TObject);
+begin
+  btnSaveProfile.Enabled := edtProfile.Text <> '';
 end;
 
 procedure TfrmFlickr.edtUrlNameChange(Sender: TObject);

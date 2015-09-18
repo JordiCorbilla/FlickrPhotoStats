@@ -94,7 +94,7 @@ begin
     try
       st := TStopWatch.Create;
       st.Start;
-      repository.load(options.Workspace + 'flickrRepository.xml');
+      repository.load(options.Workspace + '\flickrRepository.xml');
       st.Stop;
       WriteLn('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       TLogger.LogFile('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -112,7 +112,7 @@ begin
         try
           st := TStopWatch.Create;
           st.Start;
-          organic.Load(options.Workspace + 'flickrOrganic.xml');
+          organic.Load(options.Workspace + '\flickrOrganic.xml');
 
           SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
           WriteLn('Loaded organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -148,7 +148,7 @@ begin
         finally
           st := TStopWatch.Create;
           st.Start;
-          organic.save(options.Workspace + 'flickrOrganic.xml');
+          organic.save(options.Workspace + '\flickrOrganic.xml');
           SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
           WriteLn('Update organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
           TLogger.LogFile('Update organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -162,7 +162,7 @@ begin
 
         st := TStopWatch.Create;
         st.Start;
-        repository.save(apikey, secret, userid, options.Workspace + 'flickrRepository.xml');
+        repository.save(apikey, secret, userid, options.Workspace + '\flickrRepository.xml');
         st.Stop;
         WriteLn('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -177,7 +177,7 @@ begin
       try
         st := TStopWatch.Create;
         st.Start;
-        globalsRepository.load(options.Workspace + 'flickrRepositoryGlobal.xml');
+        globalsRepository.load(options.Workspace + '\flickrRepositoryGlobal.xml');
         st.Stop;
         WriteLn('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -208,7 +208,7 @@ begin
         st.Start;
         WriteLn('Saving flickrRepositoryGlobal');
         TLogger.LogFile('Saving flickrRepositoryGlobal');
-        globalsRepository.save(options.Workspace + 'flickrRepositoryGlobal.xml');
+        globalsRepository.save(options.Workspace + '\flickrRepositoryGlobal.xml');
         st.Stop;
         WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
