@@ -503,7 +503,10 @@ begin
     iNode2.Attributes['id'] := FAlbums[i].Id;
     iNode2.Attributes['title'] := FAlbums[i].Title;
   end;
-  XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml');
+  if DirectoryExists(FFolder + 'Albums') then
+    XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Albums');
 
   // Create the XML file
   XMLDoc := TXMLDocument.Create(nil);
@@ -516,7 +519,10 @@ begin
     iNode2.Attributes['title'] := FGroups[i].Title;
     iNode2.Attributes['added'] := FGroups[i].Added;
   end;
-  XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml');
+  if DirectoryExists(FFolder + 'Groups') then
+    XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
 end;
 
 procedure TPhoto.SetAlbums(Value: TAlbumList);

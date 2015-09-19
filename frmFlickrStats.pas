@@ -730,7 +730,7 @@ begin
           except on E: Exception do
             log('Exception reading contacts: ' + e.message);
           end;
-          if totalContacts < 0 then
+          if (totalContacts < 0) and (organic.Globals.Count > 0) then
             totalContacts := organic.Globals[organic.Globals.Count-1].following;
         end;
       finally
@@ -800,6 +800,7 @@ begin
     UpdateChart(totalViewsacc, totalLikesacc, totalCommentsacc, repository.photos.Count, repository.getTotalSpreadGroups());
     UpdateGlobals();
     UpdateAnalytics();
+    UpdateOrganics();
   end;
   UpdateLabels();
 end;
@@ -820,13 +821,15 @@ begin
   Label28.Visible := true;
   Label29.Visible := true;
 
-  if globalsRepository.globals.Count > 3 then
+  if globalsRepository.globals.Count > 2 then
     views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views
   else
     views := 0;
   Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  if globalsRepository.globals.Count > 2 then
+  if globalsRepository.globals.Count > 1 then
     views := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views
+  else if globalsRepository.globals.Count = 1 then
+    views := globalsRepository.globals[globalsRepository.globals.Count-1].views
   else
     views := 0;
   Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
@@ -1789,12 +1792,22 @@ begin
 
   viewsTendency := TTendency.Create;
 
-  for i := 1 to globalsRepository.globals.Count - 1 do
+  if globalsRepository.globals.Count = 1 then
   begin
-    theDate := globalsRepository.globals[i].Date;
-    views := globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views;
-    viewsTendency.AddXY(i, views);
+    theDate := globalsRepository.globals[0].Date;
+    views := globalsRepository.globals[0].views;
+    viewsTendency.AddXY(0, views);
     Series.AddXY(theDate, views, '', color);
+  end
+  else
+  begin
+    for i := 1 to globalsRepository.globals.Count - 1 do
+    begin
+      theDate := globalsRepository.globals[i].Date;
+      views := globalsRepository.globals[i].views - globalsRepository.globals[i - 1].views;
+      viewsTendency.AddXY(i, views);
+      Series.AddXY(theDate, views, '', color);
+    end;
   end;
 
   dailyViews.AddSeries(Series);
@@ -1856,12 +1869,23 @@ begin
   Series := flickrChart.GetNewBarSeries(dailyComments);
   color := RGB(Random(255), Random(255), Random(255));
   viewsTendency := TTendency.Create;
-  for i := 1 to globalsRepository.globals.Count - 1 do
+
+  if globalsRepository.globals.Count = 1 then
   begin
-    theDate := globalsRepository.globals[i].Date;
-    views := globalsRepository.globals[i].numComments - globalsRepository.globals[i - 1].numComments;
-    viewsTendency.AddXY(i, views);
-    Series.AddXY(theDate, views, '', color);
+      theDate := globalsRepository.globals[0].Date;
+      views := globalsRepository.globals[0].numComments;
+      viewsTendency.AddXY(0, views);
+      Series.AddXY(theDate, views, '', color);
+  end
+  else
+  begin
+    for i := 1 to globalsRepository.globals.Count - 1 do
+    begin
+      theDate := globalsRepository.globals[i].Date;
+      views := globalsRepository.globals[i].numComments - globalsRepository.globals[i - 1].numComments;
+      viewsTendency.AddXY(i, views);
+      Series.AddXY(theDate, views, '', color);
+    end;
   end;
 
   dailyComments.AddSeries(Series);
@@ -1918,12 +1942,23 @@ begin
   Series := flickrChart.GetNewBarSeries(dailyLikes);
   color := RGB(Random(255), Random(255), Random(255));
   viewsTendency := TTendency.Create;
+
+  if globalsRepository.globals.Count = 1 then
+  begin
+    theDate := globalsRepository.globals[0].Date;
+    views := globalsRepository.globals[0].likes;
+    viewsTendency.AddXY(0, views);
+    Series.AddXY(theDate, views, '', color);
+  end
+  else
+  begin
   for i := 1 to globalsRepository.globals.Count - 1 do
   begin
     theDate := globalsRepository.globals[i].Date;
     views := globalsRepository.globals[i].likes - globalsRepository.globals[i - 1].likes;
     viewsTendency.AddXY(i, views);
     Series.AddXY(theDate, views, '', color);
+  end;
   end;
 
   dailyLikes.AddSeries(Series);
@@ -2106,6 +2141,12 @@ begin
   option := MessageDlg('Do you want to save the changes?',mtInformation, mbOKCancel, 0);
   if option = mrOK then
   begin
+    if repository.photos.Count = 0 then
+    begin
+      showMessage('There is nothing to save!');
+      exit;
+    end;
+
     st := TStopWatch.Create;
     st.Start;
     repository.save(apikey.text, secret.text, edtUserId.text, options.Workspace + '\flickrRepository.xml');

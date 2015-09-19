@@ -128,9 +128,9 @@ begin
     finally
       Document := nil;
     end;
-  end
-  else
-    ShowMessage('File does not exists in location: ' + FileName);
+  end;
+//  else
+//    ShowMessage('File does not exists in location: ' + FileName);
 end;
 
 procedure TProfiles.Save(FileName: string);

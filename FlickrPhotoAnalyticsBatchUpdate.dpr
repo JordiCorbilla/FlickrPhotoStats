@@ -138,7 +138,7 @@ begin
               except on E: Exception do
                 TLogger.LogFile('Exception reading contacts: ' + e.message);
               end;
-              if totalContacts < 0 then
+              if (totalContacts < 0) and (organic.Globals.Count > 0) then
                 totalContacts := organic.Globals[organic.Globals.Count-1].following;
             finally
               organicStat.Following := totalContacts;
