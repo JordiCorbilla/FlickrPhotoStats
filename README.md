@@ -5,7 +5,7 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/6lx8613z3nz3jvfnd95gwmq50py18v3u) [![Stable Release](https://img.shields.io/badge/version-4.5.0.31rc-blue.svg)](https://app.box.com/s/6lx8613z3nz3jvfnd95gwmq50py18v3u) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/6lx8613z3nz3jvfnd95gwmq50py18v3u) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/6lx8613z3nz3jvfnd95gwmq50py18v3u)
+[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![Stable Release](https://img.shields.io/badge/version-4.5.0.38rc-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
@@ -83,7 +83,7 @@ Version 4.4 (RC):
 
 Latest release candidate can be found here:
 
-- [FlickrPhotoStats(x64) v4.5.0.31](https://app.box.com/s/6lx8613z3nz3jvfnd95gwmq50py18v3u).
+- [FlickrPhotoStats(x64) v4.5.0.38](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p).
 
 ## Changelog
 ### Features for version 3.1:
@@ -133,6 +133,10 @@ Developed with Delphi XE6 and C# and using [OpenSSL](https://www.openssl.org/) l
 ### Version 4.5:
 - Authentication improvements.
 - Pool improvements.
+ 
+### Version 4.6:
+- Automatic backup.
+- Saving the history independently.
 
 ### Version 5:
 - Saving the repository in a SQL DB (MySQL, SQL Server).
