@@ -35,7 +35,7 @@ uses
 type
   TAlbumList = class(TList<IAlbum>)
   public
-    function AddItem(const album : IAlbum) : integer;
+    function AddItem(album : IAlbum) : integer;
     function Exists(const album : IAlbum; var existing: IAlbum) : boolean;
   end;
 
@@ -43,13 +43,15 @@ implementation
 
 { TPoolList }
 
-function TAlbumList.AddItem(const album: IAlbum): integer;
+function TAlbumList.AddItem(album: IAlbum): integer;
 var
   albumRet : IAlbum;
 begin
   result := 0;
   if not Exists(album, albumRet) then
-    result := Add(album);
+    result := Add(album)
+  else
+    album := nil;
 end;
 
 function TAlbumList.Exists(const album: IAlbum; var existing: IAlbum): boolean;
