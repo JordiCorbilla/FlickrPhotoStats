@@ -144,7 +144,7 @@ type
     Panel17: TPanel;
     Splitter9: TSplitter;
     ChartViews: TChart;
-    ChartComments: TChart;
+    totalPhotos: TChart;
     LineSeries1: TLineSeries;
     ChartLikes: TChart;
     LineSeries7: TLineSeries;
@@ -328,6 +328,14 @@ type
     N8: TMenuItem;
     Exit1: TMenuItem;
     AuthenticateSession1: TMenuItem;
+    Splitter25: TSplitter;
+    totalGroups: TChart;
+    LineSeries15: TLineSeries;
+    LineSeries16: TLineSeries;
+    LineSeries17: TLineSeries;
+    Splitter26: TSplitter;
+    chartComments: TChart;
+    LineSeries18: TLineSeries;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -485,7 +493,7 @@ uses
   System.SyncObjs, generics.collections, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
-  flickr.pools.histogram;
+  flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram;
 
 {$R *.dfm}
 
@@ -1644,6 +1652,8 @@ var
   i: Integer;
   chartTendency : ITendency;
   viewsTendency : integer;
+  photoHistogram : TPhotoHistogram;
+  histogram :  TList<IItem>;
 begin
   if ChartViews.SeriesList.Count > 0 then
     ChartViews.RemoveAllSeries;
@@ -1723,6 +1733,41 @@ begin
   SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
   viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
   SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+  //################################
+  if totalPhotos.SeriesList.Count > 0 then
+    totalPhotos.RemoveAllSeries;
+
+  chartTendency := TTendency.Create;
+
+  Series := flickrChart.GetNewLineSeries(totalPhotos);
+  color := RGB(Random(255), Random(255), Random(255));
+
+  photoHistogram := TPhotoHistogram.Create(repository.photos);
+  histogram := photoHistogram.Histogram;
+  for i := 0 to histogram.Count - 1 do
+  begin
+    chartTendency.AddXY(i, histogram[i].count);
+    Series.AddXY(histogram[i].date, histogram[i].count, '', color);
+  end;
+  totalPhotos.AddSeries(Series);
+  chartTendency.Calculate;
+
+  SeriesTendency := flickrChart.GetNewLineSeries(totalPhotos);
+  color := clYellow;
+
+  //Adding only first and last item
+  viewsTendency := chartTendency.tendencyResult(0);
+  SeriesTendency.AddXY(histogram[0].Date, viewsTendency, '', color);
+  viewsTendency := chartTendency.tendencyResult(histogram.Count - 1);
+  SeriesTendency.AddXY(histogram[histogram.Count - 1].Date, viewsTendency, '', color);
+//  for i := 0 to globalsRepository.globals.Count - 1 do
+//  begin
+//    viewsTendency := chartTendency.tendencyResult(i);
+//    SeriesTendency.AddXY(globalsRepository.globals[i].Date, viewsTendency, '', color);
+//  end;
+  totalPhotos.AddSeries(SeriesTendency);
+  histogram.Free;
+  photoHistogram.Free;
 end;
 
 procedure TfrmFlickr.UncheckAll1Click(Sender: TObject);
@@ -1746,6 +1791,7 @@ begin
   chartItemViewsH.SeriesList.Clear;
   chartItemLikesH.SeriesList.Clear;
   chartItemCommentsH.SeriesList.Clear;
+  totalGroups.SeriesList.Clear;
 end;
 
 procedure TfrmFlickr.UncheckAll2Click(Sender: TObject);
@@ -2606,6 +2652,7 @@ begin
   listPhotos.Visible := true;
   chartItemViews.SeriesList.Clear;
   chartItemLikes.SeriesList.Clear;
+  totalGroups.SeriesList.Clear;
   chartItemComments.SeriesList.Clear;
   chartItemViewsH.SeriesList.Clear;
   chartItemLikesH.SeriesList.Clear;
@@ -3249,12 +3296,14 @@ procedure TfrmFlickr.showMarksClick(Sender: TObject);
 begin
   flickrChart.VisibleMarks(chartitemViews, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemLikes, showMarks.Checked);
+  flickrChart.VisibleMarks(totalGroups, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemComments, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemViewsH, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemLikesH, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemCommentsH, showMarks.Checked);
   flickrChart.VisibleMarks(Chart2, showMarks.Checked);
   flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
+  flickrChart.VisibleMarks(totalPhotos, showMarks.Checked);
   flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
   flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
   flickrChart.VisibleMarks(dailyViews, showMarks.Checked);
@@ -4075,9 +4124,10 @@ begin
   chartItemViews.Height := round(panel4.Height / 2);
   chartItemLikes.Height := round(panel4.Height / 2);
   chartItemComments.Height := round(panel4.Height / 2);
-  panel22.Width := round(panel4.Width / 3);
-  panel23.Width := round(panel4.Width / 3);
-  panel11.Width := round(panel4.Width / 3);
+  panel22.Width := round(panel4.Width / 4);
+  panel23.Width := round(panel4.Width / 4);
+  panel11.Width := round(panel4.Width / 4);
+  totalGroups.Width := round(panel4.Width / 4);
 end;
 
 procedure TfrmFlickr.Splitter6Moved(Sender: TObject);
@@ -4172,6 +4222,7 @@ procedure TfrmFlickr.ClearAllCharts();
 begin
   chart2.RemoveAllSeries;
   ChartViews.RemoveAllSeries;
+  totalPhotos.RemoveAllSeries;
   ChartLikes.RemoveAllSeries;
   ChartComments.RemoveAllSeries;
   executionTime.RemoveAllSeries;
@@ -4190,6 +4241,7 @@ begin
   ChartHallLikes.RemoveAllSeries;
   chartItemViews.RemoveAllSeries;
   chartItemLikes.RemoveAllSeries;
+  totalGroups.RemoveAllSeries;
   chartItemComments.RemoveAllSeries;
   chartItemViewsH.RemoveAllSeries;
   chartItemLikesH.RemoveAllSeries;
@@ -4218,7 +4270,8 @@ begin
   panel18.width := round(panel14.Width * 0.33);
 
   chartViews.Height := round(panel17.Height * 0.40);
-  chartLikes.Height := round(panel17.Height * 0.30);
+  chartLikes.Height := round(panel17.Height * 0.20);
+  chartComments.height := round(panel17.Height * 0.20);
 
   executionTime.Height := round(panel18.Height * 0.20);
   mostViewsChart.Height := round(panel18.Height * 0.20);
@@ -4248,9 +4301,10 @@ begin
   chartItemViews.Height := round(panel4.Height / 2);
   chartItemLikes.Height := round(panel4.Height / 2);
   chartItemComments.Height := round(panel4.Height / 2);
-  panel22.Width := round(panel4.Width / 3);
-  panel23.Width := round(panel4.Width / 3);
-  panel11.Width := round(panel4.Width / 3);
+  panel22.Width := round(panel4.Width / 4);
+  panel23.Width := round(panel4.Width / 4);
+  panel11.Width := round(panel4.Width / 4);
+  totalGroups.Width := round(panel4.Width / 4);
 end;
 
 procedure TfrmFlickr.FormShow(Sender: TObject);
@@ -4411,7 +4465,7 @@ begin
     if photo <> nil then
     begin
       SeriesViews := flickrChart.GetNewLineSeries(chartItemViews);
-      SeriesPool := flickrChart.GetNewAreaSeries(chartItemLikes);
+      SeriesPool := flickrChart.GetNewAreaSeries(totalGroups);
       SeriesLikes := flickrChart.GetNewLineSeries(chartItemLikes);
       SeriesComments := flickrChart.GetNewLineSeries(chartItemComments);
       SeriesPool.Title := id + 'pool';
@@ -4447,7 +4501,7 @@ begin
       poolHistogram.Free;
 
       chartItemViews.AddSeries(SeriesViews);
-      chartItemLikes.AddSeries(SeriesPool);
+      totalGroups.AddSeries(SeriesPool);
       chartItemLikes.AddSeries(SeriesLikes);
       chartItemComments.AddSeries(SeriesComments);
       viewsTendency.Calculate;
@@ -4529,16 +4583,16 @@ begin
         chartItemLikes.RemoveSeries(Series);
 
       Series2 := nil;
-      for i := 0 to chartItemLikes.SeriesList.Count - 1 do
+      for i := 0 to totalGroups.SeriesList.Count - 1 do
       begin
-        if chartItemLikes.SeriesList[i].title = id + 'pool' then
+        if totalGroups.SeriesList[i].title = id + 'pool' then
         begin
-          Series2 := TAreaSeries(chartItemLikes.SeriesList[i]);
+          Series2 := TAreaSeries(totalGroups.SeriesList[i]);
           Break;
         end;
       end;
       if Series2 <> nil then
-        chartItemLikes.RemoveSeries(Series2);
+        totalGroups.RemoveSeries(Series2);
 
       Series := nil;
       for i := 0 to chartItemComments.SeriesList.Count - 1 do

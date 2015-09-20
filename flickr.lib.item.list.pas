@@ -25,62 +25,67 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
-unit flickr.pools.histogram;
+unit flickr.lib.item.list;
 
 interface
 
 uses
-  flickr.pools.list, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
+  Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
 
 type
-  TPoolHistogram = class(TObject)
-  private
-    FGroupPool : TPoolList;
+  TITemComparerDate = class(TComparer<IItem>)
   public
-    constructor Create(poolList : TPoolList);
-    function Histogram() : TList<IItem>;
+    function Compare(const Left, Right: IItem): Integer; override;
+  end;
+
+  TItemList = class(TList<IItem>)
+  public
+    function AddItem(const item : IItem) : integer;
+    function Exists(const item : TdateTime; var existing: IItem) : boolean;
   end;
 
 implementation
 
 uses
-  DateUtils, Sysutils, flickr.lib.item.list;
+  DateUtils, Sysutils;
 
-{ TPoolHistogram }
+{ TITemComparerDate }
 
-constructor TPoolHistogram.Create(poolList: TPoolList);
+function TITemComparerDate.Compare(const Left, Right: IItem): Integer;
+var
+  LeftTerm, RightTerm: TDateTime;
 begin
-  FGroupPool := poolList;
+  LeftTerm := Left.Date;
+  RightTerm := Right.Date;
+  Result := DaysBetween(LeftTerm, RightTerm);
 end;
 
-function TPoolHistogram.Histogram: TList<IItem>;
+{ TItemList }
+
+function TItemList.AddItem(const item: IItem): integer;
 var
-  i : integer;
-  item : IItem;
-  FHistogram : TItemList;
-  accumulated : integer;
+  poolRet : IItem;
 begin
-  FHistogram := TItemList.create;
+  result := 0;
+  if not Exists(item.date, poolRet) then
+    result := Add(item);
+end;
 
-  accumulated := 1;
-  for i := 0 to FGroupPool.Count-1 do
+function TItemList.Exists(const item: TDateTime; var existing: IItem): boolean;
+var
+  i: Integer;
+  found: boolean;
+begin
+  i := 0;
+  found := false;
+  while (not found) and (i < Self.count) do
   begin
-    if FHistogram.Exists(FGroupPool[i].Added, item) then
-    begin
-      item.count := item.count + 1;
-      accumulated := accumulated + 1;
-    end
-    else
-    begin
-      item := TItem.Create;
-      item.date := FGroupPool[i].Added;
-      item.count := item.count + 1 + accumulated;
-      FHistogram.Add(item);
-    end;
+    found := Self[i].date = item;
+    inc(i);
   end;
-
-  result := FHistogram;
+  if found then
+    existing := Self[i - 1];
+  result := found;
 end;
 
 end.

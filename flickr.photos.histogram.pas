@@ -25,48 +25,61 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
-unit flickr.pools.histogram;
+unit flickr.photos.histogram;
 
 interface
 
 uses
-  flickr.pools.list, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
+  flickr.photos, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
 
 type
-  TPoolHistogram = class(TObject)
+  TPhotoHistogram = class(TObject)
   private
-    FGroupPool : TPoolList;
+    FPhotos : TList<IPhoto>;
   public
-    constructor Create(poolList : TPoolList);
+    constructor Create(photos : TList<IPhoto>);
     function Histogram() : TList<IItem>;
   end;
 
 implementation
 
 uses
-  DateUtils, Sysutils, flickr.lib.item.list;
+  flickr.lib.item.list, DateUtils, Sysutils, System.StrUtils;
 
-{ TPoolHistogram }
+{ TPhotoHistogram }
 
-constructor TPoolHistogram.Create(poolList: TPoolList);
+constructor TPhotoHistogram.Create(photos: TList<IPhoto>);
 begin
-  FGroupPool := poolList;
+  FPhotos := photos;
 end;
 
-function TPoolHistogram.Histogram: TList<IItem>;
+function TPhotoHistogram.Histogram: TList<IItem>;
 var
   i : integer;
   item : IItem;
   FHistogram : TItemList;
   accumulated : integer;
+  dateTaken : TDateTime;
+  year, month, day : string;
+  parseDate : string;
 begin
   FHistogram := TItemList.create;
 
   accumulated := 1;
-  for i := 0 to FGroupPool.Count-1 do
+  for i := 0 to FPhotos.Count-1 do
   begin
-    if FHistogram.Exists(FGroupPool[i].Added, item) then
+    parseDate := FPhotos[i].Taken;
+    year := AnsiLeftStr(parseDate, AnsiPos('-', parseDate));
+    parseDate := AnsiRightStr(parseDate, length(parseDate) - length(year));
+    month := AnsiLeftStr(parseDate, AnsiPos('-', parseDate));
+    parseDate := AnsiRightStr(parseDate, length(parseDate) - length(month));
+    day := AnsiLeftStr(parseDate, AnsiPos(' ', parseDate));
+    parseDate := AnsiRightStr(parseDate, length(parseDate) - length(day));
+    year := year.Replace('-', '');
+    month := month.Replace('-', '');
+    day := day.Replace(' ', '');
+    dateTaken := StrToDate(day + '/' + month + '/' + year);
+    if FHistogram.Exists(dateTaken, item) then
     begin
       item.count := item.count + 1;
       accumulated := accumulated + 1;
@@ -74,7 +87,7 @@ begin
     else
     begin
       item := TItem.Create;
-      item.date := FGroupPool[i].Added;
+      item.date := dateTaken;
       item.count := item.count + 1 + accumulated;
       FHistogram.Add(item);
     end;

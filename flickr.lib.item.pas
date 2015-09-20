@@ -25,62 +25,62 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
-unit flickr.pools.histogram;
+unit flickr.lib.item;
 
 interface
 
-uses
-  flickr.pools.list, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
-
 type
-  TPoolHistogram = class(TObject)
+  IItem = interface
+    function GetDate() : TDateTime;
+    function GetCount() : integer;
+    procedure Setcount(const Value: integer);
+    procedure Setdate(const Value: TDateTime);
+    property date : TDateTime read Getdate write Setdate;
+    property count : integer read Getcount write Setcount;
+  end;
+
+  TITem = class(TInterfacedObject, IItem)
   private
-    FGroupPool : TPoolList;
+    Fdate: TDateTime;
+    Fcount: integer;
+    function GetDate() : TDateTime;
+    function GetCount() : integer;
+    procedure Setcount(const Value: integer);
+    procedure Setdate(const Value: TDateTime);
   public
-    constructor Create(poolList : TPoolList);
-    function Histogram() : TList<IItem>;
+    property date : TDateTime read Getdate write Setdate;
+    property count : integer read Getcount write Setcount;
+    Constructor Create();
   end;
 
 implementation
 
-uses
-  DateUtils, Sysutils, flickr.lib.item.list;
+{ TITem }
 
-{ TPoolHistogram }
-
-constructor TPoolHistogram.Create(poolList: TPoolList);
+constructor TITem.Create;
 begin
-  FGroupPool := poolList;
+  SetDate(Date);
+  SetCount(0);
 end;
 
-function TPoolHistogram.Histogram: TList<IItem>;
-var
-  i : integer;
-  item : IItem;
-  FHistogram : TItemList;
-  accumulated : integer;
+function TITem.GetCount: integer;
 begin
-  FHistogram := TItemList.create;
+  result := FCount;
+end;
 
-  accumulated := 1;
-  for i := 0 to FGroupPool.Count-1 do
-  begin
-    if FHistogram.Exists(FGroupPool[i].Added, item) then
-    begin
-      item.count := item.count + 1;
-      accumulated := accumulated + 1;
-    end
-    else
-    begin
-      item := TItem.Create;
-      item.date := FGroupPool[i].Added;
-      item.count := item.count + 1 + accumulated;
-      FHistogram.Add(item);
-    end;
-  end;
+function TITem.GetDate: TDateTime;
+begin
+  result := FDate;
+end;
 
-  result := FHistogram;
+procedure TITem.Setcount(const Value: integer);
+begin
+  Fcount := Value;
+end;
+
+procedure TITem.Setdate(const Value: TDateTime);
+begin
+  Fdate := Value;
 end;
 
 end.

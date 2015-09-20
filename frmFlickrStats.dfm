@@ -601,7 +601,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -709,16 +709,17 @@ object frmFlickr: TfrmFlickr
           TabOrder = 0
           object Splitter5: TSplitter
             Left = 1
-            Top = 271
+            Top = 209
             Width = 310
             Height = 3
             Cursor = crVSplit
             Align = alTop
+            ExplicitTop = 271
             ExplicitWidth = 338
           end
           object Splitter10: TSplitter
             Left = 1
-            Top = 465
+            Top = 377
             Width = 310
             Height = 3
             Cursor = crVSplit
@@ -726,11 +727,21 @@ object frmFlickr: TfrmFlickr
             ExplicitTop = 413
             ExplicitWidth = 196
           end
+          object Splitter26: TSplitter
+            Left = 1
+            Top = 497
+            Width = 310
+            Height = 3
+            Cursor = crVSplit
+            Align = alTop
+            ExplicitTop = 561
+            ExplicitWidth = 80
+          end
           object ChartViews: TChart
             Left = 1
             Top = 1
             Width = 310
-            Height = 270
+            Height = 208
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -787,15 +798,15 @@ object frmFlickr: TfrmFlickr
               YValues.Order = loNone
             end
           end
-          object ChartComments: TChart
+          object totalPhotos: TChart
             Left = 1
-            Top = 468
+            Top = 500
             Width = 310
-            Height = 173
+            Height = 141
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
-              'Total Comments')
+              'Total Photos')
             BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
             BottomAxis.Grid.Width = 0
             BottomAxis.Grid.ZPosition = 1.000000000000000000
@@ -850,9 +861,9 @@ object frmFlickr: TfrmFlickr
           end
           object ChartLikes: TChart
             Left = 1
-            Top = 274
+            Top = 212
             Width = 310
-            Height = 191
+            Height = 165
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -893,6 +904,67 @@ object frmFlickr: TfrmFlickr
               7)
             ColorPaletteIndex = 13
             object LineSeries7: TLineSeries
+              Marks.Shadow.Color = 8487297
+              Marks.DrawEvery = 10
+              Title = 'Flickr Stats'
+              Brush.BackColor = clDefault
+              LinePen.Color = 10708548
+              Pointer.Brush.Gradient.EndColor = 10708548
+              Pointer.Gradient.EndColor = 10708548
+              Pointer.InflateMargins = True
+              Pointer.Style = psRectangle
+              XValues.DateTime = True
+              XValues.Name = 'X'
+              XValues.Order = loAscending
+              YValues.Name = 'Y'
+              YValues.Order = loNone
+            end
+          end
+          object chartComments: TChart
+            Left = 1
+            Top = 380
+            Width = 310
+            Height = 117
+            Legend.Visible = False
+            Title.Font.Color = clWhite
+            Title.Text.Strings = (
+              'Total Comments')
+            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+            BottomAxis.Grid.Width = 0
+            BottomAxis.Grid.ZPosition = 1.000000000000000000
+            BottomAxis.Increment = 1.000000000000000000
+            BottomAxis.LabelsFormat.Font.Color = clWhite
+            BottomAxis.LabelsMultiLine = True
+            BottomAxis.MinimumOffset = 16
+            BottomAxis.MinorTickCount = 16
+            BottomAxis.EndPosition = 98.000000000000000000
+            BottomAxis.PositionPercent = -1.000000000000000000
+            BottomAxis.TickLength = 2
+            BottomAxis.Ticks.Width = 0
+            BottomAxis.Title.Font.Color = clLime
+            DepthAxis.Title.Font.Color = clLime
+            DepthTopAxis.Title.Font.Color = clLime
+            LeftAxis.Grid.Width = 0
+            LeftAxis.LabelsFormat.Font.Color = clWhite
+            LeftAxis.MinorTicks.Width = 0
+            LeftAxis.Ticks.Width = 0
+            LeftAxis.TicksInner.Width = 0
+            LeftAxis.Title.Font.Color = clLime
+            RightAxis.Title.Font.Color = clLime
+            TopAxis.Title.Font.Color = clLime
+            View3D = False
+            Align = alTop
+            Color = 2763306
+            TabOrder = 3
+            OnDblClick = ChartViewsDblClick
+            DefaultCanvas = 'TGDIPlusCanvas'
+            PrintMargins = (
+              15
+              7
+              15
+              7)
+            ColorPaletteIndex = 13
+            object LineSeries18: TLineSeries
               Marks.Shadow.Color = 8487297
               Marks.DrawEvery = 10
               Title = 'Flickr Stats'
@@ -2240,11 +2312,15 @@ object frmFlickr: TfrmFlickr
         Top = 444
         Width = 1503
         Height = 332
-        ActivePage = TabSheet5
+        ActivePage = Statistics
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
           Caption = 'Statistics'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
             Top = 0
@@ -2253,7 +2329,7 @@ object frmFlickr: TfrmFlickr
             Align = alClient
             TabOrder = 0
             object Splitter21: TSplitter
-              Left = 529
+              Left = 377
               Top = 1
               Height = 302
               ExplicitLeft = 265
@@ -2261,25 +2337,33 @@ object frmFlickr: TfrmFlickr
               ExplicitHeight = 712
             end
             object Splitter23: TSplitter
-              Left = 1009
+              Left = 737
               Top = 1
               Height = 302
               ExplicitLeft = 539
               ExplicitTop = 6
               ExplicitHeight = 712
             end
-            object Panel11: TPanel
-              Left = 1012
+            object Splitter25: TSplitter
+              Left = 1089
               Top = 1
-              Width = 482
               Height = 302
-              Align = alClient
+              ExplicitLeft = 1416
+              ExplicitTop = 48
+              ExplicitHeight = 100
+            end
+            object Panel11: TPanel
+              Left = 740
+              Top = 1
+              Width = 349
+              Height = 302
+              Align = alLeft
               Caption = 'Panel11'
               TabOrder = 0
               object Splitter2: TSplitter
                 Left = 1
                 Top = 156
-                Width = 480
+                Width = 347
                 Height = 3
                 Cursor = crVSplit
                 Align = alTop
@@ -2289,7 +2373,7 @@ object frmFlickr: TfrmFlickr
               object chartItemComments: TChart
                 Left = 1
                 Top = 1
-                Width = 480
+                Width = 347
                 Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2370,7 +2454,7 @@ object frmFlickr: TfrmFlickr
               object chartItemCommentsH: TChart
                 Left = 1
                 Top = 159
-                Width = 480
+                Width = 347
                 Height = 142
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2430,7 +2514,7 @@ object frmFlickr: TfrmFlickr
             object Panel22: TPanel
               Left = 1
               Top = 1
-              Width = 528
+              Width = 376
               Height = 302
               Align = alLeft
               Caption = 'Panel11'
@@ -2438,7 +2522,7 @@ object frmFlickr: TfrmFlickr
               object Splitter22: TSplitter
                 Left = 1
                 Top = 156
-                Width = 526
+                Width = 374
                 Height = 3
                 Cursor = crVSplit
                 Align = alTop
@@ -2448,7 +2532,7 @@ object frmFlickr: TfrmFlickr
               object chartItemViews: TChart
                 Left = 1
                 Top = 1
-                Width = 526
+                Width = 374
                 Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2529,7 +2613,7 @@ object frmFlickr: TfrmFlickr
               object ChartItemViewsH: TChart
                 Left = 1
                 Top = 159
-                Width = 526
+                Width = 374
                 Height = 142
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2587,9 +2671,9 @@ object frmFlickr: TfrmFlickr
               end
             end
             object Panel23: TPanel
-              Left = 532
+              Left = 380
               Top = 1
-              Width = 477
+              Width = 357
               Height = 302
               Align = alLeft
               Caption = 'Panel11'
@@ -2597,7 +2681,7 @@ object frmFlickr: TfrmFlickr
               object Splitter24: TSplitter
                 Left = 1
                 Top = 156
-                Width = 475
+                Width = 355
                 Height = 3
                 Cursor = crVSplit
                 Align = alTop
@@ -2607,7 +2691,7 @@ object frmFlickr: TfrmFlickr
               object chartItemLikes: TChart
                 Left = 1
                 Top = 1
-                Width = 475
+                Width = 355
                 Height = 155
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2688,7 +2772,7 @@ object frmFlickr: TfrmFlickr
               object chartitemLikesH: TChart
                 Left = 1
                 Top = 159
-                Width = 475
+                Width = 355
                 Height = 142
                 Legend.Visible = False
                 Title.Font.Color = clWhite
@@ -2745,11 +2829,96 @@ object frmFlickr: TfrmFlickr
                 end
               end
             end
+            object totalGroups: TChart
+              Left = 1092
+              Top = 1
+              Width = 402
+              Height = 302
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Total Groups')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alClient
+              Color = 2763306
+              TabOrder = 3
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries15: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+              object LineSeries16: TLineSeries
+                Brush.BackColor = clDefault
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                Pointer.Visible = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+              object LineSeries17: TLineSeries
+                Brush.BackColor = clDefault
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                Stairs = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+            end
           end
         end
         object TabSheet3: TTabSheet
           Caption = 'Flickr Photo List'
           ImageIndex = 2
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel6: TPanel
             Left = 0
             Top = 0
@@ -3067,6 +3236,10 @@ object frmFlickr: TfrmFlickr
             TabOrder = 1
             object tabList: TTabSheet
               Caption = 'List'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object listGroups: TListView
                 Left = 0
                 Top = 0
@@ -3104,6 +3277,10 @@ object frmFlickr: TfrmFlickr
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -3136,6 +3313,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet1: TTabSheet
       Caption = 'Hall of Fame'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel12: TPanel
         Left = 0
         Top = 0
@@ -3180,6 +3361,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet4: TTabSheet
       Caption = 'Albums'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 376
@@ -3264,6 +3449,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet6: TTabSheet
       Caption = 'Logs'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mLogs: TMemo
         Left = 0
         Top = 0
@@ -3279,6 +3468,10 @@ object frmFlickr: TfrmFlickr
       Caption = 'Options'
       ImageIndex = 5
       OnExit = TabSheet7Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3831,6 +4024,10 @@ object frmFlickr: TfrmFlickr
     object TabSheet8: TTabSheet
       Caption = 'Report'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel21: TPanel
         Left = 0
         Top = 0
@@ -3913,7 +4110,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001940110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001A00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
