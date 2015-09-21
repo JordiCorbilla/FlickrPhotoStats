@@ -35,7 +35,7 @@ uses
 type
   TITemComparerDate = class(TComparer<IItem>)
   public
-    function Compare(const Left, Right: IItem): Integer; override;
+    function Compare(const Left, Right: IItem): integer; override;
   end;
 
   TItemList = class(TList<IItem>)
@@ -51,13 +51,13 @@ uses
 
 { TITemComparerDate }
 
-function TITemComparerDate.Compare(const Left, Right: IItem): Integer;
+function TITemComparerDate.Compare(const Left, Right: IItem): integer;
 var
-  LeftTerm, RightTerm: TDateTime;
+  LeftTerm, RightTerm: double;
 begin
   LeftTerm := Left.Date;
   RightTerm := Right.Date;
-  Result := DaysBetween(LeftTerm, RightTerm);
+  Result := Round(LeftTerm - RightTerm);
 end;
 
 { TItemList }

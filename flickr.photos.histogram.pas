@@ -58,14 +58,14 @@ var
   i : integer;
   item : IItem;
   FHistogram : TItemList;
-  accumulated : integer;
   dateTaken : TDateTime;
   year, month, day : string;
   parseDate : string;
+  IPhotoComparer : TITemComparerDate;
 begin
-  FHistogram := TItemList.create;
+  IPhotoComparer := TITemComparerDate.Create;
+  FHistogram := TItemList.create(IPhotoComparer);
 
-  accumulated := 1;
   for i := 0 to FPhotos.Count-1 do
   begin
     parseDate := FPhotos[i].Taken;
@@ -79,19 +79,20 @@ begin
     month := month.Replace('-', '');
     day := day.Replace(' ', '');
     dateTaken := StrToDate(day + '/' + month + '/' + year);
+
     if FHistogram.Exists(dateTaken, item) then
     begin
       item.count := item.count + 1;
-      accumulated := accumulated + 1;
     end
     else
     begin
       item := TItem.Create;
       item.date := dateTaken;
-      item.count := item.count + 1 + accumulated;
+      item.count := item.count + 1;
       FHistogram.Add(item);
     end;
   end;
+  FHistogram.Sort;
 
   result := FHistogram;
 end;

@@ -175,7 +175,7 @@ var
 begin
   LeftTerm := StrToDateTime(Left.Taken);
   RightTerm := StrToDateTime(Right.Taken);
-  Result := DaysBetween(LeftTerm, RightTerm);
+  Result := Round(LeftTerm - RightTerm);
 end;
 
 { TIPhotoComparerAlbums }

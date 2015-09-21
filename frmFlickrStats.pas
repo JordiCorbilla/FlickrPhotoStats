@@ -1654,6 +1654,7 @@ var
   viewsTendency : integer;
   photoHistogram : TPhotoHistogram;
   histogram :  TList<IItem>;
+  accumulated : integer;
 begin
   if ChartViews.SeriesList.Count > 0 then
     ChartViews.RemoveAllSeries;
@@ -1744,10 +1745,13 @@ begin
 
   photoHistogram := TPhotoHistogram.Create(repository.photos);
   histogram := photoHistogram.Histogram;
+  accumulated := 0;
   for i := 0 to histogram.Count - 1 do
   begin
-    chartTendency.AddXY(i, histogram[i].count);
-    Series.AddXY(histogram[i].date, histogram[i].count, '', color);
+    accumulated := accumulated + histogram[i].count;
+    chartTendency.AddXY(i, accumulated);
+    Series.AddXY(histogram[i].date, accumulated, '', color);
+    //log(DateToStr(histogram[i].date) + ' ' + accumulated.ToString());
   end;
   totalPhotos.AddSeries(Series);
   chartTendency.Calculate;
