@@ -3494,6 +3494,7 @@ end;
 procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
 begin
   btnLoadProfile.Enabled := true;
+  btnDeleteProfile.Enabled := true;
   //edtProfile.Enabled := true;
   btnSaveProfile.Enabled := true;
 end;
