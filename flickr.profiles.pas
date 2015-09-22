@@ -39,7 +39,8 @@ type
     property list: TList<IProfile> read getList write setList;
     procedure Save(FileName: string);
     procedure Load(FileName: string);
-    procedure Add(profile : IProfile);
+    procedure Add(profile : IProfile);
+    function Remove(name : string): boolean;
     function getProfile(name : string) : IProfile;
   end;
 
@@ -54,6 +55,7 @@ type
     procedure Load(FileName: string);
     procedure Add(profile : IProfile);
     function getProfile(name : string) : IProfile;
+    function Remove(name : string): boolean;
     constructor Create();
     destructor Destroy(); override;
   end;
@@ -131,6 +133,19 @@ begin
   end;
 //  else
 //    ShowMessage('File does not exists in location: ' + FileName);
+end;
+
+function TProfiles.Remove(name: string): boolean;
+var
+  profile : IProfile;
+begin
+  result := false;
+  profile := getProfile(name);
+  if profile <> nil then
+  begin
+    FList.Remove(profile);
+    result := true;
+  end;
 end;
 
 procedure TProfiles.Save(FileName: string);

@@ -538,6 +538,7 @@ object frmFlickr: TfrmFlickr
       Images = ImageList1
       TabOrder = 0
       OnClick = btnSaveClick
+      OnMouseEnter = btnSaveMouseEnter
     end
     object Authenticate: TButton
       Left = 106
@@ -552,6 +553,7 @@ object frmFlickr: TfrmFlickr
       Images = ImageList1
       TabOrder = 1
       OnClick = AuthenticateClick
+      OnMouseEnter = AuthenticateMouseEnter
     end
     object btnLoad: TButton
       Left = 4
@@ -566,6 +568,7 @@ object frmFlickr: TfrmFlickr
       Images = ImageList1
       TabOrder = 2
       OnClick = btnLoadClick
+      OnMouseEnter = btnLoadMouseEnter
     end
     object btnAbout: TButton
       Left = 182
@@ -594,6 +597,7 @@ object frmFlickr: TfrmFlickr
       Images = ImageList1
       TabOrder = 5
       OnClick = Button3Click
+      OnMouseEnter = Button3MouseEnter
     end
   end
   object PageControl1: TPageControl
@@ -601,7 +605,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = Dashboard
+    ActivePage = TabSheet8
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2016,10 +2020,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet2: TTabSheet
       Caption = 'Processing'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter1: TSplitter
         Left = 0
         Top = 441
@@ -2172,6 +2172,20 @@ object frmFlickr: TfrmFlickr
             Font.Style = [fsBold]
             ParentFont = False
           end
+          object Label36: TLabel
+            Left = 585
+            Top = 47
+            Width = 92
+            Height = 13
+            Caption = 'Filter is enabled!'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+            Visible = False
+          end
           object photoId: TEdit
             Left = 55
             Top = 18
@@ -2194,6 +2208,7 @@ object frmFlickr: TfrmFlickr
             Images = ImageList1
             TabOrder = 1
             OnClick = btnAddClick
+            OnMouseEnter = btnAddMouseEnter
           end
           object batchUpdate: TButton
             Left = 199
@@ -2208,6 +2223,7 @@ object frmFlickr: TfrmFlickr
             Images = ImageList1
             TabOrder = 2
             OnClick = batchUpdateClick
+            OnMouseEnter = batchUpdateMouseEnter
           end
           object btnExcel: TButton
             Left = 301
@@ -2222,6 +2238,7 @@ object frmFlickr: TfrmFlickr
             Images = ImageList1
             TabOrder = 3
             OnClick = btnExcelClick
+            OnMouseEnter = btnExcelMouseEnter
           end
           object edtfilter: TEdit
             Left = 276
@@ -2308,6 +2325,7 @@ object frmFlickr: TfrmFlickr
             Images = ImageList1
             TabOrder = 9
             OnClick = Button4Click
+            OnMouseEnter = Button4MouseEnter
           end
         end
       end
@@ -2316,15 +2334,11 @@ object frmFlickr: TfrmFlickr
         Top = 444
         Width = 1503
         Height = 332
-        ActivePage = Statistics
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
           Caption = 'Statistics'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
             Top = 0
@@ -2919,10 +2933,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet3: TTabSheet
           Caption = 'Flickr Photo List'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel6: TPanel
             Left = 0
             Top = 0
@@ -2957,6 +2967,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 0
               OnClick = btnGetListClick
+              OnMouseEnter = btnGetListMouseEnter
             end
             object btnAddItems: TButton
               Left = 49
@@ -2972,6 +2983,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 1
               OnClick = btnAddItemsClick
+              OnMouseEnter = btnAddItemsMouseEnter
             end
           end
           object listPhotosUser: TListView
@@ -3002,10 +3014,6 @@ object frmFlickr: TfrmFlickr
         object TabSheet5: TTabSheet
           Caption = 'Flickr Groups Manager'
           ImageIndex = 3
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object Panel8: TPanel
             Left = 0
             Top = 0
@@ -3048,6 +3056,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 0
               OnClick = btnGetGroupsClick
+              OnMouseEnter = btnGetGroupsMouseEnter
             end
             object Button2: TButton
               Left = 103
@@ -3062,6 +3071,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 1
               OnClick = Button2Click
+              OnMouseEnter = Button2MouseEnter
             end
             object btnAddPhotos: TButton
               Left = 1
@@ -3077,6 +3087,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 2
               OnClick = btnAddPhotosClick
+              OnMouseEnter = btnAddPhotosMouseEnter
             end
             object edtFilterGroup: TEdit
               Left = 229
@@ -3088,7 +3099,7 @@ object frmFlickr: TfrmFlickr
             object Profiles: TGroupBox
               Left = 158
               Top = 0
-              Width = 643
+              Width = 747
               Height = 57
               Caption = 'Profiles'
               TabOrder = 6
@@ -3100,7 +3111,7 @@ object frmFlickr: TfrmFlickr
                 Caption = 'Select Profile:'
               end
               object Label7: TLabel
-                Left = 356
+                Left = 460
                 Top = 16
                 Width = 34
                 Height = 13
@@ -3127,9 +3138,10 @@ object frmFlickr: TfrmFlickr
                 Images = ImageList1
                 TabOrder = 1
                 OnClick = btnLoadProfileClick
+                OnMouseEnter = btnLoadProfileMouseEnter
               end
               object edtProfile: TEdit
-                Left = 392
+                Left = 496
                 Top = 13
                 Width = 177
                 Height = 21
@@ -3137,10 +3149,11 @@ object frmFlickr: TfrmFlickr
                 OnChange = edtProfileChange
               end
               object btnSaveProfile: TButton
-                Left = 574
+                Left = 678
                 Top = 11
                 Width = 61
                 Height = 25
+                CustomHint = BalloonHint1
                 Caption = 'Save'
                 Enabled = False
                 ImageIndex = 174
@@ -3148,10 +3161,11 @@ object frmFlickr: TfrmFlickr
                 Images = ImageList1
                 TabOrder = 3
                 OnClick = btnSaveProfileClick
+                OnMouseEnter = btnSaveProfileMouseEnter
               end
               object chkReplaceProfile: TCheckBox
-                Left = 392
-                Top = 36
+                Left = 496
+                Top = 35
                 Width = 127
                 Height = 17
                 Caption = 'Override Profile'
@@ -3164,6 +3178,20 @@ object frmFlickr: TfrmFlickr
                 Height = 17
                 Caption = 'Display only selected'
                 TabOrder = 5
+              end
+              object btnDeleteProfile: TButton
+                Left = 349
+                Top = 11
+                Width = 66
+                Height = 25
+                Caption = 'Delete'
+                Enabled = False
+                ImageIndex = 199
+                ImageMargins.Left = 5
+                Images = ImageList1
+                TabOrder = 6
+                OnClick = btnDeleteProfileClick
+                OnMouseEnter = btnDeleteProfileMouseEnter
               end
             end
             object btnRemovePhoto: TButton
@@ -3180,6 +3208,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 7
               OnClick = btnRemovePhotoClick
+              OnMouseEnter = btnRemovePhotoMouseEnter
             end
             object btnFilterOK: TButton
               Left = 550
@@ -3217,6 +3246,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 8
               OnClick = btnBanGroupsClick
+              OnMouseEnter = btnBanGroupsMouseEnter
             end
             object Button5: TButton
               Left = 52
@@ -3232,6 +3262,7 @@ object frmFlickr: TfrmFlickr
               Images = ImageList1
               TabOrder = 9
               OnClick = Button5Click
+              OnMouseEnter = Button5MouseEnter
             end
           end
           object PageControl3: TPageControl
@@ -3244,10 +3275,6 @@ object frmFlickr: TfrmFlickr
             TabOrder = 1
             object tabList: TTabSheet
               Caption = 'List'
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object listGroups: TListView
                 Left = 0
                 Top = 0
@@ -3285,10 +3312,6 @@ object frmFlickr: TfrmFlickr
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -3321,10 +3344,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet1: TTabSheet
       Caption = 'Hall of Fame'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel12: TPanel
         Left = 0
         Top = 0
@@ -3347,6 +3366,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 0
           OnClick = btnLoadHallClick
+          OnMouseEnter = btnLoadHallMouseEnter
         end
       end
       object Memo1: TMemo
@@ -3369,10 +3389,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet4: TTabSheet
       Caption = 'Albums'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 376
@@ -3404,6 +3420,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 0
           OnClick = Button9Click
+          OnMouseEnter = Button9MouseEnter
         end
         object Button10: TButton
           Left = 51
@@ -3419,6 +3436,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 1
           OnClick = Button10Click
+          OnMouseEnter = Button10MouseEnter
         end
       end
       object listAlbums: TMemo
@@ -3457,10 +3475,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet6: TTabSheet
       Caption = 'Logs'
       ImageIndex = 4
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object mLogs: TMemo
         Left = 0
         Top = 0
@@ -3476,10 +3490,6 @@ object frmFlickr: TfrmFlickr
       Caption = 'Options'
       ImageIndex = 5
       OnExit = TabSheet7Exit
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3501,6 +3511,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 0
           OnClick = btnLoadOptionsClick
+          OnMouseEnter = btnLoadOptionsMouseEnter
         end
         object btnSaveOptions: TButton
           Left = 51
@@ -3515,6 +3526,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 1
           OnClick = btnSaveOptionsClick
+          OnMouseEnter = btnSaveOptionsMouseEnter
         end
       end
       object Panel7: TPanel
@@ -3905,6 +3917,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 12
           OnClick = Button1Click
+          OnMouseEnter = Button1MouseEnter
         end
         object listValuesViewsAlbums: TMemo
           Left = 928
@@ -4032,10 +4045,6 @@ object frmFlickr: TfrmFlickr
     object TabSheet8: TTabSheet
       Caption = 'Report'
       ImageIndex = 6
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Panel21: TPanel
         Left = 0
         Top = 0
@@ -4058,6 +4067,7 @@ object frmFlickr: TfrmFlickr
           Images = ImageList1
           TabOrder = 0
           OnClick = btnShowReportClick
+          OnMouseEnter = btnShowReportMouseEnter
         end
       end
       object WebBrowser2: TWebBrowser
@@ -4118,7 +4128,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001A40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001A80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -12230,5 +12240,11 @@ object frmFlickr: TfrmFlickr
         OnClick = Button3Click
       end
     end
+  end
+  object BalloonHint1: TBalloonHint
+    Delay = 300
+    HideAfter = 2000
+    Left = 636
+    Top = 311
   end
 end

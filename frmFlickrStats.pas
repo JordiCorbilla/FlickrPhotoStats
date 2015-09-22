@@ -336,6 +336,9 @@ type
     Splitter26: TSplitter;
     chartComments: TChart;
     LineSeries18: TLineSeries;
+    BalloonHint1: TBalloonHint;
+    Label36: TLabel;
+    btnDeleteProfile: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -427,6 +430,33 @@ type
     procedure edtWorkspaceChange(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
     procedure edtProfileChange(Sender: TObject);
+    procedure btnSaveProfileMouseEnter(Sender: TObject);
+    procedure btnLoadMouseEnter(Sender: TObject);
+    procedure btnSaveMouseEnter(Sender: TObject);
+    procedure AuthenticateMouseEnter(Sender: TObject);
+    procedure Button3MouseEnter(Sender: TObject);
+    procedure btnAddMouseEnter(Sender: TObject);
+    procedure batchUpdateMouseEnter(Sender: TObject);
+    procedure Button4MouseEnter(Sender: TObject);
+    procedure btnExcelMouseEnter(Sender: TObject);
+    procedure btnGetListMouseEnter(Sender: TObject);
+    procedure btnAddItemsMouseEnter(Sender: TObject);
+    procedure btnGetGroupsMouseEnter(Sender: TObject);
+    procedure Button5MouseEnter(Sender: TObject);
+    procedure Button2MouseEnter(Sender: TObject);
+    procedure btnAddPhotosMouseEnter(Sender: TObject);
+    procedure btnRemovePhotoMouseEnter(Sender: TObject);
+    procedure btnBanGroupsMouseEnter(Sender: TObject);
+    procedure btnLoadProfileMouseEnter(Sender: TObject);
+    procedure btnDeleteProfileMouseEnter(Sender: TObject);
+    procedure btnDeleteProfileClick(Sender: TObject);
+    procedure btnLoadHallMouseEnter(Sender: TObject);
+    procedure Button9MouseEnter(Sender: TObject);
+    procedure Button10MouseEnter(Sender: TObject);
+    procedure btnLoadOptionsMouseEnter(Sender: TObject);
+    procedure btnSaveOptionsMouseEnter(Sender: TObject);
+    procedure Button1MouseEnter(Sender: TObject);
+    procedure btnShowReportMouseEnter(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -457,6 +487,7 @@ type
     procedure ResizeChartsDashBoard;
     procedure ClearAllCharts;
     procedure LoadOptions;
+    procedure ShowHint(description : string; Sender: TObject);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -579,6 +610,11 @@ begin
   //WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
   //showmessage('Authorise the application in the browser and once you get the example page, press Get token button');
   //btnGetToken.enabled := true;
+end;
+
+procedure TfrmFlickr.AuthenticateMouseEnter(Sender: TObject);
+begin
+  ShowHint('Authorize your Flickr Account', Sender);
 end;
 
 procedure TfrmFlickr.BanUnbanforgroupAddition1Click(Sender: TObject);
@@ -771,6 +807,11 @@ begin
     btnBanGroups.Enabled := true;
     photos.Free;
   end;
+end;
+
+procedure TfrmFlickr.batchUpdateMouseEnter(Sender: TObject);
+begin
+  ShowHint('Update the items selected. If all items are selected, '+sLineBreak+'organic views will be updated also.', Sender);
 end;
 
 procedure TfrmFlickr.UpdateTotals(onlyLabels : boolean);
@@ -1324,6 +1365,16 @@ end;
 procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
 begin
   LoadHallOfFame(repository);
+end;
+
+procedure TfrmFlickr.btnLoadHallMouseEnter(Sender: TObject);
+begin
+  ShowHint('Load the Hall of Fame', Sender);
+end;
+
+procedure TfrmFlickr.btnLoadMouseEnter(Sender: TObject);
+begin
+  ShowHint('Load flickr Repository from XML file', Sender);
 end;
 
 procedure TfrmFlickr.LoadProfiles();
@@ -2226,6 +2277,11 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.btnSaveMouseEnter(Sender: TObject);
+begin
+  ShowHint('Save flickr Repository to XML file', Sender);
+end;
+
 procedure TfrmFlickr.Button10Click(Sender: TObject);
 var
   I: Integer;
@@ -2306,6 +2362,11 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmFlickr.Button10MouseEnter(Sender: TObject);
+begin
+  ShowHint('Automatically add pictures in your albums based on views/likes', Sender);
 end;
 
 procedure TfrmFlickr.btnSaveOptionsClick(Sender: TObject);
@@ -2393,6 +2454,11 @@ begin
   FDirtyOptions := false;
 end;
 
+procedure TfrmFlickr.btnSaveOptionsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Save Options.', Sender);
+end;
+
 procedure TfrmFlickr.LoadOptions();
 var
   i : integer;
@@ -2463,6 +2529,11 @@ begin
   showmessage('Options Loaded sucessfully');
 end;
 
+procedure TfrmFlickr.btnLoadOptionsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Load Options.', Sender);
+end;
+
 procedure TfrmFlickr.Button1Click(Sender: TObject);
 var
   urlGroups: string;
@@ -2473,16 +2544,31 @@ begin
   showmessage(response);
 end;
 
+procedure TfrmFlickr.Button1MouseEnter(Sender: TObject);
+begin
+  ShowHint('Test that your API key and secret are correct.', Sender);
+end;
+
 procedure TfrmFlickr.Button2Click(Sender: TObject);
 begin
   if SaveToExcelGroups(listGroups, 'Flickr Analytics', options.Workspace + '\FlickrAnalyticsGroups.xls') then
     showmessage('Data saved successfully!');
 end;
 
+procedure TfrmFlickr.Button2MouseEnter(Sender: TObject);
+begin
+  ShowHint('Export list into excel.', Sender);
+end;
+
 procedure TfrmFlickr.Button3Click(Sender: TObject);
 begin
   //Show help page in the blog
-  ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics-v44.html'), nil, SW_SHOW);
+  ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics-v45.html'), nil, SW_SHOW);
+end;
+
+procedure TfrmFlickr.Button3MouseEnter(Sender: TObject);
+begin
+  ShowHint('Go to online help', Sender);
 end;
 
 procedure TfrmFlickr.Button4Click(Sender: TObject);
@@ -2490,9 +2576,19 @@ begin
   FProcessingStop := true;
 end;
 
+procedure TfrmFlickr.Button4MouseEnter(Sender: TObject);
+begin
+  ShowHint('Stop the update.', Sender);
+end;
+
 procedure TfrmFlickr.Button5Click(Sender: TObject);
 begin
   FGroupStop := true;
+end;
+
+procedure TfrmFlickr.Button5MouseEnter(Sender: TObject);
+begin
+  ShowHint('Stop processing of Adding, Removing or Banning.', Sender);
 end;
 
 procedure TfrmFlickr.btnAddFilterClick(Sender: TObject);
@@ -2636,6 +2732,8 @@ begin
       end;
       Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
   end;
+  btnAddFilter.Enabled := false;
+  label36.Visible := true;
 end;
 
 procedure TfrmFlickr.btnResetFilterClick(Sender: TObject);
@@ -2647,6 +2745,7 @@ begin
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
   filterEnabled := false;
+  btnAddFilter.Enabled := true;
   btnSave.Enabled := true;
   btnLoad.Enabled := true;
   listPhotos.Visible := false;
@@ -2661,6 +2760,7 @@ begin
   chartItemViewsH.SeriesList.Clear;
   chartItemLikesH.SeriesList.Clear;
   chartItemCommentsH.SeriesList.Clear;
+  label36.Visible := false;
 end;
 
 procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
@@ -2854,6 +2954,11 @@ begin
   FGroupStop := false;
 end;
 
+procedure TfrmFlickr.btnAddPhotosMouseEnter(Sender: TObject);
+begin
+  ShowHint('Add selected pictures to selected groups.', Sender);
+end;
+
 procedure TfrmFlickr.btnBanGroupsClick(Sender: TObject);
 var
   photos: TList<string>;
@@ -2912,6 +3017,39 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.btnBanGroupsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Ban selected pictures from selected groups.', Sender);
+end;
+
+procedure TfrmFlickr.btnDeleteProfileClick(Sender: TObject);
+var
+  profileName: string;
+  option : integer;
+begin
+  if ComboBox1.ItemIndex = -1 then
+    exit;
+  option := mrOK;
+  if chkReplaceProfile.Checked then
+  begin
+    option := MessageDlg('Are you sure you want to delete the profile?', mtInformation, mbOKCancel, 0);
+  end;
+  if option = mrOK then
+  begin
+    profileName := ComboBox1.Items[ComboBox1.ItemIndex];
+    profileName := profileName.Remove(profileName.IndexOf('('), (profileName.IndexOf(')') - profileName.IndexOf('('))+1);
+    profileName := profileName.Remove(profileName.Length-1, 1);
+    // now delete the profile
+    flickrProfiles.remove(profileName);
+    ComboBox1.DeleteSelected;
+  end;
+end;
+
+procedure TfrmFlickr.btnDeleteProfileMouseEnter(Sender: TObject);
+begin
+  ShowHint('Delete selected profile.', Sender);
+end;
+
 procedure TfrmFlickr.btnLoadProfileClick(Sender: TObject);
 var
   profileName: string;
@@ -2921,6 +3059,8 @@ var
   Item: TListItem;
 begin
   try
+    if ComboBox1.ItemIndex = -1 then
+      exit;
     chkReplaceProfile.Checked := false;
     pagecontrol3.TabIndex := 0;
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
@@ -2974,6 +3114,11 @@ begin
     listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
     UpdateLabelGroups();
   end;
+end;
+
+procedure TfrmFlickr.btnLoadProfileMouseEnter(Sender: TObject);
+begin
+  ShowHint('Load a profile from the list.', Sender);
 end;
 
 procedure TfrmFlickr.btnRemovePhotoClick(Sender: TObject);
@@ -3093,6 +3238,11 @@ begin
   FGroupStop := false;
 end;
 
+procedure TfrmFlickr.btnRemovePhotoMouseEnter(Sender: TObject);
+begin
+  ShowHint('Remove selected pictures from selected groups.', Sender);
+end;
+
 procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);
 var
   profile: IProfile;
@@ -3165,6 +3315,21 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.btnSaveProfileMouseEnter(Sender: TObject);
+begin
+  ShowHint('Save or update a profile when ''override profile'' is not ticked', Sender);
+end;
+
+procedure TfrmFlickr.ShowHint(description : string; Sender: TObject);
+var
+  aPoint: TPoint;
+begin
+  BalloonHint1.Description := description;
+  aPoint.X := (Sender as TButton).width-5;
+  aPoint.Y := (Sender as TButton).height-5;
+  BalloonHint1.ShowHint((Sender as TButton).ClientToScreen(aPoint));
+end;
+
 procedure TfrmFlickr.btnShowReportClick(Sender: TObject);
 var
   description : TStrings;
@@ -3182,6 +3347,11 @@ begin
   end;
 end;
 
+procedure TfrmFlickr.btnShowReportMouseEnter(Sender: TObject);
+begin
+  ShowHint('Show HTML report.', Sender);
+end;
+
 procedure TfrmFlickr.Button8Click(Sender: TObject);
 var
   i: Integer;
@@ -3195,6 +3365,11 @@ end;
 procedure TfrmFlickr.Button9Click(Sender: TObject);
 begin
   getTotalAlbumsCounts();
+end;
+
+procedure TfrmFlickr.Button9MouseEnter(Sender: TObject);
+begin
+  ShowHint('Load the counts for your albums.', Sender);
 end;
 
 procedure TfrmFlickr.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
@@ -3553,6 +3728,11 @@ begin
   UpdateLabelGroups();
 end;
 
+procedure TfrmFlickr.btnGetGroupsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Reload the groups you belong from Flickr.', Sender);
+end;
+
 function TfrmFlickr.getTotalAlbumsCounts(): Integer;
 var
   response: string;
@@ -3809,6 +3989,11 @@ begin
   listPhotosUser.Visible := true;
 end;
 
+procedure TfrmFlickr.btnGetListMouseEnter(Sender: TObject);
+begin
+  ShowHint('Get the list of photos from your Flickr stream.', Sender);
+end;
+
 procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
 var
   i: Integer;
@@ -3847,6 +4032,16 @@ begin
   photoId.Enabled := true;
   btnAdd.Enabled := true;
   btnAddItems.Enabled := true;
+end;
+
+procedure TfrmFlickr.btnAddItemsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Import your photo information into the tool.', Sender);
+end;
+
+procedure TfrmFlickr.btnAddMouseEnter(Sender: TObject);
+begin
+  ShowHint('Add pictures manually using the PhotoID', Sender);
 end;
 
 function TfrmFlickr.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
@@ -4169,6 +4364,11 @@ begin
     showmessage('Data saved successfully!');
   ExportGraphToExcel(TotalViews, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViews.xls');
   ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViewsHistogram.xls');
+end;
+
+procedure TfrmFlickr.btnExcelMouseEnter(Sender: TObject);
+begin
+  ShowHint('Export the main list into Excel.', Sender);
 end;
 
 procedure TfrmFlickr.FormCreate(Sender: TObject);
