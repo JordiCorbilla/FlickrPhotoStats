@@ -807,6 +807,7 @@ begin
     btnBanGroups.Enabled := true;
     photos.Free;
   end;
+  showMessage('Update has been completed');
 end;
 
 procedure TfrmFlickr.batchUpdateMouseEnter(Sender: TObject);
@@ -1233,6 +1234,8 @@ begin
 end;
 
 procedure TfrmFlickr.btnAddClick(Sender: TObject);
+var
+  id : string;
 begin
   if apikey.text = '' then
   begin
@@ -1242,12 +1245,14 @@ begin
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
   RequestInformation_REST_Flickr(photoId.text, nil);
+  id := photoId.text;
   photoId.text := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
   listPhotos.OnItemChecked := listPhotosItemChecked;
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   UpdateLabel;
+  showMessage('Photo '+ id +' has been added');
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
@@ -1352,6 +1357,7 @@ begin
   btnShowReport.Enabled := true;
   Button9.Enabled := true;
   btnLoadHall.Enabled := true;
+  showMessage('Repository has been loaded');
 end;
 
 procedure TfrmFlickr.btnLoadDirectoryClick(Sender: TObject);
@@ -1365,6 +1371,7 @@ end;
 procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
 begin
   LoadHallOfFame(repository);
+  showMessage('Hall of Fame has been loaded');
 end;
 
 procedure TfrmFlickr.btnLoadHallMouseEnter(Sender: TObject);
@@ -2250,6 +2257,8 @@ begin
 
     st := TStopWatch.Create;
     st.Start;
+    repository.version := TUtils.GetVersion;
+    repository.DateSaved := Now;
     repository.save(apikey.text, secret.text, edtUserId.text, options.Workspace + '\flickrRepository.xml');
     st.Stop;
     log('Saving repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -2275,6 +2284,7 @@ begin
     btnSave.Enabled := false;
     btnLoad.Enabled := true;
   end;
+  showMessage('Repository has been saved');
 end;
 
 procedure TfrmFlickr.btnSaveMouseEnter(Sender: TObject);
@@ -2362,6 +2372,7 @@ begin
       end;
     end;
   end;
+  showMessage('Pictures have been added to the albums');
 end;
 
 procedure TfrmFlickr.Button10MouseEnter(Sender: TObject);
@@ -2574,6 +2585,7 @@ end;
 procedure TfrmFlickr.Button4Click(Sender: TObject);
 begin
   FProcessingStop := true;
+  showMessage('Process has been stopped');
 end;
 
 procedure TfrmFlickr.Button4MouseEnter(Sender: TObject);
@@ -2584,6 +2596,7 @@ end;
 procedure TfrmFlickr.Button5Click(Sender: TObject);
 begin
   FGroupStop := true;
+  showMessage('Process has been stopped');
 end;
 
 procedure TfrmFlickr.Button5MouseEnter(Sender: TObject);
@@ -2952,6 +2965,7 @@ begin
     groups.Free;
   end;
   FGroupStop := false;
+  showMessage('Photos have been added to the groups');
 end;
 
 procedure TfrmFlickr.btnAddPhotosMouseEnter(Sender: TObject);
@@ -3015,6 +3029,7 @@ begin
     photos.Free;
     groups.Free;
   end;
+  showMessage('Photos have been banned from the groups');
 end;
 
 procedure TfrmFlickr.btnBanGroupsMouseEnter(Sender: TObject);
@@ -3236,6 +3251,7 @@ begin
     groups.Free;
   end;
   FGroupStop := false;
+  showMessage('Photos have been removed from the groups');
 end;
 
 procedure TfrmFlickr.btnRemovePhotoMouseEnter(Sender: TObject);
@@ -3345,6 +3361,7 @@ begin
       description.Free;
     end;
   end;
+  showMessage('Report has been loaded successfully');
 end;
 
 procedure TfrmFlickr.btnShowReportMouseEnter(Sender: TObject);
@@ -3365,6 +3382,7 @@ end;
 procedure TfrmFlickr.Button9Click(Sender: TObject);
 begin
   getTotalAlbumsCounts();
+  showMessage('Albums have been loaded');
 end;
 
 procedure TfrmFlickr.Button9MouseEnter(Sender: TObject);
@@ -3727,6 +3745,7 @@ begin
   Taskbar1.ProgressValue := 0;
   listGroups.Visible := true;
   UpdateLabelGroups();
+  showMessage('Flickr groups have been loaded');
 end;
 
 procedure TfrmFlickr.btnGetGroupsMouseEnter(Sender: TObject);
@@ -3988,6 +4007,7 @@ begin
   progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
+  showMessage('Flickr photo list has been loaded');
 end;
 
 procedure TfrmFlickr.btnGetListMouseEnter(Sender: TObject);
@@ -4033,6 +4053,7 @@ begin
   photoId.Enabled := true;
   btnAdd.Enabled := true;
   btnAddItems.Enabled := true;
+  showMessage('Photos have been added to the main list');
 end;
 
 procedure TfrmFlickr.btnAddItemsMouseEnter(Sender: TObject);
@@ -4362,9 +4383,11 @@ end;
 procedure TfrmFlickr.btnExcelClick(Sender: TObject);
 begin
   if SaveToExcel(listPhotos, 'Flickr Analytics', options.Workspace + '\FlickrAnalytics.xls') then
+  begin
+    ExportGraphToExcel(TotalViews, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViews.xls');
+    ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViewsHistogram.xls');
     showmessage('Data saved successfully!');
-  ExportGraphToExcel(TotalViews, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViews.xls');
-  ExportGraphToExcel(TotalViewsHistogram, 'Total Views History',options.Workspace + '\FlickrAnalyticsTotalViewsHistogram.xls');
+  end;
 end;
 
 procedure TfrmFlickr.btnExcelMouseEnter(Sender: TObject);

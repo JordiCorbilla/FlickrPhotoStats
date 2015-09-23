@@ -48,7 +48,11 @@ type
     procedure Load(FileName: string);
     procedure DeletePhoto(id : string);
     function Getsorted(): boolean;
+    function Getversion() : string;
+    function GetDateSaved() : TDateTime;
     procedure Setsorted(const Value: boolean);
+    procedure SetDateSaved(const Value: TDateTime);
+    procedure Setversion(const Value: string);
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean; overload;
     function ExistPhoto(id: string; var existing: IPhoto): Boolean; overload;
     function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
@@ -57,6 +61,8 @@ type
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
     property Secret: string read GetSecret write SetSecret;
     property sorted : boolean read Getsorted write Setsorted;
+    property version : string read Getversion write Setversion;
+    property DateSaved : TDateTime read GetDateSaved write SetDateSaved;
     function getTotalSpreadGroups() : integer;
   end;
 
@@ -67,6 +73,8 @@ type
     FPhotos: TList<IPhoto>;
     FSecret: String;
     Fsorted: boolean;
+    Fversion: string;
+    FDateSaved: TDateTime;
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
     function GetPhotos(): TList<IPhoto>;
@@ -76,7 +84,11 @@ type
     procedure SetSecret(value: string);
     function GetSecret(): string;
     function Getsorted(): boolean;
+    function Getversion() : string;
+    function GetDateSaved() : TDateTime;
     procedure Setsorted(const Value: boolean);
+    procedure SetDateSaved(const Value: TDateTime);
+    procedure Setversion(const Value: string);
   public
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
@@ -93,6 +105,8 @@ type
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
     property sorted : boolean read Getsorted write Setsorted;
+    property version : string read Getversion write Setversion;
+    property DateSaved : TDateTime read GetDateSaved write SetDateSaved;
     procedure DeletePhoto(id : string);
   end;
 
@@ -185,6 +199,11 @@ begin
   Result := FApiKey;
 end;
 
+function TFlickrRepository.GetDateSaved: TDateTime;
+begin
+  result := FDateSaved;
+end;
+
 function TFlickrRepository.GetPhoto(id: string): IPhoto;
 var
   i: integer;
@@ -237,6 +256,11 @@ begin
   Result := FUserId;
 end;
 
+function TFlickrRepository.Getversion: string;
+begin
+  result := FVersion;
+end;
+
 function TFlickrRepository.isPhotoInGroup(photo, groupId: string; var resPhoto : IPhoto): boolean;
 var
   p : IPhoto;
@@ -274,6 +298,20 @@ begin
       Self.FSecret := '';
     end;
 
+    try
+      if (iXMLRootNode.attributes['Version'] <> null) then
+        Self.Fversion := iXMLRootNode.attributes['Version'];
+    except
+      Self.Fversion := '';
+    end;
+
+    try
+      if (iXMLRootNode.attributes['DateSaved'] <> null) then
+        Self.FDateSaved := StrToDateTime(iXMLRootNode.attributes['DateSaved']);
+    except
+      Self.FDateSaved := Now;
+    end;
+
     iNode := iXMLRootNode.ChildNodes.first;
     while iNode <> nil do
     begin
@@ -307,6 +345,8 @@ begin
   iNode.attributes['ApiKey'] := ApiKey;
   iNode.attributes['UserId'] := UserId;
   iNode.attributes['Secret'] := Secret;
+  iNode.Attributes['Version'] := FVersion;
+  iNode.Attributes['DateSaved'] := DateTimeToStr(FDateSaved);
 
   for i := 0 to FPhotos.count - 1 do
   begin
@@ -319,6 +359,11 @@ end;
 procedure TFlickrRepository.SetApiKey(value: string);
 begin
   FApiKey := value;
+end;
+
+procedure TFlickrRepository.SetDateSaved(const Value: TDateTime);
+begin
+  FDateSaved := Value;
 end;
 
 procedure TFlickrRepository.SetPhotos(value: TList<IPhoto>);
@@ -339,6 +384,11 @@ end;
 procedure TFlickrRepository.SetUserId(value: string);
 begin
   FUserId := value;
+end;
+
+procedure TFlickrRepository.Setversion(const Value: string);
+begin
+  Fversion := Value;
 end;
 
 end.
