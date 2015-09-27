@@ -557,17 +557,17 @@ begin
 //  iNode2.Attributes['TotalGroups'] := FTotalGroups;
 
   // Create the XML file
-  XMLDoc := TXMLDocument.Create(nil);
-  XMLDoc.Active := true;
-  iNode := XMLDoc.AddChild('History');
-  for i := 0 to FStats.count - 1 do
-  begin
-    FStats[i].Save(iNode);
-  end;
-  if DirectoryExists(FFolder + 'History') then
-    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
-  else
-    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
+//  XMLDoc := TXMLDocument.Create(nil);
+//  XMLDoc.Active := true;
+//  iNode := XMLDoc.AddChild('History');
+//  for i := 0 to FStats.count - 1 do
+//  begin
+//    FStats[i].Save(iNode);
+//  end;
+//  if DirectoryExists(FFolder + 'History') then
+//    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
+//  else
+//    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
 
   for i := 0 to FStats.count - 1 do
   begin
