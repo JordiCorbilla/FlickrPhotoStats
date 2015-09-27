@@ -339,6 +339,7 @@ type
     BalloonHint1: TBalloonHint;
     Label36: TLabel;
     btnDeleteProfile: TButton;
+    Label37: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -510,6 +511,7 @@ type
     FGroupStop : boolean;
     RepositoryLoaded : boolean;
     FDirtyOptions : boolean;
+    FAvoidMessage : boolean;
     procedure Log(s: string);
   end;
 
@@ -1252,7 +1254,8 @@ begin
   listPhotos.OnItemChecked := listPhotosItemChecked;
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   UpdateLabel;
-  showMessage('Photo '+ id +' has been added');
+  if not FAvoidMessage then
+    showMessage('Photo '+ id +' has been added');
 end;
 
 procedure TfrmFlickr.btnLoadClick(Sender: TObject);
@@ -1352,7 +1355,7 @@ begin
   st.Stop;
   log('Loading Profiles: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
-  Button9Click(sender);
+  getTotalAlbumsCounts();
   RepositoryLoaded := true;
   btnShowReport.Enabled := true;
   Button9.Enabled := true;
@@ -2275,12 +2278,6 @@ begin
     st.Stop;
     log('Saving repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
-    st := TStopWatch.Create;
-    st.Start;
-    FilteredGroupList.save(options.Workspace + '\flickrGroups.xml');
-    st.Stop;
-    log('Saving repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
-
     btnSave.Enabled := false;
     btnLoad.Enabled := true;
   end;
@@ -2799,7 +2796,7 @@ begin
 
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
-
+  label37.Visible := false;
   listGroups.Visible := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
@@ -2827,6 +2824,7 @@ begin
     end;
   end;
   listGroups.Visible := true;
+  label37.Visible := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
@@ -3734,6 +3732,13 @@ begin
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
   st.Stop;
   log('populating group list ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
+  st := TStopWatch.Create;
+  st.Start;
+  FilteredGroupList.save(options.Workspace + '\flickrGroups.xml');
+  st.Stop;
+  log('Saving repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+
   btnLoad.Enabled := true;
   btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
@@ -4039,7 +4044,9 @@ begin
       if not ExistPhotoInList(listPhotosUser.Items[i].Caption, Item) then
       begin
         photoId.text := listPhotosUser.Items[i].Caption;
+        FAvoidMessage := true;
         btnAddClick(Sender);
+        FAvoidMessage := false;
       end;
     end;
   end;
@@ -4444,6 +4451,7 @@ begin
   RepositoryLoaded := false;
   ClearAllCharts();
   FDirtyOptions := false;
+  FAvoidMessage := false;
 end;
 
 procedure TfrmFlickr.ClearAllCharts();

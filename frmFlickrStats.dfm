@@ -316,6 +316,7 @@ object frmFlickr: TfrmFlickr
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  WindowState = wsMaximized
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
@@ -605,7 +606,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 804
-    ActivePage = TabSheet8
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2334,7 +2335,7 @@ object frmFlickr: TfrmFlickr
         Top = 444
         Width = 1503
         Height = 332
-        ActivePage = TabSheet5
+        ActivePage = Statistics
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -3041,6 +3042,20 @@ object frmFlickr: TfrmFlickr
               Font.Name = 'Tahoma'
               Font.Style = [fsBold]
               ParentFont = False
+            end
+            object Label37: TLabel
+              Left = 625
+              Top = 63
+              Width = 92
+              Height = 13
+              Caption = 'Filter is enabled!'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              Visible = False
             end
             object btnGetGroups: TButton
               Left = 1
@@ -4128,7 +4143,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001AC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001B00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

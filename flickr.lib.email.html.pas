@@ -551,7 +551,7 @@ begin
         today := PhotosSorted[i].getTotalLikes;
         description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
         difference := today - yesterday;
-        if difference <= 0 then
+        if difference < 0 then
           description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>')
         else
           description.add('    <td '+tdStyleText+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
@@ -565,11 +565,48 @@ begin
       PhotosSorted.Free;
     end;
 
+    topStats := TTopStats.Create(repository);
+    try
+      PhotosSorted := topStats.GetListNumberOfLikes(repository.photos.Count);
+      description.add('<b '+fontStylebig+'>Pictures with lost likes</b><br><br>');
+      description.add('<table '+tableStyle+'>');
+      description.add('  <tr '+trStyle+'>');
+      description.add('    <th '+thNoBorder+'> </td>');
+      description.add('    <th '+thStyle+'><b>Title</b></th>');
+      description.add('    <th '+thStyle+'><b>Likes Yesterday</b></th>');
+      description.add('    <th '+thStyle.Replace('26ADE4','AD0D98')+'><b>Likes Today</b></th>');
+      description.add('    <th '+thStyle+'><b>Trend</b></th>');
+      description.add('  </tr>');
+
+      for i := 0 to PhotosSorted.count-1 do
+      begin
+        yesterday := PhotosSorted[i].getTotalLikes(-1);
+        today := PhotosSorted[i].getTotalLikes;
+        difference := today - yesterday;
+        if difference < 0 then
+        begin
+          description.add('  <tr>');
+          description.add('    <td '+tdStyle+'><a href="https://www.flickr.com/photos/'+options.urlName+'/' + PhotosSorted[i].Id + '/in/photostream/lightbox/"  target="_blank">'+PhotosSorted[i].Id+'</a></td>');
+          description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
+          description.add('    <td '+tdStyleText+'>'+Format('%n',[yesterday.ToDouble]).Replace('.00','')+'</td>');
+          description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
+          description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[difference.ToDouble]).Replace('.00','')+'</td>');
+          description.add('  </tr>');
+        end;
+      end;
+
+      description.add('</table>');
+      description.add('<br>');
+    finally
+      topStats.Free;
+      PhotosSorted.Free;
+    end;
+
     PhotosTrend := nil;
     topStats := TTopStats.Create(repository);
     try
       PhotosTrend := topStats.GetListTrendingActivityViews(10);
-      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today</b><br><br>');
+      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today (Views)</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');
@@ -597,7 +634,7 @@ begin
     topStats := TTopStats.Create(repository);
     try
       PhotosTrend := topStats.GetListTrendingActivityLikes(10);
-      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today</b><br><br>');
+      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today (Likes)</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');
@@ -625,7 +662,7 @@ begin
     topStats := TTopStats.Create(repository);
     try
       PhotosTrend := topStats.GetListTrendingActivityComments(10);
-      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today</b><br><br>');
+      description.add('<b '+fontStylebig+'>Top 10 Trending Pictures Today (Comments)</b><br><br>');
       description.add('<table '+tableStyle+'>');
       description.add('  <tr '+trStyle+'>');
       description.add('    <th '+thNoBorder+'> </td>');

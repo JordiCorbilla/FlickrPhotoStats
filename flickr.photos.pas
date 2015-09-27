@@ -488,6 +488,7 @@ begin
   iNode2.Attributes['Banned'] := FBanned;
   iNode2.Attributes['Tags'] := FTags;
   iNode2.Attributes['OmitGroups'] := FOmitGroups;
+
   for i := 0 to FStats.count - 1 do
   begin
     FStats[i].Save(iNode2);
