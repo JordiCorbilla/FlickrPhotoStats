@@ -695,9 +695,9 @@ begin
         description.add('  <tr>');
         description.add('    <td '+tdStyle+'><a href="https://www.flickr.com/photos/'+options.urlName+'/' + PhotosSorted[i].Id + '/in/photostream/lightbox/"  target="_blank">'+PhotosSorted[i].Id+'</a></td>');
         description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
-        yesterday := PhotosSorted[i].getTotalViews(-1);
+        yesterday := PhotosSorted[i].getTotalViewsDay(-1);
         description.add('    <td '+tdStyleText+'>'+Format('%n',[yesterday.ToDouble]).Replace('.00','')+'</td>');
-        today := PhotosSorted[i].getTotalViews;
+        today := PhotosSorted[i].getTotalViewsDay;
         description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
         difference := today - yesterday;
         if difference <= 0 then
@@ -732,9 +732,9 @@ begin
         description.add('  <tr>');
         description.add('    <td '+tdStyle+'><a href="https://www.flickr.com/photos/'+options.urlName+'/' + PhotosSorted[i].Id + '/in/photostream/lightbox/"  target="_blank">'+PhotosSorted[i].Id+'</a></td>');
         description.add('    <td '+tdStyleText+'>'+PhotosSorted[i].Title+'</td>');
-        yesterday := PhotosSorted[i].getTotalLikes(-1);
+        yesterday := PhotosSorted[i].getTotalLikesDay(-1);
         description.add('    <td '+tdStyleText+'>'+Format('%n',[yesterday.ToDouble]).Replace('.00','')+'</td>');
-        today := PhotosSorted[i].getTotalLikes;
+        today := PhotosSorted[i].getTotalLikesDay;
         description.add('    <td '+tdStyleText+'>'+Format('%n',[today.ToDouble]).Replace('.00','')+'</td>');
         difference := today - yesterday;
         if difference < 0 then
@@ -766,8 +766,8 @@ begin
 
       for i := 0 to PhotosSorted.count-1 do
       begin
-        yesterday := PhotosSorted[i].getTotalLikes(-1);
-        today := PhotosSorted[i].getTotalLikes;
+        yesterday := PhotosSorted[i].getTotalLikesDay(-1);
+        today := PhotosSorted[i].getTotalLikesDay;
         difference := today - yesterday;
         if difference < 0 then
         begin

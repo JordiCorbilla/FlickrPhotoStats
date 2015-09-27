@@ -91,6 +91,7 @@ begin
   //Create the new folders
   if ForceDirectories(edtWorkspace.Text + '\Albums') then
     if ForceDirectories(edtWorkspace.Text + '\Groups') then
+      if ForceDirectories(edtWorkspace.Text + '\History') then
       Showmessage('Application has been correctly configured!');
   Self.Close;
 end;

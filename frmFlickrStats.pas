@@ -3553,19 +3553,28 @@ end;
 procedure TfrmFlickr.edtEmailChange(Sender: TObject);
 begin
   if options.eMailAddress <> edtEmail.text then
+  begin
     FDirtyOptions := true;
+    Log('eMailAddress has changed');
+  end;
 end;
 
 procedure TfrmFlickr.edtMaxChange(Sender: TObject);
 begin
   if options.MaxItemsListGlobals <> edtMax.text then
+  begin
     FDirtyOptions := true;
+    Log('MaxItemsListGlobals has changed');
+  end;
 end;
 
 procedure TfrmFlickr.edtMaxLogChange(Sender: TObject);
 begin
   if options.MaxNumberOfLinesLog <> edtMaxLog.text then
+  begin
     FDirtyOptions := true;
+    Log('MaxNumberOfLinesLog has changed');
+  end;
 end;
 
 procedure TfrmFlickr.edtProfileChange(Sender: TObject);
@@ -3576,19 +3585,28 @@ end;
 procedure TfrmFlickr.edtUrlNameChange(Sender: TObject);
 begin
   if options.urlName <> edtUrlName.text then
+  begin
     FDirtyOptions := true;
+    Log('urlName has changed');
+  end;
 end;
 
 procedure TfrmFlickr.edtUserIdChange(Sender: TObject);
 begin
   if optionsEMail.flickrUserId <> edtUserId.text then
+  begin
     FDirtyOptions := true;
+    Log('optionsEMail has changed');
+  end;
 end;
 
 procedure TfrmFlickr.edtWorkspaceChange(Sender: TObject);
 begin
   if options.Workspace <> edtWorkspace.text then
+  begin
     FDirtyOptions := true;
+    Log('Workspace has changed');
+  end;
 end;
 
 procedure TfrmFlickr.btnGetGroupsClick(Sender: TObject);

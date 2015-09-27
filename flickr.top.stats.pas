@@ -144,7 +144,7 @@ begin
     iTrend := TPhotoTrend.Create;
     iTrend.Id := FRepository.photos[i].Id;
     iTrend.Title := FRepository.photos[i].Title;
-    iTrend.Value := FRepository.photos[i].getTotalComments() - FRepository.photos[i].getTotalComments(-1);
+    iTrend.Value := FRepository.photos[i].getTotalCommentsDay() - FRepository.photos[i].getTotalCommentsDay(-1);
     PhotosResult.Add(iTrend);
   end;
 
@@ -177,7 +177,7 @@ begin
     iTrend := TPhotoTrend.Create;
     iTrend.Id := FRepository.photos[i].Id;
     iTrend.Title := FRepository.photos[i].Title;
-    iTrend.Value := FRepository.photos[i].getTotalLikes() - FRepository.photos[i].getTotalLikes(-1);
+    iTrend.Value := FRepository.photos[i].getTotalLikesDay() - FRepository.photos[i].getTotalLikesDay(-1);
     PhotosResult.Add(iTrend);
   end;
 
@@ -210,7 +210,7 @@ begin
     iTrend := TPhotoTrend.Create;
     iTrend.Id := FRepository.photos[i].Id;
     iTrend.Title := FRepository.photos[i].Title;
-    iTrend.Value := FRepository.photos[i].getTotalViews() - FRepository.photos[i].getTotalViews(-1);
+    iTrend.Value := FRepository.photos[i].getTotalViewsDay() - FRepository.photos[i].getTotalViewsDay(-1);
     PhotosResult.Add(iTrend);
   end;
 
