@@ -323,13 +323,13 @@ begin
 
       if globalsRepository.Globals.Count > 0 then
       begin
-        itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
-        itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments;
-        itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments;
-        itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments;
-        itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
-        itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
-        itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
+        itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments;
+        itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-3].Comments;
+        itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-4].Comments;
+        itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-5].Comments;
+        itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-6].Comments;
+        itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-7].Comments;
+        itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-8].Comments;
       end
       else
       begin
@@ -425,8 +425,8 @@ begin
 
     if globalsRepository.Globals.Count > 0 then
     begin
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
-      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].Comments;
+      itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments;
       difference := itemToday - itemYesterday;
     end;
 
@@ -587,13 +587,13 @@ begin
 
     if globalsRepository.Globals.Count > 0 then
     begin
-      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
-      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments;
-      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments;
-      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments;
-      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
-      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
-      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
+      itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments;
+      itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-3].Comments;
+      itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-4].Comments;
+      itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-5].Comments;
+      itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-6].Comments;
+      itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-7].Comments;
+      itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].Comments - globalsRepository.Globals[globalsRepository.Globals.Count-8].Comments;
       average := (itemToday + itemToday1 + itemToday2 + itemToday3 + itemToday4 + itemToday5 + itemToday6) / 7;
     end;
 

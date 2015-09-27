@@ -318,7 +318,7 @@ end;
 function TPhoto.getTotalComments(incday : integer = 0): Integer;
 begin
   if (FStats.count - 1 + incday) >= 0 then
-    result := FStats[FStats.count - 1 + incday].numComments
+    result := FStats[FStats.count - 1 + incday].Comments
   else
     result := 0;
 end;
@@ -341,12 +341,12 @@ end;
 
 function TPhoto.getTrend: integer;
 var
-  numViews, numLikes, numComments : integer;
+  numViews, numLikes, Comments : integer;
 begin
   numViews := getTotalViews(0) - getTotalViews(-1);
   numLikes := getTotalLikes(0) - getTotalLikes(-1);
-  numComments := getTotalComments(0) - getTotalComments(-1);
-  SetTodayTrend(numViews + numLikes + numComments);
+  Comments := getTotalComments(0) - getTotalComments(-1);
+  SetTodayTrend(numViews + numLikes + Comments);
   result := FTodayTrend;
 end;
 

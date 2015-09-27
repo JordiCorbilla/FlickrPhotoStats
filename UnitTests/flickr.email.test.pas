@@ -109,8 +109,8 @@ begin
     description := description + '   - Number of Likes Today: ' + Format('%n',[difference.ToDouble]).Replace('.00','') + sLineBreak;
     description := description + '' + sLineBreak;
 
-    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments;
-    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+    itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].Comments;
+    itemYesterday := globalsRepository.Globals[globalsRepository.Globals.Count-2].Comments;
     difference := itemToday - itemYesterday;
 
     description := description + ' - Number of Total Comments: ' + Format('%n',[itemToday.ToDouble]).Replace('.00','') + sLineBreak;

@@ -1780,8 +1780,8 @@ begin
   chartTendency := TTendency.Create;
   for i := 0 to globalsRepository.globals.Count - 1 do
   begin
-    chartTendency.AddXY(i, globalsRepository.globals[i].numComments);
-    Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].numComments, '', color);
+    chartTendency.AddXY(i, globalsRepository.globals[i].Comments);
+    Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].Comments, '', color);
   end;
   ChartComments.AddSeries(Series);
 
@@ -1984,7 +1984,7 @@ begin
   if globalsRepository.globals.Count = 1 then
   begin
       theDate := globalsRepository.globals[0].Date;
-      views := globalsRepository.globals[0].numComments;
+      views := globalsRepository.globals[0].Comments;
       viewsTendency.AddXY(0, views);
       Series.AddXY(theDate, views, '', color);
   end
@@ -1993,7 +1993,7 @@ begin
     for i := 1 to globalsRepository.globals.Count - 1 do
     begin
       theDate := globalsRepository.globals[i].Date;
-      views := globalsRepository.globals[i].numComments - globalsRepository.globals[i - 1].numComments;
+      views := globalsRepository.globals[i].Comments - globalsRepository.globals[i - 1].Comments;
       viewsTendency.AddXY(i, views);
       Series.AddXY(theDate, views, '', color);
     end;
@@ -2007,7 +2007,7 @@ begin
 
   viewsTotal := 0;
   for i := 1 to globalsRepository.globals.Count - 1 do
-    viewsTotal := viewsTotal + (globalsRepository.globals[i].numComments - globalsRepository.globals[i - 1].numComments);
+    viewsTotal := viewsTotal + (globalsRepository.globals[i].Comments - globalsRepository.globals[i - 1].Comments);
 
   average := round(viewsTotal / globalsRepository.globals.Count);
 
@@ -2213,7 +2213,7 @@ begin
     views := photo.stats[i].likes - photo.stats[i - 1].likes;
     SeriesLikes.AddXY(theDate, views, '', color);
 
-    views := photo.stats[i].numComments - photo.stats[i - 1].numComments;
+    views := photo.stats[i].Comments - photo.stats[i - 1].Comments;
     SeriesComments.AddXY(theDate, views, '', color);
   end;
 
@@ -2666,13 +2666,13 @@ begin
           4: //Comments
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring = value;
-              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments < value.Tointeger;
-              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments > value.Tointeger;
-              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <= value.Tointeger;
-              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments >= value.Tointeger;
-              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].numComments.tostring.ToLower.Contains(value.ToLower);
+              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.tostring = value;
+              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments < value.Tointeger;
+              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments > value.Tointeger;
+              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments <= value.Tointeger;
+              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments >= value.Tointeger;
+              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments <> value.ToInteger;
+              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           5: //Last Update
@@ -2729,7 +2729,7 @@ begin
         Item.SubItems.Add(repository.photos[i].Title);
         Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].views.toString);
         Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.toString);
-        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].numcomments.toString);
+        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.toString);
         Item.SubItems.Add((DateToStr(repository.photos[i].stats[repository.photos[i].stats.Count-1].date)));
         Item.SubItems.Add(repository.photos[i].Taken);
         Item.SubItems.Add(repository.photos[i].Albums.Count.ToString());
@@ -4738,8 +4738,8 @@ begin
         likesTendency.AddXY(i, stat.likes);
         SeriesLikes.AddXY(stat.Date, stat.likes, '', colour);
 
-        commentsTendency.AddXY(i, stat.numComments);
-        SeriesComments.AddXY(stat.Date, stat.numComments, '', colour);
+        commentsTendency.AddXY(i, stat.Comments);
+        SeriesComments.AddXY(stat.Date, stat.Comments, '', colour);
       end;
 
       poolHistogram := TPoolHistogram.Create(photo.Groups);

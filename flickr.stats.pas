@@ -36,15 +36,15 @@ type
   IStat = interface
     function GetDate(): TDateTime;
     function GetViews(): Integer;
-    function GetNumComments(): Integer;
+    function GetComments(): Integer;
     function GetLikes(): Integer;
     procedure SetDate(value: TDateTime);
     procedure SetViews(value: Integer);
-    procedure SetNumComments(value: Integer);
+    procedure SetComments(value: Integer);
     procedure SetLikes(value: Integer);
     property date: TDateTime read GetDate write SetDate;
     property views: Integer read GetViews write SetViews;
-    property numComments: Integer read GetNumComments write SetNumComments;
+    property Comments: Integer read GetComments write SetComments;
     property likes: Integer read GetLikes write SetLikes;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
@@ -55,23 +55,23 @@ type
   private
     FDate: TDateTime;
     FViews: Integer;
-    FNumComments: Integer;
+    FComments: Integer;
     FLikes: Integer;
     function GetDate(): TDateTime;
     function GetViews(): Integer;
     function GetLikes(): Integer;
-    function GetNumComments(): Integer;
+    function GetComments(): Integer;
     procedure SetDate(value: TDateTime);
     procedure SetViews(value: Integer);
     procedure SetLikes(value: Integer);
-    procedure SetNumComments(value: Integer);
+    procedure SetComments(value: Integer);
   public
     property date: TDateTime read GetDate write SetDate;
     property views: Integer read GetViews write SetViews;
-    property numComments: Integer read GetNumComments write SetNumComments;
+    property comments: Integer read GetComments write SetComments;
     property likes: Integer read GetLikes write SetLikes;
     Constructor Create(); overload;
-    Constructor Create(date: TDateTime; views: Integer; likes: Integer; numComments: Integer); overload;
+    Constructor Create(date: TDateTime; views: Integer; likes: Integer; Comments: Integer); overload;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure Copy(stat: IStat);
@@ -86,16 +86,16 @@ uses
 
 procedure TStat.Copy(stat: IStat);
 begin
-  SetNumComments(stat.numComments);
+  SetComments(stat.Comments);
   SetLikes(stat.likes);
   SetViews(stat.views);
 end;
 
-constructor TStat.Create(date: TDateTime; views: Integer; likes: Integer; numComments: Integer);
+constructor TStat.Create(date: TDateTime; views: Integer; likes: Integer; Comments: Integer);
 begin
   SetDate(date);
   SetViews(views);
-  SetNumComments(numComments);
+  SetComments(Comments);
   SetLikes(likes);
 end;
 
@@ -114,9 +114,9 @@ begin
   result := FLikes;
 end;
 
-function TStat.GetNumComments: Integer;
+function TStat.GetComments: Integer;
 begin
-  result := FNumComments;
+  result := FComments;
 end;
 
 function TStat.GetViews: Integer;
@@ -128,7 +128,7 @@ procedure TStat.Load(iNode: IXMLNode);
 begin
   FDate := StrToDate(iNode.Attributes['Date']);
   FViews := StrToInt(iNode.Attributes['Views']);
-  FNumComments := StrToInt(iNode.Attributes['Comments']);
+  FComments := StrToInt(iNode.Attributes['Comments']);
   FLikes := StrToInt(iNode.Attributes['Likes']);
 end;
 
@@ -139,7 +139,7 @@ begin
   iNode2 := iNode.AddChild('Stats');
   iNode2.Attributes['Date'] := DateToStr(FDate);
   iNode2.Attributes['Views'] := IntToStr(FViews);
-  iNode2.Attributes['Comments'] := IntToStr(FNumComments);
+  iNode2.Attributes['Comments'] := IntToStr(FComments);
   iNode2.Attributes['Likes'] := IntToStr(FLikes);
 end;
 
@@ -153,9 +153,9 @@ begin
   FLikes := value;
 end;
 
-procedure TStat.SetNumComments(value: Integer);
+procedure TStat.SetComments(value: Integer);
 begin
-  FNumComments := value;
+  FComments := value;
 end;
 
 procedure TStat.SetViews(value: Integer);
