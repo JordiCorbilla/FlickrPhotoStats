@@ -2335,7 +2335,7 @@ object frmFlickr: TfrmFlickr
         Top = 444
         Width = 1503
         Height = 332
-        ActivePage = Statistics
+        ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet

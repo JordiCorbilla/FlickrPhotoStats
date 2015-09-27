@@ -117,7 +117,7 @@ begin
       description.add('              "fillAlphas": 0.7,');
       description.add('              "id": "AmGraph-1",');
       description.add('              "lineAlpha": 0,');
-      description.add('              "title": "graph 1",');
+      description.add('              "title": "Views",');
       description.add('              "valueField": "column-1"');
       description.add('            }');
       description.add('          ],');
@@ -148,6 +148,188 @@ begin
         itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].views - globalsRepository.Globals[globalsRepository.Globals.Count-6].views;
         itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].views - globalsRepository.Globals[globalsRepository.Globals.Count-7].views;
         itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].views - globalsRepository.Globals[globalsRepository.Globals.Count-8].views;
+      end
+      else
+      begin
+        itemToday := 0;
+        itemToday1 := 0;
+        itemToday2 := 0;
+        itemToday3 := 0;
+        itemToday4 := 0;
+        itemTOday5 := 0;
+        itemToday6 := 0;
+      end;
+
+      description.add('          "dataProvider": [');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -6))]+'",');
+      description.add('              "column-1": "'+itemToday6.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -5))]+'",');
+      description.add('              "column-1": "'+itemToday5.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -4))]+'",');
+      description.add('              "column-1": "'+itemToday4.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -3))]+'",');
+      description.add('              "column-1": "'+itemToday3.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -2))]+'",');
+      description.add('              "column-1": "'+itemToday2.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -1))]+'",');
+      description.add('              "column-1": "'+itemToday1.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "Today",');
+      description.add('              "column-1": "'+itemToday.ToString+'"');
+      description.add('            }');
+      description.add('          ]');
+      description.add('        }');
+      description.add('      );');
+
+      description.add('      AmCharts.makeChart("chartdiv2",');
+      description.add('        {');
+      description.add('          "type": "serial",');
+      description.add('          "categoryField": "category",');
+      description.add('          "startDuration": 1,');
+      description.add('          "categoryAxis": {');
+      description.add('            "gridPosition": "start"');
+      description.add('          },');
+      description.add('          "trendLines": [],');
+      description.add('          "graphs": [');
+      description.add('            {');
+      description.add('              "balloonText": "[[title]] of [[category]]:[[value]]",');
+      description.add('              "fillAlphas": 0.7,');
+      description.add('              "id": "AmGraph-1",');
+      description.add('              "lineAlpha": 0,');
+      description.add('              "title": "Likes",');
+      description.add('              "valueField": "column-1"');
+      description.add('            }');
+      description.add('          ],');
+      description.add('          "guides": [],');
+      description.add('          "valueAxes": [');
+      description.add('            {');
+      description.add('              "id": "ValueAxis-1",');
+      description.add('              "title": "Likes"');
+      description.add('            }');
+      description.add('          ],');
+      description.add('          "allLabels": [],');
+      description.add('          "balloon": {},');
+      description.add('          "legend": {},');
+      description.add('          "titles": [');
+      description.add('            {');
+      description.add('              "id": "Title-1",');
+      description.add('              "size": 15,');
+      description.add('              "text": "Last 7 days summary"');
+      description.add('            }');
+      description.add('          ],');
+
+      if globalsRepository.Globals.Count > 0 then
+      begin
+        itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].likes - globalsRepository.Globals[globalsRepository.Globals.Count-2].likes;
+        itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].likes - globalsRepository.Globals[globalsRepository.Globals.Count-3].likes;
+        itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].likes - globalsRepository.Globals[globalsRepository.Globals.Count-4].likes;
+        itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].likes - globalsRepository.Globals[globalsRepository.Globals.Count-5].likes;
+        itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].likes - globalsRepository.Globals[globalsRepository.Globals.Count-6].likes;
+        itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].likes - globalsRepository.Globals[globalsRepository.Globals.Count-7].likes;
+        itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].likes - globalsRepository.Globals[globalsRepository.Globals.Count-8].likes;
+      end
+      else
+      begin
+        itemToday := 0;
+        itemToday1 := 0;
+        itemToday2 := 0;
+        itemToday3 := 0;
+        itemToday4 := 0;
+        itemTOday5 := 0;
+        itemToday6 := 0;
+      end;
+
+      description.add('          "dataProvider": [');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -6))]+'",');
+      description.add('              "column-1": "'+itemToday6.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -5))]+'",');
+      description.add('              "column-1": "'+itemToday5.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -4))]+'",');
+      description.add('              "column-1": "'+itemToday4.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -3))]+'",');
+      description.add('              "column-1": "'+itemToday3.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -2))]+'",');
+      description.add('              "column-1": "'+itemToday2.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "'+DayNames[DayOfWeek(IncDay(Date, -1))]+'",');
+      description.add('              "column-1": "'+itemToday1.ToString+'"');
+      description.add('            },');
+      description.add('            {');
+      description.add('              "category": "Today",');
+      description.add('              "column-1": "'+itemToday.ToString+'"');
+      description.add('            }');
+      description.add('          ]');
+      description.add('        }');
+      description.add('      );');
+
+      description.add('      AmCharts.makeChart("chartdiv3",');
+      description.add('        {');
+      description.add('          "type": "serial",');
+      description.add('          "categoryField": "category",');
+      description.add('          "startDuration": 1,');
+      description.add('          "categoryAxis": {');
+      description.add('            "gridPosition": "start"');
+      description.add('          },');
+      description.add('          "trendLines": [],');
+      description.add('          "graphs": [');
+      description.add('            {');
+      description.add('              "balloonText": "[[title]] of [[category]]:[[value]]",');
+      description.add('              "fillAlphas": 0.7,');
+      description.add('              "id": "AmGraph-1",');
+      description.add('              "lineAlpha": 0,');
+      description.add('              "title": "Comments",');
+      description.add('              "valueField": "column-1"');
+      description.add('            }');
+      description.add('          ],');
+      description.add('          "guides": [],');
+      description.add('          "valueAxes": [');
+      description.add('            {');
+      description.add('              "id": "ValueAxis-1",');
+      description.add('              "title": "Comments"');
+      description.add('            }');
+      description.add('          ],');
+      description.add('          "allLabels": [],');
+      description.add('          "balloon": {},');
+      description.add('          "legend": {},');
+      description.add('          "titles": [');
+      description.add('            {');
+      description.add('              "id": "Title-1",');
+      description.add('              "size": 15,');
+      description.add('              "text": "Last 7 days summary"');
+      description.add('            }');
+      description.add('          ],');
+
+      if globalsRepository.Globals.Count > 0 then
+      begin
+        itemToday := globalsRepository.Globals[globalsRepository.Globals.Count-1].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments;
+        itemToday1 := globalsRepository.Globals[globalsRepository.Globals.Count-2].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments;
+        itemToday2 := globalsRepository.Globals[globalsRepository.Globals.Count-3].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments;
+        itemToday3 := globalsRepository.Globals[globalsRepository.Globals.Count-4].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments;
+        itemToday4 := globalsRepository.Globals[globalsRepository.Globals.Count-5].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments;
+        itemToday5 := globalsRepository.Globals[globalsRepository.Globals.Count-6].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments;
+        itemToday6 := globalsRepository.Globals[globalsRepository.Globals.Count-7].numComments - globalsRepository.Globals[globalsRepository.Globals.Count-8].numComments;
       end
       else
       begin
@@ -328,7 +510,11 @@ begin
     description.add('</table>');
     description.add('<br>');
     if graph then
+    begin
       description.Add('<div id="chartdiv" style="width: 100%; height: 400px; background-color: #FFFFFF;" ></div>');
+      description.Add('<div id="chartdiv2" style="width: 100%; height: 400px; background-color: #FFFFFF;" ></div>');
+      description.Add('<div id="chartdiv3" style="width: 100%; height: 400px; background-color: #FFFFFF;" ></div>');
+    end;
     description.add('<b '+fontStylebig+'>Last 7 days summary</b><br><br>');
     description.add('<table '+tableStyle+'>');
     description.add('  <tr '+trStyle+'>');

@@ -2843,12 +2843,14 @@ var
   max : string;
   success : integer;
   photoToCheck : IPhoto;
+  option : integer;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
     showmessage('You are not authorized!');
     exit;
   end;
+
   photos := TList<string>.Create;
   groups := TList<string>.Create;
   FGroupStop := false;
@@ -2876,84 +2878,88 @@ begin
     Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
     mStatus.Lines.Add('******************************************************************');
-    mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into  ' + groups.Count.ToString + ' groups each.');
+    mStatus.Lines.Add('Adding ' + photos.Count.ToString + ' photos into ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     success := 0;
-    for i := 0 to photos.Count - 1 do
+    option := MessageDlg('Do you want to add ' + photos.Count.ToString + ' photos into ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
+    if option <> mrOK then
     begin
-      for j := 0 to groups.Count - 1 do
+      for i := 0 to photos.Count - 1 do
       begin
-        photoId := photos[i];
-        groupId := groups[j];
-        timedout := false;
-        if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId, photoToCheck)) then
+        for j := 0 to groups.Count - 1 do
         begin
-          if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(groupId)) then
+          photoId := photos[i];
+          groupId := groups[j];
+          timedout := false;
+          if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId, photoToCheck)) then
           begin
-            urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-            while (not timedout) do
+            if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(groupId)) then
             begin
-              try
-                response := IdHTTP1.Get(urlAdd);
-                if response.Contains('Photo limit reached') or response.Contains('Maximum') then
-                begin
-                  mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
-                  rejected.Add(groupId);
-                end;
-                if not chkPending.Checked then
-                begin
-                  if response.Contains('Pending Queue') then
+              urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+              while (not timedout) do
+              begin
+                try
+                  response := IdHTTP1.Get(urlAdd);
+                  if response.Contains('Photo limit reached') or response.Contains('Maximum') then
                   begin
                     mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
                     rejected.Add(groupId);
                   end;
-                end;
-                timedout := true;
-              except
-                on e: exception do
-                begin
-                  sleep(2000);
-                  timedout := false;
+                  if not chkPending.Checked then
+                  begin
+                    if response.Contains('Pending Queue') then
+                    begin
+                      mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
+                      rejected.Add(groupId);
+                    end;
+                  end;
+                  timedout := true;
+                except
+                  on e: exception do
+                  begin
+                    sleep(2000);
+                    timedout := false;
+                  end;
                 end;
               end;
+            end
+            else
+              mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + groupId);
+          end;
+          inc(k);
+          progressbar1.position := k;
+          Taskbar1.ProgressValue := k;
+          response := TResponse.filter(response);
+          if chkResponses.Checked then
+          begin
+            if response.Contains('ok') then
+            begin
+              mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+              inc(success);
             end;
           end
           else
-            mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + groupId);
-        end;
-        inc(k);
-        progressbar1.position := k;
-        Taskbar1.ProgressValue := k;
-        response := TResponse.filter(response);
-        if chkResponses.Checked then
-        begin
-          if response.Contains('ok') then
           begin
             mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
-            inc(success);
+            if response.Contains('ok') then
+            begin
+              inc(success);
+            end;
           end;
-        end
-        else
-        begin
-          mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
-          if response.Contains('ok') then
-          begin
-            inc(success);
-          end;
-        end;
 
-        max := edtMaxLog.text;
-        if mStatus.Lines.Count > max.ToInteger then
-          mStatus.Lines.Clear;
-        Application.ProcessMessages;
+          max := edtMaxLog.text;
+          if mStatus.Lines.Count > max.ToInteger then
+            mStatus.Lines.Clear;
+          Application.ProcessMessages;
+          if FGroupStop then
+            break;
+          sleep(10);
+        end;
         if FGroupStop then
           break;
-        sleep(10);
-      end;
-      if FGroupStop then
-        break;
-   end;
+     end;
+    end;
   finally
     batchUpdate.Enabled := true;
     mStatus.Lines.Add('Total number of groups added: ' + success.ToString() + ' out of ' + total.ToString());
@@ -2982,6 +2988,7 @@ var
   p : IPhoto;
   OmitGroups : string;
   total : integer;
+  option : integer;
 begin
   //Ban these groups in the photos selected.
   PageControl3.ActivePage := tabStatus;
@@ -3000,26 +3007,30 @@ begin
         groups.Add(listGroups.Items[i].Caption);
     end;
     mStatus.Lines.Add('******************************************************************');
-    mStatus.Lines.Add('Banning ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
+    mStatus.Lines.Add('Banning ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
-    for i := 0 to photos.Count - 1 do
+    option := MessageDlg('Do you want to ban ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
+    if option <> mrOK then
     begin
-      photoId := photos[i];
-      p := repository.GetPhoto(photoId);
-      OmitGroups := p.OmitGroups;
-      for j := 0 to groups.Count - 1 do
+      for i := 0 to photos.Count - 1 do
       begin
-        groupId := groups[j];
-        if not OmitGroups.Contains(groupId) then
+        photoId := photos[i];
+        p := repository.GetPhoto(photoId);
+        OmitGroups := p.OmitGroups;
+        for j := 0 to groups.Count - 1 do
         begin
-          OmitGroups := OmitGroups + groupId + ',';
-          mStatus.Lines.Add('Adding group to banned list for  : ' + photoId + ': ' + OmitGroups);
-        end
-        else
-          mStatus.Lines.Add('Group already in the banned list : ' + groupId);
+          groupId := groups[j];
+          if not OmitGroups.Contains(groupId) then
+          begin
+            OmitGroups := OmitGroups + groupId + ',';
+            mStatus.Lines.Add('Adding group to banned list for  : ' + photoId + ': ' + OmitGroups);
+          end
+          else
+            mStatus.Lines.Add('Group already in the banned list : ' + groupId);
+        end;
+        p.OmitGroups := OmitGroups;
       end;
-      p.OmitGroups := OmitGroups;
     end;
   finally
     batchUpdate.Enabled := true;
@@ -3149,6 +3160,7 @@ var
   max : string;
   success : integer;
   resultPhoto : IPhoto;
+  option : integer;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -3180,65 +3192,69 @@ begin
     Taskbar1.ProgressMaxValue := progressbar1.Max;
     k := 0;
     mStatus.Lines.Add('******************************************************************');
-    mStatus.Lines.Add('Removing ' + photos.Count.ToString + ' photos from  ' + groups.Count.ToString + ' groups each.');
+    mStatus.Lines.Add('Removing ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each.');
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     success := 0;
-    for i := 0 to photos.Count - 1 do
+    option := MessageDlg('Do you want to remove ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
+    if option <> mrOK then
     begin
-      for j := 0 to groups.Count - 1 do
+      for i := 0 to photos.Count - 1 do
       begin
-        photoId := photos[i];
-        groupId := groups[j];
-        timedout := false;
-        if (repository.isPhotoInGroup(photoId, groupId, resultPhoto)) then
+        for j := 0 to groups.Count - 1 do
         begin
-          urlAdd := TFlickrRest.New().getPoolsRemove(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-          while (not timedout) do
+          photoId := photos[i];
+          groupId := groups[j];
+          timedout := false;
+          if (repository.isPhotoInGroup(photoId, groupId, resultPhoto)) then
           begin
-            try
-              response := IdHTTP1.Get(urlAdd);
-              timedout := true;
-            except
-              on e: exception do
-              begin
-                sleep(2000);
-                timedout := false;
+            urlAdd := TFlickrRest.New().getPoolsRemove(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+            while (not timedout) do
+            begin
+              try
+                response := IdHTTP1.Get(urlAdd);
+                timedout := true;
+              except
+                on e: exception do
+                begin
+                  sleep(2000);
+                  timedout := false;
+                end;
               end;
             end;
           end;
-        end;
-        inc(k);
-        progressbar1.position := k;
-        Taskbar1.ProgressValue := k;
-        response := TResponse.filter(response);
-        if chkResponses.Checked then
-        begin
-          if response.Contains('ok') then
+          inc(k);
+          progressbar1.position := k;
+          Taskbar1.ProgressValue := k;
+          response := TResponse.filter(response);
+          if chkResponses.Checked then
+          begin
+            if response.Contains('ok') then
+            begin
+              mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+              inc(success);
+            end;
+          end
+          else
           begin
             mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
-            inc(success);
+            if response.Contains('ok') then
+            begin
+              inc(success);
+            end;
           end;
-        end
-        else
-        begin
-          mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
-          if response.Contains('ok') then
-          begin
-            inc(success);
-          end;
-        end;
 
-        max := edtMaxLog.text;
-        if mStatus.Lines.Count > max.ToInteger then
-          mStatus.Lines.Clear;
-        Application.ProcessMessages;
+          max := edtMaxLog.text;
+          if mStatus.Lines.Count > max.ToInteger then
+            mStatus.Lines.Clear;
+          Application.ProcessMessages;
+          if FGroupStop then
+            break;
+          sleep(10);
+        end;
         if FGroupStop then
           break;
-        sleep(10);
       end;
-      if FGroupStop then
-        break;
     end;
   finally
     batchUpdate.Enabled := true;
