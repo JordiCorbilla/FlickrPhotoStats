@@ -85,6 +85,9 @@ Latest release candidate can be found here:
 
 - [FlickrPhotoStats(x64) v4.5.0.38](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p).
 
+The beta version can be found here (ongoing development):
+- [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
+
 ## Changelog
 ### Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
