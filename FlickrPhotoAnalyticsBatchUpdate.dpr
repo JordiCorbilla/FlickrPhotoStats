@@ -61,7 +61,7 @@ var
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
   stat: IStat;
-  verbosity, loadrepository, loadglobals : boolean;
+  verbosity, loadrepository, loadglobals, loademail : boolean;
   organic : IFlickrOrganic;
   organicStat : IFlickrOrganicStats;
   options : IOptions;
@@ -86,6 +86,10 @@ begin
     loadglobals := false;
     if paramstr(3) = '-g' then
       loadglobals := true;
+
+    loademail := false;
+    if paramstr(4) = '-e' then
+      loademail := true;
 
     //Load repository
     WriteLn('Loading Repository');
@@ -218,15 +222,18 @@ begin
     end;
 
     //Send eMail
-    description := nil;
-    try
-      description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
-      TFlickrEmail.SendHTML(options.eMailAddress, description);
-    except
-      on E: Exception do
-      begin
-        TLogger.LogFile('Exception Sending eMail' + E.Message);
-        Writeln(E.ClassName, ': ', E.Message);
+    if loademail then
+    begin
+      description := nil;
+      try
+        description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
+        TFlickrEmail.SendHTML(options.eMailAddress, description);
+      except
+        on E: Exception do
+        begin
+          TLogger.LogFile('Exception Sending eMail' + E.Message);
+          Writeln(E.ClassName, ': ', E.Message);
+        end;
       end;
     end;
 
