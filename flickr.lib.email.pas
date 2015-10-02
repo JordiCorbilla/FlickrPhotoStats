@@ -97,6 +97,9 @@ var
   options : IOptionsEmail;
 begin
   options := TOptionsEmail.New.Load;
+  if (options.Server = '') or (options.Port = 0) then
+    exit;
+
   IdSSLIOHandlerSocketOpenSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   IdSMTP1 := TIdSMTP.Create(nil);
   IdMessage1 := TIdMessage.Create(nil);

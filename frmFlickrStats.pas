@@ -526,7 +526,8 @@ uses
   System.SyncObjs, generics.collections, flickr.base,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
-  flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram;
+  flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
+  flickr.lib.email;
 
 {$R *.dfm}
 
@@ -3363,12 +3364,16 @@ end;
 procedure TfrmFlickr.btnShowReportClick(Sender: TObject);
 var
   description : TStrings;
+  option : integer;
 begin
   //Show the html generated report.
   if RepositoryLoaded then
   begin
     description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, true);
     try
+      option := MessageDlg('Do you want to the report via email?',mtInformation, mbOKCancel, 0);
+      if option = mrOK then
+        TFlickrEmail.SendHTML(options.eMailAddress, description);
       description.SaveToFile(options.Workspace + '\flickrHtmlreport.htm');
       WebBrowser2.Navigate('file:///' + options.Workspace + '\flickrHtmlreport.htm');
     finally
