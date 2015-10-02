@@ -2850,7 +2850,7 @@ begin
     showmessage('You are not authorized!');
     exit;
   end;
-
+  pagecontrol3.TabIndex := 0;
   photos := TList<string>.Create;
   groups := TList<string>.Create;
   FGroupStop := false;
