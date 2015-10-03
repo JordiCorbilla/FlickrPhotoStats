@@ -106,8 +106,8 @@ function TIPhotoComparerLikes.Compare(const Left, Right: IPhoto): Integer;
 var
   LeftTerm, RightTerm: Integer;
 begin
-  LeftTerm := Left.getTotalLikes;
-  RightTerm := Right.getTotalLikes;
+  LeftTerm := Left.getTotalLikesDay;
+  RightTerm := Right.getTotalLikesDay;
   Result := RightTerm - LeftTerm;
 end;
 
@@ -117,8 +117,8 @@ function TIPhotoComparerViews.Compare(const Left, Right: IPhoto): Integer;
 var
   LeftTerm, RightTerm: Integer;
 begin
-  LeftTerm := Left.getTotalViews;
-  RightTerm := Right.getTotalViews;
+  LeftTerm := Left.getTotalViewsDay;
+  RightTerm := Right.getTotalViewsDay;
   Result := RightTerm - LeftTerm;
 end;
 
@@ -128,8 +128,8 @@ function TIPhotoComparerComments.Compare(const Left, Right: IPhoto): Integer;
 var
   LeftTerm, RightTerm: Integer;
 begin
-  LeftTerm := Left.getTotalComments;
-  RightTerm := Right.getTotalComments;
+  LeftTerm := Left.getTotalCommentsDay;
+  RightTerm := Right.getTotalCommentsDay;
   Result := RightTerm - LeftTerm;
 end;
 

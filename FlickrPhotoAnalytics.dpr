@@ -27,7 +27,7 @@
 
 program FlickrPhotoAnalytics;
 
-{$R 'FlickrPhotoAnalytics.res' 'FlickrPhotoAnalytics.rc'}
+
 
 uses
   Forms,

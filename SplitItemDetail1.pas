@@ -90,7 +90,7 @@ implementation
 
 {$R *.dfm}
 
-uses GroupedItems1;
+uses frmFlickrMainTiles;
 
 const
   AppBarHeight = 75;
@@ -177,19 +177,19 @@ begin
   AppBarShow(0);
   //ReAssign OnClick handlers for all grid child components to the grid
   HandleClick();
-  splitForm.PickImageColor(ItemImage, clBtnShadow);
-  splitForm.PickImageColor(ItemImage1, clBtnShadow);
-  splitForm.PickImageColor(ItemImage2, clBtnShadow);
-  splitForm.PickImageColor(ItemImage3, clBtnShadow);
-  splitForm.PickImageColor(ItemImage4, clBtnShadow);
-  splitForm.PickImageColor(ItemImage5, clBtnShadow);
-  splitForm.PickImageColor(ItemImage6, clBtnShadow);
-  splitForm.PickImageColor(ItemImage7, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage1, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage2, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage3, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage4, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage5, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage6, clBtnShadow);
+  frmMainTiles.PickImageColor(ItemImage7, clBtnShadow);
     // Show the originating badge's title
   GroupElements:= TStringList.Create;
   try
     GroupElements.Delimiter := '_';
-    GroupElements.DelimitedText := SplitForm.SelectedGroup;
+    GroupElements.DelimitedText := frmMainTiles.SelectedGroup;
     TitleLabel.Caption := 'Title: ' + GroupElements[0];
     ItemTitle.Caption :=  'Item Title: ' + GroupElements[1];
   finally
@@ -243,7 +243,7 @@ end;
 procedure TDetailForm.BackToMainForm(Sender: TObject);
 begin
   Hide;
-  SplitForm.BringToFront;
+  frmMainTiles.BringToFront;
 end;
 
 end.

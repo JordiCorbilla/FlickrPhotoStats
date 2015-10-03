@@ -476,7 +476,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 1'
             FocusControl = GridPanel1
@@ -486,13 +486,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle1: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 1'
             FocusControl = GridPanel1
@@ -502,13 +501,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription1: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 1: This is a test'
             FocusControl = GridPanel1
@@ -519,8 +517,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object GridPanel3: TGridPanel
@@ -565,7 +561,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 2'
             FocusControl = GridPanel1
@@ -575,13 +571,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle2: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 2'
             FocusControl = GridPanel1
@@ -591,13 +586,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription2: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 2: This is a test'
             FocusControl = GridPanel1
@@ -608,8 +602,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object ItemImage3: TImage
@@ -663,7 +655,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 3'
             Font.Charset = ANSI_CHARSET
@@ -672,13 +664,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle3: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 3'
             Font.Charset = ANSI_CHARSET
@@ -687,13 +678,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription3: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 3: This is a test'
             Font.Charset = DEFAULT_CHARSET
@@ -703,8 +693,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object ItemImage4: TImage
@@ -758,7 +746,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 4'
             Font.Charset = ANSI_CHARSET
@@ -767,13 +755,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle4: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 4'
             Font.Charset = ANSI_CHARSET
@@ -782,13 +769,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription4: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 4: This is a test'
             Font.Charset = DEFAULT_CHARSET
@@ -798,8 +784,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object ItemImage5: TImage
@@ -853,7 +837,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 5'
             Font.Charset = ANSI_CHARSET
@@ -862,13 +846,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle5: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 5'
             Font.Charset = ANSI_CHARSET
@@ -877,13 +860,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription5: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 5: This is a test'
             Font.Charset = DEFAULT_CHARSET
@@ -893,8 +875,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object ItemImage6: TImage
@@ -948,7 +928,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 36
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 6'
             Font.Charset = ANSI_CHARSET
@@ -957,13 +937,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle6: TLabel
             Left = 0
             Top = 36
             Width = 75
-            Height = 24
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 6'
             Font.Charset = ANSI_CHARSET
@@ -972,13 +951,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription6: TLabel
             Left = 0
             Top = 60
-            Width = 344
-            Height = 63
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 6: This is a test'
             Font.Charset = DEFAULT_CHARSET
@@ -988,8 +966,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
         object ItemImage1: TImage
@@ -1061,7 +1037,7 @@ object DetailForm: TDetailForm
             Left = 0
             Top = 0
             Width = 71
-            Height = 31
+            Height = 20
             Align = alLeft
             Caption = 'ItemTitle 7'
             Font.Charset = ANSI_CHARSET
@@ -1070,13 +1046,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 20
           end
           object ItemSubTitle7: TLabel
             Left = 0
             Top = 31
             Width = 75
-            Height = 21
+            Height = 15
             Align = alLeft
             Caption = 'Item subtitle 7'
             Font.Charset = ANSI_CHARSET
@@ -1085,13 +1060,12 @@ object DetailForm: TDetailForm
             Font.Name = 'Segoe UI'
             Font.Style = []
             ParentFont = False
-            ExplicitHeight = 15
           end
           object ItemDescription7: TLabel
             Left = 0
             Top = 52
-            Width = 344
-            Height = 53
+            Width = 207
+            Height = 20
             Align = alClient
             Caption = 'Item description 7: This is a test'
             Font.Charset = DEFAULT_CHARSET
@@ -1101,8 +1075,6 @@ object DetailForm: TDetailForm
             Font.Style = []
             ParentFont = False
             WordWrap = True
-            ExplicitWidth = 207
-            ExplicitHeight = 20
           end
         end
       end

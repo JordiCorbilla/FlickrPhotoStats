@@ -249,7 +249,7 @@ begin
   begin
     if i < photosSorted.count then
     begin
-      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Comments: ' + PhotosSorted[i].getTotalComments.ToString + sLineBreak;
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Comments: ' + PhotosSorted[i].getTotalCommentsDay.ToString + sLineBreak;
     end;
   end;
   PhotosSorted.Free;
@@ -280,9 +280,9 @@ begin
   begin
     if i < photosSorted.count then
     begin
-      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString + sLineBreak;
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikesDay.ToString + sLineBreak;
       color := RGB(Random(255), Random(255), Random(255));
-      series.Add(PhotosSorted[i].getTotalLikes.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikes.ToString, color);
+      series.Add(PhotosSorted[i].getTotalLikesDay.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Likes: ' + PhotosSorted[i].getTotalLikesDay.ToString, color);
     end;
   end;
   PhotosSorted.Free;
@@ -351,9 +351,9 @@ begin
   begin
     if i < photosSorted.count then
     begin
-      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString + sLineBreak;
+      description := description + PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViewsDay.ToString + sLineBreak;
       color := RGB(Random(255), Random(255), Random(255));
-      series.Add(PhotosSorted[i].getTotalViews.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViews.ToString, color);
+      series.Add(PhotosSorted[i].getTotalViewsDay.ToDouble, PhotosSorted[i].Id + ' (' + PhotosSorted[i].Title + ')' + ' Number of Views: ' + PhotosSorted[i].getTotalViewsDay.ToString, color);
     end;
   end;
   PhotosSorted.Free;

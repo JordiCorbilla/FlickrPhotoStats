@@ -129,9 +129,6 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <RcCompile Include="FlickrPhotoAnalytics.rc">
-            <Form>FlickrPhotoAnalytics.res</Form>
-        </RcCompile>
         <DCCReference Include="frmFlickrStatsMain.pas">
             <Form>frmFlickrMain</Form>
         </DCCReference>
