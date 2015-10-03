@@ -27,10 +27,12 @@
 
 program FlickrPhotoAnalytics;
 
+{$R 'FlickrPhotoAnalytics.res' 'FlickrPhotoAnalytics.rc'}
+
 uses
   Forms,
   Windows,
-  frmFlickrStats in 'frmFlickrStats.pas' {frmFlickr},
+  frmFlickrStatsMain in 'frmFlickrStatsMain.pas' {frmFlickrMain},
   Vcl.Themes,
   Vcl.Styles,
   frmFlickrContextList in 'frmFlickrContextList.pas' {frmFlickrContext},
@@ -67,6 +69,6 @@ begin
   ReportMemoryLeaksOnShutdown := true;
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Carbon');
-  Application.CreateForm(TfrmFlickr, frmFlickr);
+  Application.CreateForm(TfrmFlickrMain, frmFlickrMain);
   Application.Run;
 end.

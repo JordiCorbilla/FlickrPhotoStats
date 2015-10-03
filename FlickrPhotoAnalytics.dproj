@@ -60,7 +60,7 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
         <SanitizedProjectName>FlickrPhotoAnalytics</SanitizedProjectName>
-        <VCL_Custom_Styles>Carbon|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\Carbon.vsf;&quot;Metropolis UI Black|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\MetropolisUIBlack.vsf&quot;;&quot;Ruby Graphite|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\RubyGraphite.vsf&quot;</VCL_Custom_Styles>
+        <VCL_Custom_Styles>Carbon|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\Carbon.vsf;&quot;Metropolis UI Black|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\MetropolisUIBlack.vsf&quot;;&quot;Metropolis UI Dark|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\MetropolisUIDark.vsf&quot;;&quot;Ruby Graphite|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\RubyGraphite.vsf&quot;</VCL_Custom_Styles>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;VclTee;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo stats;FileVersion=1.0.0.0;InternalName=Jordi Corbilla;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo stats;ProductName=Flickr Photo stats;ProductVersion=1.0.0.0;Comments=Jordi Corbilla</VerInfo_Keys>
@@ -129,8 +129,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="frmFlickrStats.pas">
-            <Form>frmFlickr</Form>
+        <RcCompile Include="FlickrPhotoAnalytics.rc">
+            <Form>FlickrPhotoAnalytics.res</Form>
+        </RcCompile>
+        <DCCReference Include="frmFlickrStatsMain.pas">
+            <Form>frmFlickrMain</Form>
         </DCCReference>
         <DCCReference Include="frmFlickrContextList.pas">
             <Form>frmFlickrContext</Form>

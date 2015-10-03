@@ -1,4 +1,4 @@
-object frmFlickr: TfrmFlickr
+object frmFlickrMain: TfrmFlickrMain
   Left = 0
   Top = 0
   Caption = 'Flickr Photo Analytics v4.5'
@@ -606,7 +606,7 @@ object frmFlickr: TfrmFlickr
     Top = 55
     Width = 1511
     Height = 799
-    ActivePage = TabSheet8
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -4141,7 +4141,7 @@ object frmFlickr: TfrmFlickr
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001B40110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001B80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -12258,6 +12258,29 @@ object frmFlickr: TfrmFlickr
     Delay = 300
     HideAfter = 2000
     Left = 636
+    Top = 311
+  end
+  object LiveTile1: TLiveTile
+    AppID = 'D0FC33BF-A910-47AA-98CA-4C95DBF72E6B'
+    MetropolisAppName = 'FlickrPhotoAnalyticsMetropolis'
+    PublisherName = 'tileproxy.test'
+    CertificateName = 'tileproxy.test'
+    NarrowTile.Items.Strings = (
+      'Flickr Photo Analytics=Text Header 1'
+      'Text Field 2=Text Field 2'
+      'Text Field 3=Text Field 3'
+      'Text Field 4=Text Field 4'
+      'T1=T1')
+    NarrowTile.TileTemplate = 'TileSquareBlock01'
+    WideTile.Items.Strings = (
+      'Text Header 1=Text Header 1'
+      'Text Field 2=Text Field 2'
+      'Text Field 3=Text Field 3'
+      'Text Field 4=Text Field 4'
+      'Text Field 5=Text Field 5')
+    WideTile.TileTemplate = 'TileWideText01'
+    AutoUpdateTile = True
+    Left = 572
     Top = 311
   end
 end

@@ -76,19 +76,19 @@ begin
     WriteLn('# version '+TUtils.GetVersion+' @author: Jordi Corbilla         #');
     WriteLn('###################################################');
     verbosity := false;
-    if paramstr(1) = '-v' then
+    if (paramstr(1) = '-v') or (paramstr(2) = '-v') or (paramstr(3) = '-v') or (paramstr(4) = '-v') then
       verbosity := true;
 
     loadrepository := false;
-    if paramstr(2) = '-r' then
+    if (paramstr(1) = '-r') or (paramstr(2) = '-r') or (paramstr(3) = '-r') or (paramstr(4) = '-r') then
       loadrepository := true;
 
     loadglobals := false;
-    if paramstr(3) = '-g' then
+    if (paramstr(1) = '-g') or (paramstr(2) = '-g') or (paramstr(3) = '-g') or (paramstr(4) = '-g') then
       loadglobals := true;
 
     loademail := false;
-    if paramstr(4) = '-e' then
+    if (paramstr(1) = '-e') or (paramstr(2) = '-e') or (paramstr(3) = '-e') or (paramstr(4) = '-e') then
       loademail := true;
 
     //Load repository
@@ -222,9 +222,9 @@ begin
     end;
 
     //Send eMail
+    description := nil;
     if loademail then
     begin
-      description := nil;
       try
         description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
         TFlickrEmail.SendHTML(options.eMailAddress, description);

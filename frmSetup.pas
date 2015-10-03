@@ -71,7 +71,7 @@ var
 implementation
 
 uses
-  ShellApi, frmFlickrStats, flickr.lib.folder;
+  ShellApi, frmFlickrStatsMain, flickr.lib.folder;
 
 {$R *.dfm}
 
@@ -82,12 +82,12 @@ begin
     showMessage('Parameters can''t be empty');
     exit;
   end;
-  frmFlickr.apikey.Text := apikey.Text;
-  frmFlickr.secret.Text := secret.Text;
-  frmFlickr.edtuserid.Text := edtuserid.Text;
-  frmFlickr.edtWorkspace.text := edtWorkspace.Text;
+  frmFlickrMain.apikey.Text := apikey.Text;
+  frmFlickrMain.secret.Text := secret.Text;
+  frmFlickrMain.edtuserid.Text := edtuserid.Text;
+  frmFlickrMain.edtWorkspace.text := edtWorkspace.Text;
   //Save the file
-  frmFlickr.btnSaveOptionsClick(sender);
+  frmFlickrMain.btnSaveOptionsClick(sender);
   //Create the new folders
   if ForceDirectories(edtWorkspace.Text + '\Albums') then
     if ForceDirectories(edtWorkspace.Text + '\Groups') then

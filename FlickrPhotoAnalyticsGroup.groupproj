@@ -15,6 +15,9 @@
         <Projects Include="UnitTests\FlickrPhotoAnalyticsTests.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="FlickrPhotoAnalyticsUI.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="FlickrPhotoAnalyticsTests:Make">
         <MSBuild Projects="UnitTests\FlickrPhotoAnalyticsTests.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FlickrPhotoAnalyticsUI">
+        <MSBuild Projects="FlickrPhotoAnalyticsUI.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsUI:Clean">
+        <MSBuild Projects="FlickrPhotoAnalyticsUI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsUI:Make">
+        <MSBuild Projects="FlickrPhotoAnalyticsUI.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsUI"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsUI:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsUI:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

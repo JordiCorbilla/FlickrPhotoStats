@@ -67,7 +67,7 @@ var
 implementation
 
 uses
-  System.StrUtils, frmFlickrStats, flickr.access.token;
+  System.StrUtils, frmFlickrStatsMain, flickr.access.token;
 
 {$R *.dfm}
 
@@ -84,7 +84,7 @@ var
 begin
   // 'http://www.example.com/?oauth_token=72157648370759854-32e3740fbaef246b&oauth_verifier=d46f58e4a5780b25'
   response := WebBrowser1.LocationURL;
-  frmFlickr.Log('response url ' + response);
+  frmFlickrMain.Log('response url ' + response);
   response := response.Replace('http://www.example.com/?', '');
   response := response.Replace('oauth_token', '');
   response := response.Replace('oauth_verifier', '');
@@ -99,15 +99,15 @@ begin
   // Clean the parameters
   oauth_token := oauth_token.Replace('=', '').Replace('&', '');
   oauth_verifier := oauth_verifier.Replace('=', '').Replace('&', '');
-  frmFlickr.Log('oauth_token= ' + oauth_token);
-  frmFlickr.Log('oauth_verifier= ' + oauth_verifier);
+  frmFlickrMain.Log('oauth_token= ' + oauth_token);
+  frmFlickrMain.Log('oauth_verifier= ' + oauth_verifier);
 
   // Now we have the request token
   // we need to exchange it for an Access token
-  OAccessTokenUrl := TAccessToken.New(oauth_verifier, frmFlickr.apikey.text, oauth_token, frmFlickr.secret.text, frmFlickr.userTokenSecret).GenerateRequestAccessToken();
-  frmFlickr.Log('Calling OAuth URL ' + OAccessTokenUrl);
+  OAccessTokenUrl := TAccessToken.New(oauth_verifier, frmFlickrMain.apikey.text, oauth_token, frmFlickrMain.secret.text, frmFlickrMain.userTokenSecret).GenerateRequestAccessToken();
+  frmFlickrMain.Log('Calling OAuth URL ' + OAccessTokenUrl);
   response := IdHTTP1.Get(OAccessTokenUrl);
-  frmFlickr.Log('OAuth URL response ' + response);
+  frmFlickrMain.Log('OAuth URL response ' + response);
 
   // Example response
   // fullname=Jordi%20Corbilla&
@@ -142,20 +142,20 @@ begin
   user_nsid := user_nsid.Replace('=', '').Replace('&', '');
   username := username.Replace('=', '').Replace('&', '');
 
-  frmFlickr.Log('fullname= ' + fullname);
-  frmFlickr.Log('oauth_token= ' + oauth_token);
-  frmFlickr.Log('oauth_token_secret= ' + oauth_token_secret);
-  frmFlickr.Log('user_nsid= ' + user_nsid);
-  frmFlickr.Log('username= ' + username);
+  frmFlickrMain.Log('fullname= ' + fullname);
+  frmFlickrMain.Log('oauth_token= ' + oauth_token);
+  frmFlickrMain.Log('oauth_token_secret= ' + oauth_token_secret);
+  frmFlickrMain.Log('user_nsid= ' + user_nsid);
+  frmFlickrMain.Log('username= ' + username);
 
-  frmFlickr.userToken := oauth_token;
-  frmFlickr.userTokenSecret := oauth_token_secret;
-  frmFlickr.Button10.Enabled := true;
-  frmFlickr.btnGetGroups.Enabled := true;
-  frmFLickr.Button5.Enabled := true;
-  frmFlickr.btnAddPhotos.Enabled := true;
-  frmFlickr.btnRemovePhoto.Enabled := true;
-  frmFlickr.btnBanGroups.Enabled := true;
+  frmFlickrMain.userToken := oauth_token;
+  frmFlickrMain.userTokenSecret := oauth_token_secret;
+  frmFlickrMain.Button10.Enabled := true;
+  frmFlickrMain.btnGetGroups.Enabled := true;
+  frmFlickrMain.Button5.Enabled := true;
+  frmFlickrMain.btnAddPhotos.Enabled := true;
+  frmFlickrMain.btnRemovePhoto.Enabled := true;
+  frmFlickrMain.btnBanGroups.Enabled := true;
   showmessage('Congratulations, application authenticated with token ' + oauth_token);
   authenticated := true;
   Self.Close;

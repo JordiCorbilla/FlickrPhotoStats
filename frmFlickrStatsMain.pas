@@ -25,7 +25,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit frmFlickrStats;
+unit frmFlickrStatsMain;
 
 interface
 
@@ -43,12 +43,13 @@ uses
   frmFlickrContextList, flickr.tendency, diagnostics, flickr.charts, flickr.organic,
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
-  flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest;
+  flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
+  MetropolisUI.Tile;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
 
-  TfrmFlickr = class(TForm)
+  TfrmFlickrMain = class(TForm)
     IdHTTP1: TIdHTTP;
     IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
     XMLDocument1: TXMLDocument;
@@ -340,6 +341,7 @@ type
     Label36: TLabel;
     btnDeleteProfile: TButton;
     Label37: TLabel;
+    LiveTile1: TLiveTile;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -516,7 +518,7 @@ type
   end;
 
 var
-  frmFlickr: TfrmFlickr;
+  frmFlickrMain: TfrmFlickrMain;
 
 implementation
 
@@ -531,14 +533,14 @@ uses
 
 {$R *.dfm}
 
-procedure TfrmFlickr.apikeyChange(Sender: TObject);
+procedure TfrmFlickrMain.apikeyChange(Sender: TObject);
 begin
   btnSave.Enabled := true;
   if optionsEMail.flickrApiKey <> apikey.text then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.AuthenticateClick(Sender: TObject);
+procedure TfrmFlickrMain.AuthenticateClick(Sender: TObject);
 var
   OAuthUrl: string;
   response: string;
@@ -615,12 +617,12 @@ begin
   //btnGetToken.enabled := true;
 end;
 
-procedure TfrmFlickr.AuthenticateMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.AuthenticateMouseEnter(Sender: TObject);
 begin
   ShowHint('Authorize your Flickr Account', Sender);
 end;
 
-procedure TfrmFlickr.BanUnbanforgroupAddition1Click(Sender: TObject);
+procedure TfrmFlickrMain.BanUnbanforgroupAddition1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
@@ -634,7 +636,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Log(s: string);
+procedure TfrmFlickrMain.Log(s: string);
 var
   max : string;
 begin
@@ -644,7 +646,7 @@ begin
   mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
-procedure TfrmFlickr.AlbumLog(s: string);
+procedure TfrmFlickrMain.AlbumLog(s: string);
 var
   max : string;
 begin
@@ -654,7 +656,7 @@ begin
   memo2.Lines.Add(DateTimeToStr(Now) + ' ' + s);
 end;
 
-procedure TfrmFlickr.MarkGroups1Click(Sender: TObject);
+procedure TfrmFlickrMain.MarkGroups1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
@@ -683,7 +685,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.MenuItem1Click(Sender: TObject);
+procedure TfrmFlickrMain.MenuItem1Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -696,12 +698,12 @@ begin
   listPhotosUser.OnItemChecked := listPhotosItemChecked;
 end;
 
-procedure TfrmFlickr.photoIdChange(Sender: TObject);
+procedure TfrmFlickrMain.photoIdChange(Sender: TObject);
 begin
   btnAdd.Enabled := photoId.Text <> '';
 end;
 
-procedure TfrmFlickr.batchUpdateClick(Sender: TObject);
+procedure TfrmFlickrMain.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
   st : TStopWatch;
@@ -813,12 +815,12 @@ begin
   showMessage('Update has been completed');
 end;
 
-procedure TfrmFlickr.batchUpdateMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.batchUpdateMouseEnter(Sender: TObject);
 begin
   ShowHint('Update the items selected. If all items are selected, '+sLineBreak+'organic views will be updated also.', Sender);
 end;
 
-procedure TfrmFlickr.UpdateTotals(onlyLabels : boolean);
+procedure TfrmFlickrMain.UpdateTotals(onlyLabels : boolean);
 var
   i: Integer;
   Item: TListItem;
@@ -858,7 +860,7 @@ begin
   UpdateLabels();
 end;
 
-procedure TfrmFlickr.UpdateLabels();
+procedure TfrmFlickrMain.UpdateLabels();
 var
   views : integer;
 begin
@@ -891,7 +893,7 @@ begin
   Label29.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
 end;
 
-procedure TfrmFlickr.EndMarking1Click(Sender: TObject);
+procedure TfrmFlickrMain.EndMarking1Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -907,7 +909,7 @@ begin
   UpdateLabel();
 end;
 
-function TfrmFlickr.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
+function TfrmFlickrMain.ExistPhotoInList(id: string; var Item: TListItem): Boolean;
 var
   i: Integer;
   found: Boolean;
@@ -924,12 +926,12 @@ begin
   Result := found;
 end;
 
-procedure TfrmFlickr.Exit1Click(Sender: TObject);
+procedure TfrmFlickrMain.Exit1Click(Sender: TObject);
 begin
   Close;
 end;
 
-procedure TfrmFlickr.RadioButton1Click(Sender: TObject);
+procedure TfrmFlickrMain.RadioButton1Click(Sender: TObject);
 var
   comparer : integer;
 begin
@@ -954,7 +956,7 @@ begin
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.RadioButton8Click(Sender: TObject);
+procedure TfrmFlickrMain.RadioButton8Click(Sender: TObject);
 var
   comparerGroups : integer;
 begin
@@ -967,7 +969,7 @@ begin
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.RequestInformation_REST_Flickr(id: string; organicStat : IFlickrOrganicStats);
+procedure TfrmFlickrMain.RequestInformation_REST_Flickr(id: string; organicStat : IFlickrOrganicStats);
 var
   Item, itemExisting: TListItem;
   response: string;
@@ -1139,21 +1141,21 @@ begin
 
       if organicStat <> nil then
       begin
-        if photo.getTotalViews() >= views.ToInteger() then
+        if photo.getTotalViewsDay() >= views.ToInteger() then
           organicStat.negativeViews := organicStat.negativeViews + 1
         else
           organicStat.positiveViews := organicStat.positiveViews + 1;
 
-        if photo.getTotalLikes() > likes.ToInteger() then
+        if photo.getTotalLikesDay() > likes.ToInteger() then
           organicStat.lostLikes := organicStat.lostLikes + 1
-        else if photo.getTotalLikes() = likes.ToInteger() then
+        else if photo.getTotalLikesDay() = likes.ToInteger() then
           organicStat.negativeLikes := organicStat.negativeLikes + 1
         else
           organicStat.positiveLikes := organicStat.positiveLikes + 1;
 
-        if photo.getTotalComments() > comments.ToInteger() then
+        if photo.getTotalCommentsDay() > comments.ToInteger() then
           organicStat.lostComments := organicStat.lostComments + 1
-        else if photo.getTotalComments() = comments.ToInteger() then
+        else if photo.getTotalCommentsDay() = comments.ToInteger() then
           organicStat.negativeComments := organicStat.negativeComments + 1
         else
           organicStat.positiveComments := organicStat.positiveComments + 1;
@@ -1176,8 +1178,8 @@ begin
 
     if not ExistPhotoInList(id, itemExisting) then
     begin
-      Item := frmFlickr.listPhotos.Items.Add;
-      Item.Caption := frmFlickr.photoId.text;
+      Item := frmFlickrMain.listPhotos.Items.Add;
+      Item.Caption := frmFlickrMain.photoId.text;
       Item.SubItems.Add(title);
       Item.SubItems.Add(views);
       Item.SubItems.Add(likes);
@@ -1221,7 +1223,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnAboutClick(Sender: TObject);
+procedure TfrmFlickrMain.btnAboutClick(Sender: TObject);
 var
   SplashScreen: TfrmFlickrSplash;
 begin
@@ -1236,7 +1238,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnAddClick(Sender: TObject);
+procedure TfrmFlickrMain.btnAddClick(Sender: TObject);
 var
   id : string;
 begin
@@ -1259,7 +1261,7 @@ begin
     showMessage('Photo '+ id +' has been added');
 end;
 
-procedure TfrmFlickr.btnLoadClick(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadClick(Sender: TObject);
 var
   st : TStopWatch;
   comparer : TCompareType;
@@ -1364,7 +1366,7 @@ begin
   showMessage('Repository has been loaded');
 end;
 
-procedure TfrmFlickr.btnLoadDirectoryClick(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadDirectoryClick(Sender: TObject);
 var
   myFolder : string;
 begin
@@ -1372,23 +1374,23 @@ begin
   edtWorkspace.Text := myFolder;
 end;
 
-procedure TfrmFlickr.btnLoadHallClick(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadHallClick(Sender: TObject);
 begin
   LoadHallOfFame(repository);
   showMessage('Hall of Fame has been loaded');
 end;
 
-procedure TfrmFlickr.btnLoadHallMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadHallMouseEnter(Sender: TObject);
 begin
   ShowHint('Load the Hall of Fame', Sender);
 end;
 
-procedure TfrmFlickr.btnLoadMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadMouseEnter(Sender: TObject);
 begin
   ShowHint('Load flickr Repository from XML file', Sender);
 end;
 
-procedure TfrmFlickr.LoadProfiles();
+procedure TfrmFlickrMain.LoadProfiles();
 var
   i : integer;
 begin
@@ -1405,7 +1407,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.LoadHallOfFame(repository: IFlickrRepository);
+procedure TfrmFlickrMain.LoadHallOfFame(repository: IFlickrRepository);
 var
   topStats: TTopStats;
   maxValues: string;
@@ -1435,7 +1437,7 @@ begin
   topStats.Free;
 end;
 
-procedure TfrmFlickr.LoadForms(repository: IFlickrRepository);
+procedure TfrmFlickrMain.LoadForms(repository: IFlickrRepository);
 begin
   apikey.text := repository.apikey;
   secret.text := repository.secret;
@@ -1446,7 +1448,7 @@ begin
   UpdateLabel;
 end;
 
-procedure TfrmFlickr.UpdateCounts();
+procedure TfrmFlickrMain.UpdateCounts();
 var
   i: Integer;
   Item: TListItem;
@@ -1466,13 +1468,13 @@ begin
     Item := listPhotos.Items.Add;
     Item.Caption := repository.photos[i].id;
     Item.SubItems.Add(repository.photos[i].title);
-    totalViews := repository.photos[i].getTotalViews;
+    totalViews := repository.photos[i].getTotalViewsDay;
     totalViewsacc := totalViewsacc + totalViews;
     Item.SubItems.Add(IntToStr(totalViews));
-    totalLikes := repository.photos[i].getTotalLikes;
+    totalLikes := repository.photos[i].getTotalLikesDay;
     totalLikesacc := totalLikesacc + totalLikes;
     Item.SubItems.Add(IntToStr(totalLikes));
-    totalComments := repository.photos[i].getTotalComments;
+    totalComments := repository.photos[i].getTotalCommentsDay;
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
@@ -1498,7 +1500,7 @@ begin
   UpdateAnalytics();
 end;
 
-procedure TfrmFlickr.UpdateOrganics();
+procedure TfrmFlickrMain.UpdateOrganics();
 var
   SeriesPositive, SeriesNegative, SeriesLost  : TBarSeries;
   i: Integer;
@@ -1707,7 +1709,7 @@ begin
   chartFollowing.AddSeries(SeriesTendency);
 end;
 
-procedure TfrmFlickr.UpdateGlobals;
+procedure TfrmFlickrMain.UpdateGlobals;
 var
   Series, SeriesTendency: TLineSeries;
   color: TColor;
@@ -1836,7 +1838,7 @@ begin
   photoHistogram.Free;
 end;
 
-procedure TfrmFlickr.UncheckAll1Click(Sender: TObject);
+procedure TfrmFlickrMain.UncheckAll1Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -1860,7 +1862,7 @@ begin
   totalGroups.SeriesList.Clear;
 end;
 
-procedure TfrmFlickr.UncheckAll2Click(Sender: TObject);
+procedure TfrmFlickrMain.UncheckAll2Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -1873,7 +1875,7 @@ begin
   Label34.Caption := 'Number of items: ' + InttoStr(listPhotosUser.Items.Count) + ' (0) selected';
 end;
 
-procedure TfrmFlickr.UncheckAll3Click(Sender: TObject);
+procedure TfrmFlickrMain.UncheckAll3Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -1886,7 +1888,7 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(0) selected';
 end;
 
-procedure TfrmFlickr.UpdateDailyViewsChart();
+procedure TfrmFlickrMain.UpdateDailyViewsChart();
 var
   Series: TBarSeries;
   color: TColor;
@@ -1965,7 +1967,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.UpdateDailyCommentsChart;
+procedure TfrmFlickrMain.UpdateDailyCommentsChart;
 var
   Series: TBarSeries;
   color: TColor;
@@ -2038,7 +2040,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.UpdateDailyLikesChart();
+procedure TfrmFlickrMain.UpdateDailyLikesChart();
 var
   Series: TBarSeries;
   color: TColor;
@@ -2111,7 +2113,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.UpdateAnalytics;
+procedure TfrmFlickrMain.UpdateAnalytics;
 begin
   UpdateDailyViewsChart();
   UpdateDailyLikesChart();
@@ -2120,7 +2122,7 @@ begin
   UpdateMostLikedChart();
 end;
 
-procedure TfrmFlickr.UpdateMostLikedChart();
+procedure TfrmFlickrMain.UpdateMostLikedChart();
 var
   Series: TBarSeries;
   color: TColor;
@@ -2153,7 +2155,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.UpdateMostViewedChart();
+procedure TfrmFlickrMain.UpdateMostViewedChart();
 var
   Series: TBarSeries;
   color: TColor;
@@ -2186,7 +2188,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.UpdateSingleStats(id: string);
+procedure TfrmFlickrMain.UpdateSingleStats(id: string);
 var
   SeriesViews, SeriesLikes, SeriesComments: TBarSeries;
   color: TColor;
@@ -2223,7 +2225,7 @@ begin
   chartItemCommentsH.AddSeries(SeriesComments);
 end;
 
-procedure TfrmFlickr.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
+procedure TfrmFlickrMain.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
 var
   Series: TBarSeries;
   color: TColor;
@@ -2245,7 +2247,7 @@ begin
   Chart2.AddSeries(Series);
 end;
 
-procedure TfrmFlickr.btnSaveClick(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveClick(Sender: TObject);
 var
   st : TSTopwatch;
   option : Integer;
@@ -2285,12 +2287,12 @@ begin
   showMessage('Repository has been saved');
 end;
 
-procedure TfrmFlickr.btnSaveMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveMouseEnter(Sender: TObject);
 begin
   ShowHint('Save flickr Repository to XML file', Sender);
 end;
 
-procedure TfrmFlickr.Button10Click(Sender: TObject);
+procedure TfrmFlickrMain.Button10Click(Sender: TObject);
 var
   I: Integer;
   j : Integer;
@@ -2313,7 +2315,7 @@ begin
     begin
       photo := repository.photos[i];
       value := listValuesViewsAlbums.Lines[j].Replace('.','');
-      if (photo.getTotalViews() >= value.ToInteger) then
+      if (photo.getTotalViewsDay() >= value.ToInteger) then
       begin
         //Add the photo to the album
         if not photo.inAlbum(listValuesViewsAlbumsID.Lines[j]) then
@@ -2343,7 +2345,7 @@ begin
     begin
       photo := repository.photos[i];
       value := listValuesLikesAlbums.Lines[j].Replace('.','');
-      if (photo.getTotalLikes() >= value.ToInteger) then
+      if (photo.getTotalLikesDay() >= value.ToInteger) then
       begin
         //Add the photo to the album
         if not photo.inAlbum(listValuesLikesAlbumsID.Lines[j]) then
@@ -2373,12 +2375,12 @@ begin
   showMessage('Pictures have been added to the albums');
 end;
 
-procedure TfrmFlickr.Button10MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button10MouseEnter(Sender: TObject);
 begin
   ShowHint('Automatically add pictures in your albums based on views/likes', Sender);
 end;
 
-procedure TfrmFlickr.btnSaveOptionsClick(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveOptionsClick(Sender: TObject);
 var
   comparer, comparerGroups : integer;
 begin
@@ -2463,12 +2465,12 @@ begin
   FDirtyOptions := false;
 end;
 
-procedure TfrmFlickr.btnSaveOptionsMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveOptionsMouseEnter(Sender: TObject);
 begin
   ShowHint('Save Options.', Sender);
 end;
 
-procedure TfrmFlickr.LoadOptions();
+procedure TfrmFlickrMain.LoadOptions();
 var
   i : integer;
   comparer, comparerGroups : integer;
@@ -2532,18 +2534,18 @@ begin
   edtUserId.Text := optionsEmail.flickrUserId;
 end;
 
-procedure TfrmFlickr.btnLoadOptionsClick(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadOptionsClick(Sender: TObject);
 begin
   LoadOptions();
   showmessage('Options Loaded sucessfully');
 end;
 
-procedure TfrmFlickr.btnLoadOptionsMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadOptionsMouseEnter(Sender: TObject);
 begin
   ShowHint('Load Options.', Sender);
 end;
 
-procedure TfrmFlickr.Button1Click(Sender: TObject);
+procedure TfrmFlickrMain.Button1Click(Sender: TObject);
 var
   urlGroups: string;
   response: string;
@@ -2553,56 +2555,56 @@ begin
   showmessage(response);
 end;
 
-procedure TfrmFlickr.Button1MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button1MouseEnter(Sender: TObject);
 begin
   ShowHint('Test that your API key and secret are correct.', Sender);
 end;
 
-procedure TfrmFlickr.Button2Click(Sender: TObject);
+procedure TfrmFlickrMain.Button2Click(Sender: TObject);
 begin
   if SaveToExcelGroups(listGroups, 'Flickr Analytics', options.Workspace + '\FlickrAnalyticsGroups.xls') then
     showmessage('Data saved successfully!');
 end;
 
-procedure TfrmFlickr.Button2MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button2MouseEnter(Sender: TObject);
 begin
   ShowHint('Export list into excel.', Sender);
 end;
 
-procedure TfrmFlickr.Button3Click(Sender: TObject);
+procedure TfrmFlickrMain.Button3Click(Sender: TObject);
 begin
   //Show help page in the blog
   ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('http://thundaxsoftware.blogspot.co.uk/p/flickr-photo-analytics-v45.html'), nil, SW_SHOW);
 end;
 
-procedure TfrmFlickr.Button3MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button3MouseEnter(Sender: TObject);
 begin
   ShowHint('Go to online help', Sender);
 end;
 
-procedure TfrmFlickr.Button4Click(Sender: TObject);
+procedure TfrmFlickrMain.Button4Click(Sender: TObject);
 begin
   FProcessingStop := true;
   showMessage('Process has been stopped');
 end;
 
-procedure TfrmFlickr.Button4MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button4MouseEnter(Sender: TObject);
 begin
   ShowHint('Stop the update.', Sender);
 end;
 
-procedure TfrmFlickr.Button5Click(Sender: TObject);
+procedure TfrmFlickrMain.Button5Click(Sender: TObject);
 begin
   FGroupStop := true;
   showMessage('Process has been stopped');
 end;
 
-procedure TfrmFlickr.Button5MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button5MouseEnter(Sender: TObject);
 begin
   ShowHint('Stop processing of Adding, Removing or Banning.', Sender);
 end;
 
-procedure TfrmFlickr.btnAddFilterClick(Sender: TObject);
+procedure TfrmFlickrMain.btnAddFilterClick(Sender: TObject);
 var
   i: Integer;
   add : boolean;
@@ -2725,7 +2727,7 @@ begin
       end;
       if add then
       begin
-        Item := frmFlickr.listPhotos.Items.Add;
+        Item := frmFlickrMain.listPhotos.Items.Add;
         Item.Caption := repository.photos[i].Id;
         Item.SubItems.Add(repository.photos[i].Title);
         Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].views.toString);
@@ -2747,7 +2749,7 @@ begin
   label36.Visible := true;
 end;
 
-procedure TfrmFlickr.btnResetFilterClick(Sender: TObject);
+procedure TfrmFlickrMain.btnResetFilterClick(Sender: TObject);
 begin
   //Restore everything like it was.
   startMark := -1;
@@ -2774,7 +2776,7 @@ begin
   label36.Visible := false;
 end;
 
-procedure TfrmFlickr.btnFilterCancelClick(Sender: TObject);
+procedure TfrmFlickrMain.btnFilterCancelClick(Sender: TObject);
 var
   i: Integer;
   Item: TListItem;
@@ -2802,7 +2804,7 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
-procedure TfrmFlickr.btnFilterOKClick(Sender: TObject);
+procedure TfrmFlickrMain.btnFilterOKClick(Sender: TObject);
 var
   i: Integer;
   Item: TListItem;
@@ -2829,7 +2831,7 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
-procedure TfrmFlickr.btnAddPhotosClick(Sender: TObject);
+procedure TfrmFlickrMain.btnAddPhotosClick(Sender: TObject);
 var
   i: Integer;
   j: Integer;
@@ -2884,7 +2886,7 @@ begin
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     success := 0;
     option := MessageDlg('Do you want to add ' + photos.Count.ToString + ' photos into ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
-    if option <> mrOK then
+    if option = mrOK then
     begin
       for i := 0 to photos.Count - 1 do
       begin
@@ -2973,12 +2975,12 @@ begin
   showMessage('Photos have been added to the groups');
 end;
 
-procedure TfrmFlickr.btnAddPhotosMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnAddPhotosMouseEnter(Sender: TObject);
 begin
   ShowHint('Add selected pictures to selected groups.', Sender);
 end;
 
-procedure TfrmFlickr.btnBanGroupsClick(Sender: TObject);
+procedure TfrmFlickrMain.btnBanGroupsClick(Sender: TObject);
 var
   photos: TList<string>;
   groups: TList<string>;
@@ -3012,7 +3014,7 @@ begin
     total := photos.Count * groups.Count;
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     option := MessageDlg('Do you want to ban ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
-    if option <> mrOK then
+    if option = mrOK then
     begin
       for i := 0 to photos.Count - 1 do
       begin
@@ -3042,12 +3044,12 @@ begin
   showMessage('Photos have been banned from the groups');
 end;
 
-procedure TfrmFlickr.btnBanGroupsMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnBanGroupsMouseEnter(Sender: TObject);
 begin
   ShowHint('Ban selected pictures from selected groups.', Sender);
 end;
 
-procedure TfrmFlickr.btnDeleteProfileClick(Sender: TObject);
+procedure TfrmFlickrMain.btnDeleteProfileClick(Sender: TObject);
 var
   profileName: string;
   option : integer;
@@ -3056,9 +3058,7 @@ begin
     exit;
   option := mrOK;
   if chkReplaceProfile.Checked then
-  begin
     option := MessageDlg('Are you sure you want to delete the profile?', mtInformation, mbOKCancel, 0);
-  end;
   if option = mrOK then
   begin
     profileName := ComboBox1.Items[ComboBox1.ItemIndex];
@@ -3070,12 +3070,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnDeleteProfileMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnDeleteProfileMouseEnter(Sender: TObject);
 begin
   ShowHint('Delete selected profile.', Sender);
 end;
 
-procedure TfrmFlickr.btnLoadProfileClick(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadProfileClick(Sender: TObject);
 var
   profileName: string;
   profile: IProfile;
@@ -3141,12 +3141,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnLoadProfileMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnLoadProfileMouseEnter(Sender: TObject);
 begin
   ShowHint('Load a profile from the list.', Sender);
 end;
 
-procedure TfrmFlickr.btnRemovePhotoClick(Sender: TObject);
+procedure TfrmFlickrMain.btnRemovePhotoClick(Sender: TObject);
 var
   i: Integer;
   j: Integer;
@@ -3198,7 +3198,7 @@ begin
     mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
     success := 0;
     option := MessageDlg('Do you want to remove ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
-    if option <> mrOK then
+    if option = mrOK then
     begin
       for i := 0 to photos.Count - 1 do
       begin
@@ -3269,12 +3269,12 @@ begin
   showMessage('Photos have been removed from the groups');
 end;
 
-procedure TfrmFlickr.btnRemovePhotoMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnRemovePhotoMouseEnter(Sender: TObject);
 begin
   ShowHint('Remove selected pictures from selected groups.', Sender);
 end;
 
-procedure TfrmFlickr.btnSaveProfileClick(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveProfileClick(Sender: TObject);
 var
   profile: IProfile;
   i: Integer;
@@ -3346,12 +3346,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnSaveProfileMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnSaveProfileMouseEnter(Sender: TObject);
 begin
   ShowHint('Save or update a profile when ''override profile'' is not ticked', Sender);
 end;
 
-procedure TfrmFlickr.ShowHint(description : string; Sender: TObject);
+procedure TfrmFlickrMain.ShowHint(description : string; Sender: TObject);
 var
   aPoint: TPoint;
 begin
@@ -3361,7 +3361,7 @@ begin
   BalloonHint1.ShowHint((Sender as TButton).ClientToScreen(aPoint));
 end;
 
-procedure TfrmFlickr.btnShowReportClick(Sender: TObject);
+procedure TfrmFlickrMain.btnShowReportClick(Sender: TObject);
 var
   description : TStrings;
   option : integer;
@@ -3383,12 +3383,12 @@ begin
   showMessage('Report has been loaded successfully');
 end;
 
-procedure TfrmFlickr.btnShowReportMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnShowReportMouseEnter(Sender: TObject);
 begin
   ShowHint('Show HTML report.', Sender);
 end;
 
-procedure TfrmFlickr.Button8Click(Sender: TObject);
+procedure TfrmFlickrMain.Button8Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -3398,31 +3398,31 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Button9Click(Sender: TObject);
+procedure TfrmFlickrMain.Button9Click(Sender: TObject);
 begin
   getTotalAlbumsCounts();
   showMessage('Albums have been loaded');
 end;
 
-procedure TfrmFlickr.Button9MouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.Button9MouseEnter(Sender: TObject);
 begin
   ShowHint('Load the counts for your albums.', Sender);
 end;
 
-procedure TfrmFlickr.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+procedure TfrmFlickrMain.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if ValueIndex >= 0 then
     ShowMessage(Series.ValueMarkText[ValueIndex]);
 end;
 
-procedure TfrmFlickr.ChartViewsDblClick(Sender: TObject);
+procedure TfrmFlickrMain.ChartViewsDblClick(Sender: TObject);
 begin
   frmChartViewer := TfrmChartViewer.Create(nil);
   frmChartViewer.CloneChart(TChart(Sender));
   frmChartViewer.Show;
 end;
 
-procedure TfrmFlickr.CheckAll1Click(Sender: TObject);
+procedure TfrmFlickrMain.CheckAll1Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -3437,7 +3437,7 @@ begin
     listPhotos.OnItemChecked := listPhotosItemChecked;
 end;
 
-procedure TfrmFlickr.CheckAll2Click(Sender: TObject);
+procedure TfrmFlickrMain.CheckAll2Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -3450,49 +3450,49 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + '(' + InttoStr(listgroups.Items.Count) + ') selected';
 end;
 
-procedure TfrmFlickr.chkAddItemClick(Sender: TObject);
+procedure TfrmFlickrMain.chkAddItemClick(Sender: TObject);
 begin
   if options.DisableTrendDisplay <> chkAddItem.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chkPendingClick(Sender: TObject);
+procedure TfrmFlickrMain.chkPendingClick(Sender: TObject);
 begin
   if options.ConsiderPendingQueueItems <> chkPending.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chkRealTimeClick(Sender: TObject);
+procedure TfrmFlickrMain.chkRealTimeClick(Sender: TObject);
 begin
   if options.UpdateCountsRealTime <> chkRealTime.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chkRejectedClick(Sender: TObject);
+procedure TfrmFlickrMain.chkRejectedClick(Sender: TObject);
 begin
   if options.KeepRejectedListAlive <> chkRejected.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chkResponsesClick(Sender: TObject);
+procedure TfrmFlickrMain.chkResponsesClick(Sender: TObject);
 begin
   if options.DisplaySuccessfulResponses <> chkResponses.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chksortingClick(Sender: TObject);
+procedure TfrmFlickrMain.chksortingClick(Sender: TObject);
 begin
   if options.sortingEnabled <> chksorting.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.chkUpdateCollectionsClick(Sender: TObject);
+procedure TfrmFlickrMain.chkUpdateCollectionsClick(Sender: TObject);
 begin
   if options.UpdateCollections <> chkUpdateCollections.Checked then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.ClearSelection1Click(Sender: TObject);
+procedure TfrmFlickrMain.ClearSelection1Click(Sender: TObject);
 var
   i: Integer;
 begin
@@ -3508,7 +3508,7 @@ begin
   UpdateLabel();
 end;
 
-procedure TfrmFlickr.showMarksClick(Sender: TObject);
+procedure TfrmFlickrMain.showMarksClick(Sender: TObject);
 begin
   flickrChart.VisibleMarks(chartitemViews, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemLikes, showMarks.Checked);
@@ -3528,7 +3528,7 @@ begin
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.ComboBox1Change(Sender: TObject);
+procedure TfrmFlickrMain.ComboBox1Change(Sender: TObject);
 begin
   btnLoadProfile.Enabled := true;
   btnDeleteProfile.Enabled := true;
@@ -3536,7 +3536,7 @@ begin
   btnSaveProfile.Enabled := true;
 end;
 
-procedure TfrmFlickr.Delete1Click(Sender: TObject);
+procedure TfrmFlickrMain.Delete1Click(Sender: TObject);
 var
   id : string;
   buttonSelected : integer;
@@ -3555,7 +3555,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtEmailChange(Sender: TObject);
+procedure TfrmFlickrMain.edtEmailChange(Sender: TObject);
 begin
   if options.eMailAddress <> edtEmail.text then
   begin
@@ -3564,7 +3564,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtMaxChange(Sender: TObject);
+procedure TfrmFlickrMain.edtMaxChange(Sender: TObject);
 begin
   if options.MaxItemsListGlobals <> edtMax.text then
   begin
@@ -3573,7 +3573,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtMaxLogChange(Sender: TObject);
+procedure TfrmFlickrMain.edtMaxLogChange(Sender: TObject);
 begin
   if options.MaxNumberOfLinesLog <> edtMaxLog.text then
   begin
@@ -3582,12 +3582,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtProfileChange(Sender: TObject);
+procedure TfrmFlickrMain.edtProfileChange(Sender: TObject);
 begin
   btnSaveProfile.Enabled := edtProfile.Text <> '';
 end;
 
-procedure TfrmFlickr.edtUrlNameChange(Sender: TObject);
+procedure TfrmFlickrMain.edtUrlNameChange(Sender: TObject);
 begin
   if options.urlName <> edtUrlName.text then
   begin
@@ -3596,7 +3596,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtUserIdChange(Sender: TObject);
+procedure TfrmFlickrMain.edtUserIdChange(Sender: TObject);
 begin
   if optionsEMail.flickrUserId <> edtUserId.text then
   begin
@@ -3605,7 +3605,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.edtWorkspaceChange(Sender: TObject);
+procedure TfrmFlickrMain.edtWorkspaceChange(Sender: TObject);
 begin
   if options.Workspace <> edtWorkspace.text then
   begin
@@ -3614,7 +3614,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnGetGroupsClick(Sender: TObject);
+procedure TfrmFlickrMain.btnGetGroupsClick(Sender: TObject);
 var
   Item: TListItem;
   response: string;
@@ -3792,12 +3792,12 @@ begin
   showMessage('Flickr groups have been loaded');
 end;
 
-procedure TfrmFlickr.btnGetGroupsMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnGetGroupsMouseEnter(Sender: TObject);
 begin
   ShowHint('Reload the groups you belong from Flickr.', Sender);
 end;
 
-function TfrmFlickr.getTotalAlbumsCounts(): Integer;
+function TfrmFlickrMain.getTotalAlbumsCounts(): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -3898,7 +3898,7 @@ begin
   Result := totalViews;
 end;
 
-procedure TfrmFlickr.btnGetListClick(Sender: TObject);
+procedure TfrmFlickrMain.btnGetListClick(Sender: TObject);
 var
   Item: TListItem;
   response: string;
@@ -4054,12 +4054,12 @@ begin
   showMessage('Flickr photo list has been loaded');
 end;
 
-procedure TfrmFlickr.btnGetListMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnGetListMouseEnter(Sender: TObject);
 begin
   ShowHint('Get the list of photos from your Flickr stream.', Sender);
 end;
 
-procedure TfrmFlickr.btnAddItemsClick(Sender: TObject);
+procedure TfrmFlickrMain.btnAddItemsClick(Sender: TObject);
 var
   i: Integer;
   Item: TListItem;
@@ -4102,17 +4102,17 @@ begin
   showMessage('Photos have been added to the main list');
 end;
 
-procedure TfrmFlickr.btnAddItemsMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnAddItemsMouseEnter(Sender: TObject);
 begin
   ShowHint('Import your photo information into the tool.', Sender);
 end;
 
-procedure TfrmFlickr.btnAddMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnAddMouseEnter(Sender: TObject);
 begin
   ShowHint('Add pictures manually using the PhotoID', Sender);
 end;
 
-function TfrmFlickr.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
+function TfrmFlickrMain.SaveToExcel(AView: TListView; ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
 var
@@ -4183,7 +4183,7 @@ begin
   end;
 end;
 
-function TfrmFlickr.ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
+function TfrmFlickrMain.ExportGraphToExcel(viewsource : TViewType; ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
 var
@@ -4263,7 +4263,7 @@ begin
   end;
 end;
 
-function TfrmFlickr.SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
+function TfrmFlickrMain.SaveToExcelGroups(AView: TListView; ASheetName, AFileName: string): Boolean;
 const
   xlWBATWorksheet = -4167;
 var
@@ -4314,13 +4314,13 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.secretChange(Sender: TObject);
+procedure TfrmFlickrMain.secretChange(Sender: TObject);
 begin
   if optionsEMail.secret <> secret.text then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.ShowListAlbums1Click(Sender: TObject);
+procedure TfrmFlickrMain.ShowListAlbums1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
@@ -4339,7 +4339,7 @@ begin
   ListDisplay.Show;
 end;
 
-procedure TfrmFlickr.ShowListGroups1Click(Sender: TObject);
+procedure TfrmFlickrMain.ShowListGroups1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
@@ -4358,7 +4358,7 @@ begin
   ListDisplay.Show;
 end;
 
-procedure TfrmFlickr.ShowonFlickr1Click(Sender: TObject);
+procedure TfrmFlickrMain.ShowonFlickr1Click(Sender: TObject);
 var
   id : string;
 begin
@@ -4373,7 +4373,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.ShowonFlickr2Click(Sender: TObject);
+procedure TfrmFlickrMain.ShowonFlickr2Click(Sender: TObject);
 var
   id : string;
 begin
@@ -4386,7 +4386,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Splitter1Moved(Sender: TObject);
+procedure TfrmFlickrMain.Splitter1Moved(Sender: TObject);
 begin
   chartItemViews.Height := round(panel4.Height / 2);
   chartItemLikes.Height := round(panel4.Height / 2);
@@ -4397,12 +4397,12 @@ begin
   totalGroups.Width := round(panel4.Width / 4);
 end;
 
-procedure TfrmFlickr.Splitter6Moved(Sender: TObject);
+procedure TfrmFlickrMain.Splitter6Moved(Sender: TObject);
 begin
   ResizeChartsDashBoard();
 end;
 
-procedure TfrmFlickr.StartMarking1Click(Sender: TObject);
+procedure TfrmFlickrMain.StartMarking1Click(Sender: TObject);
 begin
   if listPhotos.ItemIndex <> -1 then
   begin
@@ -4411,7 +4411,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.TabSheet7Exit(Sender: TObject);
+procedure TfrmFlickrMain.TabSheet7Exit(Sender: TObject);
 var
   option : Integer;
 begin
@@ -4426,7 +4426,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnExcelClick(Sender: TObject);
+procedure TfrmFlickrMain.btnExcelClick(Sender: TObject);
 begin
   if SaveToExcel(listPhotos, 'Flickr Analytics', options.Workspace + '\FlickrAnalytics.xls') then
   begin
@@ -4436,12 +4436,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.btnExcelMouseEnter(Sender: TObject);
+procedure TfrmFlickrMain.btnExcelMouseEnter(Sender: TObject);
 begin
   ShowHint('Export the main list into Excel.', Sender);
 end;
 
-procedure TfrmFlickr.FormCreate(Sender: TObject);
+procedure TfrmFlickrMain.FormCreate(Sender: TObject);
 var
   comparer : TCompareType;
 begin
@@ -4486,14 +4486,14 @@ begin
   startMark := -1;
   endMark := -1;
   flickrChart := TFlickrChart.create;
-  frmFlickr.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
+  frmFlickrMain.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
   RepositoryLoaded := false;
   ClearAllCharts();
   FDirtyOptions := false;
   FAvoidMessage := false;
 end;
 
-procedure TfrmFlickr.ClearAllCharts();
+procedure TfrmFlickrMain.ClearAllCharts();
 begin
   chart2.RemoveAllSeries;
   ChartViews.RemoveAllSeries;
@@ -4523,7 +4523,7 @@ begin
   chartItemCommentsH.RemoveAllSeries
 end;
 
-procedure TfrmFlickr.FormDestroy(Sender: TObject);
+procedure TfrmFlickrMain.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(CheckedSeries);
   repository := nil;
@@ -4537,7 +4537,7 @@ begin
   optionsEMail := nil;
 end;
 
-procedure TfrmFlickr.ResizeChartsDashBoard();
+procedure TfrmFlickrMain.ResizeChartsDashBoard();
 begin
   //First Page
   panel14.Width := round(dashboard.Width * 0.55);
@@ -4564,7 +4564,7 @@ begin
   panel16.Width := round(panel15.Width * 0.7);
 end;
 
-procedure TfrmFlickr.FormResize(Sender: TObject);
+procedure TfrmFlickrMain.FormResize(Sender: TObject);
 begin
   //Resize additional components
   ResizeChartsDashBoard();
@@ -4582,7 +4582,7 @@ begin
   totalGroups.Width := round(panel4.Width / 4);
 end;
 
-procedure TfrmFlickr.FormShow(Sender: TObject);
+procedure TfrmFlickrMain.FormShow(Sender: TObject);
 var
   setup: TfrmSetupApp;
 begin
@@ -4606,7 +4606,7 @@ begin
   end;
 end;
 
-function TfrmFlickr.isInSeries(id: string): Boolean;
+function TfrmFlickrMain.isInSeries(id: string): Boolean;
 var
   i: Integer;
   found: Boolean;
@@ -4621,7 +4621,7 @@ begin
   Result := found;
 end;
 
-procedure TfrmFlickr.Label12DblClick(Sender: TObject);
+procedure TfrmFlickrMain.Label12DblClick(Sender: TObject);
 var
   Bitmap: TBitMap;
   prefix : string;
@@ -4635,12 +4635,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.Label2DblClick(Sender: TObject);
+procedure TfrmFlickrMain.Label2DblClick(Sender: TObject);
 begin
   batchUpdate.Enabled := true;
 end;
 
-procedure TfrmFlickr.listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TfrmFlickrMain.listGroupsCustomDrawItem(Sender: TCustomListView; Item: TListItem; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   color, Color2: TColor;
 begin
@@ -4658,12 +4658,12 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.listGroupsItemChecked(Sender: TObject; Item: TListItem);
+procedure TfrmFlickrMain.listGroupsItemChecked(Sender: TObject; Item: TListItem);
 begin
   UpdateLabelGroups();
 end;
 
-procedure TfrmFlickr.listPhotosCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
+procedure TfrmFlickrMain.listPhotosCustomDrawSubItem(Sender: TCustomListView; Item: TListItem; SubItem: Integer; State: TCustomDrawState; var DefaultDraw: Boolean);
 var
   color, Color2: TColor;
 begin
@@ -4709,7 +4709,7 @@ begin
   end;
 end;
 
-procedure TfrmFlickr.listPhotosItemChecked(Sender: TObject; Item: TListItem);
+procedure TfrmFlickrMain.listPhotosItemChecked(Sender: TObject; Item: TListItem);
 var
   id, title, views, likes, comments, LastUpdate: string;
   photo: IPhoto;
@@ -4958,40 +4958,40 @@ begin
   UpdateLabel();
 end;
 
-procedure TfrmFlickr.listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
+procedure TfrmFlickrMain.listPhotosUserItemChecked(Sender: TObject; Item: TListItem);
 begin
   UpdateLabelPhotos();
 end;
 
-procedure TfrmFlickr.listValuesLikesAlbumsChange(Sender: TObject);
+procedure TfrmFlickrMain.listValuesLikesAlbumsChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumLikes) <> TUtils.StringListToString(TStringList(listValuesLikesAlbums.Lines)) then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.listValuesLikesAlbumsIDChange(Sender: TObject);
+procedure TfrmFlickrMain.listValuesLikesAlbumsIDChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumLikesID) <> TUtils.StringListToString(TStringList(listValuesLikesAlbumsID.Lines)) then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.listValuesViewsAlbumsChange(Sender: TObject);
+procedure TfrmFlickrMain.listValuesViewsAlbumsChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumViews) <> TUtils.StringListToString(TStringList(listValuesViewsAlbums.Lines)) then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.listValuesViewsAlbumsIDChange(Sender: TObject);
+procedure TfrmFlickrMain.listValuesViewsAlbumsIDChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumViewsID) <> TUtils.StringListToString(TStringList(listValuesViewsAlbumsID.Lines)) then
     FDirtyOptions := true;
 end;
 
-procedure TfrmFlickr.UpdateLabel();
+procedure TfrmFlickrMain.UpdateLabel();
 var
   i : integer;
   count : integer;
@@ -5005,7 +5005,7 @@ begin
   Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
-procedure TfrmFlickr.UpdateLabelGroups();
+procedure TfrmFlickrMain.UpdateLabelGroups();
 var
   i: Integer;
   count : integer;
@@ -5019,7 +5019,7 @@ begin
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (' + count.ToString + ') selected';
 end;
 
-procedure TfrmFlickr.UpdateLabelPhotos();
+procedure TfrmFlickrMain.UpdateLabelPhotos();
 var
   i: Integer;
   count : integer;

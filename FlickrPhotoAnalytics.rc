@@ -1,0 +1,4 @@
+#include "FlickrPhotoAnalyticsCommon.rc"
+#define FileDescription ProductName "Flickr Photo Analytics"
+#define InternalName "FlickrPhotoAnalytics"
+#define OriginalFilename "FlickrPhotoAnalytics.exe"
