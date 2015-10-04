@@ -74,6 +74,8 @@ type
     procedure SetAlbumLikesID(const Value: TStringList);
     procedure SetWorkspace(const Value: string);
     function GetWorkspace() : string;
+    procedure SetShowHints(const Value: boolean);
+    function GetShowHints() : boolean;
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
     property ConsiderPendingQueueItems : boolean read GetConsiderPendingQueueItems write SetConsiderPendingQueueItems;
@@ -94,6 +96,7 @@ type
     property AlbumViewsID : TStringList read GetAlbumViewsID write SetAlbumViewsID;
     property AlbumLikesID : TStringList read GetAlbumLikesID write SetAlbumLikesID;
     property Workspace : string read GetWorkspace write SetWorkspace;
+    property ShowHints : boolean read GetShowHints write SetShowHints;
     function Load() : IOptions;
     procedure Save();
   End;
@@ -120,6 +123,7 @@ type
     FUpdateCollections: boolean;
     FDisableTrendDisplay: boolean;
     FWorkspace: string;
+    FShowHints: boolean;
     procedure SetConsiderPendingQueueItems(const Value: boolean);
     procedure SeteMailAddress(const Value: string);
     procedure SetMaxItems(const Value: integer);
@@ -160,6 +164,8 @@ type
     function GetDisableTrendDisplay() : boolean;
     procedure SetWorkspace(const Value: string);
     function GetWorkspace() : string;
+    procedure SetShowHints(const Value: boolean);
+    function GetShowHints() : boolean;
   public
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
@@ -181,6 +187,7 @@ type
     property UpdateCollections: boolean read GetUpdateCollections write SetUpdateCollections;
     property DisableTrendDisplay: boolean read GetDisableTrendDisplay write SetDisableTrendDisplay;
     property Workspace : string read GetWorkspace write SetWorkspace;
+    property ShowHints : boolean read GetShowHints write SetShowHints;
     class function New(): IOptions;
     function Load() : IOptions;
     procedure Save();
@@ -276,6 +283,11 @@ begin
   result := FMaxNumberOfLinesLog;
 end;
 
+function TOptions.GetShowHints: boolean;
+begin
+  result := FShowHints;
+end;
+
 function TOptions.GetShowMarksInGraphs: boolean;
 begin
   result := FShowMarksInGraphs;
@@ -333,6 +345,7 @@ begin
     FMaxNumberOfLinesLog := inifile.ReadString('System', 'MaxNumberOfLinesLog', '10000');
     FeMailAddress := inifile.ReadString('System', 'eMailAddress', '');
     FSortingEnabled := inifile.ReadBool('System', 'SortingEnabled', true);
+    FShowHints := inifile.ReadBool('System', 'ShowHint', false);
 
     FKeepRejectedListAlive := inifile.ReadBool('System', 'KeepRejectedListAlive', true);
     FDisplaySuccessfulResponses := inifile.ReadBool('System', 'DisplaySuccessfulResponses', true);
@@ -391,6 +404,7 @@ begin
     inifile.WriteString('System', 'MaxNumberOfLinesLog', FMaxNumberOfLinesLog);
     inifile.WriteString('System', 'eMailAddress', FeMailAddress);
     inifile.WriteBool('System', 'SortingEnabled', FSortingEnabled);
+    inifile.WriteBool('System', 'ShowHint', FShowHints);
 
     inifile.WriteBool('System', 'KeepRejectedListAlive', FKeepRejectedListAlive);
     inifile.WriteBool('System', 'DisplaySuccessfulResponses', FDisplaySuccessfulResponses);
@@ -492,6 +506,11 @@ end;
 procedure TOptions.SetMaxNumberOfLinesLog(const Value: string);
 begin
   FMaxNumberOfLinesLog := Value;
+end;
+
+procedure TOptions.SetShowHints(const Value: boolean);
+begin
+  FShowHints := Value;
 end;
 
 procedure TOptions.SetShowMarksInGraphs(const Value: boolean);

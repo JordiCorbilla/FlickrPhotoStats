@@ -2,16 +2,18 @@ program FlickrPhotoAnalyticsMetropolisUI;
 
 uses
   FMX.Forms,
-  GridView1 in 'GridView1.pas' {GridViewForm},
-  DetailView1 in 'DetailView1.pas' {DetailViewForm};
+  frmFlickrMainTilesGrid in 'frmFlickrMainTilesGrid.pas' {frmMainGridTile},
+  DetailView1 in 'DetailView1.pas' {DetailViewForm},
+  frmDashboardTileUI in 'frmDashboardTileUI.pas' {Form1};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TGridViewForm, GridViewForm);
+  Application.CreateForm(TfrmMainGridTile, frmMainGridTile);
   Application.CreateForm(TDetailViewForm, DetailViewForm);
-  Application.RegisterFormFamily('Main', [TGridViewForm]);
+  Application.CreateForm(TForm1, Form1);
+  Application.RegisterFormFamily('Main', [TfrmMainGridTile]);
   Application.RegisterFormFamily('DetailView', [TDetailViewForm]);
   Application.Run;
 end.

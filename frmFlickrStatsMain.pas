@@ -342,6 +342,7 @@ type
     btnDeleteProfile: TButton;
     Label37: TLabel;
     LiveTile1: TLiveTile;
+    chkShowButtonHint: TCheckBox;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -460,6 +461,7 @@ type
     procedure btnSaveOptionsMouseEnter(Sender: TObject);
     procedure Button1MouseEnter(Sender: TObject);
     procedure btnShowReportMouseEnter(Sender: TObject);
+    procedure chkShowButtonHintClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -2234,16 +2236,34 @@ begin
     Chart2.RemoveAllSeries;
 
   Series := flickrChart.GetNewBarSeries(Chart2, true);
+
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalViews, 'Views', color);
+
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalLikes, 'Likes', color);
+
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalComments, 'Comments', color);
+
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalPhotos, 'Photos', color);
+
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalSpreadGroups, 'Group spread', color);
+
+  color := RGB(Random(255), Random(255), Random(255));
+  Series.AddBar(totalViews / totalPhotos, 'Views per photo', color);
+
+  color := RGB(Random(255), Random(255), Random(255));
+  Series.AddBar(totalLikes / totalPhotos, 'Likes per photo', color);
+
+  color := RGB(Random(255), Random(255), Random(255));
+  Series.AddBar(totalComments / totalPhotos, 'Comments per photo', color);
+
+  color := RGB(Random(255), Random(255), Random(255));
+  Series.AddBar(totalSpreadGroups / totalPhotos, 'Groups per photo', color);
+
   Chart2.AddSeries(Series);
 end;
 
@@ -2416,6 +2436,7 @@ begin
   options.UpdateCollections := chkUpdateCollections.Checked;
   options.DisableTrendDisplay := chkAddItem.Checked;
   options.sortingEnabled := chksorting.Checked;
+  options.ShowHints := chkShowButtonHint.Checked;
 
   options.workspace := edtWorkspace.Text;
 
@@ -2488,6 +2509,7 @@ begin
   chkUpdateCollections.Checked := options.UpdateCollections;
   chkAddItem.Checked := options.DisableTrendDisplay;
   chksorting.Checked := options.sortingEnabled;
+  chkShowButtonHint.Checked := options.showHints;
 
   edtMaxLog.Text := options.MaxNumberOfLinesLog;
   edtEmail.Text := options.eMailAddress;
@@ -3355,10 +3377,13 @@ procedure TfrmFlickrMain.ShowHint(description : string; Sender: TObject);
 var
   aPoint: TPoint;
 begin
-  BalloonHint1.Description := description;
-  aPoint.X := (Sender as TButton).width-5;
-  aPoint.Y := (Sender as TButton).height-5;
-  BalloonHint1.ShowHint((Sender as TButton).ClientToScreen(aPoint));
+  if chkShowButtonHint.Checked then
+  begin
+    BalloonHint1.Description := description;
+    aPoint.X := (Sender as TButton).width-5;
+    aPoint.Y := (Sender as TButton).height-5;
+    BalloonHint1.ShowHint((Sender as TButton).ClientToScreen(aPoint));
+  end;
 end;
 
 procedure TfrmFlickrMain.btnShowReportClick(Sender: TObject);
@@ -3459,37 +3484,64 @@ end;
 procedure TfrmFlickrMain.chkPendingClick(Sender: TObject);
 begin
   if options.ConsiderPendingQueueItems <> chkPending.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chkPending has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.chkRealTimeClick(Sender: TObject);
 begin
   if options.UpdateCountsRealTime <> chkRealTime.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chkRealTime has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.chkRejectedClick(Sender: TObject);
 begin
   if options.KeepRejectedListAlive <> chkRejected.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chkRejected has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.chkResponsesClick(Sender: TObject);
 begin
   if options.DisplaySuccessfulResponses <> chkResponses.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chkResponses has changed');
+  end;
+end;
+
+procedure TfrmFlickrMain.chkShowButtonHintClick(Sender: TObject);
+begin
+  if options.showHints <> chkShowButtonHint.Checked then
+  begin
+    FDirtyOptions := true;
+    Log('chkShowButtonHint has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.chksortingClick(Sender: TObject);
 begin
   if options.sortingEnabled <> chksorting.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chksorting has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.chkUpdateCollectionsClick(Sender: TObject);
 begin
   if options.UpdateCollections <> chkUpdateCollections.Checked then
+  begin
     FDirtyOptions := true;
+    Log('chkUpdateCollections has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.ClearSelection1Click(Sender: TObject);
@@ -3525,7 +3577,10 @@ begin
   flickrChart.VisibleMarks(dailyViews, showMarks.Checked);
   flickrChart.VisibleMarks(dailyLikes, showMarks.Checked);
   if options.ShowMarksInGraphs <> showMarks.Checked then
+  begin
     FDirtyOptions := true;
+    Log('showMarks has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.ComboBox1Change(Sender: TObject);
@@ -4967,28 +5022,40 @@ procedure TfrmFlickrMain.listValuesLikesAlbumsChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumLikes) <> TUtils.StringListToString(TStringList(listValuesLikesAlbums.Lines)) then
+  begin
     FDirtyOptions := true;
+    Log('listValuesLikesAlbums has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.listValuesLikesAlbumsIDChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumLikesID) <> TUtils.StringListToString(TStringList(listValuesLikesAlbumsID.Lines)) then
+  begin
     FDirtyOptions := true;
+    Log('listValuesLikesAlbumsID has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.listValuesViewsAlbumsChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumViews) <> TUtils.StringListToString(TStringList(listValuesViewsAlbums.Lines)) then
+  begin
     FDirtyOptions := true;
+    Log('listValuesViewsAlbums has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.listValuesViewsAlbumsIDChange(Sender: TObject);
 begin
   if not assigned(options) then exit;
   if TUtils.StringListToString(options.AlbumViewsID) <> TUtils.StringListToString(TStringList(listValuesViewsAlbumsID.Lines)) then
+  begin
     FDirtyOptions := true;
+    Log('listValuesViewsAlbumsID has changed');
+  end;
 end;
 
 procedure TfrmFlickrMain.UpdateLabel();

@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{9F9AB439-972E-4E72-9BDB-FD1BAE0038D8}</ProjectGuid>
         <ProjectVersion>15.4</ProjectVersion>
@@ -84,12 +84,16 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="GridView1.pas">
-            <Form>GridViewForm</Form>
+        <DCCReference Include="frmFlickrMainTilesGrid.pas">
+            <Form>frmMainGridTile</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="DetailView1.pas">
             <Form>DetailViewForm</Form>
+            <FormType>fmx</FormType>
+        </DCCReference>
+        <DCCReference Include="frmDashboardTileUI.pas">
+            <Form>Form1</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
