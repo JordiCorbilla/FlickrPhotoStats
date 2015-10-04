@@ -130,7 +130,7 @@ type
     tabStatus: TTabSheet;
     Panel10: TPanel;
     mStatus: TMemo;
-    Chart2: TChart;
+    ChartGeneral: TChart;
     Series4: TBarSeries;
     Panel14: TPanel;
     Splitter6: TSplitter;
@@ -1581,9 +1581,6 @@ begin
   SeriesTendency := flickrChart.GetNewLineSeries(organicLikes);
   color := clYellow;
 
-  SeriesTendency2 := flickrChart.GetNewLineSeries(organicLikes);
-  color := clRed;
-
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
   SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', color);
@@ -1591,6 +1588,9 @@ begin
   SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
 
   organicLikes.AddSeries(SeriesTendency);
+
+  SeriesTendency2 := flickrChart.GetNewLineSeries(organicLikes);
+  color := clRed;
 
   //Adding only first and last item
   viewsTendency := NegativeTendency.tendencyResult(0);
@@ -2247,10 +2247,10 @@ var
   Series: TBarSeries;
   color: TColor;
 begin
-  if Chart2.SeriesList.Count > 0 then
-    Chart2.RemoveAllSeries;
+  if ChartGeneral.SeriesList.Count > 0 then
+    ChartGeneral.RemoveAllSeries;
 
-  Series := flickrChart.GetNewBarSeries(Chart2, true);
+  Series := flickrChart.GetNewBarSeries(ChartGeneral, true);
 
   color := RGB(Random(255), Random(255), Random(255));
   Series.AddBar(totalViews, 'Views', color);
@@ -2268,18 +2268,18 @@ begin
   Series.AddBar(totalSpreadGroups, 'Group spread', color);
 
   color := RGB(Random(255), Random(255), Random(255));
-  Series.AddBar(totalViews / totalPhotos, 'Views per photo', color);
+  Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', color);
 
   color := RGB(Random(255), Random(255), Random(255));
-  Series.AddBar(totalLikes / totalPhotos, 'Likes per photo', color);
+  Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', color);
 
   color := RGB(Random(255), Random(255), Random(255));
-  Series.AddBar(totalComments / totalPhotos, 'Comments per photo', color);
+  Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', color);
 
   color := RGB(Random(255), Random(255), Random(255));
-  Series.AddBar(totalSpreadGroups / totalPhotos, 'Groups per photo', color);
+  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', color);
 
-  Chart2.AddSeries(Series);
+  ChartGeneral.AddSeries(Series);
 end;
 
 procedure TfrmFlickrMain.btnSaveClick(Sender: TObject);
@@ -3584,7 +3584,7 @@ begin
   flickrChart.VisibleMarks(chartitemViewsH, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemLikesH, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemCommentsH, showMarks.Checked);
-  flickrChart.VisibleMarks(Chart2, showMarks.Checked);
+  flickrChart.VisibleMarks(ChartGeneral, showMarks.Checked);
   flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
   flickrChart.VisibleMarks(totalPhotos, showMarks.Checked);
   flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
@@ -4565,7 +4565,7 @@ end;
 
 procedure TfrmFlickrMain.ClearAllCharts();
 begin
-  chart2.RemoveAllSeries;
+  ChartGeneral.RemoveAllSeries;
   ChartViews.RemoveAllSeries;
   totalPhotos.RemoveAllSeries;
   ChartLikes.RemoveAllSeries;
