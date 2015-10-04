@@ -1507,8 +1507,9 @@ var
   SeriesPositive, SeriesNegative, SeriesLost  : TBarSeries;
   i: Integer;
   Series : TAreaSeries;
-  SeriesTendency: TLineSeries;
+  SeriesTendency, SeriesTendency2: TLineSeries;
   chartTendency : ITendency;
+  NegativeTendency : ITendency;
   viewsTendency : integer;
 begin
   if organicViews.SeriesList.Count > 0 then
@@ -1564,18 +1565,24 @@ begin
   SeriesLost.BarWidthPercent := 25;
 
   chartTendency := TTendency.Create;
+  NegativeTendency := TTendency.Create;
 
   for i := 0 to organic.Globals.Count-1 do
   begin
     chartTendency.AddXY(i, Round((organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes)));
     SeriesPositive.AddXY(organic.Globals[i].date, (organic.Globals[i].positiveLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clgreen);
     //SeriesNegative.AddXY(organic.Globals[i].date, (organic.Globals[i].negativeLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clred);
+    NegativeTendency.AddXY(i, Round((organic.Globals[i]. lostLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes)));
     SeriesLost.AddXY(organic.Globals[i].date, (organic.Globals[i]. lostLikes * 100)/ (organic.Globals[i].positiveLikes + organic.Globals[i].negativeLikes + organic.Globals[i].lostLikes), '', clyellow);
   end;
 
   chartTendency.Calculate;
+  NegativeTendency.Calculate;
   SeriesTendency := flickrChart.GetNewLineSeries(organicLikes);
   color := clYellow;
+
+  SeriesTendency2 := flickrChart.GetNewLineSeries(organicLikes);
+  color := clRed;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
@@ -1584,6 +1591,14 @@ begin
   SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
 
   organicLikes.AddSeries(SeriesTendency);
+
+  //Adding only first and last item
+  viewsTendency := NegativeTendency.tendencyResult(0);
+  SeriesTendency2.AddXY(organic.Globals[0].date, viewsTendency, '', color);
+  viewsTendency := NegativeTendency.tendencyResult(organic.Globals.Count-1);
+  SeriesTendency2.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
+
+  organicLikes.AddSeries(SeriesTendency2);
 
   if organicComments.SeriesList.Count > 0 then
     organicComments.RemoveAllSeries;
