@@ -1,0 +1,36 @@
+#define VERSIONINFO_1 1
+
+VERSIONINFO_1 VERSIONINFO
+FILEVERSION 4, 6, 0, 1
+PRODUCTVERSION 4, 6, 0, 1
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+{
+ BLOCK "StringFileInfo"
+ {
+  BLOCK "040904E4"
+  {
+   VALUE "CompanyName", "Jordi Corbilla\000\000"
+   VALUE "FileDescription", FileDescription "\000"
+   VALUE "FileVersion", "4.6.0.1\000\000"
+   VALUE "InternalName", InternalName "\000"
+   VALUE "LegalCopyright", "Jordi Corbilla 2015\000\000"
+   VALUE "LegalTrademarks", "\000\000"
+   VALUE "OriginalFilename", OriginalFilename "\000"
+   VALUE "ProductName", ProductName "\000"
+   VALUE "ProductVersion", "4.6.0.1\000"
+   VALUE "Comments", "\000"
+   VALUE "SpecialBuild", "\000"
+   VALUE "Developers", "Jordi Corbilla\000"
+   VALUE "WebSite", "http://thundaxsoftware.blogspot.co.uk/\000"
+  }
+
+ }
+
+ BLOCK "VarFileInfo"
+ {
+  VALUE "Translation", 0x409, 1252
+ }
+
+}
+MAINICON ICON FlickrPhotoStats_Icon.ico

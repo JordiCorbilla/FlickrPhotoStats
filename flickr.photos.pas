@@ -69,10 +69,10 @@ type
     procedure SetTotalLikes(const Value: integer);
     procedure SetTotalViews(const Value: integer);
     function GetTotalAlbums() : integer;
-    function GetTotalComments() : integer;
+//    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
-    function GetTotalLikes() : integer;
-    function GetTotalViews() : integer;
+//    function GetTotalLikes() : integer;
+//    function GetTotalViews() : integer;
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
@@ -85,9 +85,9 @@ type
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     property Folder : string read GetFolder write SetFolder;
-    property TotalViews : integer read GetTotalViews write SetTotalViews;
-    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
-    property TotalComments : integer read GetTotalComments write SetTotalComments;
+//    property TotalViews : integer read GetTotalViews write SetTotalViews;
+//    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
+//    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     procedure Load(iNode: IXMLNode);
@@ -150,10 +150,10 @@ type
     procedure SetTotalLikes(const Value: integer);
     procedure SetTotalViews(const Value: integer);
     function GetTotalAlbums() : integer;
-    function GetTotalComments() : integer;
+//    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
-    function GetTotalLikes() : integer;
-    function GetTotalViews() : integer;
+//    function GetTotalLikes() : integer;
+//    function GetTotalViews() : integer;
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -167,9 +167,9 @@ type
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     property Folder : string read GetFolder write SetFolder;
-    property TotalViews : integer read GetTotalViews write SetTotalViews;
-    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
-    property TotalComments : integer read GetTotalComments write SetTotalComments;
+//    property TotalViews : integer read GetTotalViews write SetTotalViews;
+//    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
+//    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     function AddStats(stat: IStat): boolean;
@@ -355,10 +355,10 @@ begin
   result := FTotalAlbums;
 end;
 
-function TPhoto.GetTotalComments: integer;
-begin
-  result := FTotalComments;
-end;
+//function TPhoto.GetTotalComments: integer;
+//begin
+//  result := FTotalComments;
+//end;
 
 function TPhoto.getTotalCommentsDay(incday : integer = 0): Integer;
 begin
@@ -373,10 +373,10 @@ begin
   result := FTotalGroups;
 end;
 
-function TPhoto.GetTotalLikes: integer;
-begin
-  result := FTotalLikes;
-end;
+//function TPhoto.GetTotalLikes: integer;
+//begin
+//  result := FTotalLikes;
+//end;
 
 function TPhoto.getTotalLikesDay(incday : integer = 0): Integer;
 begin
@@ -386,10 +386,10 @@ begin
     result := 0;
 end;
 
-function TPhoto.GetTotalViews: integer;
-begin
-  result := FTotalViews;
-end;
+//function TPhoto.GetTotalViews: integer;
+//begin
+//  result := FTotalViews;
+//end;
 
 function TPhoto.getTotalViewsDay(incday : integer = 0): Integer;
 begin

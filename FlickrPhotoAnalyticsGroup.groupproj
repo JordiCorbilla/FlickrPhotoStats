@@ -18,6 +18,9 @@
         <Projects Include="FlickrPhotoAnalyticsUI.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="FlickrPhotoAnalyticsMetropolisUI.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="FlickrPhotoAnalyticsUI:Make">
         <MSBuild Projects="FlickrPhotoAnalyticsUI.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FlickrPhotoAnalyticsMetropolisUI">
+        <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsMetropolisUI:Clean">
+        <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsMetropolisUI:Make">
+        <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsUI"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsUI;FlickrPhotoAnalyticsMetropolisUI"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsUI:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsUI:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsUI:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsUI:Make;FlickrPhotoAnalyticsMetropolisUI:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

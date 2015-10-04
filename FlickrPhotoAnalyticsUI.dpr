@@ -5,7 +5,8 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   frmFlickrMainTiles in 'frmFlickrMainTiles.pas' {frmMainTiles},
-  SplitItemDetail1 in 'SplitItemDetail1.pas' {DetailForm};
+  SplitItemDetail1 in 'SplitItemDetail1.pas' {DetailForm},
+  frmDashboardTile in 'frmDashboardTile.pas' {frmDashboard};
 
 {$R *.res}
 
@@ -17,5 +18,6 @@ begin
   Application.Title := 'Metropolis UI Application';
   Application.CreateForm(TfrmMainTiles, frmMainTiles);
   Application.CreateForm(TDetailForm, DetailForm);
+  Application.CreateForm(TfrmDashboard, frmDashboard);
   Application.Run;
 end.

@@ -235,7 +235,7 @@ begin
     if repository.ExistPhoto(id, existing) then
     begin
       photo := existing;
-      if photo.getTotalViews() >= views.ToInteger() then
+      if photo.getTotalViewsDay() >= views.ToInteger() then
       begin
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_INTENSITY);
         organicStat.negativeViews := organicStat.negativeViews + 1;
@@ -245,11 +245,11 @@ begin
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
         organicStat.positiveViews := organicStat.positiveViews + 1;
       end;
-      if photo.getTotalLikes() > likes.ToInteger() then
+      if photo.getTotalLikesDay() > likes.ToInteger() then
       begin
         organicStat.lostLikes := organicStat.lostLikes + 1;
       end
-      else if photo.getTotalLikes() = likes.ToInteger() then
+      else if photo.getTotalLikesDay() = likes.ToInteger() then
       begin
         organicStat.negativeLikes := organicStat.negativeLikes + 1;
       end
@@ -257,11 +257,11 @@ begin
       begin
         organicStat.positiveLikes := organicStat.positiveLikes + 1;
       end;
-      if photo.getTotalComments() > comments.ToInteger() then
+      if photo.getTotalCommentsDay() > comments.ToInteger() then
       begin
         organicStat.lostComments := organicStat.lostComments + 1;
       end
-      else if photo.getTotalComments() = comments.ToInteger() then
+      else if photo.getTotalCommentsDay() = comments.ToInteger() then
       begin
         organicStat.negativeComments := organicStat.negativeComments + 1;
       end
@@ -274,8 +274,8 @@ begin
 
       if verbosity then
       begin
-        difference := views.ToInteger() - photo.getTotalViews();
-        WriteLn('Updating : ' + title + ' previous: '+ photo.getTotalViews().ToString() + ' views: ' + views + ' difference: '+ difference.ToString());
+        difference := views.ToInteger() - photo.getTotalViewsDay();
+        WriteLn('Updating : ' + title + ' previous: '+ photo.getTotalViewsDay().ToString() + ' views: ' + views + ' difference: '+ difference.ToString());
       end;
       photo.Title := title; //replace the title as it changes
       photo.Tags := tags;

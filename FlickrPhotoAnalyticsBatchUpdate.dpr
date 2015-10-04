@@ -28,7 +28,6 @@
 program FlickrPhotoAnalyticsBatchUpdate;
 
 {$APPTYPE CONSOLE}
-
 {$R *.res}
 
 uses
@@ -52,66 +51,83 @@ uses
 var
   repository: IFlickrRepository;
   globalsRepository: IFlickrGlobals;
-  st : TStopWatch;
-  apikey : string;
-  secret : string;
-  userId : string;
+  st: TStopWatch;
+  apikey: string;
+  secret: string;
+  userId: string;
   i: Integer;
   totalViews, totalViewsacc: Integer;
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
   stat: IStat;
-  verbosity, loadrepository, loadglobals, loademail : boolean;
-  organic : IFlickrOrganic;
-  organicStat : IFlickrOrganicStats;
-  options : IOptions;
-  description : TStrings;
-  totalContacts : integer;
+  verbosity, loadrepository, loadglobals, loademail: boolean;
+  organic: IFlickrOrganic;
+  organicStat: IFlickrOrganicStats;
+  options: IOptions;
+  description: TStrings;
+  totalContacts: Integer;
+
 begin
   try
     TLogger.LogFile('Starting Batch Update');
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');
-    WriteLn('# version '+TUtils.GetVersion+' @author: Jordi Corbilla         #');
+    WriteLn('# version ' + TUtils.GetVersion + ' @author: Jordi Corbilla         #');
     WriteLn('###################################################');
     verbosity := false;
     if (paramstr(1) = '-v') or (paramstr(2) = '-v') or (paramstr(3) = '-v') or (paramstr(4) = '-v') then
+    begin
+      WriteLn('verbosity argument detected');
+      TLogger.LogFile('verbosity argument detected');
       verbosity := true;
+    end;
 
     loadrepository := false;
     if (paramstr(1) = '-r') or (paramstr(2) = '-r') or (paramstr(3) = '-r') or (paramstr(4) = '-r') then
+    begin
+      WriteLn('loadrepository argument detected');
+      TLogger.LogFile('loadrepository argument detected');
       loadrepository := true;
+    end;
 
     loadglobals := false;
     if (paramstr(1) = '-g') or (paramstr(2) = '-g') or (paramstr(3) = '-g') or (paramstr(4) = '-g') then
+    begin
+      WriteLn('loadglobals argument detected');
+      TLogger.LogFile('loadglobals argument detected');
       loadglobals := true;
+    end;
 
     loademail := false;
     if (paramstr(1) = '-e') or (paramstr(2) = '-e') or (paramstr(3) = '-e') or (paramstr(4) = '-e') then
+    begin
+      WriteLn('loademail argument detected');
+      TLogger.LogFile('loademail argument detected');
       loademail := true;
+    end;
 
-    //Load repository
+    // Load repository
     WriteLn('Loading Repository');
     repository := TFlickrRepository.Create();
     options := TOptions.New().Load;
     try
       st := TStopWatch.Create;
       st.Start;
-      repository.load(options.Workspace + '\flickrRepository.xml');
+      repository.Load(options.Workspace + '\flickrRepository.xml');
       st.Stop;
       WriteLn('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       TLogger.LogFile('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       if loadrepository then
       begin
-        //Use parallel looping
+        // Use parallel looping
         st := TStopWatch.Create;
         st.Start;
-        apikey := repository.ApiKey;
-        secret := repository.Secret;
-        userId := repository.UserId;
+        apikey := repository.apikey;
+        secret := repository.secret;
+        userId := repository.userId;
 
-        //Organic Growth checks
+        // Organic Growth checks
         organic := TFlickrOrganic.Create;
         try
           st := TStopWatch.Create;
@@ -123,29 +139,30 @@ begin
           TLogger.LogFile('Loaded organic repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
           st.Stop;
 
-          organicStat := TFlickrOrganicStats.create();
+          organicStat := TFlickrOrganicStats.Create();
           st := TStopWatch.Create;
           try
             st.Start;
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin
-                TRepositoryRest.updatePhoto(repository, organicstat, apikey, repository.photos[index].id, verbosity);
+                TRepositoryRest.updatePhoto(repository, organicStat, apikey, repository.photos[index].id, verbosity);
               end);
             st.Stop;
           finally
             organicStat.executionTime := st.ElapsedMilliseconds;
-            organicStat.date := Date;
+            organicStat.date := date;
             try
               try
                 totalContacts := TRepositoryRest.getNumberOfContacts;
-              except on E: Exception do
-                TLogger.LogFile('Exception reading contacts: ' + e.message);
+              except
+                on E: Exception do
+                  TLogger.LogFile('Exception reading contacts: ' + E.message);
               end;
-              if (totalContacts < 0) and (organic.Globals.Count > 0) then
-                totalContacts := organic.Globals[organic.Globals.Count-1].following;
+              if (totalContacts < 0) and (organic.globals.count > 0) then
+                totalContacts := organic.globals[organic.globals.count - 1].following;
             finally
-              organicStat.Following := totalContacts;
+              organicStat.following := totalContacts;
             end;
             organic.AddGlobals(organicStat);
           end;
@@ -166,7 +183,7 @@ begin
 
         st := TStopWatch.Create;
         st.Start;
-        repository.save(apikey, secret, userid, options.Workspace + '\flickrRepository.xml');
+        repository.save(apikey, secret, userId, options.Workspace + '\flickrRepository.xml');
         st.Stop;
         WriteLn('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Saving repository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -175,36 +192,36 @@ begin
 
     end;
 
-    if loadglobals then
-    begin
-      globalsRepository := TFlickrGlobals.Create();
-      try
-        st := TStopWatch.Create;
-        st.Start;
-        globalsRepository.load(options.Workspace + '\flickrRepositoryGlobal.xml');
-        st.Stop;
-        WriteLn('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
-        TLogger.LogFile('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+    globalsRepository := TFlickrGlobals.Create();
+    try
+      st := TStopWatch.Create;
+      st.Start;
+      globalsRepository.Load(options.Workspace + '\flickrRepositoryGlobal.xml');
+      st.Stop;
+      WriteLn('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      TLogger.LogFile('Loaded repository flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      if loadglobals then
+      begin
         totalViewsacc := 0;
         totalLikesacc := 0;
         totalCommentsacc := 0;
         st := TStopWatch.Create;
         st.Start;
-        for i := 0 to repository.photos.Count - 1 do
+        for i := 0 to repository.photos.count - 1 do
         begin
-          totalViews := repository.photos[i].getTotalViews();
+          totalViews := repository.photos[i].getTotalViewsDay();
           totalViewsacc := totalViewsacc + totalViews;
 
-          totalLikes := repository.photos[i].getTotalLikes();
+          totalLikes := repository.photos[i].getTotalLikesDay();
           totalLikesacc := totalLikesacc + totalLikes;
 
-          totalComments := repository.photos[i].getTotalComments();
+          totalComments := repository.photos[i].getTotalCommentsDay();
           totalCommentsacc := totalCommentsacc + totalComments;
         end;
 
-        totalViewsacc := totalViewsacc + TRepositoryRest.getTotalAlbumsCounts(apikey, userid, verbosity);
+        totalViewsacc := totalViewsacc + TRepositoryRest.getTotalAlbumsCounts(apikey, userId, verbosity);
 
-        stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
+        stat := TStat.Create(date, totalViewsacc, totalLikesacc, totalCommentsacc);
         globalsRepository.AddGlobals(stat);
         st.Stop;
         WriteLn('Update flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -216,23 +233,30 @@ begin
         st.Stop;
         WriteLn('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Save flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
-      finally
-        //repository := nil;
       end;
+    finally
+      // repository := nil;
     end;
 
-    //Send eMail
+    // Send eMail
     description := nil;
     if loademail then
     begin
       try
+        WriteLn('Sending eMail');
+        TLogger.LogFile('Sending eMail');
+        st := TStopWatch.Create;
+        st.Start;
         description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
         TFlickrEmail.SendHTML(options.eMailAddress, description);
+        st.Stop;
+        WriteLn('Sending eMail: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+        TLogger.LogFile('Sending eMail: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       except
         on E: Exception do
         begin
-          TLogger.LogFile('Exception Sending eMail' + E.Message);
-          Writeln(E.ClassName, ': ', E.Message);
+          TLogger.LogFile('Exception Sending eMail' + E.message);
+          WriteLn(E.ClassName, ': ', E.message);
         end;
       end;
     end;
@@ -245,8 +269,9 @@ begin
   except
     on E: Exception do
     begin
-      TLogger.LogFile('Exception Batch Update' + E.Message);
-      Writeln(E.ClassName, ': ', E.Message);
+      TLogger.LogFile('Exception Batch Update' + E.message);
+      WriteLn(E.ClassName, ': ', E.message);
     end;
   end;
+
 end.

@@ -33,7 +33,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls,
   Vcl.Imaging.jpeg, Vcl.Imaging.pngimage, System.Actions, Vcl.ActnList,
-  Vcl.Touch.GestureMgr;
+  Vcl.Touch.GestureMgr, flickr.lib.utils;
 
 type
   TfrmMainTiles = class(TForm)
@@ -72,6 +72,16 @@ type
     Action1: TAction;
     AppBar: TPanel;
     CloseButton: TImage;
+    Panel2: TPanel;
+    Image6: TImage;
+    Panel8: TPanel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Panel9: TPanel;
+    Image7: TImage;
+    Panel10: TPanel;
+    Label14: TLabel;
+    Label15: TLabel;
     procedure ScrollBox2Resize(Sender: TObject);
     procedure GroupPanel1_1Click(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
@@ -79,6 +89,8 @@ type
     procedure CloseButtonClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormGesture(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
+    procedure FormCreate(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
   private
     { Private declarations }
     procedure AppBarResize;
@@ -105,7 +117,7 @@ implementation
 
 {$R *.dfm}
 
-uses SplitItemDetail1;
+uses SplitItemDetail1, frmDashboardTile;
 
 const
   AppBarHeight = 75;
@@ -127,6 +139,11 @@ begin
     AppBar.Visible := True;
     AppBar.BringToFront;
   end;
+end;
+
+procedure TfrmMainTiles.FormCreate(Sender: TObject);
+begin
+  Label1.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
 end;
 
 procedure TfrmMainTiles.FormGesture(Sender: TObject; const EventInfo: TGestureEventInfo; var Handled: Boolean);
@@ -167,6 +184,16 @@ begin
   DetailForm.BringToFront;
 end;
 
+procedure TfrmMainTiles.Image1Click(Sender: TObject);
+begin
+  // Assuming here the image will be clicked
+  SelectedGroup := TPanel(TControl(Sender).Parent).Name;
+  if not Assigned(frmDashboard) then
+    frmDashboard := TfrmDashboard.Create(Self);
+  frmDashboard.Show;
+  frmDashboard.BringToFront;
+end;
+
 procedure TfrmMainTiles.PickImageColor(img: TImage; AColor: TColor);
 var
   ARect: TRect;
@@ -181,11 +208,11 @@ end;
 procedure TfrmMainTiles.ScrollBox2Resize(Sender: TObject);
 begin
   // Init panels
-  PickImageColor(Image1, clBtnShadow);
-  PickImageColor(Image2, clInactiveCaption);
-  PickImageColor(Image3, cl3DLight);
-  PickImageColor(Image4, clBtnShadow);
-  PickImageColor(Image5, clBtnShadow);
+//  PickImageColor(Image1, clBtnShadow);
+//  PickImageColor(Image2, clInactiveCaption);
+//  PickImageColor(Image3, cl3DLight);
+//  PickImageColor(Image4, clBtnShadow);
+//  PickImageColor(Image5, clBtnShadow);
 end;
 
 end.
