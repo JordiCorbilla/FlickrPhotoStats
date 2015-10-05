@@ -387,7 +387,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object TotalViewsLabel: TLabel
-      Left = 864
+      Left = 888
       Top = 4
       Width = 120
       Height = 23
@@ -429,7 +429,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object Label28: TLabel
-      Left = 771
+      Left = 795
       Top = 26
       Width = 87
       Height = 23
@@ -443,7 +443,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object Label29: TLabel
-      Left = 864
+      Left = 888
       Top = 26
       Width = 118
       Height = 23
@@ -485,7 +485,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object Label15: TLabel
-      Left = 802
+      Left = 826
       Top = 4
       Width = 56
       Height = 23
@@ -499,7 +499,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object LabelYesterdayLikes: TLabel
-      Left = 567
+      Left = 588
       Top = 4
       Width = 78
       Height = 23
@@ -513,7 +513,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object LabelTodayLikes: TLabel
-      Left = 567
+      Left = 588
       Top = 26
       Width = 78
       Height = 23
@@ -527,7 +527,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object upgreen1: TImage
-      Left = 486
+      Left = 479
       Top = 10
       Width = 29
       Height = 32
@@ -550,7 +550,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object downred1: TImage
-      Left = 486
+      Left = 480
       Top = 10
       Width = 29
       Height = 32
@@ -578,11 +578,11 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object labelArrow1: TLabel
-      Left = 520
+      Left = 511
       Top = 18
-      Width = 33
+      Width = 61
       Height = 16
-      Caption = '+9%'
+      Caption = '+99.99%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -592,7 +592,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object upgreen2: TImage
-      Left = 656
+      Left = 677
       Top = 12
       Width = 29
       Height = 32
@@ -615,7 +615,7 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object downred2: TImage
-      Left = 656
+      Left = 677
       Top = 12
       Width = 29
       Height = 32
@@ -643,11 +643,11 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object LabelArrow2: TLabel
-      Left = 688
+      Left = 709
       Top = 19
-      Width = 33
+      Width = 61
       Height = 16
-      Caption = '+9%'
+      Caption = '+99.99%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
