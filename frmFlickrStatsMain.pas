@@ -44,7 +44,7 @@ uses
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
-  MetropolisUI.Tile;
+  MetropolisUI.Tile, Vcl.Imaging.pngimage;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -59,13 +59,12 @@ type
     Taskbar1: TTaskbar;
     ActionList1: TActionList;
     Authenticate: TButton;
-    Label12: TLabel;
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
-    Label16: TLabel;
-    Label17: TLabel;
-    Label18: TLabel;
+    LabelYesterdayViews: TLabel;
+    LabelTodayViews: TLabel;
+    TotalViewsLabel: TLabel;
     PopupMenu1: TPopupMenu;
     MarkGroups1: TMenuItem;
     N1: TMenuItem;
@@ -343,6 +342,14 @@ type
     Label37: TLabel;
     LiveTile1: TLiveTile;
     chkShowButtonHint: TCheckBox;
+    LabelYesterdayLikes: TLabel;
+    LabelTodayLikes: TLabel;
+    upgreen1: TImage;
+    downred1: TImage;
+    labelArrow1: TLabel;
+    upgreen2: TImage;
+    downred2: TImage;
+    LabelArrow2: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -864,34 +871,99 @@ end;
 
 procedure TfrmFlickrMain.UpdateLabels();
 var
-  views : integer;
+  viewsYesterday, viewsToday : integer;
+  likesYesterday, likesToday : integer;
+  totalViews : integer;
 begin
-  Label12.Visible := true;
   Label13.Visible := true;
   Label14.Visible := true;
   Label15.Visible := true;
-  Label16.Visible := true;
-  Label17.Visible := true;
-  Label18.Visible := true;
+  LabelYesterdayViews.Visible := true;
+  LabelTodayViews.Visible := true;
+  LabelYesterdayLikes.Visible := true;
+  LabelTodayLikes.Visible := true;
+  TotalViewsLabel.Visible := true;
   Label19.Visible := true;
   Label20.Visible := true;
   Label28.Visible := true;
   Label29.Visible := true;
 
   if globalsRepository.globals.Count > 2 then
-    views := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views
+  begin
+    viewsYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
+    likesYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].likes-globalsRepository.globals[globalsRepository.globals.Count-3].likes;
+  end
   else
-    views := 0;
-  Label16.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  begin
+    viewsYesterday := 0;
+    likesYesterday := 0;
+  end;
+  LabelYesterdayViews.Caption :=  Format('%n',[viewsYesterday.ToDouble]).Replace('.00','');
+  LabelYesterdayLikes.Caption :=  Format('%n',[likesYesterday.ToDouble]).Replace('.00','');
   if globalsRepository.globals.Count > 1 then
-    views := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views
+  begin
+    viewsToday := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views;
+    likesToday := globalsRepository.globals[globalsRepository.globals.Count-1].likes-globalsRepository.globals[globalsRepository.globals.Count-2].likes;
+  end
   else if globalsRepository.globals.Count = 1 then
-    views := globalsRepository.globals[globalsRepository.globals.Count-1].views
+  begin
+    viewsToday := globalsRepository.globals[globalsRepository.globals.Count-1].views;
+    likesToday := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
+  end
   else
-    views := 0;
-  Label17.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  views := globalsRepository.globals[globalsRepository.globals.Count-1].views;
-  Label18.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+  begin
+    viewsToday := 0;
+    likesToday := 0;
+  end;
+  LabelTodayViews.Caption :=  Format('%n',[viewsToday.ToDouble]).Replace('.00','');
+  LabelTodayLikes.Caption :=  Format('%n',[likesToday.ToDouble]).Replace('.00','');
+
+  upgreen1.Visible := false;
+  upgreen2.Visible := false;
+  downred1.Visible := false;
+  downred2.Visible := false;
+  labelArrow1.Visible := false;
+  labelArrow2.Visible := false;
+  if viewsYesterday < viewsToday then //green
+  begin
+    upgreen1.visible := true;
+    labelArrow1.caption := '+' + Format('%n',[(viewsToday / viewsYesterday)*100.0]).Replace('.00','') + '%';
+    labelArrow1.Visible := true;
+  end;
+  if viewsYesterday = viewsToday then //green
+  begin
+    upgreen1.visible := true;
+    labelArrow1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+    labelArrow1.Visible := true;
+  end;
+  if viewsYesterday > viewsToday then //red
+  begin
+    downred1.visible := true;
+    labelArrow1.caption := '-' + Format('%n',[(viewsToday / viewsYesterday)*100.0]).Replace('.00','') + '%';
+    labelArrow1.Visible := true;
+  end;
+
+  if likesYesterday < likesToday then //green
+  begin
+    upgreen2.visible := true;
+    labelArrow2.caption := '+' + Format('%n',[(likesToday / likesYesterday)*100.0]).Replace('.00','') + '%';
+    labelArrow2.Visible := true;
+  end;
+  if likesYesterday = likesToday then //green
+  begin
+    upgreen2.visible := true;
+    labelArrow2.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+    labelArrow2.Visible := true;
+  end;
+  if likesYesterday > likesToday then //red
+  begin
+    downred2.visible := true;
+    labelArrow2.caption := '-' + Format('%n',[(likesToday / likesYesterday)*100.0]).Replace('.00','') + '%';
+    labelArrow2.Visible := true;
+  end;
+
+  totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
+  TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   Label29.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
 end;
 
