@@ -756,7 +756,7 @@ object frmFlickrMain: TfrmFlickrMain
       Caption = 'Dashboard'
       object Splitter6: TSplitter
         Left = 0
-        Top = 177
+        Top = 270
         Width = 1503
         Height = 3
         Cursor = crVSplit
@@ -766,83 +766,33 @@ object frmFlickrMain: TfrmFlickrMain
         ExplicitWidth = 562
       end
       object Splitter7: TSplitter
-        Left = 872
-        Top = 180
-        Height = 591
+        Left = 793
+        Top = 273
+        Height = 498
         ExplicitLeft = 816
         ExplicitTop = 264
         ExplicitHeight = 100
       end
-      object ChartGeneral: TChart
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 177
-        Title.Font.Color = clWhite
-        Title.Text.Strings = (
-          'Globals')
-        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-        BottomAxis.Grid.Width = 0
-        BottomAxis.Grid.ZPosition = 1.000000000000000000
-        BottomAxis.Increment = 0.000000011574074074
-        BottomAxis.LabelsFormat.Font.Color = clWhite
-        BottomAxis.LabelsMultiLine = True
-        BottomAxis.LabelsSeparation = 0
-        BottomAxis.MinimumOffset = 16
-        BottomAxis.MinorTickCount = 16
-        BottomAxis.EndPosition = 98.000000000000000000
-        BottomAxis.PositionPercent = -1.000000000000000000
-        BottomAxis.TickLength = 0
-        BottomAxis.Title.Font.Color = clLime
-        DepthAxis.Title.Font.Color = clLime
-        DepthTopAxis.Title.Font.Color = clLime
-        LeftAxis.Grid.Width = 0
-        LeftAxis.LabelsFormat.Font.Color = clWhite
-        LeftAxis.MinorTicks.Width = 0
-        LeftAxis.Ticks.Width = 0
-        LeftAxis.TicksInner.Width = 0
-        LeftAxis.Title.Font.Color = clLime
-        RightAxis.Title.Font.Color = clLime
-        TopAxis.Title.Font.Color = clLime
-        View3D = False
-        Align = alTop
-        Color = 2763306
-        TabOrder = 0
-        OnDblClick = ChartViewsDblClick
-        DefaultCanvas = 'TGDIPlusCanvas'
-        PrintMargins = (
-          15
-          44
-          15
-          44)
-        ColorPaletteIndex = 13
-        object Series4: TBarSeries
-          XValues.Name = 'X'
-          XValues.Order = loAscending
-          YValues.Name = 'Bar'
-          YValues.Order = loNone
-        end
-      end
       object Panel14: TPanel
         Left = 0
-        Top = 180
-        Width = 872
-        Height = 591
+        Top = 273
+        Width = 793
+        Height = 498
         Align = alLeft
         Caption = 'Panel14'
-        TabOrder = 1
+        TabOrder = 0
         object Splitter9: TSplitter
           Left = 313
           Top = 1
-          Height = 589
+          Height = 496
           ExplicitLeft = 416
           ExplicitTop = 176
           ExplicitHeight = 100
         end
         object Splitter4: TSplitter
-          Left = 587
+          Left = 561
           Top = 1
-          Height = 589
+          Height = 496
           ExplicitLeft = 576
           ExplicitTop = 200
           ExplicitHeight = 100
@@ -851,10 +801,11 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 1
           Top = 1
           Width = 312
-          Height = 589
+          Height = 496
           Align = alLeft
           Caption = 'Panel17'
           TabOrder = 0
+          ExplicitHeight = 589
           object Splitter5: TSplitter
             Left = 1
             Top = 209
@@ -1133,15 +1084,15 @@ object frmFlickrMain: TfrmFlickrMain
         object Panel18: TPanel
           Left = 316
           Top = 1
-          Width = 271
-          Height = 589
+          Width = 245
+          Height = 496
           Align = alLeft
           Caption = 'Panel18'
           TabOrder = 1
           object Splitter11: TSplitter
             Left = 1
             Top = 177
-            Width = 269
+            Width = 243
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1151,7 +1102,7 @@ object frmFlickrMain: TfrmFlickrMain
           object Splitter12: TSplitter
             Left = 1
             Top = 337
-            Width = 269
+            Width = 243
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1161,7 +1112,7 @@ object frmFlickrMain: TfrmFlickrMain
           object Splitter20: TSplitter
             Left = 1
             Top = 489
-            Width = 269
+            Width = 243
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1171,7 +1122,7 @@ object frmFlickrMain: TfrmFlickrMain
           object mostviewschart: TChart
             Left = 1
             Top = 180
-            Width = 269
+            Width = 243
             Height = 157
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1205,6 +1156,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1230,7 +1182,7 @@ object frmFlickrMain: TfrmFlickrMain
           object mostlikeschart: TChart
             Left = 1
             Top = 340
-            Width = 269
+            Width = 243
             Height = 149
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1264,6 +1216,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1289,7 +1242,7 @@ object frmFlickrMain: TfrmFlickrMain
           object executionTime: TChart
             Left = 1
             Top = 1
-            Width = 269
+            Width = 243
             Height = 176
             Border.Fill.Gradient.Balance = 53
             Border.Fill.Gradient.Direction = gdBottomTop
@@ -1331,6 +1284,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1361,8 +1315,8 @@ object frmFlickrMain: TfrmFlickrMain
           object chartfollowing: TChart
             Left = 1
             Top = 492
-            Width = 269
-            Height = 96
+            Width = 243
+            Height = 3
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1395,6 +1349,8 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 3
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 269
+            ExplicitHeight = 96
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1419,17 +1375,18 @@ object frmFlickrMain: TfrmFlickrMain
           end
         end
         object Panel20: TPanel
-          Left = 590
+          Left = 564
           Top = 1
-          Width = 281
-          Height = 589
+          Width = 228
+          Height = 496
           Align = alClient
           Caption = 'Panel20'
           TabOrder = 2
+          ExplicitWidth = 277
           object Splitter15: TSplitter
             Left = 1
             Top = 177
-            Width = 279
+            Width = 226
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1439,7 +1396,7 @@ object frmFlickrMain: TfrmFlickrMain
           object Splitter16: TSplitter
             Left = 1
             Top = 337
-            Width = 279
+            Width = 226
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1449,7 +1406,7 @@ object frmFlickrMain: TfrmFlickrMain
           object Splitter19: TSplitter
             Left = 1
             Top = 489
-            Width = 279
+            Width = 226
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1460,7 +1417,7 @@ object frmFlickrMain: TfrmFlickrMain
           object organicViews: TChart
             Left = 1
             Top = 1
-            Width = 279
+            Width = 226
             Height = 176
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1494,6 +1451,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1519,7 +1477,7 @@ object frmFlickrMain: TfrmFlickrMain
           object organicLikes: TChart
             Left = 1
             Top = 180
-            Width = 279
+            Width = 226
             Height = 157
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1553,6 +1511,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1580,8 +1539,8 @@ object frmFlickrMain: TfrmFlickrMain
           object groupspread: TChart
             Left = 1
             Top = 492
-            Width = 279
-            Height = 96
+            Width = 226
+            Height = 3
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1614,6 +1573,8 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 279
+            ExplicitHeight = 96
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1641,7 +1602,7 @@ object frmFlickrMain: TfrmFlickrMain
           object organicComments: TChart
             Left = 1
             Top = 340
-            Width = 279
+            Width = 226
             Height = 149
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1675,6 +1636,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 3
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1702,17 +1664,21 @@ object frmFlickrMain: TfrmFlickrMain
         end
       end
       object Panel15: TPanel
-        Left = 875
-        Top = 180
-        Width = 628
-        Height = 591
+        Left = 796
+        Top = 273
+        Width = 707
+        Height = 498
         Align = alClient
         Caption = 'Panel15'
-        TabOrder = 2
+        TabOrder = 1
+        ExplicitLeft = 875
+        ExplicitTop = 180
+        ExplicitWidth = 628
+        ExplicitHeight = 591
         object Splitter8: TSplitter
-          Left = 385
+          Left = 529
           Top = 1
-          Height = 589
+          Height = 496
           ExplicitLeft = 408
           ExplicitTop = 104
           ExplicitHeight = 100
@@ -1720,15 +1686,15 @@ object frmFlickrMain: TfrmFlickrMain
         object Panel16: TPanel
           Left = 1
           Top = 1
-          Width = 384
-          Height = 589
+          Width = 528
+          Height = 496
           Align = alLeft
           Caption = 'Panel16'
           TabOrder = 0
           object Splitter13: TSplitter
             Left = 1
-            Top = 271
-            Width = 382
+            Top = 178
+            Width = 526
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1737,77 +1703,18 @@ object frmFlickrMain: TfrmFlickrMain
           end
           object Splitter14: TSplitter
             Left = 1
-            Top = 465
-            Width = 382
+            Top = 372
+            Width = 526
             Height = 3
             Cursor = crVSplit
             Align = alTop
             ExplicitTop = 333
             ExplicitWidth = 276
           end
-          object dailyViews: TChart
-            Left = 1
-            Top = 1
-            Width = 382
-            Height = 270
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Views')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 2763306
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries2: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-          end
           object dailyLikes: TChart
             Left = 1
-            Top = 274
-            Width = 382
+            Top = 181
+            Width = 526
             Height = 191
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1839,8 +1746,10 @@ object frmFlickrMain: TfrmFlickrMain
             View3D = False
             Align = alTop
             Color = 2763306
-            TabOrder = 1
+            TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            ExplicitTop = 274
+            ExplicitWidth = 382
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1865,8 +1774,8 @@ object frmFlickrMain: TfrmFlickrMain
           end
           object dailyComments: TChart
             Left = 1
-            Top = 468
-            Width = 382
+            Top = 375
+            Width = 526
             Height = 120
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -1898,8 +1807,10 @@ object frmFlickrMain: TfrmFlickrMain
             View3D = False
             Align = alClient
             Color = 2763306
-            TabOrder = 2
+            TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            ExplicitTop = 468
+            ExplicitWidth = 382
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1922,19 +1833,75 @@ object frmFlickrMain: TfrmFlickrMain
               YValues.Order = loNone
             end
           end
+          object ChartGeneral: TChart
+            Left = 1
+            Top = 1
+            Width = 526
+            Height = 177
+            Title.Font.Color = clWhite
+            Title.Text.Strings = (
+              'Globals')
+            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+            BottomAxis.Grid.Width = 0
+            BottomAxis.Grid.ZPosition = 1.000000000000000000
+            BottomAxis.Increment = 0.000000011574074074
+            BottomAxis.LabelsFormat.Font.Color = clWhite
+            BottomAxis.LabelsMultiLine = True
+            BottomAxis.LabelsSeparation = 0
+            BottomAxis.MinimumOffset = 16
+            BottomAxis.MinorTickCount = 16
+            BottomAxis.EndPosition = 98.000000000000000000
+            BottomAxis.PositionPercent = -1.000000000000000000
+            BottomAxis.TickLength = 0
+            BottomAxis.Title.Font.Color = clLime
+            DepthAxis.Title.Font.Color = clLime
+            DepthTopAxis.Title.Font.Color = clLime
+            LeftAxis.Grid.Width = 0
+            LeftAxis.LabelsFormat.Font.Color = clWhite
+            LeftAxis.MinorTicks.Width = 0
+            LeftAxis.Ticks.Width = 0
+            LeftAxis.TicksInner.Width = 0
+            LeftAxis.Title.Font.Color = clLime
+            RightAxis.Title.Font.Color = clLime
+            TopAxis.Title.Font.Color = clLime
+            View3D = False
+            Align = alTop
+            Color = 2763306
+            TabOrder = 2
+            OnDblClick = ChartViewsDblClick
+            ExplicitLeft = 2
+            ExplicitTop = 9
+            ExplicitWidth = 382
+            DefaultCanvas = 'TGDIPlusCanvas'
+            PrintMargins = (
+              15
+              44
+              15
+              44)
+            ColorPaletteIndex = 13
+            object Series4: TBarSeries
+              XValues.Name = 'X'
+              XValues.Order = loAscending
+              YValues.Name = 'Bar'
+              YValues.Order = loNone
+            end
+          end
         end
         object Panel19: TPanel
-          Left = 388
+          Left = 532
           Top = 1
-          Width = 239
-          Height = 589
+          Width = 174
+          Height = 496
           Align = alClient
           Caption = 'Panel19'
           TabOrder = 1
+          ExplicitLeft = 388
+          ExplicitWidth = 239
+          ExplicitHeight = 589
           object Splitter17: TSplitter
             Left = 1
             Top = 271
-            Width = 237
+            Width = 172
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1944,7 +1911,7 @@ object frmFlickrMain: TfrmFlickrMain
           object Splitter18: TSplitter
             Left = 1
             Top = 441
-            Width = 237
+            Width = 172
             Height = 3
             Cursor = crVSplit
             Align = alTop
@@ -1954,8 +1921,8 @@ object frmFlickrMain: TfrmFlickrMain
           object ChartHallLikes: TChart
             Left = 1
             Top = 444
-            Width = 237
-            Height = 144
+            Width = 172
+            Height = 51
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1993,6 +1960,8 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 237
+            ExplicitHeight = 144
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2026,7 +1995,7 @@ object frmFlickrMain: TfrmFlickrMain
           object chartAlbum: TChart
             Left = 1
             Top = 1
-            Width = 237
+            Width = 172
             Height = 270
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -2067,6 +2036,7 @@ object frmFlickrMain: TfrmFlickrMain
             ShowHint = True
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 237
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2100,7 +2070,7 @@ object frmFlickrMain: TfrmFlickrMain
           object chartHallViews: TChart
             Left = 1
             Top = 274
-            Width = 237
+            Width = 172
             Height = 167
             Legend.Visible = False
             Title.Font.Color = clWhite
@@ -2139,6 +2109,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
+            ExplicitWidth = 237
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2169,6 +2140,68 @@ object frmFlickrMain: TfrmFlickrMain
               OtherSlice.Legend.Visible = False
             end
           end
+        end
+      end
+      object dailyViews: TChart
+        Left = 0
+        Top = 0
+        Width = 1503
+        Height = 270
+        Legend.Visible = False
+        Title.Font.Color = clWhite
+        Title.Text.Strings = (
+          'Total Views')
+        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+        BottomAxis.Grid.Width = 0
+        BottomAxis.Grid.ZPosition = 1.000000000000000000
+        BottomAxis.Increment = 1.000000000000000000
+        BottomAxis.LabelsFormat.Font.Color = clWhite
+        BottomAxis.LabelsMultiLine = True
+        BottomAxis.MinimumOffset = 16
+        BottomAxis.MinorTickCount = 16
+        BottomAxis.EndPosition = 98.000000000000000000
+        BottomAxis.PositionPercent = -1.000000000000000000
+        BottomAxis.TickLength = 2
+        BottomAxis.Ticks.Width = 0
+        BottomAxis.Title.Font.Color = clLime
+        DepthAxis.Title.Font.Color = clLime
+        DepthTopAxis.Title.Font.Color = clLime
+        LeftAxis.Grid.Width = 0
+        LeftAxis.LabelsFormat.Font.Color = clWhite
+        LeftAxis.MinorTicks.Width = 0
+        LeftAxis.Ticks.Width = 0
+        LeftAxis.TicksInner.Width = 0
+        LeftAxis.Title.Font.Color = clLime
+        RightAxis.Title.Font.Color = clLime
+        TopAxis.Title.Font.Color = clLime
+        View3D = False
+        Align = alTop
+        Color = 2763306
+        TabOrder = 2
+        OnDblClick = ChartViewsDblClick
+        ExplicitLeft = 1
+        ExplicitTop = 1
+        ExplicitWidth = 382
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          7
+          15
+          7)
+        ColorPaletteIndex = 13
+        object LineSeries2: TBarSeries
+          BarBrush.BackColor = clDefault
+          BarPen.Color = 10708548
+          Marks.Shadow.Color = 8487297
+          Marks.Visible = False
+          Marks.Callout.Length = 8
+          Marks.DrawEvery = 10
+          Title = 'Flickr Stats'
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Bar'
+          YValues.Order = loNone
         end
       end
     end

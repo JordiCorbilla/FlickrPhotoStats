@@ -128,6 +128,7 @@ begin
   Series.YValues.Order := loNone;
   Series.ParentChart := parent;
   Series.Transparency := 25;
+  parent.Walls.Visible := false;
   result := Series;
 end;
 
@@ -158,6 +159,7 @@ begin
   Series.YValues.Order := loNone;
   Series.Transparency := 25;
   Series.ParentChart := parent;
+  parent.Walls.Visible := false;
   result := Series;
 end;
 
@@ -188,6 +190,7 @@ begin
   Series.Frame.Width := 4;
   Series.Transparency := 25;
   Series.OtherSlice.Legend.Visible := False;
+  parent.Walls.Visible := false;
   result := Series;
 end;
 

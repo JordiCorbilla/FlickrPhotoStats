@@ -129,16 +129,12 @@ type
     tabStatus: TTabSheet;
     Panel10: TPanel;
     mStatus: TMemo;
-    ChartGeneral: TChart;
-    Series4: TBarSeries;
     Panel14: TPanel;
     Splitter6: TSplitter;
     Splitter7: TSplitter;
     Panel15: TPanel;
     Panel16: TPanel;
     Splitter8: TSplitter;
-    dailyViews: TChart;
-    LineSeries2: TBarSeries;
     dailyLikes: TChart;
     BarSeries1: TBarSeries;
     Panel17: TPanel;
@@ -350,6 +346,10 @@ type
     downred2: TImage;
     LabelArrow2: TLabel;
     LineSeries3: TAreaSeries;
+    dailyViews: TChart;
+    LineSeries2: TBarSeries;
+    ChartGeneral: TChart;
+    Series4: TBarSeries;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1593,6 +1593,7 @@ var
   color : TColor;
   min : double;
   value : double;
+  max : double;
 begin
   if organicViews.SeriesList.Count > 0 then
     organicViews.RemoveAllSeries;
@@ -1756,12 +1757,21 @@ begin
   chartTendency := TTendency.Create;
   color := RGB(Random(255), Random(255), Random(255));
 
+  min := organic.Globals[0].TotalGroups;
+  max := 0;
   for i := 0 to organic.Globals.Count-1 do
   begin
-    chartTendency.AddXY(i, organic.Globals[i].TotalGroups);
-    SeriesPositive.AddXY(organic.Globals[i].date, organic.Globals[i].TotalGroups, '', color);
+    value := organic.Globals[i].TotalGroups;
+    chartTendency.AddXY(i, Round(value));
+    SeriesPositive.AddXY(organic.Globals[i].date, value, '', color);
+    if value < min then
+      min := value;
+    if value > max then
+      max := value;
   end;
-
+  min := min - 0.10 * (min);
+  max := max + 0.10 * (max);
+  groupspread.Axes.Left.SetMinMax(min, max);
   chartTendency.Calculate;
   SeriesTendency := flickrChart.GetNewLineSeries(groupspread);
   color := clYellow;
@@ -4702,15 +4712,15 @@ begin
   chartLikes.Height := round(panel17.Height * 0.20);
   chartComments.height := round(panel17.Height * 0.20);
 
-  executionTime.Height := round(panel18.Height * 0.20);
-  mostViewsChart.Height := round(panel18.Height * 0.20);
-  mostLikeschart.Height:= round(panel18.Height * 0.20);
+  executionTime.Height := round(panel18.Height * 0.25);
+  mostViewsChart.Height := round(panel18.Height * 0.25);
+  mostLikeschart.Height:= round(panel18.Height * 0.25);
 
-  OrganicViews.Height := round(panel20.Height * 0.20);
-  OrganicLikes.Height := round(panel20.Height * 0.20);
-  OrganicComments.Height:= round(panel20.Height * 0.20);
+  OrganicViews.Height := round(panel20.Height * 0.25);
+  OrganicLikes.Height := round(panel20.Height * 0.25);
+  OrganicComments.Height:= round(panel20.Height * 0.25);
 
-  dailyViews.Height := round(panel16.Height * 0.50);
+  ChartGeneral.Height := round(panel16.Height * 0.50);
   dailyLikes.Height := round(panel16.Height * 0.25);
 
   chartAlbum.Height := round(panel19.Height * 0.33);
