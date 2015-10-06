@@ -1291,6 +1291,12 @@ object frmFlickrMain: TfrmFlickrMain
             Top = 1
             Width = 269
             Height = 176
+            Border.Fill.Gradient.Balance = 53
+            Border.Fill.Gradient.Direction = gdBottomTop
+            Border.Fill.Gradient.EndColor = clNavy
+            Border.Fill.Gradient.MidColor = 16744576
+            Border.Fill.Gradient.StartColor = 16777088
+            Border.Fill.Gradient.Visible = True
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1319,6 +1325,8 @@ object frmFlickrMain: TfrmFlickrMain
             RightAxis.Title.Font.Color = clLime
             TopAxis.Title.Font.Color = clLime
             View3D = False
+            View3DWalls = False
+            Zoom.Allow = False
             Align = alTop
             Color = 2763306
             TabOrder = 2
@@ -1330,16 +1338,19 @@ object frmFlickrMain: TfrmFlickrMain
               15
               7)
             ColorPaletteIndex = 13
-            object LineSeries3: TLineSeries
+            object LineSeries3: TAreaSeries
               Marks.Shadow.Color = 8487297
               Marks.DrawEvery = 10
               Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
+              AreaChartBrush.Color = clGray
+              AreaChartBrush.BackColor = clDefault
+              DrawArea = True
               LinePen.Color = 10708548
               Pointer.Brush.Gradient.EndColor = 10708548
               Pointer.Gradient.EndColor = 10708548
               Pointer.InflateMargins = True
               Pointer.Style = psRectangle
+              Pointer.Visible = False
               XValues.DateTime = True
               XValues.Name = 'X'
               XValues.Order = loAscending
@@ -4293,7 +4304,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001C00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001CC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

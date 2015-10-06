@@ -53,6 +53,9 @@ type
 
 implementation
 
+uses
+  Windows;
+
 { TFlickrChart }
 
 function TFlickrChart.Get(series: string; parent : TChart; marks : boolean = false): TChartSeries;
@@ -68,36 +71,40 @@ begin
     result := GetNewAreaSeries(parent, marks);
 end;
 
-function TFlickrChart.GetNewAreaSeries(parent: TChart;
-  marks: boolean): TAreaSeries;
+function TFlickrChart.GetNewAreaSeries(parent: TChart; marks: boolean): TAreaSeries;
 var
   Series : TAreaSeries;
+  color : TColor;
 begin
+  color := RGB(93, 173, 225);
   Series := TAreaSeries.Create(parent);
-  Series.Marks.Arrow.Visible := true;
-  Series.Marks.Callout.Brush.color := clBlack;
-  Series.Marks.Callout.Arrow.Visible := true;
-  Series.Marks.DrawEvery := 10;
+  Series.Marks.Arrow.Visible := false; //true;
+  Series.Marks.Callout.Brush.color := color; // clBlack;
+  Series.Marks.Callout.Arrow.Visible := false; // true;
+  //Series.Marks.DrawEvery := 10;
   Series.DrawArea := true;
   //Series.DrawStyle := dsCurve;
   Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := marks;
-  Series.SeriesColor := 10708548;
-  Series.LinePen.Width := 1;
-  Series.LinePen.color := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Style := psRectangle;
-  Series.Pointer.Brush.Gradient.EndColor := 10708548;
-  Series.Pointer.Gradient.EndColor := 10708548;
-  Series.Pointer.InflateMargins := true;
-  Series.Pointer.Visible := false;
+  Series.SeriesColor := color;
+  Series.LinePen.Width := 2;
+  Series.LinePen.color := color;
+  //Series.Pointer.InflateMargins := true;
+  Series.Pointer.Style := psCircle;
+  Series.Pointer.Size := 2;
+  Series.Pointer.Brush.Gradient.EndColor := color;
+  Series.Pointer.Gradient.EndColor := color;
+  //Series.Pointer.InflateMargins := true;
+  Series.Pointer.Visible := true;
   Series.XValues.DateTime := true;
   Series.XValues.Name := 'X';
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
   Series.ParentChart := parent;
-  Series.Transparency := 32;
+  Series.Transparency := 25;
+  Series.AreaLinesPen.Visible := false;
+  parent.Walls.Visible := false;
   result := Series;
 end;
 
@@ -120,7 +127,7 @@ begin
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
   Series.ParentChart := parent;
-  Series.Transparency := 32;
+  Series.Transparency := 25;
   result := Series;
 end;
 
@@ -149,7 +156,7 @@ begin
   Series.XValues.Order := loAscending;
   Series.YValues.Name := 'Y';
   Series.YValues.Order := loNone;
-  Series.Transparency := 32;
+  Series.Transparency := 25;
   Series.ParentChart := parent;
   result := Series;
 end;
@@ -179,7 +186,7 @@ begin
   Series.Frame.OuterBrush.Gradient.StartColor := clSilver;
   Series.Frame.OuterBrush.Gradient.Visible := True;
   Series.Frame.Width := 4;
-  Series.Transparency := 32;
+  Series.Transparency := 25;
   Series.OtherSlice.Legend.Visible := False;
   result := Series;
 end;
