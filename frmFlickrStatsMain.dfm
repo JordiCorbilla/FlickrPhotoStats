@@ -827,7 +827,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
       Visible = False
     end
-    object Image1: TImage
+    object imagephoto: TImage
       Left = 906
       Top = 17
       Width = 16

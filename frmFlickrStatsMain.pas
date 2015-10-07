@@ -366,7 +366,7 @@ type
     Label39: TLabel;
     Shape9: TShape;
     Label40: TLabel;
-    Image1: TImage;
+    imagephoto: TImage;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -2389,6 +2389,7 @@ begin
 
   Label16.Visible := true;
   Label17.Visible := true;
+  imagephoto.Visible := true;
   Label18.Visible := true;
 
   Label38.Visible := true;
