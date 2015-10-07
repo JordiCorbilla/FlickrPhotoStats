@@ -366,6 +366,7 @@ type
     Label39: TLabel;
     Shape9: TShape;
     Label40: TLabel;
+    Image1: TImage;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1814,13 +1815,12 @@ begin
   groupspread.Axes.Left.SetMinMax(min, max);
   chartTendency.Calculate;
   SeriesTendency := flickrChart.GetNewLineSeries(groupspread);
-  color := clYellow;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', color);
+  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(organic.Globals.Count-1);
-  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
+  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', FYellow);
 
   groupspread.AddSeries(SeriesTendency);
 
@@ -1834,15 +1834,23 @@ begin
   chartTendency := TTendency.Create;
   color := RGB(Random(255), Random(255), Random(255));
 
+  min := organic.Globals[0].Following;
+  max := 0;
   for i := 0 to organic.Globals.Count-1 do
   begin
-    chartTendency.AddXY(i, organic.Globals[i].Following);
-    SeriesPositive.AddXY(organic.Globals[i].date, organic.Globals[i].Following, '', color);
+    value := organic.Globals[i].Following;
+    chartTendency.AddXY(i, Round(value));
+    SeriesPositive.AddXY(organic.Globals[i].date, value, '', color);
+    if value < min then
+      min := value;
+    if value > max then
+      max := value;
   end;
-
+  min := min - 0.10 * (min);
+  max := max + 0.10 * (max);
+  chartFollowing.Axes.Left.SetMinMax(min, max);
   chartTendency.Calculate;
   SeriesTendency := flickrChart.GetNewLineSeries(chartFollowing);
-  color := clYellow;
 
   label32.Visible := true;
   label33.Caption := Format('%n',[organic.Globals[organic.Globals.Count-1].Following.ToDouble]).Replace('.00','');
@@ -1850,9 +1858,9 @@ begin
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', color);
+  SeriesTendency.AddXY(organic.Globals[0].date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(organic.Globals.Count-1);
-  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', color);
+  SeriesTendency.AddXY(organic.Globals[organic.Globals.Count-1].date, viewsTendency, '', FYellow);
 
   chartFollowing.AddSeries(SeriesTendency);
 end;
@@ -1885,13 +1893,12 @@ begin
   chartTendency.Calculate;
 
   SeriesTendency := flickrChart.GetNewLineSeries(ChartViews);
-  color := clYellow;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
-  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', FYellow);
 //  for i := 0 to globalsRepository.globals.Count - 1 do
 //  begin
 //    viewsTendency := chartTendency.tendencyResult(i);
@@ -1915,13 +1922,12 @@ begin
   chartTendency.Calculate;
 
   SeriesTendency := flickrChart.GetNewLineSeries(ChartLikes, false);
-  color := clYellow;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
-  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', FYellow);
 
   if ChartComments.SeriesList.Count > 0 then
     ChartComments.RemoveAllSeries;
@@ -1939,13 +1945,12 @@ begin
   chartTendency.Calculate;
 
   SeriesTendency := flickrChart.GetNewLineSeries(ChartComments, false);
-  color := clYellow;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
-  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', FYellow);
   //################################
   if totalPhotos.SeriesList.Count > 0 then
     totalPhotos.RemoveAllSeries;
@@ -1969,13 +1974,12 @@ begin
   chartTendency.Calculate;
 
   SeriesTendency := flickrChart.GetNewLineSeries(totalPhotos);
-  color := clYellow;
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(histogram[0].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(histogram[0].Date, viewsTendency, '', FYellow);
   viewsTendency := chartTendency.tendencyResult(histogram.Count - 1);
-  SeriesTendency.AddXY(histogram[histogram.Count - 1].Date, viewsTendency, '', color);
+  SeriesTendency.AddXY(histogram[histogram.Count - 1].Date, viewsTendency, '', FYellow);
 //  for i := 0 to globalsRepository.globals.Count - 1 do
 //  begin
 //    viewsTendency := chartTendency.tendencyResult(i);
@@ -2399,7 +2403,7 @@ begin
 
   Series.AddBar(totalPhotos, 'Photos', FColorPhotos);
   values := totalPhotos.ToDouble;
-  Label17.Caption :=  Format('%n',[values]).Replace('.00','') + ' photos';
+  Label17.Caption :=  Format('%n',[values]).Replace('.00','');
 
   Series.AddBar(totalSpreadGroups, 'Group spread', FColorGroups);
   values := totalSpreadGroups.ToDouble;
@@ -5018,43 +5022,40 @@ begin
 
       SeriesTendencyViews := flickrChart.GetNewLineSeries(chartItemViews);
       SeriesTendencyViews.title := id + 'tendency';
-      color := clYellow;
 
       //Adding only first and last item
       theDate := photo.stats[0].Date;
       vTendency := viewsTendency.tendencyResult(0);
-      SeriesTendencyViews.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyViews.AddXY(theDate, vTendency, '', FYellow);
       theDate := photo.stats[photo.stats.Count - 1].Date;
       vTendency := viewsTendency.tendencyResult(photo.stats.Count - 1);
-      SeriesTendencyViews.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyViews.AddXY(theDate, vTendency, '', FYellow);
 
       chartItemViews.AddSeries(SeriesTendencyViews);
 
       SeriesTendencyLikes := flickrChart.GetNewLineSeries(chartItemLikes);
       SeriesTendencyLikes.title := id + 'tendency';
-      color := clYellow;
 
       //Adding only first and last item
       theDate := photo.stats[0].Date;
       vTendency := likesTendency.tendencyResult(0);
-      SeriesTendencyLikes.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyLikes.AddXY(theDate, vTendency, '', FYellow);
       theDate := photo.stats[photo.stats.Count - 1].Date;
       vTendency := likesTendency.tendencyResult(photo.stats.Count - 1);
-      SeriesTendencyLikes.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyLikes.AddXY(theDate, vTendency, '', FYellow);
 
       chartItemLikes.AddSeries(SeriesTendencyLikes);
 
       SeriesTendencyComments := flickrChart.GetNewLineSeries(chartItemComments);
       SeriesTendencyComments.title := id + 'tendency';
-      color := clYellow;
 
       //Adding only first and last item
       theDate := photo.stats[0].Date;
       vTendency := commentsTendency.tendencyResult(0);
-      SeriesTendencyComments.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyComments.AddXY(theDate, vTendency, '', FYellow);
       theDate := photo.stats[photo.stats.Count - 1].Date;
       vTendency := commentsTendency.tendencyResult(photo.stats.Count - 1);
-      SeriesTendencyComments.AddXY(theDate, vTendency, '', color);
+      SeriesTendencyComments.AddXY(theDate, vTendency, '', FYellow);
 
       chartItemComments.AddSeries(SeriesTendencyComments);
 

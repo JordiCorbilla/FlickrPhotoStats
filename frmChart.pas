@@ -69,7 +69,7 @@ begin
   for i := 0 to chartSender.SeriesList.Count-1 do
   begin
     flickrChart := TFlickrChart.create;
-    Series := flickrChart.Get(chartSender.SeriesList[i].ClassName, ChartViewer);
+    Series := flickrChart.Get(chartSender.SeriesList[i].ClassName, ChartViewer, false, chartSender.SeriesList[i].SeriesColor);
     for j := 0 to chartSender.SeriesList[i].XValues.count -1 do
     begin
       Series.AddXY(chartSender.SeriesList[i].XValue[j], chartSender.SeriesList[i].YValue[j], '', chartSender.SeriesList[i].ValueColor[j]);
