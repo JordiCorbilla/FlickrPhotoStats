@@ -37,18 +37,18 @@ type
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
-    function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
+    function GetNewAreaSeries(parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
-    function Get(series : string; parent : TChart; marks : boolean = false) : TChartSeries;
+    function Get(series : string; parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TChartSeries;
   end;
 
   TFlickrChart = Class(TInterfacedObject, IFlickrChart)
     function GetNewLineSeries(parent : TChart; marks : boolean = false) : TLineSeries;
     function GetNewBarSeries(parent : TChart; marks : boolean = false) : TBarSeries;
     function GetNewPieSeries(parent : TChart; marks : boolean = false) : TPieSeries;
-    function GetNewAreaSeries(parent : TChart; marks : boolean = false) : TAreaSeries;
+    function GetNewAreaSeries(parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
-    function Get(series : string; parent : TChart; marks : boolean = false) : TChartSeries;
+    function Get(series : string; parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TChartSeries;
   End;
 
 implementation
@@ -58,7 +58,7 @@ uses
 
 { TFlickrChart }
 
-function TFlickrChart.Get(series: string; parent : TChart; marks : boolean = false): TChartSeries;
+function TFlickrChart.Get(series: string; parent : TChart; marks : boolean = false; lineColor : TColor = 0): TChartSeries;
 begin
   result := nil;
   if series = 'TLineSeries' then
@@ -68,32 +68,30 @@ begin
   if series = 'TPieSeries' then
     result := GetNewPieSeries(parent, marks);
   if series = 'TAreaSeries' then
-    result := GetNewAreaSeries(parent, marks);
+    result := GetNewAreaSeries(parent, marks, lineColor);
 end;
 
-function TFlickrChart.GetNewAreaSeries(parent: TChart; marks: boolean): TAreaSeries;
+function TFlickrChart.GetNewAreaSeries(parent: TChart; marks: boolean; lineColor : TColor): TAreaSeries;
 var
   Series : TAreaSeries;
-  color : TColor;
 begin
-  color := RGB(93, 173, 225);
   Series := TAreaSeries.Create(parent);
   Series.Marks.Arrow.Visible := false; //true;
-  Series.Marks.Callout.Brush.color := color; // clBlack;
+  Series.Marks.Callout.Brush.color := lineColor; // clBlack;
   Series.Marks.Callout.Arrow.Visible := false; // true;
   //Series.Marks.DrawEvery := 10;
   Series.DrawArea := true;
   //Series.DrawStyle := dsCurve;
   Series.Marks.Shadow.color := 8487297;
   Series.Marks.Visible := marks;
-  Series.SeriesColor := color;
+  Series.SeriesColor := lineColor;
   Series.LinePen.Width := 2;
-  Series.LinePen.color := color;
+  Series.LinePen.color := lineColor;
   //Series.Pointer.InflateMargins := true;
   Series.Pointer.Style := psCircle;
   Series.Pointer.Size := 2;
-  Series.Pointer.Brush.Gradient.EndColor := color;
-  Series.Pointer.Gradient.EndColor := color;
+  Series.Pointer.Brush.Gradient.EndColor := lineColor;
+  Series.Pointer.Gradient.EndColor := lineColor;
   //Series.Pointer.InflateMargins := true;
   Series.Pointer.Visible := true;
   Series.XValues.DateTime := true;

@@ -330,205 +330,192 @@ object frmFlickrMain: TfrmFlickrMain
     Height = 55
     Align = alTop
     TabOrder = 0
+    ExplicitTop = -6
     object Label13: TLabel
       Left = 289
       Top = 4
-      Width = 102
-      Height = 23
+      Width = 73
+      Height = 16
       Caption = 'Yesterday:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label14: TLabel
-      Left = 326
+      Left = 318
       Top = 26
-      Width = 65
-      Height = 23
+      Width = 44
+      Height = 16
       Caption = 'Today:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object LabelYesterdayViews: TLabel
-      Left = 395
+      Left = 367
       Top = 4
-      Width = 78
-      Height = 23
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object LabelTodayViews: TLabel
-      Left = 395
+      Left = 367
       Top = 26
-      Width = 78
-      Height = 23
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object TotalViewsLabel: TLabel
-      Left = 888
+      Left = 713
       Top = 4
-      Width = 120
-      Height = 23
-      Caption = '999,999,999'
+      Width = 104
+      Height = 13
+      Caption = '999,999,999 views'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label19: TLabel
-      Left = 1039
+      Left = 1190
       Top = 4
-      Width = 224
-      Height = 23
+      Width = 150
+      Height = 16
       Caption = 'Tomorrow'#39's Prediction:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label20: TLabel
-      Left = 1269
+      Left = 1346
       Top = 4
-      Width = 78
-      Height = 23
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label28: TLabel
-      Left = 795
-      Top = 26
-      Width = 87
-      Height = 23
+      Left = 1281
+      Top = 17
+      Width = 59
+      Height = 16
       Caption = 'Updated:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label29: TLabel
-      Left = 888
-      Top = 26
-      Width = 118
-      Height = 23
+      Left = 1346
+      Top = 17
+      Width = 80
+      Height = 16
       Caption = '00/00/0000'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label32: TLabel
-      Left = 1162
-      Top = 26
-      Width = 101
-      Height = 23
+      Left = 1277
+      Top = 31
+      Width = 63
+      Height = 16
       Caption = 'Following:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object Label33: TLabel
-      Left = 1269
-      Top = 26
-      Width = 78
-      Height = 23
+      Left = 1346
+      Top = 31
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-      Visible = False
-    end
-    object Label15: TLabel
-      Left = 826
-      Top = 4
-      Width = 56
-      Height = 23
-      Caption = 'Total:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object LabelYesterdayLikes: TLabel
-      Left = 588
+      Left = 534
       Top = 4
-      Width = 78
-      Height = 23
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object LabelTodayLikes: TLabel
-      Left = 588
+      Left = 534
       Top = 26
-      Width = 78
-      Height = 23
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -19
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Visible = False
     end
     object upgreen1: TImage
-      Left = 479
-      Top = 10
+      Left = 425
+      Top = 7
       Width = 29
       Height = 32
       Picture.Data = {
@@ -550,8 +537,8 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object downred1: TImage
-      Left = 480
-      Top = 10
+      Left = 425
+      Top = 7
       Width = 29
       Height = 32
       Picture.Data = {
@@ -578,8 +565,8 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object labelArrow1: TLabel
-      Left = 511
-      Top = 18
+      Left = 456
+      Top = 15
       Width = 61
       Height = 16
       Caption = '+99.99%'
@@ -592,8 +579,8 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object upgreen2: TImage
-      Left = 677
-      Top = 12
+      Left = 592
+      Top = 8
       Width = 29
       Height = 32
       Picture.Data = {
@@ -615,8 +602,8 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object downred2: TImage
-      Left = 677
-      Top = 12
+      Left = 592
+      Top = 7
       Width = 29
       Height = 32
       Picture.Data = {
@@ -643,14 +630,198 @@ object frmFlickrMain: TfrmFlickrMain
       Visible = False
     end
     object LabelArrow2: TLabel
-      Left = 709
-      Top = 19
+      Left = 624
+      Top = 14
       Width = 61
       Height = 16
       Caption = '+99.99%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape1: TShape
+      Left = 696
+      Top = 5
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Shape2: TShape
+      Left = 696
+      Top = 20
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object totalLikesLabel: TLabel
+      Left = 713
+      Top = 18
+      Width = 98
+      Height = 13
+      Caption = '999,999,999 likes'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object TotalCommentsLabel: TLabel
+      Left = 713
+      Top = 32
+      Width = 132
+      Height = 13
+      Caption = '999,999,999 comments'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape3: TShape
+      Left = 696
+      Top = 34
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Shape4: TShape
+      Left = 848
+      Top = 6
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Label16: TLabel
+      Left = 865
+      Top = 4
+      Width = 133
+      Height = 13
+      Caption = '9,999,999 group spread'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Label17: TLabel
+      Left = 865
+      Top = 18
+      Width = 80
+      Height = 13
+      Caption = '99,999 photos'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape5: TShape
+      Left = 848
+      Top = 20
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Shape6: TShape
+      Left = 848
+      Top = 34
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Label18: TLabel
+      Left = 865
+      Top = 32
+      Width = 119
+      Height = 13
+      Caption = '99,999 groups/photo'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape7: TShape
+      Left = 1009
+      Top = 6
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Label38: TLabel
+      Left = 1026
+      Top = 5
+      Width = 119
+      Height = 13
+      Caption = '999,999 views/photo'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape8: TShape
+      Left = 1009
+      Top = 20
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Label39: TLabel
+      Left = 1026
+      Top = 19
+      Width = 106
+      Height = 13
+      Caption = '99,999 likes/photo'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+      Visible = False
+    end
+    object Shape9: TShape
+      Left = 1009
+      Top = 34
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+      Visible = False
+    end
+    object Label40: TLabel
+      Left = 1026
+      Top = 32
+      Width = 147
+      Height = 13
+      Caption = '999,999 comments/photo'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -805,7 +976,6 @@ object frmFlickrMain: TfrmFlickrMain
           Align = alLeft
           Caption = 'Panel17'
           TabOrder = 0
-          ExplicitHeight = 589
           object Splitter5: TSplitter
             Left = 1
             Top = 209
@@ -1156,7 +1326,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1216,7 +1385,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1284,7 +1452,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 269
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1349,8 +1516,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 3
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 269
-            ExplicitHeight = 96
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1382,7 +1547,6 @@ object frmFlickrMain: TfrmFlickrMain
           Align = alClient
           Caption = 'Panel20'
           TabOrder = 2
-          ExplicitWidth = 277
           object Splitter15: TSplitter
             Left = 1
             Top = 177
@@ -1451,7 +1615,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1511,7 +1674,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1573,8 +1735,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 279
-            ExplicitHeight = 96
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1636,7 +1796,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 3
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 279
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1671,10 +1830,6 @@ object frmFlickrMain: TfrmFlickrMain
         Align = alClient
         Caption = 'Panel15'
         TabOrder = 1
-        ExplicitLeft = 875
-        ExplicitTop = 180
-        ExplicitWidth = 628
-        ExplicitHeight = 591
         object Splitter8: TSplitter
           Left = 529
           Top = 1
@@ -1748,8 +1903,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
-            ExplicitTop = 274
-            ExplicitWidth = 382
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1809,8 +1962,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
-            ExplicitTop = 468
-            ExplicitWidth = 382
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1838,6 +1989,7 @@ object frmFlickrMain: TfrmFlickrMain
             Top = 1
             Width = 526
             Height = 177
+            Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
               'Globals')
@@ -1869,9 +2021,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
-            ExplicitLeft = 2
-            ExplicitTop = 9
-            ExplicitWidth = 382
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1895,9 +2044,6 @@ object frmFlickrMain: TfrmFlickrMain
           Align = alClient
           Caption = 'Panel19'
           TabOrder = 1
-          ExplicitLeft = 388
-          ExplicitWidth = 239
-          ExplicitHeight = 589
           object Splitter17: TSplitter
             Left = 1
             Top = 271
@@ -1960,8 +2106,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 237
-            ExplicitHeight = 144
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2036,7 +2180,6 @@ object frmFlickrMain: TfrmFlickrMain
             ShowHint = True
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 237
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2109,7 +2252,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 2
             OnDblClick = ChartViewsDblClick
-            ExplicitWidth = 237
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2179,9 +2321,6 @@ object frmFlickrMain: TfrmFlickrMain
         Color = 2763306
         TabOrder = 2
         OnDblClick = ChartViewsDblClick
-        ExplicitLeft = 1
-        ExplicitTop = 1
-        ExplicitWidth = 382
         DefaultCanvas = 'TGDIPlusCanvas'
         PrintMargins = (
           15
@@ -4337,7 +4476,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001CC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001D00110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
