@@ -59,10 +59,6 @@ type
     Taskbar1: TTaskbar;
     ActionList1: TActionList;
     Authenticate: TButton;
-    Label13: TLabel;
-    Label14: TLabel;
-    LabelYesterdayViews: TLabel;
-    LabelTodayViews: TLabel;
     TotalViewsLabel: TLabel;
     PopupMenu1: TPopupMenu;
     MarkGroups1: TMenuItem;
@@ -336,14 +332,6 @@ type
     Label37: TLabel;
     LiveTile1: TLiveTile;
     chkShowButtonHint: TCheckBox;
-    LabelYesterdayLikes: TLabel;
-    LabelTodayLikes: TLabel;
-    upgreen1: TImage;
-    downred1: TImage;
-    labelArrow1: TLabel;
-    upgreen2: TImage;
-    downred2: TImage;
-    LabelArrow2: TLabel;
     LineSeries3: TAreaSeries;
     dailyViews: TChart;
     LineSeries2: TBarSeries;
@@ -360,13 +348,48 @@ type
     Shape5: TShape;
     Shape6: TShape;
     Label18: TLabel;
-    Shape7: TShape;
-    Label38: TLabel;
-    Shape8: TShape;
-    Label39: TLabel;
-    Shape9: TShape;
-    Label40: TLabel;
     imagephoto: TImage;
+    Panel9: TPanel;
+    Panel24: TPanel;
+    Panel25: TPanel;
+    Panel26: TPanel;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
+    Label13: TLabel;
+    LabelYesterdayViews: TLabel;
+    Label14: TLabel;
+    LabelTodayViews: TLabel;
+    downred1: TImage;
+    labelArrow1: TLabel;
+    upgreen1: TImage;
+    Label12: TLabel;
+    Label15: TLabel;
+    Label41: TLabel;
+    Label42: TLabel;
+    LabelYesterdayLikes: TLabel;
+    LabelTodayLikes: TLabel;
+    downred2: TImage;
+    LabelArrow2: TLabel;
+    upgreen2: TImage;
+    LabelYesterdayComments: TLabel;
+    LabelTodayComments: TLabel;
+    upgreen3: TImage;
+    LabelArrow3: TLabel;
+    downred3: TImage;
+    Label46: TLabel;
+    Label47: TLabel;
+    Label48: TLabel;
+    Label49: TLabel;
+    Label50: TLabel;
+    Label51: TLabel;
+    Image6: TImage;
+    Image7: TImage;
+    Image8: TImage;
+    Image9: TImage;
+    Label38: TLabel;
+    Label39: TLabel;
+    Label40: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -908,8 +931,8 @@ end;
 
 procedure TfrmFlickrMain.UpdateLabels();
 var
-  viewsYesterday, viewsToday : integer;
-  likesYesterday, likesToday : integer;
+  viewsYesterday, viewsToday, commentsToday : integer;
+  likesYesterday, likesToday, commentsYesterday : integer;
   totalViews : integer;
 begin
   Label13.Visible := true;
@@ -933,31 +956,38 @@ begin
   begin
     viewsYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
     likesYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].likes-globalsRepository.globals[globalsRepository.globals.Count-3].likes;
+    commentsYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].Comments-globalsRepository.globals[globalsRepository.globals.Count-3].Comments;
   end
   else
   begin
     viewsYesterday := 0;
     likesYesterday := 0;
+    commentsYesterday := 0;
   end;
   LabelYesterdayViews.Caption :=  Format('%n',[viewsYesterday.ToDouble]).Replace('.00','');
   LabelYesterdayLikes.Caption :=  Format('%n',[likesYesterday.ToDouble]).Replace('.00','');
+  LabelYesterdayComments.Caption :=  Format('%n',[commentsYesterday.ToDouble]).Replace('.00','');
   if globalsRepository.globals.Count > 1 then
   begin
     viewsToday := globalsRepository.globals[globalsRepository.globals.Count-1].views-globalsRepository.globals[globalsRepository.globals.Count-2].views;
     likesToday := globalsRepository.globals[globalsRepository.globals.Count-1].likes-globalsRepository.globals[globalsRepository.globals.Count-2].likes;
+    commentsToday := globalsRepository.globals[globalsRepository.globals.Count-1].Comments-globalsRepository.globals[globalsRepository.globals.Count-2].Comments;
   end
   else if globalsRepository.globals.Count = 1 then
   begin
     viewsToday := globalsRepository.globals[globalsRepository.globals.Count-1].views;
     likesToday := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
+    commentsToday := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
   end
   else
   begin
     viewsToday := 0;
     likesToday := 0;
+    commentsToday := 0;
   end;
   LabelTodayViews.Caption :=  Format('%n',[viewsToday.ToDouble]).Replace('.00','');
   LabelTodayLikes.Caption :=  Format('%n',[likesToday.ToDouble]).Replace('.00','');
+  LabelTodayComments.Caption :=  Format('%n',[commentsToday.ToDouble]).Replace('.00','');
 
   upgreen1.Visible := false;
   upgreen2.Visible := false;
@@ -2376,16 +2406,10 @@ begin
   Shape4.Visible := true;
   Shape5.Visible := true;
   Shape6.Visible := true;
-  Shape7.Visible := true;
-  Shape8.Visible := true;
-  Shape9.Visible := true;
 
   Shape4.brush.Color := FColorGroups;
   Shape5.brush.Color := FColorPhotos;
   Shape6.brush.Color := FColorSpread;
-  Shape7.brush.Color := FViewsP;
-  Shape8.brush.Color := FLikesP;
-  Shape9.brush.Color := FCommentsP;
 
   Label16.Visible := true;
   Label17.Visible := true;
@@ -2410,21 +2434,21 @@ begin
   values := totalSpreadGroups.ToDouble;
   Label16.Caption :=  Format('%n',[values]).Replace('.00','') + ' group spread';
 
-  Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', FViewsP);
-  values := totalViews / totalPhotos;
-  Label38.Caption :=  Format('%n',[values]).Replace('.00','') + ' views/photo';
-
-  Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', FLikesP);
-  values := totalLikes / totalPhotos;
-  Label39.Caption :=  Format('%n',[values]).Replace('.00','') + ' likes/photo';
-
-  Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', FCommentsP);
-  values := totalComments / totalPhotos;
-  Label40.Caption :=  Format('%n',[values]).Replace('.00','') + ' comments/photo';
-
-  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', FColorSpread);
-  values := totalSpreadGroups / totalPhotos;
-  Label18.Caption :=  Format('%n',[values]).Replace('.00','') + ' groups/photo';
+//  Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', FViewsP);
+//  values := totalViews / totalPhotos;
+//  Label38.Caption :=  Format('%n',[values]).Replace('.00','') + ' views/photo';
+//
+//  Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', FLikesP);
+//  values := totalLikes / totalPhotos;
+//  Label39.Caption :=  Format('%n',[values]).Replace('.00','') + ' likes/photo';
+//
+//  Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', FCommentsP);
+//  values := totalComments / totalPhotos;
+//  Label40.Caption :=  Format('%n',[values]).Replace('.00','') + ' comments/photo';
+//
+//  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', FColorSpread);
+//  values := totalSpreadGroups / totalPhotos;
+//  Label18.Caption :=  Format('%n',[values]).Replace('.00','') + ' groups/photo';
 
   ChartGeneral.AddSeries(Series);
 end;
@@ -4807,6 +4831,8 @@ begin
   //Resize additional components
   ResizeChartsDashBoard();
 
+  panel24.Width := round(panel9.Width / 3);
+  panel25.Width := round(panel9.Width / 3);
   //Second page
   panel2.Height := round (tabsheet2.Height * 0.6);
   if (tabsheet2.Height - panel2.Height - splitter1.Height) > 0 then
