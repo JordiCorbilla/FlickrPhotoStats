@@ -5,7 +5,7 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![Stable Release](https://img.shields.io/badge/version-4.5.0.38rc-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p)
+[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![Stable Release](https://img.shields.io/badge/version-4.6.0.1rc-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
@@ -28,11 +28,11 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **Dashboard**:
 
-![](http://2.bp.blogspot.com/-pOsbaNlGn8A/VdzVz5L3CJI/AAAAAAAAE_U/TSorHxtJO40/s640/version.png)
+![](http://3.bp.blogspot.com/-fFx_AXjkKjk/VhkkWW1GF-I/AAAAAAAAFIE/aosoNiSmji0/s640/10102015Image.png)
 
 **Processing**:
 
-![](http://3.bp.blogspot.com/-L0tJYC6NnH4/VdzWXMZCCcI/AAAAAAAAE_c/HYShnUDk0TY/s640/proces.png)
+![](http://3.bp.blogspot.com/-h1K2_xTgOdo/VhklfDRPHCI/AAAAAAAAFIM/M3OHcdncoYo/s640/10102015Image.png)
 
 **Authentication**:
 
@@ -121,6 +121,10 @@ Version 4.6 (RC):
 - Photo filtering.
 - Memory leaks.
 - Web dashboard using ASP.NET MVC.
+
+### Features for version 4.6:
+- Dashboard upgrade.
+- Trend upgrade.
 
 Source code is available here.
 
