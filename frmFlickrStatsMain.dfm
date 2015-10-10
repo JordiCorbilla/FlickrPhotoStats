@@ -2877,6 +2877,7 @@ object frmFlickrMain: TfrmFlickrMain
           Width = 499
           Height = 63
           Align = alClient
+          BevelOuter = bvNone
           TabOrder = 2
           object Image3: TImage
             Left = 1
