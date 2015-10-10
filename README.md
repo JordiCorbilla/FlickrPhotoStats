@@ -81,11 +81,11 @@ Version 4.4 (RC):
 - [FlickrPhotoStats(x64) v4.4](https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7).
 - [FlickrPhotoStats(x64) v4.4.0.82](https://app.box.com/s/1l6otaof0iefazqt8tp1602bv98bji9r).
 
-Latest release candidate can be found here:
+Version 4.5 (RC):
 
 - [FlickrPhotoStats(x64) v4.5.0.38](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p).
 
-The beta version can be found here (ongoing development):
+Version 4.6 (RC):
 - [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
 
 ## Changelog
