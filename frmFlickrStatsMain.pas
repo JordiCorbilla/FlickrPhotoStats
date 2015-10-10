@@ -1024,59 +1024,15 @@ begin
   LabelCommentsTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
   UpdateArrows(commentsYesterday, commentsToday, Rate1, Rate2, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
 
-//  upgreen1.Visible := false;
-//  upgreen2.Visible := false;
-//  downred1.Visible := false;
-//  downred2.Visible := false;
-//  labelArrow1.Visible := false;
-//  labelArrow2.Visible := false;
-//  if viewsYesterday < viewsToday then //green
-//  begin
-//    upgreen1.visible := true;
-//    labelArrow1.caption := '+' + Format('%n',[(viewsToday / viewsYesterday)*100.0]).Replace('.00','') + '%';
-//    labelArrow1.Visible := true;
-//  end;
-//  if viewsYesterday = viewsToday then //green
-//  begin
-//    upgreen1.visible := true;
-//    labelArrow1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
-//    labelArrow1.Visible := true;
-//  end;
-//  if viewsYesterday > viewsToday then //red
-//  begin
-//    downred1.visible := true;
-//    labelArrow1.caption := '-' + Format('%n',[(1 - (viewsToday / viewsYesterday))*100.0]).Replace('.00','') + '%';
-//    labelArrow1.Visible := true;
-//  end;
-//
-//  if likesYesterday < likesToday then //green
-//  begin
-//    upgreen2.visible := true;
-//    labelArrow2.caption := '+' + Format('%n',[(likesToday / likesYesterday)*100.0]).Replace('.00','') + '%';
-//    labelArrow2.Visible := true;
-//  end;
-//  if likesYesterday = likesToday then //green
-//  begin
-//    upgreen2.visible := true;
-//    labelArrow2.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
-//    labelArrow2.Visible := true;
-//  end;
-//  if likesYesterday > likesToday then //red
-//  begin
-//    downred2.visible := true;
-//    labelArrow2.caption := '-' + Format('%n',[(1-(likesToday / likesYesterday))*100.0]).Replace('.00','') + '%';
-//    labelArrow2.Visible := true;
-//  end;
-
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
 
-  TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' views';
+  TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
 
-  TotalLikesLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' likes';
+  TotalLikesLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
 
-  TotalCommentsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' comments';
+  TotalCommentsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   UpdateTimeLabel.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
 end;
 
@@ -4794,7 +4750,7 @@ begin
   totalGroupsLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' group spread';
   totalGroupsRateLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' groups/photo';
   updateTimeLabel.Caption := '00/00/0000';
-  SaveTimeLabel.Caption := '00/00/0000';
+  SaveTimeLabel.Caption := '';
   PredictionLabel.Caption := Format('%n',[totals]).Replace('.00','');
   PhotosLabel.Caption := '0';
   FollowingLabel.Caption := '0';
@@ -5000,6 +4956,7 @@ begin
   try
     prefix := DateTimeToStr(Date).Replace('\','').Replace('/','').Replace(' ','').Replace(':','');
     Bitmap.SaveToFile( prefix + 'Image.bmp' );
+    ShowMessage('Screen capture saved!');
   finally
     Bitmap.Free;
   end;

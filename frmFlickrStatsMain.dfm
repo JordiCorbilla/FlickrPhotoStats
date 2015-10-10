@@ -330,6 +330,7 @@ object frmFlickrMain: TfrmFlickrMain
     Height = 55
     Align = alTop
     TabOrder = 0
+    OnDblClick = Label12DblClick
     object TotalViewsLabel: TLabel
       Left = 336
       Top = 5
@@ -2247,6 +2248,7 @@ object frmFlickrMain: TfrmFlickrMain
           Width = 501
           Height = 63
           Align = alLeft
+          BevelOuter = bvNone
           TabOrder = 0
           object Image1: TImage
             Left = 1
@@ -2569,6 +2571,7 @@ object frmFlickrMain: TfrmFlickrMain
           Width = 501
           Height = 63
           Align = alLeft
+          BevelOuter = bvNone
           TabOrder = 1
           object Image2: TImage
             Left = 1
