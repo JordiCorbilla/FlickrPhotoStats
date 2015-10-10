@@ -74,7 +74,7 @@ type
     UncheckAll1: TMenuItem;
     btnLoad: TButton;
     Label19: TLabel;
-    Label20: TLabel;
+    PredictionLabel: TLabel;
     PageControl1: TPageControl;
     Dashboard: TTabSheet;
     TabSheet2: TTabSheet;
@@ -161,7 +161,7 @@ type
     LineSeries6: TLineSeries;
     executionTime: TChart;
     Label28: TLabel;
-    Label29: TLabel;
+    UpdateTimeLabel: TLabel;
     Label31: TLabel;
     ComboBox3: TComboBox;
     Series7: THorizBarSeries;
@@ -181,7 +181,7 @@ type
     Splitter17: TSplitter;
     Splitter18: TSplitter;
     Label32: TLabel;
-    Label33: TLabel;
+    FollowingLabel: TLabel;
     btnRemovePhoto: TButton;
     Splitter19: TSplitter;
     organicComments: TChart;
@@ -343,11 +343,11 @@ type
     TotalCommentsLabel: TLabel;
     Shape3: TShape;
     Shape4: TShape;
-    Label16: TLabel;
-    Label17: TLabel;
+    TotalGroupsLabel: TLabel;
+    PhotosLabel: TLabel;
     Shape5: TShape;
     Shape6: TShape;
-    Label18: TLabel;
+    TotalGroupsRateLabel: TLabel;
     imagephoto: TImage;
     Panel9: TPanel;
     Panel24: TPanel;
@@ -379,17 +379,27 @@ type
     downred3: TImage;
     Label46: TLabel;
     Label47: TLabel;
-    Label48: TLabel;
-    Label49: TLabel;
-    Label50: TLabel;
-    Label51: TLabel;
-    Image6: TImage;
-    Image7: TImage;
-    Image8: TImage;
-    Image9: TImage;
-    Label38: TLabel;
-    Label39: TLabel;
-    Label40: TLabel;
+    LabelLikesYesterdayRate: TLabel;
+    LabelLikesTodayRate: TLabel;
+    LabelCommentsYesterdayRate: TLabel;
+    LabelCommentsTodayRate: TLabel;
+    upgreen22: TImage;
+    upgreen33: TImage;
+    downred22: TImage;
+    downred33: TImage;
+    LabelViewsPhoto: TLabel;
+    LabelLikesPhoto: TLabel;
+    LabelCommentsPhoto: TLabel;
+    Label43: TLabel;
+    SaveTimeLabel: TLabel;
+    Image4: TImage;
+    Image5: TImage;
+    Image10: TImage;
+    Label16: TLabel;
+    LabelViewsYesterdayRate: TLabel;
+    LabelViewsTodayRate: TLabel;
+    downred11: TImage;
+    upgreen11: TImage;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -540,6 +550,9 @@ type
     procedure ClearAllCharts;
     procedure LoadOptions;
     procedure ShowHint(description : string; Sender: TObject);
+    procedure InitialiseDashboardTrend;
+    procedure UpdateArrows(valueYesterday, valueToday: integer; rateYesterday,
+      rateToday: double; arrow1, arrow2, arrow3, arrow4: TImage; label1 : TLabel);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -598,7 +611,7 @@ uses
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
-  flickr.lib.email;
+  flickr.lib.email, flickr.lib.math;
 
 {$R *.dfm}
 
@@ -931,27 +944,19 @@ end;
 
 procedure TfrmFlickrMain.UpdateLabels();
 var
-  viewsYesterday, viewsToday, commentsToday : integer;
+  viewsYesterday, viewsToday, commentsToday, viewsBeforeYesterday : integer;
   likesYesterday, likesToday, commentsYesterday : integer;
   totalViews : integer;
+  Rate1, Rate2 : double;
 begin
-  Label13.Visible := true;
-  Label14.Visible := true;
-  LabelYesterdayViews.Visible := true;
-  LabelTodayViews.Visible := true;
-  LabelYesterdayLikes.Visible := true;
-  LabelTodayLikes.Visible := true;
-  TotalViewsLabel.Visible := true;
-  TotalLikesLabel.Visible := true;
-  TotalCommentsLabel.Visible := true;
-  Shape1.Visible := true;
-  Shape2.Visible := true;
-  Shape3.Visible := true;
-  Label19.Visible := true;
-  Label20.Visible := true;
-  Label28.Visible := true;
-  Label29.Visible := true;
-
+  if globalsRepository.globals.Count > 3 then
+  begin
+    viewsBeforeYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-4].views;
+  end
+  else
+  begin
+    viewsBeforeYesterday := 0;
+  end;
   if globalsRepository.globals.Count > 2 then
   begin
     viewsYesterday := globalsRepository.globals[globalsRepository.globals.Count-2].views-globalsRepository.globals[globalsRepository.globals.Count-3].views;
@@ -989,60 +994,90 @@ begin
   LabelTodayLikes.Caption :=  Format('%n',[likesToday.ToDouble]).Replace('.00','');
   LabelTodayComments.Caption :=  Format('%n',[commentsToday.ToDouble]).Replace('.00','');
 
-  upgreen1.Visible := false;
-  upgreen2.Visible := false;
-  downred1.Visible := false;
-  downred2.Visible := false;
-  labelArrow1.Visible := false;
-  labelArrow2.Visible := false;
-  if viewsYesterday < viewsToday then //green
-  begin
-    upgreen1.visible := true;
-    labelArrow1.caption := '+' + Format('%n',[(viewsToday / viewsYesterday)*100.0]).Replace('.00','') + '%';
-    labelArrow1.Visible := true;
-  end;
-  if viewsYesterday = viewsToday then //green
-  begin
-    upgreen1.visible := true;
-    labelArrow1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
-    labelArrow1.Visible := true;
-  end;
-  if viewsYesterday > viewsToday then //red
-  begin
-    downred1.visible := true;
-    labelArrow1.caption := '-' + Format('%n',[(1 - (viewsToday / viewsYesterday))*100.0]).Replace('.00','') + '%';
-    labelArrow1.Visible := true;
-  end;
+  Rate1 := 0.0;
+  if viewsBeforeYesterday > 0 then
+    Rate1 := (viewsYesterday / viewsBeforeYesterday)*100.0;
+  Rate2 := 0.0;
+  if viewsYesterday > 0 then
+    Rate2 := (viewsToday / viewsYesterday)*100.0;
+  LabelViewsYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
+  LabelViewsTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
+  UpdateArrows(viewsYesterday, viewsToday, Rate1, Rate2, upgreen1, downred1, upgreen11, downred11, LabelArrow1);
 
-  if likesYesterday < likesToday then //green
-  begin
-    upgreen2.visible := true;
-    labelArrow2.caption := '+' + Format('%n',[(likesToday / likesYesterday)*100.0]).Replace('.00','') + '%';
-    labelArrow2.Visible := true;
-  end;
-  if likesYesterday = likesToday then //green
-  begin
-    upgreen2.visible := true;
-    labelArrow2.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
-    labelArrow2.Visible := true;
-  end;
-  if likesYesterday > likesToday then //red
-  begin
-    downred2.visible := true;
-    labelArrow2.caption := '-' + Format('%n',[(1-(likesToday / likesYesterday))*100.0]).Replace('.00','') + '%';
-    labelArrow2.Visible := true;
-  end;
+  Rate1 := 0.0;
+  if viewsYesterday > 0 then
+    Rate1 := (likesYesterday / viewsYesterday)*100.0;
+  Rate2 := 0.0;
+  if viewsToday > 0 then
+    Rate2 := (likesToday / viewsToday)*100.0;
+  LabelLikesYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
+  LabelLikesTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
+  UpdateArrows(likesYesterday, likesToday, Rate1, Rate2, upgreen2, downred2, upgreen22, downred22, LabelArrow2);
+
+  Rate1 := 0.0;
+  if viewsYesterday > 0 then
+    Rate1 := (commentsYesterday / viewsYesterday)*100.0;
+  Rate2 := 0.0;
+  if viewsToday > 0 then
+    Rate2 := (commentsToday / viewsToday)*100.0;
+  LabelCommentsYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
+  LabelCommentsTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
+  UpdateArrows(commentsYesterday, commentsToday, Rate1, Rate2, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
+
+//  upgreen1.Visible := false;
+//  upgreen2.Visible := false;
+//  downred1.Visible := false;
+//  downred2.Visible := false;
+//  labelArrow1.Visible := false;
+//  labelArrow2.Visible := false;
+//  if viewsYesterday < viewsToday then //green
+//  begin
+//    upgreen1.visible := true;
+//    labelArrow1.caption := '+' + Format('%n',[(viewsToday / viewsYesterday)*100.0]).Replace('.00','') + '%';
+//    labelArrow1.Visible := true;
+//  end;
+//  if viewsYesterday = viewsToday then //green
+//  begin
+//    upgreen1.visible := true;
+//    labelArrow1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+//    labelArrow1.Visible := true;
+//  end;
+//  if viewsYesterday > viewsToday then //red
+//  begin
+//    downred1.visible := true;
+//    labelArrow1.caption := '-' + Format('%n',[(1 - (viewsToday / viewsYesterday))*100.0]).Replace('.00','') + '%';
+//    labelArrow1.Visible := true;
+//  end;
+//
+//  if likesYesterday < likesToday then //green
+//  begin
+//    upgreen2.visible := true;
+//    labelArrow2.caption := '+' + Format('%n',[(likesToday / likesYesterday)*100.0]).Replace('.00','') + '%';
+//    labelArrow2.Visible := true;
+//  end;
+//  if likesYesterday = likesToday then //green
+//  begin
+//    upgreen2.visible := true;
+//    labelArrow2.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+//    labelArrow2.Visible := true;
+//  end;
+//  if likesYesterday > likesToday then //red
+//  begin
+//    downred2.visible := true;
+//    labelArrow2.caption := '-' + Format('%n',[(1-(likesToday / likesYesterday))*100.0]).Replace('.00','') + '%';
+//    labelArrow2.Visible := true;
+//  end;
 
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
-  Shape1.Brush.Color := FColorViews;
+
   TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' views';
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
-  Shape2.Brush.Color := FColorLikes;
+
   TotalLikesLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' likes';
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
-  Shape3.Brush.Color := FColorComments;
+
   TotalCommentsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','') + ' comments';
-  Label29.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
+  UpdateTimeLabel.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
 end;
 
 procedure TfrmFlickrMain.EndMarking1Click(Sender: TObject);
@@ -1882,9 +1917,7 @@ begin
   chartTendency.Calculate;
   SeriesTendency := flickrChart.GetNewLineSeries(chartFollowing);
 
-  label32.Visible := true;
-  label33.Caption := Format('%n',[organic.Globals[organic.Globals.Count-1].Following.ToDouble]).Replace('.00','');
-  label33.Visible := true;
+  FollowingLabel.Caption := Format('%n',[organic.Globals[organic.Globals.Count-1].Following.ToDouble]).Replace('.00','');
 
   //Adding only first and last item
   viewsTendency := chartTendency.tendencyResult(0);
@@ -2140,7 +2173,7 @@ begin
     dailyViews.AddSeries(tendencySeries);
 
     views := viewsTendency.tendencyResult(globalsRepository.globals.Count);
-    Label20.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+    PredictionLabel.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
   end;
 end;
 
@@ -2403,22 +2436,8 @@ begin
   if ChartGeneral.SeriesList.Count > 0 then
     ChartGeneral.RemoveAllSeries;
 
-  Shape4.Visible := true;
-  Shape5.Visible := true;
-  Shape6.Visible := true;
-
-  Shape4.brush.Color := FColorGroups;
-  Shape5.brush.Color := FColorPhotos;
-  Shape6.brush.Color := FColorSpread;
-
   Label16.Visible := true;
-  Label17.Visible := true;
   imagephoto.Visible := true;
-  Label18.Visible := true;
-
-  Label38.Visible := true;
-  Label39.Visible := true;
-  Label40.Visible := true;
 
   Series := flickrChart.GetNewBarSeries(ChartGeneral, false);
 
@@ -2428,27 +2447,27 @@ begin
 
   Series.AddBar(totalPhotos, 'Photos', FColorPhotos);
   values := totalPhotos.ToDouble;
-  Label17.Caption :=  Format('%n',[values]).Replace('.00','');
+  PhotosLabel.Caption :=  Format('%n',[values]).Replace('.00','');
 
   Series.AddBar(totalSpreadGroups, 'Group spread', FColorGroups);
   values := totalSpreadGroups.ToDouble;
-  Label16.Caption :=  Format('%n',[values]).Replace('.00','') + ' group spread';
+  TotalGroupsLabel.Caption :=  Format('%n',[values]).Replace('.00','') + ' group spread';
 
-//  Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', FViewsP);
-//  values := totalViews / totalPhotos;
-//  Label38.Caption :=  Format('%n',[values]).Replace('.00','') + ' views/photo';
-//
-//  Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', FLikesP);
-//  values := totalLikes / totalPhotos;
-//  Label39.Caption :=  Format('%n',[values]).Replace('.00','') + ' likes/photo';
-//
-//  Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', FCommentsP);
-//  values := totalComments / totalPhotos;
-//  Label40.Caption :=  Format('%n',[values]).Replace('.00','') + ' comments/photo';
-//
-//  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', FColorSpread);
-//  values := totalSpreadGroups / totalPhotos;
-//  Label18.Caption :=  Format('%n',[values]).Replace('.00','') + ' groups/photo';
+  //Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', FViewsP);
+  values := totalViews / totalPhotos;
+  LabelViewsPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' views/photo';
+
+  //Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', FLikesP);
+  values := totalLikes / totalPhotos;
+  LabelLikesPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' likes/photo';
+
+  //Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', FCommentsP);
+  values := totalComments / totalPhotos;
+  LabelCommentsPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' comments/photo';
+
+  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', FColorSpread);
+  values := totalSpreadGroups / totalPhotos;
+  TotalGroupsRateLabel.Caption :=  Format('%n',[values]).Replace('.00','') + ' groups/photo';
 
   ChartGeneral.AddSeries(Series);
 end;
@@ -2489,6 +2508,7 @@ begin
 
     btnSave.Enabled := false;
     btnLoad.Enabled := true;
+    SaveTimeLabel.Caption := DateTimeToStr(now);
   end;
   showMessage('Repository has been saved');
 end;
@@ -4753,7 +4773,93 @@ begin
   FViewsP := RGB(198, 113, 41);
   FLikesP := RGB(165, 125, 173);
   FCommentsP := RGB(214, 113, 140);
+
+  InitialiseDashboardTrend()
 end;
+
+procedure TfrmFlickrMain.InitialiseDashboardTrend();
+var
+  totals : double;
+begin
+  Shape1.Brush.Color := FColorViews;
+  Shape2.Brush.Color := FColorLikes;
+  Shape3.Brush.Color := FColorComments;
+  Shape4.brush.Color := FColorGroups;
+  Shape5.brush.Color := FColorPhotos;
+  Shape6.brush.Color := FColorSpread;
+  totals := 0.0;
+  TotalViewsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
+  TotalLikesLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
+  TotalCommentsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
+  totalGroupsLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' group spread';
+  totalGroupsRateLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' groups/photo';
+  updateTimeLabel.Caption := '00/00/0000';
+  SaveTimeLabel.Caption := '00/00/0000';
+  PredictionLabel.Caption := Format('%n',[totals]).Replace('.00','');
+  PhotosLabel.Caption := '0';
+  FollowingLabel.Caption := '0';
+
+  LabelYesterdayViews.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelTodayViews.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelArrow1.Caption := '+' + Format('%n',[totals]).Replace('.00','') + '%';
+  LabelViewsPhoto.Caption := Format('%n',[totals]).Replace('.00','') + ' views/photo';
+  LabelViewsYesterdayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  LabelViewsTodayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  UpdateArrows(0,0,0.0,0.0, upgreen1, downred1, upgreen11, downred11, LabelArrow1);
+
+  LabelYesterdayLikes.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelTodayLikes.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelArrow2.Caption := '+' + Format('%n',[totals]).Replace('.00','') + '%';
+  LabelLikesPhoto.Caption := Format('%n',[totals]).Replace('.00','') + ' likes/photo';
+  LabelLikesYesterdayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  LabelLikesTodayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  UpdateArrows(0,0,0.0,0.0, upgreen2, downred2, upgreen22, downred22, LabelArrow2);
+
+  LabelYesterdayComments.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelTodayComments.Caption :=  Format('%n',[totals]).Replace('.00','');
+  LabelArrow3.Caption := '+' + Format('%n',[totals]).Replace('.00','') + '%';
+  LabelCommentsPhoto.Caption := Format('%n',[totals]).Replace('.00','') + ' comments/photo';
+  LabelCommentsYesterdayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  LabelCommentsTodayRate.Caption := Format('%n',[totals]).Replace('.00','') + '%';
+  UpdateArrows(0,0,0.0,0.0, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
+end;
+
+procedure TfrmFlickrMain.UpdateArrows(valueYesterday, valueToday : integer; rateYesterday, rateToday : double; arrow1, arrow2, arrow3, arrow4 : TImage; label1 : TLabel);
+begin
+  arrow1.Visible := false;
+  arrow2.Visible := false;
+  arrow3.Visible := false;
+  arrow4.Visible := false;
+  if valueYesterday < valueToday then //green
+  begin
+    arrow1.visible := true;
+    label1.caption := '+' + Format('%n',[(valueToday / valueYesterday)*100.0]).Replace('.00','') + '%';
+  end;
+  if valueYesterday = valueToday then //red
+  begin
+    arrow2.visible := true;
+    label1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+  end;
+  if valueYesterday > valueToday then //red
+  begin
+    arrow2.visible := true;
+    label1.caption := '-' + Format('%n',[(1 - (valueToday / valueYesterday))*100.0]).Replace('.00','') + '%';
+  end;
+
+  if TMathHelper.Compare(rateYesterday, rateToday, '<') then //green
+  begin
+    arrow3.visible := true;
+  end;
+  if TMathHelper.Compare(rateYesterday, rateToday, '=') then //red
+  begin
+    arrow4.visible := true;
+  end;
+  if TMathHelper.Compare(rateYesterday, rateToday, '>') then //red
+  begin
+    arrow4.visible := true;
+  end;
+end;
+
 
 procedure TfrmFlickrMain.ClearAllCharts();
 begin
