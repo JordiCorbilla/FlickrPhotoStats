@@ -92,6 +92,8 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <DCC_RemoteDebug>false</DCC_RemoteDebug>
+        <DCC_Optimize>true</DCC_Optimize>
         <Icon_MainIcon>FlickrPhotoStats_Icon.ico</Icon_MainIcon>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_ExeOutput>.\$(Config)\$(Platform)</DCC_ExeOutput>
