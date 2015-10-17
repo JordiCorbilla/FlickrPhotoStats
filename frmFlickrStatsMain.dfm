@@ -812,7 +812,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 120
     Width = 1511
     Height = 819
-    ActivePage = TabSheet2
+    ActivePage = TabSheet7
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -3951,6 +3951,19 @@ object frmFlickrMain: TfrmFlickrMain
           Font.Style = [fsBold]
           ParentFont = False
         end
+        object Label17: TLabel
+          Left = 16
+          Top = 224
+          Width = 71
+          Height = 13
+          Caption = 'Last backup:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
         object edtMax: TEdit
           Left = 176
           Top = 8
@@ -3978,7 +3991,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object showMarks: TCheckBox
           Left = 176
-          Top = 220
+          Top = 248
           Width = 169
           Height = 17
           Caption = 'Show Marks in Graphs'
@@ -3987,7 +4000,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkPending: TCheckBox
           Left = 176
-          Top = 243
+          Top = 271
           Width = 169
           Height = 17
           Caption = 'Consider Pending Queue items'
@@ -3998,7 +4011,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkRealTime: TCheckBox
           Left = 176
-          Top = 266
+          Top = 294
           Width = 169
           Height = 17
           Caption = 'Update counts real time'
@@ -4007,7 +4020,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chksorting: TCheckBox
           Left = 176
-          Top = 377
+          Top = 405
           Width = 201
           Height = 17
           Caption = 'Enable Sorting'
@@ -4018,7 +4031,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object GroupBox1: TGroupBox
           Left = 191
-          Top = 400
+          Top = 428
           Width = 209
           Height = 100
           Caption = 'List Sorting'
@@ -4109,7 +4122,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkResponses: TCheckBox
           Left = 176
-          Top = 312
+          Top = 340
           Width = 201
           Height = 17
           Caption = 'Display only successful responses'
@@ -4120,7 +4133,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkRejected: TCheckBox
           Left = 176
-          Top = 289
+          Top = 317
           Width = 169
           Height = 17
           Caption = 'Keep Rejected list alive'
@@ -4210,7 +4223,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkUpdateCollections: TCheckBox
           Left = 176
-          Top = 334
+          Top = 362
           Width = 144
           Height = 17
           Caption = 'Update Collections'
@@ -4221,7 +4234,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkAddItem: TCheckBox
           Left = 176
-          Top = 356
+          Top = 384
           Width = 127
           Height = 17
           Caption = 'Disable Trend Display'
@@ -4230,7 +4243,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object GroupBox2: TGroupBox
           Left = 191
-          Top = 506
+          Top = 534
           Width = 209
           Height = 61
           Caption = 'Group Sorting'
@@ -4275,12 +4288,21 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkShowButtonHint: TCheckBox
           Left = 176
-          Top = 571
+          Top = 599
           Width = 169
           Height = 17
           Caption = 'Show Button Hints'
           TabOrder = 24
           OnClick = chkShowButtonHintClick
+        end
+        object edtBackup: TEdit
+          Left = 176
+          Top = 221
+          Width = 233
+          Height = 21
+          ReadOnly = True
+          TabOrder = 25
+          OnChange = edtEmailChange
         end
       end
     end
@@ -5331,7 +5353,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001E80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001EC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13409,6 +13431,14 @@ object frmFlickrMain: TfrmFlickrMain
         Caption = 'Save'
         ImageIndex = 221
         OnClick = btnSaveClick
+      end
+      object N9: TMenuItem
+        Caption = '-'
+      end
+      object backup1: TMenuItem
+        Caption = 'Backup'
+        ImageIndex = 41
+        OnClick = backup1Click
       end
       object N8: TMenuItem
         Caption = '-'

@@ -44,7 +44,7 @@ uses
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
-  MetropolisUI.Tile, Vcl.Imaging.pngimage;
+  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -400,6 +400,10 @@ type
     upgreen33: TImage;
     downred33: TImage;
     LabelCommentsPhoto: TLabel;
+    backup1: TMenuItem;
+    Label17: TLabel;
+    edtBackup: TEdit;
+    N9: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -519,6 +523,7 @@ type
     procedure Button1MouseEnter(Sender: TObject);
     procedure btnShowReportMouseEnter(Sender: TObject);
     procedure chkShowButtonHintClick(Sender: TObject);
+    procedure backup1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -611,7 +616,7 @@ uses
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
-  flickr.lib.email, flickr.lib.math;
+  flickr.lib.email, flickr.lib.math, flickr.lib.backup;
 
 {$R *.dfm}
 
@@ -702,6 +707,15 @@ end;
 procedure TfrmFlickrMain.AuthenticateMouseEnter(Sender: TObject);
 begin
   ShowHint('Authorize your Flickr Account', Sender);
+end;
+
+procedure TfrmFlickrMain.backup1Click(Sender: TObject);
+var
+  date : TDate;
+begin
+  date := TBackup.Produce(options.Workspace);
+  edtBackup.Text := DateToStr(date);
+  ShowMessage('Backup has been completed!');
 end;
 
 procedure TfrmFlickrMain.BanUnbanforgroupAddition1Click(Sender: TObject);
@@ -2432,6 +2446,7 @@ procedure TfrmFlickrMain.btnSaveClick(Sender: TObject);
 var
   st : TSTopwatch;
   option : Integer;
+  dateBackup : TDate;
 begin
   option := MessageDlg('Do you want to save the changes?',mtInformation, mbOKCancel, 0);
   if option = mrOK then
@@ -2440,6 +2455,18 @@ begin
     begin
       showMessage('There is nothing to save!');
       exit;
+    end;
+
+    try
+      dateBackup := StrToDate(edtBackup.Text);
+    except
+      dateBackup := Date;
+    end;
+    if DaysBetween(Date, dateBackup) > 5 then
+    option := MessageDlg('It''s been more than 5 days since your last backup, do you want to create it now?',mtInformation, mbOKCancel, 0);
+    if option = mrOK then
+    begin
+      backup1Click(sender);
     end;
 
     st := TStopWatch.Create;
@@ -2599,6 +2626,7 @@ begin
   options.DisableTrendDisplay := chkAddItem.Checked;
   options.sortingEnabled := chksorting.Checked;
   options.ShowHints := chkShowButtonHint.Checked;
+  options.BackupDate := edtBackup.Text;
 
   options.workspace := edtWorkspace.Text;
 
@@ -2672,6 +2700,7 @@ begin
   chkAddItem.Checked := options.DisableTrendDisplay;
   chksorting.Checked := options.sortingEnabled;
   chkShowButtonHint.Checked := options.showHints;
+  edtBackup.Text := options.BackupDate;
 
   edtMaxLog.Text := options.MaxNumberOfLinesLog;
   edtEmail.Text := options.eMailAddress;

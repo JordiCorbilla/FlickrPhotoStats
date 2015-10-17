@@ -109,7 +109,8 @@ contains
   flickr.photos.histogram in 'flickr.photos.histogram.pas',
   flickr.lib.item in 'flickr.lib.item.pas',
   flickr.lib.item.list in 'flickr.lib.item.list.pas',
-  flickr.lib.math in 'flickr.lib.math.pas';
+  flickr.lib.math in 'flickr.lib.math.pas',
+  flickr.lib.backup in 'flickr.lib.backup.pas';
 
 end.
 

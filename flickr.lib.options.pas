@@ -76,6 +76,8 @@ type
     function GetWorkspace() : string;
     procedure SetShowHints(const Value: boolean);
     function GetShowHints() : boolean;
+    procedure SetBackupDate(const Value: string);
+    function GetBackupDate() : string;
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
     property ConsiderPendingQueueItems : boolean read GetConsiderPendingQueueItems write SetConsiderPendingQueueItems;
@@ -97,6 +99,7 @@ type
     property AlbumLikesID : TStringList read GetAlbumLikesID write SetAlbumLikesID;
     property Workspace : string read GetWorkspace write SetWorkspace;
     property ShowHints : boolean read GetShowHints write SetShowHints;
+    property BackupDate : string read GetBackupDate write SetBackupDate;
     function Load() : IOptions;
     procedure Save();
   End;
@@ -124,6 +127,7 @@ type
     FDisableTrendDisplay: boolean;
     FWorkspace: string;
     FShowHints: boolean;
+    FBackupDate: string;
     procedure SetConsiderPendingQueueItems(const Value: boolean);
     procedure SeteMailAddress(const Value: string);
     procedure SetMaxItems(const Value: integer);
@@ -166,6 +170,8 @@ type
     function GetWorkspace() : string;
     procedure SetShowHints(const Value: boolean);
     function GetShowHints() : boolean;
+    procedure SetBackupDate(const Value: string);
+    function GetBackupDate() : string;
   public
     property MaxItemsListGlobals : string read GetMaxItemsListGlobals write SetMaxItemsListGlobals;
     property ShowMarksInGraphs : boolean read GetShowMarksInGraphs write SetShowMarksInGraphs;
@@ -188,6 +194,7 @@ type
     property DisableTrendDisplay: boolean read GetDisableTrendDisplay write SetDisableTrendDisplay;
     property Workspace : string read GetWorkspace write SetWorkspace;
     property ShowHints : boolean read GetShowHints write SetShowHints;
+    property BackupDate : string read GetBackupDate write SetBackupDate;
     class function New(): IOptions;
     function Load() : IOptions;
     procedure Save();
@@ -241,6 +248,11 @@ end;
 function TOptions.GetAlbumViewsID: TStringList;
 begin
   result := FAlbumViewsID;
+end;
+
+function TOptions.GetBackupDate: string;
+begin
+  result := FBackupDate;
 end;
 
 function TOptions.GetConsiderPendingQueueItems: boolean;
@@ -346,7 +358,7 @@ begin
     FeMailAddress := inifile.ReadString('System', 'eMailAddress', '');
     FSortingEnabled := inifile.ReadBool('System', 'SortingEnabled', true);
     FShowHints := inifile.ReadBool('System', 'ShowHint', false);
-
+    FBackupDate := inifile.ReadString('System', 'BackupDate', '');
     FKeepRejectedListAlive := inifile.ReadBool('System', 'KeepRejectedListAlive', true);
     FDisplaySuccessfulResponses := inifile.ReadBool('System', 'DisplaySuccessfulResponses', true);
     FUpdateCollections := inifile.ReadBool('System', 'UpdateCollections', true);
@@ -410,6 +422,7 @@ begin
     inifile.WriteBool('System', 'DisplaySuccessfulResponses', FDisplaySuccessfulResponses);
     inifile.WriteBool('System', 'UpdateCollections', FUpdateCollections);
     inifile.WriteBool('System', 'DisableTrendDisplay', FDisableTrendDisplay);
+    inifile.WriteString('System', 'BackupDate', FBackupDate);
 
     inifile.WriteInteger('System', 'SortedBy', FSortedBy);
     inifile.WriteInteger('AlbumViews', 'MaxItems', FAlbumViews.count);
@@ -466,6 +479,11 @@ begin
   FAlbumViewsID.Clear;
   for i := 0 to Value.Count-1 do
     FAlbumViewsID.Add(Value[i]);
+end;
+
+procedure TOptions.SetBackupDate(const Value: string);
+begin
+  FBackupDate := Value;
 end;
 
 procedure TOptions.SetConsiderPendingQueueItems(const Value: boolean);
