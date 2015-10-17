@@ -138,12 +138,12 @@
         <DCC_Optimize>true</DCC_Optimize>
         <VerInfo_Build>1</VerInfo_Build>
         <Debugger_RunParams>-v -r -g</Debugger_RunParams>
-        <VerInfo_MinorVer>6</VerInfo_MinorVer>
+        <VerInfo_MinorVer>7</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.6;FileVersion=4.6.0.1;InternalName=Flickr Photo Stats v4.6;LegalCopyright=Flickr Photo Stats v4.6;LegalTrademarks=Flickr Photo Stats v4.6;OriginalFilename=Flickr Photo Stats v4.6;ProductName=Flickr Photo Stats v4.6;ProductVersion=4.6.0.0;Comments=Flickr Photo Stats v4.6</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.7;FileVersion=4.7.0.1;InternalName=Flickr Photo Stats v4.7;LegalCopyright=Flickr Photo Stats v4.7;LegalTrademarks=Flickr Photo Stats v4.7;OriginalFilename=Flickr Photo Stats v4.7;ProductName=Flickr Photo Stats v4.7;ProductVersion=4.7.0.0;Comments=Flickr Photo Stats v4.7</VerInfo_Keys>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">

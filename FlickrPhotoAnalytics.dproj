@@ -104,10 +104,10 @@
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <DCC_Optimize>true</DCC_Optimize>
         <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_MinorVer>6</VerInfo_MinorVer>
+        <VerInfo_MinorVer>7</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.6;FileVersion=4.6.0.1;InternalName=Flickr Photo Stats v4.6;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.6;ProductName=Flickr Photo Stats v4.6;ProductVersion=4.6.0.0;Comments=Flickr Photo Stats v4.6</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.7;FileVersion=4.7.0.1;InternalName=Flickr Photo Stats v4.7;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.7;ProductName=Flickr Photo Stats v4.7;ProductVersion=4.7.0.0;Comments=Flickr Photo Stats v4.7</VerInfo_Keys>
         <VerInfo_MajorVer>4</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
