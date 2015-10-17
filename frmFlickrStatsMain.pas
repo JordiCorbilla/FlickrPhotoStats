@@ -3463,6 +3463,7 @@ var
   profile: IProfile;
   i: Integer;
   option : integer;
+  index : integer;
 begin
   if edtProfile.text = '' then
   begin
@@ -3479,6 +3480,7 @@ begin
   if option = mrOK then
   begin
     // Give me the profile
+    index := ComboBox1.ItemIndex;
     profile := flickrProfiles.getProfile(edtProfile.text);
 
     if profile = nil then
@@ -3527,6 +3529,8 @@ begin
     end;
     flickrProfiles.save(options.workspace + '\flickrProfiles.xml');
     LoadProfiles();
+    if index <> -1 then
+      combobox1.ItemIndex := index;
   end;
 end;
 
@@ -3866,6 +3870,7 @@ begin
       comparer := tComparePoolSize;
     FilteredGroupList := TFilteredList.Create(comparer);
   end;
+  btnFilterCancelClick(sender);
   batchUpdate.Enabled := false;
   pagecontrol3.TabIndex := 0;
   btnLoad.Enabled := false;
