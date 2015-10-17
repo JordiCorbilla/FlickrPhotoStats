@@ -2467,6 +2467,7 @@ begin
     if option = mrOK then
     begin
       backup1Click(sender);
+      btnSaveOptionsClick(sender);
     end;
 
     st := TStopWatch.Create;
