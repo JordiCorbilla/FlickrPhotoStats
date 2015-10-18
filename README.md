@@ -88,6 +88,9 @@ Version 4.5 (RC):
 Version 4.6 (RC):
 - [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
 
+Version 4.7 (Beta - latest development):
+- [FlickrPhotoStats(x64) v4.7.0.1](https://app.box.com/s/azjzckh6782o57159h7hpb2hmyqcejgh).
+
 ## Changelog
 ### Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
@@ -124,6 +127,11 @@ Version 4.6 (RC):
 
 ### Features for version 4.6:
 - Dashboard upgrade.
+- Trend upgrade.
+
+### Features for version 4.7:
+- Dashboard upgrade.
+- Data Backup in zip format.
 - Trend upgrade.
 
 Source code is available here.
