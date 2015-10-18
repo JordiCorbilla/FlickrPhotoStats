@@ -69,7 +69,8 @@ var
 
 begin
   try
-    TLogger.LogFile('Starting Batch Update');
+    TLogger.LogFile('');
+    TLogger.LogFile('Starting Batch Update ' + TUtils.GetVersion);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
     WriteLn('###################################################');
     WriteLn('# Welcome to Flickr Photo Analytics Batch Update  #');

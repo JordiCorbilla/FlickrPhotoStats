@@ -45,21 +45,21 @@ begin
   if valueBeforeYesterday > 0 then
   begin
     if valueBeforeYesterday < valueYesterday then //green
-      rateYesterday := (1 - (valueYesterday / valueBeforeYesterday)) * 100.0;
+      rateYesterday := ((valueYesterday / valueBeforeYesterday) -1) * 100.0;
     if valueBeforeYesterday = valueYesterday then //red
       rateYesterday := 0.0;
     if valueBeforeYesterday > valueYesterday then //red
-      rateYesterday := -(1 - (valueYesterday / valueBeforeYesterday)) * 100.0;
+      rateYesterday := ((valueYesterday / valueBeforeYesterday) -1) * 100.0;
   end;
   rateToday := 0.0;
   if valueYesterday > 0 then
   begin
     if valueYesterday < valueToday then //green
-      rateToday := (1 - (valueToday / valueYesterday)) * 100.0;
+      rateToday := ((valueToday / valueYesterday) - 1) * 100.0;
     if valueYesterday = valueToday then //red
       rateToday := 0.0;
     if valueYesterday > valueToday then //red
-      rateToday := -(1 - (valueToday / valueYesterday)) * 100.0;
+      rateToday := ((valueToday / valueYesterday) - 1) * 100.0;
   end;
 end;
 
@@ -68,12 +68,12 @@ begin
   rateYesterday := 0.0;
   if viewsYesterday > 0 then
   begin
-    rateYesterday := (1-(likesYesterday / viewsYesterday))*100.0;
+    rateYesterday := ((likesYesterday / viewsYesterday))*100.0;
   end;
   rateToday := 0.0;
   if viewsToday > 0 then
   begin
-    rateToday := (1-(likesToday / viewsToday))*100.0;
+    rateToday := ((likesToday / viewsToday))*100.0;
   end;
 end;
 

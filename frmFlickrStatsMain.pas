@@ -356,54 +356,57 @@ type
     Image10: TImage;
     Panel9: TPanel;
     Panel24: TPanel;
-    Image1: TImage;
-    Label13: TLabel;
-    LabelYesterdayViews: TLabel;
-    Label14: TLabel;
-    LabelTodayViews: TLabel;
-    downred1: TImage;
-    labelArrow1: TLabel;
-    upgreen1: TImage;
-    LabelViewsPhoto: TLabel;
-    Label16: TLabel;
-    LabelViewsYesterdayRate: TLabel;
-    LabelViewsTodayRate: TLabel;
-    downred11: TImage;
-    upgreen11: TImage;
     Panel25: TPanel;
-    Image2: TImage;
-    Label12: TLabel;
-    Label15: TLabel;
-    LabelYesterdayLikes: TLabel;
-    LabelTodayLikes: TLabel;
-    downred2: TImage;
-    LabelArrow2: TLabel;
-    upgreen2: TImage;
-    Label46: TLabel;
-    LabelLikesYesterdayRate: TLabel;
-    LabelLikesTodayRate: TLabel;
-    upgreen22: TImage;
-    downred22: TImage;
-    LabelLikesPhoto: TLabel;
     Panel26: TPanel;
-    Image3: TImage;
-    Label41: TLabel;
-    Label42: TLabel;
-    LabelYesterdayComments: TLabel;
-    LabelTodayComments: TLabel;
-    upgreen3: TImage;
-    LabelArrow3: TLabel;
-    downred3: TImage;
-    Label47: TLabel;
-    LabelCommentsYesterdayRate: TLabel;
-    LabelCommentsTodayRate: TLabel;
-    upgreen33: TImage;
-    downred33: TImage;
-    LabelCommentsPhoto: TLabel;
     backup1: TMenuItem;
     Label17: TLabel;
     edtBackup: TEdit;
     N9: TMenuItem;
+    Panel27: TPanel;
+    Image1: TImage;
+    Label13: TLabel;
+    Label14: TLabel;
+    LabelTodayViews: TLabel;
+    LabelYesterdayViews: TLabel;
+    upgreen1: TImage;
+    labelArrow1: TLabel;
+    LabelViewsPhoto: TLabel;
+    Label16: TLabel;
+    LabelViewsYesterdayRate: TLabel;
+    LabelViewsTodayRate: TLabel;
+    upgreen11: TImage;
+    downred1: TImage;
+    downred11: TImage;
+    Panel28: TPanel;
+    Panel29: TPanel;
+    Image2: TImage;
+    Label12: TLabel;
+    LabelYesterdayLikes: TLabel;
+    Label15: TLabel;
+    LabelTodayLikes: TLabel;
+    upgreen2: TImage;
+    LabelArrow2: TLabel;
+    LabelLikesPhoto: TLabel;
+    Label46: TLabel;
+    LabelLikesYesterdayRate: TLabel;
+    LabelLikesTodayRate: TLabel;
+    downred22: TImage;
+    downred2: TImage;
+    upgreen22: TImage;
+    Image3: TImage;
+    Label41: TLabel;
+    LabelYesterdayComments: TLabel;
+    Label42: TLabel;
+    LabelTodayComments: TLabel;
+    downred3: TImage;
+    LabelArrow3: TLabel;
+    LabelCommentsPhoto: TLabel;
+    Label47: TLabel;
+    LabelCommentsYesterdayRate: TLabel;
+    LabelCommentsTodayRate: TLabel;
+    downred33: TImage;
+    upgreen3: TImage;
+    upgreen33: TImage;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -4813,6 +4816,8 @@ begin
 end;
 
 procedure TfrmFlickrMain.UpdateArrows(valueYesterday, valueToday : integer; rateYesterday, rateToday : double; arrow1, arrow2, arrow3, arrow4 : TImage; label1 : TLabel);
+var
+  value : double;
 begin
   arrow1.Visible := false;
   arrow2.Visible := false;
@@ -4821,7 +4826,11 @@ begin
   if valueYesterday < valueToday then //green
   begin
     arrow1.visible := true;
-    label1.caption := '+' + Format('%n',[(1 - (valueToday / valueYesterday))*100.0]).Replace('.00','') + '%';
+    value := ((valueToday / valueYesterday) -1 )* 100.0;
+    if value > 0 then
+      label1.caption := '+' + Format('%n',[value]).Replace('.00','') + '%'
+    else
+      label1.caption := Format('%n',[value]).Replace('.00','') + '%'
   end;
   if valueYesterday = valueToday then //red
   begin
@@ -4831,7 +4840,11 @@ begin
   if valueYesterday > valueToday then //red
   begin
     arrow2.visible := true;
-    label1.caption := '-' + Format('%n',[(1 - (valueToday / valueYesterday))*100.0]).Replace('.00','') + '%';
+    value := ((valueToday / valueYesterday) -1 )* 100.0;
+    if value > 0 then
+      label1.caption := '+' + Format('%n',[value]).Replace('.00','') + '%'
+    else
+      label1.caption := Format('%n',[value]).Replace('.00','') + '%'
   end;
 
   if TMathHelper.Compare(rateYesterday, rateToday, '<') then //green
@@ -4927,6 +4940,10 @@ begin
 
   panel24.Width := round(panel9.Width / 3);
   panel25.Width := round(panel9.Width / 3);
+
+  panel27.Left := (panel24.Width-panel27.Width) div 2;
+  panel28.Left := (panel25.Width-panel28.Width) div 2;
+  panel29.Left := (panel26.Width-panel29.Width) div 2;
   //Second page
   panel2.Height := round (tabsheet2.Height * 0.6);
   if (tabsheet2.Height - panel2.Height - splitter1.Height) > 0 then
