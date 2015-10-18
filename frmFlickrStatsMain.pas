@@ -2451,12 +2451,15 @@ begin
     except
       dateBackup := Date;
     end;
+
     if DaysBetween(Date, dateBackup) > 5 then
-    option := MessageDlg('It''s been more than 5 days since your last backup, do you want to create it now?',mtInformation, mbOKCancel, 0);
-    if option = mrOK then
     begin
-      backup1Click(sender);
-      btnSaveOptionsClick(sender);
+      option := MessageDlg('It''s been more than 5 days since your last backup, do you want to create it now?',mtInformation, mbOKCancel, 0);
+      if option = mrOK then
+      begin
+        backup1Click(sender);
+        btnSaveOptionsClick(sender);
+      end;
     end;
 
     st := TStopWatch.Create;

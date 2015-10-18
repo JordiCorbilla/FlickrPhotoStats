@@ -812,7 +812,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 810
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     ExplicitTop = 120
@@ -1346,7 +1346,6 @@ object frmFlickrMain: TfrmFlickrMain
             TopAxis.Title.Font.Color = clLime
             View3D = False
             View3DWalls = False
-            Zoom.Allow = False
             Align = alTop
             Color = 2763306
             TabOrder = 2
