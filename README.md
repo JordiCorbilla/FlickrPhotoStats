@@ -157,7 +157,7 @@ It works under Windows 7, Windows 8, Windows 10 and Windows 2012.
 Minimum Requirements
 ----------------
 
-This application is memory intensive and it will require loads of memory overtime. A year worth of history is about 500Mb in memory. Minumum recommended memory is 4Gb with a cpu with 4 cores (64 bits). Google can detect the constant sending/receiving of requests as a robot.
+This application is memory intensive and it will require loads of memory overtime. A year worth of history is about 500Mb in memory. Minumum recommended memory is 4Gb with a cpu with 4 cores (64 bits). Google can detect the constant sending/receiving of requests as a robot. Recommended screen resolution: 1920x1200. Minimum (1600x1200)
 
 **Licence**
 -------
