@@ -110,7 +110,8 @@ contains
   flickr.lib.item in 'flickr.lib.item.pas',
   flickr.lib.item.list in 'flickr.lib.item.list.pas',
   flickr.lib.math in 'flickr.lib.math.pas',
-  flickr.lib.backup in 'flickr.lib.backup.pas';
+  flickr.lib.backup in 'flickr.lib.backup.pas',
+  flickr.lib.rates in 'flickr.lib.rates.pas';
 
 end.
 

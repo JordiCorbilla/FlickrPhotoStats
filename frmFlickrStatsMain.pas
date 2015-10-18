@@ -44,7 +44,7 @@ uses
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
-  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils;
+  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -556,8 +556,9 @@ type
     procedure LoadOptions;
     procedure ShowHint(description : string; Sender: TObject);
     procedure InitialiseDashboardTrend;
-    procedure UpdateArrows(valueYesterday, valueToday: integer; rateYesterday,
-      rateToday: double; arrow1, arrow2, arrow3, arrow4: TImage; label1 : TLabel);
+    procedure UpdateArrows(valueYesterday, valueToday: integer; rateYesterday, rateToday: double; arrow1, arrow2, arrow3, arrow4: TImage; label1 : TLabel);
+    procedure UpdateRate(valueBeforeYesterday, valueYesterday, valueToday: integer; out rateYesterday, rateToday: double); overload;
+    procedure UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double); overload;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -1008,32 +1009,17 @@ begin
   LabelTodayLikes.Caption :=  Format('%n',[likesToday.ToDouble]).Replace('.00','');
   LabelTodayComments.Caption :=  Format('%n',[commentsToday.ToDouble]).Replace('.00','');
 
-  Rate1 := 0.0;
-  if viewsBeforeYesterday > 0 then
-    Rate1 := (viewsYesterday / viewsBeforeYesterday)*100.0;
-  Rate2 := 0.0;
-  if viewsYesterday > 0 then
-    Rate2 := (viewsToday / viewsYesterday)*100.0;
+  UpdateRate(viewsBeforeYesterday, viewsYesterday, viewsToday, Rate1, Rate2);
   LabelViewsYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
   LabelViewsTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
   UpdateArrows(viewsYesterday, viewsToday, Rate1, Rate2, upgreen1, downred1, upgreen11, downred11, LabelArrow1);
 
-  Rate1 := 0.0;
-  if viewsYesterday > 0 then
-    Rate1 := (likesYesterday / viewsYesterday)*100.0;
-  Rate2 := 0.0;
-  if viewsToday > 0 then
-    Rate2 := (likesToday / viewsToday)*100.0;
+  UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday, Rate1, Rate2);
   LabelLikesYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
   LabelLikesTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
   UpdateArrows(likesYesterday, likesToday, Rate1, Rate2, upgreen2, downred2, upgreen22, downred22, LabelArrow2);
 
-  Rate1 := 0.0;
-  if viewsYesterday > 0 then
-    Rate1 := (commentsYesterday / viewsYesterday)*100.0;
-  Rate2 := 0.0;
-  if viewsToday > 0 then
-    Rate2 := (commentsToday / viewsToday)*100.0;
+  UpdateRate(viewsYesterday, viewsToday, commentsYesterday, commentsToday, Rate1, Rate2);
   LabelCommentsYesterdayRate.caption := Format('%n',[Rate1]).Replace('.00','') + '%';
   LabelCommentsTodayRate.caption := Format('%n',[Rate2]).Replace('.00','') + '%';
   UpdateArrows(commentsYesterday, commentsToday, Rate1, Rate2, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
@@ -3013,6 +2999,7 @@ begin
 
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
+  edtFilterGroup.Text := '';
   label37.Visible := false;
   listGroups.Visible := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
@@ -4815,6 +4802,16 @@ begin
   UpdateArrows(0,0,0.0,0.0, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
 end;
 
+procedure TfrmFlickrMain.UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double);
+begin
+  TRate.UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday, rateYesterday, rateToday);
+end;
+
+procedure TfrmFlickrMain.UpdateRate(valueBeforeYesterday, valueYesterday, valueToday : integer; out rateYesterday : double; out rateToday : double);
+begin
+  TRate.UpdateRate(valueBeforeYesterday, valueYesterday, valueToday, rateYesterday, rateToday);
+end;
+
 procedure TfrmFlickrMain.UpdateArrows(valueYesterday, valueToday : integer; rateYesterday, rateToday : double; arrow1, arrow2, arrow3, arrow4 : TImage; label1 : TLabel);
 begin
   arrow1.Visible := false;
@@ -4824,7 +4821,7 @@ begin
   if valueYesterday < valueToday then //green
   begin
     arrow1.visible := true;
-    label1.caption := '+' + Format('%n',[(valueToday / valueYesterday)*100.0]).Replace('.00','') + '%';
+    label1.caption := '+' + Format('%n',[(1 - (valueToday / valueYesterday))*100.0]).Replace('.00','') + '%';
   end;
   if valueYesterday = valueToday then //red
   begin

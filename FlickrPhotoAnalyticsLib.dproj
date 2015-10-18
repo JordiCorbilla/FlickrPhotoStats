@@ -184,6 +184,7 @@
         <DCCReference Include="flickr.lib.item.list.pas"/>
         <DCCReference Include="flickr.lib.math.pas"/>
         <DCCReference Include="flickr.lib.backup.pas"/>
+        <DCCReference Include="flickr.lib.rates.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
