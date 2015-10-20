@@ -41,12 +41,13 @@ uses
   flickr.lib.logging,
   flickr.organic,
   flickr.organic.stats,
+  flickr.repository.rest,
   flickr.lib.options,
   flickr.lib.email,
   flickr.lib.email.html,
   flickr.lib.utils,
   System.Classes,
-  flickr.repository.rest in 'flickr.repository.rest.pas', Winapi.Windows;
+  Winapi.Windows;
 
 var
   repository: IFlickrRepository;
