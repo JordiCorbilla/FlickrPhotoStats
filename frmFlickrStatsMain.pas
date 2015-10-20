@@ -407,6 +407,7 @@ type
     downred33: TImage;
     upgreen3: TImage;
     upgreen33: TImage;
+    btnBackup: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -627,6 +628,7 @@ uses
 procedure TfrmFlickrMain.apikeyChange(Sender: TObject);
 begin
   btnSave.Enabled := true;
+  btnBackup.Enabled := true;
   if optionsEMail.flickrApiKey <> apikey.text then
     FDirtyOptions := true;
 end;
@@ -899,6 +901,7 @@ begin
     listPhotos.OnItemChecked := listPhotosItemChecked;
     listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
     btnSave.Enabled := true;
+    btnBackup.Enabled := true;
     photoId.Enabled := true;
     btnLoad.Enabled := true;
     btnAdd.Enabled := true;
@@ -1400,6 +1403,7 @@ begin
   photoId.text := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
+  btnBackup.Enabled := true;
   listPhotos.OnItemChecked := listPhotosItemChecked;
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
   UpdateLabel;
@@ -2483,6 +2487,7 @@ begin
     log('Saving repository flickrOrganic: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     btnSave.Enabled := false;
+    btnBackup.Enabled := false;
     btnLoad.Enabled := true;
     SaveTimeLabel.Caption := DateTimeToStr(now);
   end;
@@ -2820,6 +2825,7 @@ begin
   listPhotos.Items.Clear;
   filterEnabled := true;
   btnSave.Enabled := false;
+  btnBackup.Enabled := false;
   btnLoad.Enabled := false;
   startMark := -1;
   endMark := -1;
@@ -2966,6 +2972,7 @@ begin
   filterEnabled := false;
   btnAddFilter.Enabled := true;
   btnSave.Enabled := true;
+  btnBackup.Enabled := true;
   btnLoad.Enabled := true;
   listPhotos.Visible := false;
   LoadForms(repository);
@@ -4340,6 +4347,7 @@ begin
   UpdateTotals(false);
   LoadHallOfFame(repository);
   btnSave.Enabled := true;
+  btnBackup.Enabled := true;
   batchUpdate.Enabled := true;
   photoId.Enabled := true;
   btnAdd.Enabled := true;
