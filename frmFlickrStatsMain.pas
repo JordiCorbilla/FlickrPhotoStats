@@ -44,7 +44,8 @@ uses
   flickr.organic.stats, flickr.lib.options.email, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
-  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates;
+  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
+  flickr.base;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -563,6 +564,7 @@ type
     procedure UpdateArrows(valueYesterday, valueToday: integer; rateYesterday, rateToday: double; arrow1, arrow2, arrow3, arrow4: TImage; label1 : TLabel);
     procedure UpdateRate(valueBeforeYesterday, valueYesterday, valueToday: integer; out rateYesterday, rateToday: double); overload;
     procedure UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double); overload;
+    procedure AddAdditionalGroupDetails(base: IBase);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -609,6 +611,9 @@ type
     procedure Log(s: string);
   end;
 
+const
+  timeout = 200;
+
 var
   frmFlickrMain: TfrmFlickrMain;
 
@@ -617,11 +622,11 @@ implementation
 uses
   flickr.photos, flickr.stats, flickr.rest, flickr.top.stats, ComObj,
   flickr.oauth, StrUtils, flickr.access.token, flickr.lib.parallel, ActiveX,
-  System.SyncObjs, generics.collections, flickr.base,
+  System.SyncObjs, generics.collections,
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
-  flickr.lib.email, flickr.lib.math, flickr.lib.backup;
+  flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper;
 
 {$R *.dfm}
 
@@ -1153,7 +1158,7 @@ begin
         except
           on e: exception do
           begin
-            sleep(2000);
+            sleep(timeout);
             timedout := false;
           end;
         end;
@@ -1209,7 +1214,7 @@ begin
         except
           on e: exception do
           begin
-            sleep(2000);
+            sleep(timeout);
             timedout := false;
           end;
         end;
@@ -1259,7 +1264,7 @@ begin
           except
             on e: exception do
             begin
-              sleep(2000);
+              sleep(timeout);
               timedout := false;
             end;
           end;
@@ -2539,7 +2544,7 @@ begin
             except
               on e: exception do
               begin
-                sleep(2000);
+                sleep(timeout);
                 timedout := false;
               end;
             end;
@@ -2570,7 +2575,7 @@ begin
             except
               on e: exception do
               begin
-                sleep(2000);
+                sleep(timeout);
                 timedout := false;
               end;
             end;
@@ -3135,7 +3140,7 @@ begin
                 except
                   on e: exception do
                   begin
-                    sleep(2000);
+                    sleep(timeout);
                     timedout := false;
                   end;
                 end;
@@ -3432,7 +3437,7 @@ begin
               except
                 on e: exception do
                 begin
-                  sleep(2000);
+                  sleep(timeout);
                   timedout := false;
                 end;
               end;
@@ -3879,6 +3884,7 @@ var
   photos : string;
   members : string;
   comparer : TCompareType;
+  base : IBase;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -3920,7 +3926,7 @@ begin
     except
       on e: exception do
       begin
-        sleep(2000);
+        sleep(timeout);
         TLogger.LogFile('reading groups first iteration: ' + e.Message);
         application.ProcessMessages;
         timedout := false;
@@ -3951,7 +3957,11 @@ begin
       photos := iXMLRootNode4.attributes['photos'];
       members := iXMLRootNode4.attributes['member_count'];
       if ismember = '1' then
-        FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
+      begin
+        base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
+        AddAdditionalGroupDetails(base);
+        FilteredGroupList.Add(base);
+      end;
     end;
     progressbar1.position := progressbar1.position + 1;
     Taskbar1.ProgressValue := progressbar1.position;
@@ -3974,7 +3984,7 @@ begin
       except
         on e: exception do
         begin
-          sleep(2000);
+          sleep(timeout);
           TLogger.LogFile('reading groups second iteration: ' + e.Message);
           application.ProcessMessages;
           timedout := false;
@@ -3997,7 +4007,11 @@ begin
         photos := iXMLRootNode4.attributes['photos'];
         members := iXMLRootNode4.attributes['member_count'];
         if ismember = '1' then
-          FilteredGroupList.Add(TBase.New(id, title, StrToInt(photos), StrToInt(members)));
+        begin
+          base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
+          AddAdditionalGroupDetails(base);
+          FilteredGroupList.Add(base);
+        end;
       end;
       progressbar1.position := progressbar1.position + 1;
       Taskbar1.ProgressValue := progressbar1.position;
@@ -4018,6 +4032,19 @@ begin
     Item.SubItems.Add(FilteredGroupList.list[i].title);
     Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].Description);
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
   end;
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
@@ -4042,6 +4069,135 @@ begin
   listGroups.Visible := true;
   UpdateLabelGroups();
   showMessage('Flickr groups have been loaded');
+end;
+
+procedure TfrmFlickrMain.AddAdditionalGroupDetails(base : IBase);
+var
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  urlGroups: string;
+  timedout: Boolean;
+  xmlDocument: IXMLDocument;
+  description : string;
+  IsModerated : boolean;
+  ThrottleCount : integer;
+  ThrottleMode : string;
+  ThrottleRemaining : integer;
+  photos_ok : boolean;
+  videos_ok : boolean;
+  images_ok : boolean;
+  screens_ok : boolean;
+  art_ok : boolean;
+  safe_ok : boolean;
+  moderate_ok : boolean;
+  restricted_ok : boolean;
+  has_geo : boolean;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+begin
+  Application.ProcessMessages;
+  CoInitialize(nil);
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    xmlDocument := TXMLDocument.Create(nil);
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      urlGroups := TFlickrRest.New().getGroupInfo(apikey.text, base.Id, userToken, secret.text, userTokenSecret);
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(urlGroups);
+          timedout := true;
+        except
+          on e: exception do //'EIdHTTPProtocolException'
+          begin
+            sleep(timeout);
+            TLogger.LogFile('reading groups first iteration: ' + e.Message);
+            application.ProcessMessages;
+            timedout := false;
+          end;
+        end;
+      end;
+      xmlDocument.LoadFromXML(response);
+      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
+      IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
+      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
+
+      description := '';
+      ThrottleCount := 0;
+      ThrottleMode := '';
+      ThrottleRemaining := 0;
+      photos_ok := false;
+      videos_ok := false;
+      images_ok := false;
+      screens_ok := false;
+      art_ok := false;
+      safe_ok := false;
+      moderate_ok := false;
+      restricted_ok := false;
+      has_geo := false;
+
+      while iXMLRootNode4 <> nil do
+      begin
+        if iXMLRootNode4.NodeName = 'description' then
+        begin
+//          try
+//            description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+//          except
+//            description := '';
+//          end;
+        end;
+
+        if iXMLRootNode4.NodeName = 'throttle' then
+        begin
+          ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
+          ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
+          ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
+        end;
+
+        if iXMLRootNode4.NodeName = 'restrictions' then
+        begin
+          photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
+          videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
+          images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
+          screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
+          art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
+          safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
+          moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
+          restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
+          has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
+        end;
+        Application.ProcessMessages;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      end;
+
+      base.Description := description;
+      base.ThrottleCount := ThrottleCount;
+      base.ThrottleMode := ThrottleMode;
+      base.ThrottleRemaining := ThrottleRemaining;
+      base.photos_ok := photos_ok;
+      base.videos_ok := videos_ok;
+      base.images_ok := images_ok;
+      base.screens_ok := screens_ok;
+      base.art_ok := art_ok;
+      base.safe_ok := safe_ok;
+      base.moderate_ok := moderate_ok;
+      base.restricted_ok := restricted_ok;
+      base.has_geo := has_geo;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+      xmlDocument := nil;
+    end;
+  finally
+    CoUninitialize;
+  end;
 end;
 
 procedure TfrmFlickrMain.btnGetGroupsMouseEnter(Sender: TObject);
@@ -4197,7 +4353,7 @@ begin
       except
         on e: exception do
         begin
-          sleep(2000);
+          sleep(timeout);
           timedout := false;
         end;
       end;
@@ -4260,7 +4416,7 @@ begin
         except
           on e: exception do
           begin
-            sleep(2000);
+            sleep(timeout);
             timedout := false;
           end;
         end;

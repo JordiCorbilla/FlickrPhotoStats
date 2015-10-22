@@ -112,7 +112,8 @@ contains
   flickr.lib.math in 'flickr.lib.math.pas',
   flickr.lib.backup in 'flickr.lib.backup.pas',
   flickr.lib.rates in 'flickr.lib.rates.pas',
-  flickr.repository.rest in 'flickr.repository.rest.pas';
+  flickr.repository.rest in 'flickr.repository.rest.pas',
+  flickr.xml.helper in 'flickr.xml.helper.pas';
 
 end.
 
