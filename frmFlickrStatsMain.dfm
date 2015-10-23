@@ -2,7 +2,7 @@ object frmFlickrMain: TfrmFlickrMain
   Left = 0
   Top = 0
   Caption = 'Flickr Photo Analytics v4.5'
-  ClientHeight = 939
+  ClientHeight = 854
   ClientWidth = 1511
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -827,7 +827,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 0
     Top = 129
     Width = 1511
-    Height = 810
+    Height = 725
     ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
@@ -847,7 +847,7 @@ object frmFlickrMain: TfrmFlickrMain
       object Splitter7: TSplitter
         Left = 793
         Top = 219
-        Height = 563
+        Height = 478
         ExplicitLeft = 816
         ExplicitTop = 264
         ExplicitHeight = 100
@@ -856,14 +856,14 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 219
         Width = 793
-        Height = 563
+        Height = 478
         Align = alLeft
         Caption = 'Panel14'
         TabOrder = 0
         object Splitter9: TSplitter
           Left = 313
           Top = 1
-          Height = 561
+          Height = 476
           ExplicitLeft = 416
           ExplicitTop = 176
           ExplicitHeight = 100
@@ -871,7 +871,7 @@ object frmFlickrMain: TfrmFlickrMain
         object Splitter4: TSplitter
           Left = 561
           Top = 1
-          Height = 561
+          Height = 476
           ExplicitLeft = 576
           ExplicitTop = 200
           ExplicitHeight = 100
@@ -880,7 +880,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 1
           Top = 1
           Width = 312
-          Height = 561
+          Height = 476
           Align = alLeft
           Caption = 'Panel17'
           TabOrder = 0
@@ -979,7 +979,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 1
             Top = 452
             Width = 310
-            Height = 108
+            Height = 23
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1163,7 +1163,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 316
           Top = 1
           Width = 245
-          Height = 561
+          Height = 476
           Align = alLeft
           Caption = 'Panel18'
           TabOrder = 1
@@ -1390,7 +1390,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 1
             Top = 436
             Width = 243
-            Height = 124
+            Height = 39
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1450,7 +1450,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 564
           Top = 1
           Width = 228
-          Height = 561
+          Height = 476
           Align = alClient
           Caption = 'Panel20'
           TabOrder = 2
@@ -1609,7 +1609,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 1
             Top = 436
             Width = 226
-            Height = 124
+            Height = 39
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1733,14 +1733,14 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 796
         Top = 219
         Width = 707
-        Height = 563
+        Height = 478
         Align = alClient
         Caption = 'Panel15'
         TabOrder = 1
         object Splitter8: TSplitter
           Left = 529
           Top = 1
-          Height = 561
+          Height = 476
           ExplicitLeft = 408
           ExplicitTop = 104
           ExplicitHeight = 100
@@ -1749,7 +1749,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 1
           Top = 1
           Width = 528
-          Height = 561
+          Height = 476
           Align = alLeft
           Caption = 'Panel16'
           TabOrder = 0
@@ -1836,7 +1836,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 1
             Top = 375
             Width = 526
-            Height = 185
+            Height = 100
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1947,7 +1947,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 532
           Top = 1
           Width = 174
-          Height = 561
+          Height = 476
           Align = alClient
           Caption = 'Panel19'
           TabOrder = 1
@@ -1975,7 +1975,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 1
             Top = 390
             Width = 172
-            Height = 170
+            Height = 85
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -2567,7 +2567,7 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 444
         Width = 1503
-        Height = 338
+        Height = 253
         ActivePage = TabSheet5
         Align = alClient
         TabOrder = 1
@@ -2577,13 +2577,13 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 0
             Top = 0
             Width = 1495
-            Height = 310
+            Height = 225
             Align = alClient
             TabOrder = 0
             object Splitter21: TSplitter
               Left = 377
               Top = 1
-              Height = 308
+              Height = 223
               ExplicitLeft = 265
               ExplicitTop = 0
               ExplicitHeight = 712
@@ -2591,7 +2591,7 @@ object frmFlickrMain: TfrmFlickrMain
             object Splitter23: TSplitter
               Left = 737
               Top = 1
-              Height = 308
+              Height = 223
               ExplicitLeft = 539
               ExplicitTop = 6
               ExplicitHeight = 712
@@ -2599,7 +2599,7 @@ object frmFlickrMain: TfrmFlickrMain
             object Splitter25: TSplitter
               Left = 1089
               Top = 1
-              Height = 308
+              Height = 223
               ExplicitLeft = 1416
               ExplicitTop = 48
               ExplicitHeight = 100
@@ -2608,7 +2608,7 @@ object frmFlickrMain: TfrmFlickrMain
               Left = 740
               Top = 1
               Width = 349
-              Height = 308
+              Height = 223
               Align = alLeft
               Caption = 'Panel11'
               TabOrder = 0
@@ -2707,7 +2707,7 @@ object frmFlickrMain: TfrmFlickrMain
                 Left = 1
                 Top = 159
                 Width = 347
-                Height = 148
+                Height = 63
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2767,7 +2767,7 @@ object frmFlickrMain: TfrmFlickrMain
               Left = 1
               Top = 1
               Width = 376
-              Height = 308
+              Height = 223
               Align = alLeft
               Caption = 'Panel11'
               TabOrder = 1
@@ -2866,7 +2866,7 @@ object frmFlickrMain: TfrmFlickrMain
                 Left = 1
                 Top = 159
                 Width = 374
-                Height = 148
+                Height = 63
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -2926,7 +2926,7 @@ object frmFlickrMain: TfrmFlickrMain
               Left = 380
               Top = 1
               Width = 357
-              Height = 308
+              Height = 223
               Align = alLeft
               Caption = 'Panel11'
               TabOrder = 2
@@ -3025,7 +3025,7 @@ object frmFlickrMain: TfrmFlickrMain
                 Left = 1
                 Top = 159
                 Width = 355
-                Height = 148
+                Height = 63
                 Legend.Visible = False
                 Title.Font.Color = clWhite
                 Title.Text.Strings = (
@@ -3085,7 +3085,7 @@ object frmFlickrMain: TfrmFlickrMain
               Left = 1092
               Top = 1
               Width = 402
-              Height = 308
+              Height = 223
               Legend.Visible = False
               Title.Font.Color = clWhite
               Title.Text.Strings = (
@@ -3224,7 +3224,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 0
             Top = 55
             Width = 1495
-            Height = 255
+            Height = 170
             Align = alClient
             Checkboxes = True
             Columns = <
@@ -3523,7 +3523,7 @@ object frmFlickrMain: TfrmFlickrMain
             Left = 0
             Top = 83
             Width = 1495
-            Height = 227
+            Height = 142
             ActivePage = tabList
             Align = alClient
             TabOrder = 1
@@ -3533,7 +3533,7 @@ object frmFlickrMain: TfrmFlickrMain
                 Left = 0
                 Top = 0
                 Width = 1487
-                Height = 199
+                Height = 114
                 Align = alClient
                 Checkboxes = True
                 Columns = <
@@ -3611,7 +3611,6 @@ object frmFlickrMain: TfrmFlickrMain
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
                 OnItemChecked = listGroupsItemChecked
-                ExplicitLeft = 48
               end
             end
             object tabStatus: TTabSheet
@@ -3621,14 +3620,14 @@ object frmFlickrMain: TfrmFlickrMain
                 Left = 0
                 Top = 0
                 Width = 1487
-                Height = 199
+                Height = 114
                 Align = alClient
                 TabOrder = 0
                 object mStatus: TMemo
                   Left = 1
                   Top = 1
                   Width = 1485
-                  Height = 197
+                  Height = 112
                   Align = alClient
                   Font.Charset = DEFAULT_CHARSET
                   Font.Color = clLime
@@ -3678,7 +3677,7 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 40
         Width = 1503
-        Height = 742
+        Height = 657
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -3764,7 +3763,7 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 380
         Width = 1503
-        Height = 402
+        Height = 317
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -3784,7 +3783,7 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 0
         Width = 1503
-        Height = 782
+        Height = 697
         Align = alClient
         ScrollBars = ssBoth
         TabOrder = 0
@@ -3838,7 +3837,7 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 40
         Width = 1503
-        Height = 742
+        Height = 657
         Align = alClient
         TabOrder = 1
         object Label9: TLabel
@@ -4410,12 +4409,12 @@ object frmFlickrMain: TfrmFlickrMain
         Left = 0
         Top = 38
         Width = 1503
-        Height = 744
+        Height = 659
         Align = alClient
         TabOrder = 1
-        ExplicitHeight = 738
+        ExplicitHeight = 744
         ControlData = {
-          4C000000579B0000E54C00000000000000000000000000000000000000000000
+          4C000000579B00001C4400000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800
           2B2E126208000000000000004C0000000114020000000000C000000000000046
           8000000000000000000000000000000000000000000000000000000000000000
@@ -5449,7 +5448,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001F80110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001FC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

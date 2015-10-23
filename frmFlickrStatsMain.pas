@@ -4033,6 +4033,7 @@ begin
     Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].Description);
+    Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
     Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
@@ -4106,6 +4107,7 @@ begin
     try
       IdHTTP.IOHandler := IdIOHandler;
       urlGroups := TFlickrRest.New().getGroupInfo(apikey.text, base.Id, userToken, secret.text, userTokenSecret);
+      log(base.Id);
       timedout := false;
       while (not timedout) do
       begin
@@ -4122,12 +4124,6 @@ begin
           end;
         end;
       end;
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
-      IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
-      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
 
       description := '';
       ThrottleCount := 0;
@@ -4143,38 +4139,50 @@ begin
       restricted_ok := false;
       has_geo := false;
 
-      while iXMLRootNode4 <> nil do
-      begin
-        if iXMLRootNode4.NodeName = 'description' then
-        begin
-//          try
-//            description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-//          except
-//            description := '';
-//          end;
-        end;
+      try
+        xmlDocument.LoadFromXML(response);
+        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
+        IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
+        iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
 
-        if iXMLRootNode4.NodeName = 'throttle' then
-        begin
-          ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
-          ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
-          ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
-        end;
 
-        if iXMLRootNode4.NodeName = 'restrictions' then
+        while iXMLRootNode4 <> nil do
         begin
-          photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
-          videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
-          images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
-          screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
-          art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
-          safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
-          moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
-          restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
-          has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
+          if iXMLRootNode4.NodeName = 'description' then
+          begin
+  //          try
+  //            description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+  //          except
+  //            description := '';
+  //          end;
+          end;
+
+          if iXMLRootNode4.NodeName = 'throttle' then
+          begin
+            ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
+            ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
+            ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
+          end;
+
+          if iXMLRootNode4.NodeName = 'restrictions' then
+          begin
+            photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
+            videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
+            images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
+            screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
+            art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
+            safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
+            moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
+            restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
+            has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
+          end;
+          Application.ProcessMessages;
+          iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
-        Application.ProcessMessages;
-        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      except
+        description := 'ERROR';
       end;
 
       base.Description := description;

@@ -179,7 +179,7 @@ type
 implementation
 
 uses
-  Sysutils;
+  Sysutils, flickr.xml.helper;
 
 { TGroup }
 
@@ -269,7 +269,7 @@ end;
 
 function TBase.GetThrottleCount: integer;
 begin
-  result := ThrottleCount;
+  result := FThrottleCount;
 end;
 
 function TBase.GetThrottleMode: string;
@@ -298,6 +298,21 @@ begin
   Ftitle := iNode.Attributes['title'];
   Fphotos := StrToInt(iNode.Attributes['photos']);
   Fmembers := StrToInt(iNode.Attributes['members']);
+
+  Fdescription := TXMLHelper.new(iNode.Attributes['Description']).getString;
+  FThrottleCount := TXMLHelper.new(iNode.attributes['count']).getInt;
+  FThrottleMode := TXMLHelper.new(iNode.attributes['mode']).getString;
+  FThrottleRemaining := TXMLHelper.new(iNode.attributes['remaining']).getInt;
+  Fphotos_ok := TXMLHelper.new(iNode.attributes['photos_ok']).getBool;
+  Fvideos_ok := TXMLHelper.new(iNode.attributes['videos_ok']).getBool;
+  Fimages_ok := TXMLHelper.new(iNode.attributes['images_ok']).getBool;
+  Fscreens_ok := TXMLHelper.new(iNode.attributes['screens_ok']).getBool;
+  Fart_ok := TXMLHelper.new(iNode.attributes['art_ok']).getBool;
+  Fsafe_ok := TXMLHelper.new(iNode.attributes['safe_ok']).getBool;
+  Fmoderate_ok := TXMLHelper.new(iNode.attributes['moderate_ok']).getBool;
+  Frestricted_ok := TXMLHelper.new(iNode.attributes['restricted_ok']).getBool;
+  Fhas_geo := TXMLHelper.new(iNode.attributes['has_geo']).getBool;
+
 end;
 
 class function TBase.New(id, title : string; photos, members : Int64): IBase;
@@ -314,6 +329,21 @@ begin
   iNode2.Attributes['title'] := Ftitle;
   iNode2.Attributes['photos'] := Fphotos.toString;
   iNode2.Attributes['members'] := Fmembers.ToString;
+
+  iNode2.Attributes['IsModerated'] := IsModerated.ToString;
+  iNode2.Attributes['Description'] := Description;
+  iNode2.Attributes['ThrottleCount'] := ThrottleCount.ToString;
+  iNode2.Attributes['ThrottleMode'] := ThrottleMode;
+  iNode2.Attributes['ThrottleRemaining'] := ThrottleRemaining.ToString;
+  iNode2.Attributes['photos_ok'] := photos_ok.ToString;
+  iNode2.Attributes['videos_ok'] := videos_ok.ToString;
+  iNode2.Attributes['images_ok'] := images_ok.ToString;
+  iNode2.Attributes['screens_ok'] := screens_ok.ToString;
+  iNode2.Attributes['art_ok'] := art_ok.ToString;
+  iNode2.Attributes['safe_ok'] := safe_ok.ToString;
+  iNode2.Attributes['moderate_ok'] := moderate_ok.ToString;
+  iNode2.Attributes['restricted_ok'] := restricted_ok.ToString;
+  iNode2.Attributes['has_geo'] := has_geo.ToString;
 end;
 
 procedure TBase.Setart_ok(const Value: boolean);
