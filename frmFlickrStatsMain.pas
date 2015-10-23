@@ -3013,6 +3013,20 @@ begin
     Item.SubItems.Add(FilteredGroupList.list[i].title);
     Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
     Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].Description);
+    Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
+    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
+    Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
   end;
 
   listGroups.OnItemChecked := listGroupsItemChecked;
@@ -3043,6 +3057,20 @@ begin
       Item.SubItems.Add(FilteredGroupList.list[i].title);
       Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
       Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].Description);
+      Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
+      Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
+      Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
     end;
   end;
   listGroups.Visible := true;
@@ -3330,6 +3358,20 @@ begin
             Item.SubItems.Add(FilteredGroupList.list[i].title);
             Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
             Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].Description);
+            Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
+            Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
+            Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
             Item.checked := true;
           end;
         end;
@@ -4152,11 +4194,11 @@ begin
         begin
           if iXMLRootNode4.NodeName = 'description' then
           begin
-  //          try
-  //            description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-  //          except
-  //            description := '';
-  //          end;
+            try
+              description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+            except
+              description := '';
+            end;
           end;
 
           if iXMLRootNode4.NodeName = 'throttle' then
