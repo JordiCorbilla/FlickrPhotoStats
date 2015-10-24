@@ -1489,11 +1489,12 @@ begin
   if Assigned(FilteredGroupList) then
   begin
     FilteredGroupList := nil;
-    FilteredGroupList := TFilteredList.Create(tCompareMembers);
+    FilteredGroupList := TFilteredList.Create(tCompareRemaining);
   end;
   st := TStopWatch.Create;
   st.Start;
   FilteredGroupList.load(options.Workspace + '\flickrGroups.xml');
+  FilteredGroupList.sort;
   btnFilterCancelClick(sender);
   st.Stop;
   log('Loading repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -3011,7 +3012,7 @@ begin
   listgroups.OnCustomDrawItem := nil;
 
   listGroups.Items.Clear;
-
+  FilteredGroupList.sort;
   for i := 0 to FilteredGroupList.list.Count - 1 do
   begin
     Item := listGroups.Items.Add;
@@ -3052,7 +3053,7 @@ begin
   pagecontrol3.TabIndex := 0;
   listGroups.Visible := false;
   listGroups.Items.Clear;
-
+  FilteredGroupList.sort;
   description := edtFilterGroup.text;
   for i := 0 to FilteredGroupList.list.Count - 1 do
   begin
@@ -3348,6 +3349,7 @@ begin
     profile := flickrProfiles.getProfile(profileName);
     listGroups.OnItemChecked := nil;
     listgroups.OnCustomDrawItem := nil;
+    FilteredGroupList.sort;
     if chkDisplayOnly.Checked then
     begin
       listGroups.Visible := false;
