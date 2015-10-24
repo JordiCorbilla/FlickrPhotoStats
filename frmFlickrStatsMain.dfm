@@ -4316,7 +4316,7 @@ object frmFlickrMain: TfrmFlickrMain
           Left = 191
           Top = 534
           Width = 209
-          Height = 61
+          Height = 80
           Caption = 'Group Sorting'
           TabOrder = 21
           object RadioButton8: TRadioButton
@@ -4339,6 +4339,15 @@ object frmFlickrMain: TfrmFlickrMain
             TabOrder = 1
             OnClick = RadioButton8Click
           end
+          object RadioButton11: TRadioButton
+            Left = 17
+            Top = 53
+            Width = 153
+            Height = 24
+            Caption = 'Sort by Remaining'
+            TabOrder = 2
+            OnClick = RadioButton8Click
+          end
         end
         object edtWorkspace: TEdit
           Left = 176
@@ -4359,7 +4368,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkShowButtonHint: TCheckBox
           Left = 176
-          Top = 599
+          Top = 619
           Width = 169
           Height = 17
           Caption = 'Show Button Hints'
@@ -5448,7 +5457,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001FC0110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001000210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

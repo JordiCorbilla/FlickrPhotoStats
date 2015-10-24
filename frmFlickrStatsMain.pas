@@ -409,6 +409,7 @@ type
     upgreen3: TImage;
     upgreen33: TImage;
     btnBackup: TButton;
+    RadioButton11: TRadioButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1119,6 +1120,8 @@ begin
     comparerGroups := 7;
   if RadioButton9.Checked then
     comparerGroups := 8;
+  if RadioButton11.Checked then
+    comparerGroups := 9;
   if options.SortedByGropus <> comparerGroups then
     FDirtyOptions := true;
 end;
@@ -2661,6 +2664,8 @@ begin
     comparerGroups := 7;
   if RadioButton9.Checked then
     comparerGroups := 8;
+  if RadioButton11.Checked then
+    comparerGroups := 9;
 
   options.SortedByGropus := comparerGroups;
   options.AlbumViews := TStringList(listValuesViewsAlbums.Lines);
@@ -2726,6 +2731,7 @@ begin
   case comparerGroups of
     7: RadioButton8.checked := true;
     8: RadioButton9.checked := true;
+    9: RadioButton11.checked := true;
   end;
 
   listValuesViewsAlbums.Lines.Clear;
@@ -3946,6 +3952,8 @@ begin
       comparer := tCompareMembers;
     if RadioButton9.Checked then
       comparer := tComparePoolSize;
+    if RadioButton11.Checked then
+      comparer := tCompareRemaining;
     FilteredGroupList := TFilteredList.Create(comparer);
   end;
   btnFilterCancelClick(sender);
@@ -4149,7 +4157,6 @@ begin
     try
       IdHTTP.IOHandler := IdIOHandler;
       urlGroups := TFlickrRest.New().getGroupInfo(apikey.text, base.Id, userToken, secret.text, userTokenSecret);
-      log(base.Id);
       timedout := false;
       while (not timedout) do
       begin
@@ -4182,6 +4189,7 @@ begin
       has_geo := false;
 
       try
+        response := response.Replace('’', ''); //found in one of the xml's
         xmlDocument.LoadFromXML(response);
         iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
         iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -4189,15 +4197,18 @@ begin
         IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
         iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
 
-
         while iXMLRootNode4 <> nil do
         begin
           if iXMLRootNode4.NodeName = 'description' then
           begin
             try
               description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+              description := AnsiLeftStr(description, 200);
             except
-              description := '';
+              log('');
+              log(base.Id);
+              log(description);
+              description := 'ERROR INVALID DESCRIPTION';
             end;
           end;
 
@@ -4224,7 +4235,10 @@ begin
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
       except
-        description := 'ERROR';
+        log('');
+        log(base.Id);
+        log(response);
+        description := 'ERROR INVALID CHARACTERS';
       end;
 
       base.Description := description;
@@ -4935,6 +4949,8 @@ begin
     comparer := tCompareMembers;
   if RadioButton9.Checked then
     comparer := tComparePoolSize;
+  if RadioButton11.Checked then
+    comparer := tCompareRemaining;
   FilteredGroupList := TFilteredList.Create(comparer);
 
   globalsRepository := TFlickrGlobals.Create();

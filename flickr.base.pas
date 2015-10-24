@@ -300,9 +300,10 @@ begin
   Fmembers := StrToInt(iNode.Attributes['members']);
 
   Fdescription := TXMLHelper.new(iNode.Attributes['Description']).getString;
-  FThrottleCount := TXMLHelper.new(iNode.attributes['count']).getInt;
-  FThrottleMode := TXMLHelper.new(iNode.attributes['mode']).getString;
-  FThrottleRemaining := TXMLHelper.new(iNode.attributes['remaining']).getInt;
+  IsModerated := TXMLHelper.new(iNode.Attributes['IsModerated']).getBool;
+  FThrottleCount := TXMLHelper.new(iNode.attributes['ThrottleCount']).getInt;
+  FThrottleMode := TXMLHelper.new(iNode.attributes['ThrottleMode']).getString;
+  FThrottleRemaining := TXMLHelper.new(iNode.attributes['ThrottleRemaining']).getInt;
   Fphotos_ok := TXMLHelper.new(iNode.attributes['photos_ok']).getBool;
   Fvideos_ok := TXMLHelper.new(iNode.attributes['videos_ok']).getBool;
   Fimages_ok := TXMLHelper.new(iNode.attributes['images_ok']).getBool;

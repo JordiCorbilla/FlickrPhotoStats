@@ -77,6 +77,7 @@ begin
   case comparer of
     tCompareMembers: IPhotoComparer := TIPoolComparerMembers.Create;
     tComparePoolSize: IPhotoComparer := TIPoolComparerPoolSize.Create;
+    tCompareRemaining : IPhotoComparer := TIPoolComparerRemaining.Create;
   else
     IPhotoComparer := TIPoolComparerMembers.Create;
   end;
