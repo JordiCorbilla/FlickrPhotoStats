@@ -3174,7 +3174,7 @@ begin
           begin
             if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(base.Id)) then
             begin
-              if base.ThrottleRemaining > 0 then
+              if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) or ((base.ThrottleMode = 'none')) then
               begin
                 mStatus.Lines.Add('group : ' + base.Id + ' throttle count ' + base.ThrottleRemaining.ToString());
                 urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, base.Id);
@@ -3219,7 +3219,8 @@ begin
             begin
               mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + base.Id + ' response: ' + response);
               inc(success);
-              base.ThrottleRemaining := base.ThrottleRemaining - 1;
+              if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) then
+                base.ThrottleRemaining := base.ThrottleRemaining - 1;
             end;
           end
           else
@@ -3228,7 +3229,8 @@ begin
             if response.Contains('ok') then
             begin
               inc(success);
-              base.ThrottleRemaining := base.ThrottleRemaining - 1;
+              if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) then
+                base.ThrottleRemaining := base.ThrottleRemaining - 1;
             end;
           end;
 
