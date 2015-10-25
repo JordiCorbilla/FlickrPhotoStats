@@ -566,6 +566,7 @@ type
     procedure UpdateRate(valueBeforeYesterday, valueYesterday, valueToday: integer; out rateYesterday, rateToday: double); overload;
     procedure UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double); overload;
     procedure AddAdditionalGroupDetails(base: IBase);
+    procedure UpdateListGroupsThrottleRemaining(base: IBase);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -3176,7 +3177,6 @@ begin
             begin
               if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) or ((base.ThrottleMode = 'none')) then
               begin
-                mStatus.Lines.Add('group : ' + base.Id + ' throttle count ' + base.ThrottleRemaining.ToString());
                 urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, base.Id);
                 while (not timedout) do
                 begin
@@ -3220,7 +3220,11 @@ begin
               mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + base.Id + ' response: ' + response);
               inc(success);
               if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) then
+              begin
                 base.ThrottleRemaining := base.ThrottleRemaining - 1;
+                UpdateListGroupsThrottleRemaining(base);
+                mStatus.Lines.Add('group : ' + base.Id + ' throttle count ' + base.ThrottleRemaining.ToString());
+              end;
             end;
           end
           else
@@ -3230,7 +3234,11 @@ begin
             begin
               inc(success);
               if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) then
+              begin
                 base.ThrottleRemaining := base.ThrottleRemaining - 1;
+                UpdateListGroupsThrottleRemaining(base);
+                mStatus.Lines.Add('group : ' + base.Id + ' throttle count ' + base.ThrottleRemaining.ToString());
+              end;
             end;
           end;
 
@@ -3256,6 +3264,28 @@ begin
   end;
   FGroupStop := false;
   showMessage('Photos have been added to the groups');
+end;
+
+procedure TfrmFlickrMain.UpdateListGroupsThrottleRemaining(base : IBase);
+var
+  i : integer;
+begin
+  for i := 0 to listGroups.Items.Count - 1 do
+  begin
+    if listGroups.Items[i].Caption = base.id then
+    begin
+      listGroups.Items[i].SubItems[7] := base.ThrottleRemaining.ToString;
+      break;
+    end;
+  end;
+  for i := 0 to FilteredGroupList.list.Count - 1 do
+  begin
+    if FilteredGroupList.list[i].id = base.id then
+    begin
+      FilteredGroupList.list[i].ThrottleRemaining := base.ThrottleRemaining;
+      break;
+    end;
+  end;
 end;
 
 procedure TfrmFlickrMain.btnAddPhotosMouseEnter(Sender: TObject);
