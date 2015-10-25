@@ -3176,6 +3176,7 @@ begin
             begin
               if base.ThrottleRemaining > 0 then
               begin
+                mStatus.Lines.Add('group : ' + base.Id + ' throttle count ' + base.ThrottleRemaining.ToString());
                 urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, base.Id);
                 while (not timedout) do
                 begin
@@ -5084,6 +5085,8 @@ begin
   arrow2.Visible := false;
   arrow3.Visible := false;
   arrow4.Visible := false;
+  if valueYesterday = 0 then
+    valueYesterday := valueToday;
   if valueYesterday < valueToday then //green
   begin
     arrow1.visible := true;
@@ -5095,8 +5098,16 @@ begin
   end;
   if valueYesterday = valueToday then //red
   begin
-    arrow2.visible := true;
-    label1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+    if valueYesterday > 0 then
+    begin
+      arrow1.visible := true;
+      label1.caption := '+' + Format('%n',[100.00]).Replace('.00','') + '%'
+    end
+    else
+    begin
+      arrow2.visible := true;
+      label1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
+    end;
   end;
   if valueYesterday > valueToday then //red
   begin

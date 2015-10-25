@@ -50,7 +50,13 @@ begin
       rateYesterday := 0.0;
     if valueBeforeYesterday > valueYesterday then //red
       rateYesterday := ((valueYesterday / valueBeforeYesterday) -1) * 100.0;
+  end
+  else
+  begin
+    if (valueBeforeYesterday = 0) and (valueYesterday > 0) then
+      rateYesterday := 100.0;
   end;
+
   rateToday := 0.0;
   if valueYesterday > 0 then
   begin
@@ -60,6 +66,10 @@ begin
       rateToday := 0.0;
     if valueYesterday > valueToday then //red
       rateToday := ((valueToday / valueYesterday) - 1) * 100.0;
+  end
+  else
+  begin
+    rateToday := 100.0;
   end;
 end;
 
@@ -74,7 +84,8 @@ begin
   if viewsToday > 0 then
   begin
     rateToday := ((likesToday / viewsToday))*100.0;
-  end;
+  end
+  else;
 end;
 
 end.

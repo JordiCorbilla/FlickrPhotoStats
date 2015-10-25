@@ -2568,7 +2568,7 @@ object frmFlickrMain: TfrmFlickrMain
         Top = 444
         Width = 1503
         Height = 253
-        ActivePage = TabSheet5
+        ActivePage = TabSheet3
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -4623,8 +4623,8 @@ object frmFlickrMain: TfrmFlickrMain
           Visible = False
         end
         object labelArrow1: TLabel
-          Left = 241
-          Top = 13
+          Left = 245
+          Top = 17
           Width = 61
           Height = 16
           Caption = '+99.99%'
@@ -4937,7 +4937,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object LabelArrow2: TLabel
           Left = 237
-          Top = 19
+          Top = 17
           Width = 61
           Height = 16
           Caption = '+99.99%'
@@ -5278,7 +5278,7 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object LabelArrow3: TLabel
           Left = 236
-          Top = 13
+          Top = 17
           Width = 61
           Height = 16
           Caption = '+99.99%'
@@ -5457,7 +5457,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001000210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001080210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

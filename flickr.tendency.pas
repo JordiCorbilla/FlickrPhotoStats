@@ -137,7 +137,11 @@ end;
 
 function TTendency.tendencyResult(a : integer): integer;
 begin
-  result := round((a.ToDouble * Fm) + Fyb);
+  try
+    result := round((a.ToDouble * Fm) + Fyb);
+  except
+    result := 0;
+  end;
 end;
 
 end.
