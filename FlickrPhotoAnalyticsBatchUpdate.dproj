@@ -143,7 +143,7 @@
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.7;FileVersion=4.7.0.1;InternalName=Flickr Photo Stats v4.7;LegalCopyright=Flickr Photo Stats v4.7;LegalTrademarks=Flickr Photo Stats v4.7;OriginalFilename=Flickr Photo Stats v4.7;ProductName=Flickr Photo Stats v4.7;ProductVersion=4.7.0.0;Comments=Flickr Photo Stats v4.7</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats Batch Update v4.7;FileVersion=4.7.0.1;InternalName=Flickr Photo Stats Batch Update v4.7;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats Batch Update v4.7;ProductName=Flickr Photo Stats Batch Update v4.7;ProductVersion=4.7.0.1;Comments=Flickr Photo Stats Batch Update v4.7</VerInfo_Keys>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
