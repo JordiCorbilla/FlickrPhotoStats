@@ -3091,16 +3091,16 @@ var
   j: Integer;
   k: Integer;
   photoId: string;
-  groupId: string;
   urlAdd, response: string;
   photos: TList<string>;
-  groups: TList<string>;
+  groups: TList<IBase>;
   timedout: Boolean;
   total : integer;
   max : string;
   success : integer;
   photoToCheck : IPhoto;
   option : integer;
+  base : IBase;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -3109,7 +3109,7 @@ begin
   end;
   pagecontrol3.TabIndex := 0;
   photos := TList<string>.Create;
-  groups := TList<string>.Create;
+  groups := TList<IBase>.Create;
   FGroupStop := false;
   try
     batchUpdate.Enabled := false;
@@ -3122,7 +3122,28 @@ begin
     for i := 0 to listGroups.Items.Count - 1 do
     begin
       if listGroups.Items[i].Checked then
-        groups.Add(listGroups.Items[i].Caption);
+      begin
+        base := TBase.Create();
+        base.Id := listGroups.Items[i].Caption;
+        base.Title := listGroups.Items[i].SubItems[0];
+        base.Photos := listGroups.Items[i].SubItems[1].ToInteger;
+        base.Members := listGroups.Items[i].SubItems[2].ToInteger;
+        base.Description := listGroups.Items[i].SubItems[3];
+        base.IsModerated := listGroups.Items[i].SubItems[4].ToBoolean();
+        base.ThrottleCount := listGroups.Items[i].SubItems[5].ToInteger;
+        base.ThrottleMode := listGroups.Items[i].SubItems[6];
+        base.ThrottleRemaining := listGroups.Items[i].SubItems[7].ToInteger;
+        base.photos_ok := listGroups.Items[i].SubItems[8].ToBoolean();
+        base.videos_ok := listGroups.Items[i].SubItems[9].ToBoolean();
+        base.images_ok := listGroups.Items[i].SubItems[10].ToBoolean();
+        base.screens_ok := listGroups.Items[i].SubItems[11].ToBoolean();
+        base.art_ok := listGroups.Items[i].SubItems[12].ToBoolean();
+        base.safe_ok := listGroups.Items[i].SubItems[13].ToBoolean();
+        base.moderate_ok := listGroups.Items[i].SubItems[14].ToBoolean();
+        base.restricted_ok := listGroups.Items[i].SubItems[15].ToBoolean();
+        base.has_geo := listGroups.Items[i].SubItems[16].ToBoolean();
+        groups.Add(base);
+      end;
     end;
 
     if not chkRejected.Checked then
@@ -3147,42 +3168,45 @@ begin
         for j := 0 to groups.Count - 1 do
         begin
           photoId := photos[i];
-          groupId := groups[j];
+          base := groups[j];
           timedout := false;
-          if not rejected.Exists(groupId) and not (repository.isPhotoInGroup(photoId, groupId, photoToCheck)) then
+          if not rejected.Exists(base.Id) and not (repository.isPhotoInGroup(photoId, base.Id, photoToCheck)) then
           begin
-            if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(groupId)) then
+            if not (photoToCheck.banned) and not (photoToCheck.OmitGroups.Contains(base.Id)) then
             begin
-              urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
-              while (not timedout) do
+              if base.ThrottleRemaining > 0 then
               begin
-                try
-                  response := IdHTTP1.Get(urlAdd);
-                  if response.Contains('Photo limit reached') or response.Contains('Maximum') then
-                  begin
-                    mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
-                    rejected.Add(groupId);
-                  end;
-                  if not chkPending.Checked then
-                  begin
-                    if response.Contains('Pending Queue') then
+                urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, base.Id);
+                while (not timedout) do
+                begin
+                  try
+                    response := IdHTTP1.Get(urlAdd);
+                    if response.Contains('Photo limit reached') or response.Contains('Maximum') then
                     begin
-                      mStatus.Lines.Add('Adding group : ' + groupId + ' to the rejected list');
-                      rejected.Add(groupId);
+                      mStatus.Lines.Add('Adding group : ' + base.Id + ' to the rejected list');
+                      rejected.Add(base.Id);
                     end;
-                  end;
-                  timedout := true;
-                except
-                  on e: exception do
-                  begin
-                    sleep(timeout);
-                    timedout := false;
+                    if not chkPending.Checked then
+                    begin
+                      if response.Contains('Pending Queue') then
+                      begin
+                        mStatus.Lines.Add('Adding group : ' + base.Id + ' to the rejected list');
+                        rejected.Add(base.Id);
+                      end;
+                    end;
+                    timedout := true;
+                  except
+                    on e: exception do
+                    begin
+                      sleep(timeout);
+                      timedout := false;
+                    end;
                   end;
                 end;
               end;
             end
             else
-              mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + groupId);
+              mStatus.Lines.Add('Photo '+ photoId +' is banned from group : ' + base.Id);
           end;
           inc(k);
           progressbar1.position := k;
@@ -3192,16 +3216,18 @@ begin
           begin
             if response.Contains('ok') then
             begin
-              mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+              mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + base.Id + ' response: ' + response);
               inc(success);
+              base.ThrottleRemaining := base.ThrottleRemaining - 1;
             end;
           end
           else
           begin
-            mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + groupId + ' response: ' + response);
+            mStatus.Lines.Add('PhotoId: ' + photoId + ' GroupId: ' + base.Id + ' response: ' + response);
             if response.Contains('ok') then
             begin
               inc(success);
+              base.ThrottleRemaining := base.ThrottleRemaining - 1;
             end;
           end;
 
