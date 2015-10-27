@@ -365,6 +365,7 @@ begin
     FDisableTrendDisplay := inifile.ReadBool('System', 'DisableTrendDisplay', false);
 
     FSortedBy := inifile.ReadInteger('System', 'SortedBy', 0);
+    FSortedByGroups := inifile.ReadInteger('System', 'SortedByGroups', 0);
 
     FMaxItems := inifile.ReadInteger('AlbumViews', 'MaxItems', 0);
 
@@ -425,6 +426,7 @@ begin
     inifile.WriteString('System', 'BackupDate', FBackupDate);
 
     inifile.WriteInteger('System', 'SortedBy', FSortedBy);
+    inifile.WriteInteger('System', 'SortedByGroups', FSortedByGroups);
     inifile.WriteInteger('AlbumViews', 'MaxItems', FAlbumViews.count);
 
     for i := 0 to FAlbumViews.Count-1 do
