@@ -3776,11 +3776,15 @@ begin
   ViewCount := response;
 
   frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
-  frmFlickrPhotoSet.repository := repository;
-  frmFlickrPhotoSet.total := ViewCount;
-  frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
-  frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
-  frmFlickrPhotoSet.Show;
+  try
+    frmFlickrPhotoSet.repository := repository;
+    frmFlickrPhotoSet.total := PhotosCount;
+    frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
+    frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
+    frmFlickrPhotoSet.ShowModal;
+  finally
+    frmFlickrPhotoSet.Free;
+  end;
 end;
 
 procedure TfrmFlickrMain.ChartViewsDblClick(Sender: TObject);

@@ -471,9 +471,9 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       ExplicitWidth = 391
       ExplicitHeight = 101
       object Panel29: TPanel
-        Left = 22
+        Left = 16
         Top = 1
-        Width = 441
+        Width = 201
         Height = 67
         BevelOuter = bvNone
         TabOrder = 0
@@ -617,7 +617,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       object Panel28: TPanel
         Left = 8
         Top = 1
-        Width = 289
+        Width = 201
         Height = 67
         BevelOuter = bvNone
         TabOrder = 0
