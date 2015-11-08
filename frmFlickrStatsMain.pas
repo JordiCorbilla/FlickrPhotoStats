@@ -3755,6 +3755,7 @@ procedure TfrmFlickrMain.OpenPhotosAlbum(value : string);
 var
   photoSetId : string;
   PhotosCount : string;
+  title : string;
   ViewCount : string;
   response : string;
 begin
@@ -3764,14 +3765,21 @@ begin
   response := AnsiRightStr(response, length(response) - length(photoSetId));
   photoSetId := photoSetId.replace('/','');
 
+  title := AnsiLeftStr(response, AnsiPos('/', response));
+  response := AnsiRightStr(response, length(response) - length(title));
+  title := title.replace('/','');
+
   PhotosCount := AnsiLeftStr(response, AnsiPos('/', response));
   response := AnsiRightStr(response, length(response) - length(PhotosCount));
   PhotosCount := PhotosCount.replace('/','');
 
   ViewCount := response;
 
-  frmFlickrPhotoSet := TfrmChartViewer.Create(nil);
-  frmFlickrPhotoSet.LoadPhotos(photoSetId);
+  frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
+  frmFlickrPhotoSet.repository := repository;
+  frmFlickrPhotoSet.total := ViewCount;
+  frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
+  frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
   frmFlickrPhotoSet.Show;
 end;
 
@@ -4408,7 +4416,7 @@ begin
     progressbar1.position := progressbar1.position + 1;
     listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     color := RGB(Random(255), Random(255), Random(255));
-    Series.Add(countViews.ToDouble, photosetId + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
+    Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
     Taskbar1.ProgressValue := progressbar1.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -4439,7 +4447,7 @@ begin
       progressbar1.position := progressbar1.position + 1;
       listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       color := RGB(Random(255), Random(255), Random(255));
-      Series.Add(countViews.ToDouble, photosetId + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
+      Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
       Taskbar1.ProgressValue := progressbar1.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;

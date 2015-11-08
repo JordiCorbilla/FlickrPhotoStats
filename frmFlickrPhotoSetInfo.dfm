@@ -12,6 +12,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
@@ -20,7 +21,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Width = 1144
     Height = 3
     Cursor = crVSplit
-    Align = alBottom
+    Align = alTop
     ExplicitTop = 0
     ExplicitWidth = 488
   end
@@ -30,7 +31,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Width = 1144
     Height = 3
     Cursor = crVSplit
-    Align = alBottom
+    Align = alTop
     ExplicitTop = 0
     ExplicitWidth = 364
   end
@@ -40,7 +41,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Width = 1144
     Height = 3
     Cursor = crVSplit
-    Align = alBottom
+    Align = alTop
     ExplicitLeft = 8
     ExplicitTop = 421
     ExplicitWidth = 1074
@@ -50,7 +51,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Top = 388
     Width = 1144
     Height = 153
-    Align = alBottom
+    Align = alClient
     Caption = 'Panel1'
     TabOrder = 0
     ExplicitTop = 416
@@ -122,7 +123,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Top = 237
     Width = 1144
     Height = 148
-    Align = alBottom
+    Align = alTop
     Caption = 'Panel2'
     TabOrder = 1
     ExplicitTop = 285
@@ -194,7 +195,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Top = 78
     Width = 1144
     Height = 156
-    Align = alBottom
+    Align = alTop
     Caption = 'Panel3'
     TabOrder = 2
     ExplicitTop = 197
@@ -266,7 +267,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Top = 0
     Width = 1144
     Height = 75
-    Align = alClient
+    Align = alTop
     TabOrder = 3
     ExplicitHeight = 103
     object Panel24: TPanel
@@ -280,13 +281,13 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       object Panel27: TPanel
         Left = 9
         Top = 1
-        Width = 240
+        Width = 280
         Height = 67
         BevelOuter = bvNone
         TabOrder = 0
         object Image1: TImage
           Left = -1
-          Top = 4
+          Top = 10
           Width = 68
           Height = 46
           AutoSize = True
@@ -381,10 +382,10 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object Label14: TLabel
           Left = 85
-          Top = 17
-          Width = 44
+          Top = 10
+          Width = 120
           Height = 16
-          Caption = 'Today:'
+          Caption = 'Total from Photos:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -393,8 +394,60 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
           ParentFont = False
         end
         object LabelTodayViews: TLabel
-          Left = 135
-          Top = 18
+          Left = 208
+          Top = 10
+          Width = 52
+          Height = 16
+          Caption = '999,999'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label1: TLabel
+          Left = 90
+          Top = 26
+          Width = 115
+          Height = 16
+          Caption = 'Total from Album:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label2: TLabel
+          Left = 208
+          Top = 27
+          Width = 52
+          Height = 16
+          Caption = '999,999'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label3: TLabel
+          Left = 90
+          Top = 42
+          Width = 115
+          Height = 16
+          Caption = 'Total from Album:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+        end
+        object Label4: TLabel
+          Left = 208
+          Top = 43
           Width = 52
           Height = 16
           Caption = '999,999'
@@ -527,10 +580,10 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object Label42: TLabel
           Left = 82
-          Top = 17
-          Width = 44
+          Top = 25
+          Width = 37
           Height = 16
-          Caption = 'Today:'
+          Caption = 'Total:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -540,7 +593,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object LabelTodayComments: TLabel
           Left = 129
-          Top = 17
+          Top = 25
           Width = 52
           Height = 16
           Caption = '999,999'
@@ -648,10 +701,10 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object Label15: TLabel
           Left = 80
-          Top = 17
-          Width = 44
+          Top = 25
+          Width = 37
           Height = 16
-          Caption = 'Today:'
+          Caption = 'Total:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -661,7 +714,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object LabelTodayLikes: TLabel
           Left = 130
-          Top = 17
+          Top = 25
           Width = 52
           Height = 16
           Caption = '999,999'

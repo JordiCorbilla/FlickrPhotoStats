@@ -135,16 +135,22 @@ begin
 
         //Now I need to add the new items in the list.
         PhotosList := nil;
+        TLogger.LogFile('Loading photos');
         try
           PhotosList := TPhotoLoader.load(apikey, userId);
         except
-
+          on E: Exception do
+          begin
+            TLogger.LogFile('Loading photos'  + E.message);
+            WriteLn(E.ClassName, ': ', E.message);
+          end;
         end;
 
         for i := 0 to PhotosList.Count-1 do
         begin
           if not repository.ExistPhoto(PhotosList[i], existing) then
           begin
+            TLogger.LogFile('New Photo Added ' + PhotosList[i]);
             stat := TStat.Create(Date, 0, 0, 0);
             photo := TPhoto.Create(PhotosList[i], 'New', '', '');
             photo.AddStats(stat);
