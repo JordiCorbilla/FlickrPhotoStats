@@ -567,6 +567,7 @@ type
     procedure UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double); overload;
     procedure AddAdditionalGroupDetails(base: IBase);
     procedure UpdateListGroupsThrottleRemaining(base: IBase);
+    procedure OpenPhotosAlbum(value: string);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -628,7 +629,7 @@ uses
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
-  flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper;
+  flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo;
 
 {$R *.dfm}
 
@@ -3747,7 +3748,31 @@ end;
 procedure TfrmFlickrMain.chartAlbumClickSeries(Sender: TCustomChart; Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
   if ValueIndex >= 0 then
-    ShowMessage(Series.ValueMarkText[ValueIndex]);
+    OpenPhotosAlbum(Series.ValueMarkText[ValueIndex]);
+end;
+
+procedure TfrmFlickrMain.OpenPhotosAlbum(value : string);
+var
+  photoSetId : string;
+  PhotosCount : string;
+  ViewCount : string;
+  response : string;
+begin
+  //Get the values from the value, Id,
+  response := value;
+  photoSetId := AnsiLeftStr(response, AnsiPos('/', response));
+  response := AnsiRightStr(response, length(response) - length(photoSetId));
+  photoSetId := photoSetId.replace('/','');
+
+  PhotosCount := AnsiLeftStr(response, AnsiPos('/', response));
+  response := AnsiRightStr(response, length(response) - length(PhotosCount));
+  PhotosCount := PhotosCount.replace('/','');
+
+  ViewCount := response;
+
+  frmFlickrPhotoSet := TfrmChartViewer.Create(nil);
+  frmFlickrPhotoSet.LoadPhotos(photoSetId);
+  frmFlickrPhotoSet.Show;
 end;
 
 procedure TfrmFlickrMain.ChartViewsDblClick(Sender: TObject);
@@ -4383,7 +4408,7 @@ begin
     progressbar1.position := progressbar1.position + 1;
     listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     color := RGB(Random(255), Random(255), Random(255));
-    Series.Add(countViews.ToDouble, 'Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString(), color);
+    Series.Add(countViews.ToDouble, photosetId + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
     Taskbar1.ProgressValue := progressbar1.position;
     Application.ProcessMessages;
     iXMLRootNode4 := iXMLRootNode4.NextSibling;
@@ -4414,7 +4439,7 @@ begin
       progressbar1.position := progressbar1.position + 1;
       listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       color := RGB(Random(255), Random(255), Random(255));
-      Series.Add(countViews.ToDouble, 'Id: ' + photosetId + slinebreak + ' title: ' + title + slinebreak + ' Photos: ' + numPhotos.ToString() + slinebreak + ' Views: ' + countViews.ToString(), color);
+      Series.Add(countViews.ToDouble, photosetId + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
       Taskbar1.ProgressValue := progressbar1.position;
       Application.ProcessMessages;
       iXMLRootNode4 := iXMLRootNode4.NextSibling;

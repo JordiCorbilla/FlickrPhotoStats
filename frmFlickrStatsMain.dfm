@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = TabSheet7
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -2568,7 +2568,7 @@ object frmFlickrMain: TfrmFlickrMain
         Top = 444
         Width = 1503
         Height = 253
-        ActivePage = TabSheet5
+        ActivePage = TabSheet3
         Align = alClient
         TabOrder = 1
         object Statistics: TTabSheet
@@ -4305,10 +4305,10 @@ object frmFlickrMain: TfrmFlickrMain
         end
         object chkAddItem: TCheckBox
           Left = 176
-          Top = 384
+          Top = 385
           Width = 127
           Height = 17
-          Caption = 'Disable Trend Display'
+          Caption = 'Disable Graph Display'
           TabOrder = 20
           OnClick = chkAddItemClick
         end
@@ -5457,7 +5457,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED0020010C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001100210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

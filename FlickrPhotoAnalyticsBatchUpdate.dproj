@@ -137,7 +137,7 @@
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <DCC_Optimize>true</DCC_Optimize>
         <VerInfo_Build>1</VerInfo_Build>
-        <Debugger_RunParams>-v -r -g</Debugger_RunParams>
+        <Debugger_RunParams>-v -r -g -e</Debugger_RunParams>
         <VerInfo_MinorVer>7</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>

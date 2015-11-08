@@ -113,7 +113,8 @@ contains
   flickr.lib.backup in 'flickr.lib.backup.pas',
   flickr.lib.rates in 'flickr.lib.rates.pas',
   flickr.repository.rest in 'flickr.repository.rest.pas',
-  flickr.xml.helper in 'flickr.xml.helper.pas';
+  flickr.xml.helper in 'flickr.xml.helper.pas',
+  flickr.lib.photos.load in 'flickr.lib.photos.load.pas';
 
 end.
 

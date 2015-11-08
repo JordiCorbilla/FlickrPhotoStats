@@ -47,7 +47,10 @@ uses
   flickr.lib.email.html,
   flickr.lib.utils,
   System.Classes,
-  Winapi.Windows;
+  Winapi.Windows,
+  Generics.collections,
+  Flickr.lib.photos.load,
+  flickr.photos;
 
 var
   repository: IFlickrRepository;
@@ -67,7 +70,8 @@ var
   options: IOptions;
   description: TStrings;
   totalContacts: Integer;
-
+  PhotosList : TList<string>;
+  photo, existing: IPhoto;
 begin
   try
     TLogger.LogFile('');
@@ -128,6 +132,28 @@ begin
         apikey := repository.apikey;
         secret := repository.secret;
         userId := repository.userId;
+
+        //Now I need to add the new items in the list.
+        PhotosList := nil;
+        try
+          PhotosList := TPhotoLoader.load(apikey, userId);
+        except
+
+        end;
+
+        for i := 0 to PhotosList.Count-1 do
+        begin
+          if not repository.ExistPhoto(PhotosList[i], existing) then
+          begin
+            stat := TStat.Create(Date, 0, 0, 0);
+            photo := TPhoto.Create(PhotosList[i], 'New', '', '');
+            photo.AddStats(stat);
+            photo.LastUpdate := Date;
+            repository.AddPhoto(photo);
+          end;
+        end;
+
+        PhotosList.Free;
 
         // Organic Growth checks
         organic := TFlickrOrganic.Create;

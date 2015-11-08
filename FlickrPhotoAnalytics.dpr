@@ -39,7 +39,8 @@ uses
   frmSplash in 'frmSplash.pas' {frmFlickrSplash},
   frmAuthentication in 'frmAuthentication.pas' {frmAuthenticate},
   frmSetup in 'frmSetup.pas' {frmSetupApp},
-  frmChart in 'frmChart.pas' {frmChartViewer};
+  frmChart in 'frmChart.pas' {frmChartViewer},
+  frmFlickrPhotoSetInfo in 'frmFlickrPhotoSetInfo.pas' {frmFlickrPhotoSet};
 
 {$R *.res}
 
