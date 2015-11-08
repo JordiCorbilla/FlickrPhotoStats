@@ -530,6 +530,14 @@ type
     procedure btnShowReportMouseEnter(Sender: TObject);
     procedure chkShowButtonHintClick(Sender: TObject);
     procedure backup1Click(Sender: TObject);
+    procedure chartHallViewsClickSeries(Sender: TCustomChart;
+      Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure ChartHallLikesClickSeries(Sender: TCustomChart;
+      Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure chartAlbumMouseMove(Sender: TObject; Shift: TShiftState; X,
+      Y: Integer);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -3749,6 +3757,38 @@ procedure TfrmFlickrMain.chartAlbumClickSeries(Sender: TCustomChart; Series: TCh
 begin
   if ValueIndex >= 0 then
     OpenPhotosAlbum(Series.ValueMarkText[ValueIndex]);
+end;
+
+procedure TfrmFlickrMain.chartAlbumMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+var
+  SeriesIndex: Integer;
+begin
+  try
+    SeriesIndex := chartAlbum.Series[0].Clicked(X, Y);
+    chartAlbum.ShowHint := SeriesIndex <> -1;
+    if chartAlbum.ShowHint then
+    begin
+      chartAlbum.Hint := chartAlbum.Series[0].ValueMarkText[SeriesIndex];
+    end;
+  except
+
+  end;
+end;
+
+procedure TfrmFlickrMain.ChartHallLikesClickSeries(Sender: TCustomChart;
+  Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if ValueIndex >= 0 then
+    ShowMessage(Series.ValueMarkText[ValueIndex]);
+end;
+
+procedure TfrmFlickrMain.chartHallViewsClickSeries(Sender: TCustomChart;
+  Series: TChartSeries; ValueIndex: Integer; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  if ValueIndex >= 0 then
+    ShowMessage(Series.ValueMarkText[ValueIndex]);
 end;
 
 procedure TfrmFlickrMain.OpenPhotosAlbum(value : string);

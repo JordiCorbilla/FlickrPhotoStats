@@ -1980,7 +1980,7 @@ object frmFlickrMain: TfrmFlickrMain
             Title.Font.Color = clWhite
             Title.Text.Strings = (
               'Likes')
-            OnClickSeries = chartAlbumClickSeries
+            OnClickSeries = ChartHallLikesClickSeries
             BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
             BottomAxis.Grid.Width = 0
             BottomAxis.Grid.ZPosition = 1.000000000000000000
@@ -2087,6 +2087,7 @@ object frmFlickrMain: TfrmFlickrMain
             ShowHint = True
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            OnMouseMove = chartAlbumMouseMove
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2126,7 +2127,7 @@ object frmFlickrMain: TfrmFlickrMain
             Title.Font.Color = clWhite
             Title.Text.Strings = (
               'Views')
-            OnClickSeries = chartAlbumClickSeries
+            OnClickSeries = chartHallViewsClickSeries
             BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
             BottomAxis.Grid.Width = 0
             BottomAxis.Grid.ZPosition = 1.000000000000000000
