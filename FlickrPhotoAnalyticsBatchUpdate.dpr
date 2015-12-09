@@ -72,6 +72,8 @@ var
   totalContacts: Integer;
   PhotosList : TList<string>;
   photo, existing: IPhoto;
+  success : boolean;
+  iteration : integer;
 begin
   try
     TLogger.LogFile('');
@@ -282,7 +284,25 @@ begin
         st := TStopWatch.Create;
         st.Start;
         description := THtmlComposer.getMessage(options, repository, globalsRepository, organic, false);
-        TFlickrEmail.SendHTML(options.eMailAddress, description);
+        success := false;
+        iteration := 0;
+        while not success do
+        begin
+          try
+            TFlickrEmail.SendHTML(options.eMailAddress, description);
+            success := true;
+          except
+            on E: Exception do
+            begin
+              success := false;
+              TLogger.LogFile('Exception Sending eMail' + E.message);
+              WriteLn(E.ClassName, ': ', E.message);
+            end;
+          end;
+          iteration := iteration + 1;
+          if (iteration > 3) then
+            success := true;
+        end;
         st.Stop;
         WriteLn('Sending eMail: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         TLogger.LogFile('Sending eMail: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
