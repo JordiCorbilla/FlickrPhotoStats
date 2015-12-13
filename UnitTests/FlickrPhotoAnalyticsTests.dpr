@@ -38,7 +38,8 @@ uses
   flickr.list.comparer in '..\flickr.list.comparer.pas',
   flickr.base in '..\flickr.base.pas',
   flickr.photo.trend.info in '..\flickr.photo.trend.info.pas',
-  flickr.albums.list in '..\flickr.albums.list.pas';
+  flickr.albums.list in '..\flickr.albums.list.pas',
+  flickr.xml.helper in '..\flickr.xml.helper.pas';
 
 var
   runner : ITestRunner;

@@ -234,7 +234,6 @@ type
     Panel13: TPanel;
     Button9: TButton;
     Button10: TButton;
-    listAlbums: TMemo;
     Splitter3: TSplitter;
     Memo2: TMemo;
     TabSheet6: TTabSheet;
@@ -410,6 +409,10 @@ type
     upgreen33: TImage;
     btnBackup: TButton;
     RadioButton11: TRadioButton;
+    lvAlbums: TListView;
+    PopupMenu4: TPopupMenu;
+    ShowGraph1: TMenuItem;
+    lblTotalAlbum: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -538,6 +541,7 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure chartAlbumMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
+    procedure ShowGraph1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -576,6 +580,7 @@ type
     procedure AddAdditionalGroupDetails(base: IBase);
     procedure UpdateListGroupsThrottleRemaining(base: IBase);
     procedure OpenPhotosAlbum(value: string);
+    procedure OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -3692,6 +3697,17 @@ begin
   ShowHint('Save or update a profile when ''override profile'' is not ticked', Sender);
 end;
 
+procedure TfrmFlickrMain.ShowGraph1Click(Sender: TObject);
+var
+  id : string;
+begin
+  if lvAlbums.ItemIndex <> -1 then
+  begin
+    id := lvAlbums.Items[lvAlbums.ItemIndex].Caption;
+    OpenPhotosAlbumId(id, lvAlbums.Items[lvAlbums.ItemIndex].SubItems[0], lvAlbums.Items[lvAlbums.ItemIndex].SubItems[2]);
+  end;
+end;
+
 procedure TfrmFlickrMain.ShowHint(description : string; Sender: TObject);
 var
   aPoint: TPoint;
@@ -3815,6 +3831,20 @@ begin
 
   ViewCount := response;
 
+  frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
+  try
+    frmFlickrPhotoSet.repository := repository;
+    frmFlickrPhotoSet.total := PhotosCount;
+    frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
+    frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
+    frmFlickrPhotoSet.ShowModal;
+  finally
+    frmFlickrPhotoSet.Free;
+  end;
+end;
+
+procedure TfrmFlickrMain.OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
+begin
   frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
   try
     frmFlickrPhotoSet.repository := repository;
@@ -4421,6 +4451,7 @@ var
   numPhotos: Integer;
   Series : TPieSeries;
   color : TColor;
+  Item : TListItem;
 begin
   if chartAlbum.SeriesList.Count > 0 then
     chartAlbum.RemoveAllSeries;
@@ -4430,7 +4461,7 @@ begin
 
   listPhotosUser.Visible := false;
   progressbar1.Visible := true;
-  listAlbums.Clear;
+  lvAlbums.Clear;
   Application.ProcessMessages;
   response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, '1', '500'));
   XMLDocument1.LoadFromXML(response);
@@ -4458,7 +4489,14 @@ begin
       totalViews := totalViews + countViews;
     end;
     progressbar1.position := progressbar1.position + 1;
-    listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
+
+    Item := lvAlbums.Items.Add;
+    Item.Caption := photosetId;
+    Item.SubItems.Add(title);
+    Item.SubItems.Add(numPhotos.ToString());
+    Item.SubItems.Add(countViews.ToString());
+
+    //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
     color := RGB(Random(255), Random(255), Random(255));
     Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
     Taskbar1.ProgressValue := progressbar1.position;
@@ -4489,7 +4527,14 @@ begin
         totalViews := totalViews + countViews;
       end;
       progressbar1.position := progressbar1.position + 1;
-      listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
+
+      Item := lvAlbums.Items.Add;
+      Item.Caption := photosetId;
+      Item.SubItems.Add(title);
+      Item.SubItems.Add(numPhotos.ToString());
+      Item.SubItems.Add(countViews.ToString());
+
+      //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
       color := RGB(Random(255), Random(255), Random(255));
       Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
       Taskbar1.ProgressValue := progressbar1.position;
@@ -4503,8 +4548,7 @@ begin
   progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
-  listAlbums.Lines.Add('******************************************');
-  listAlbums.Lines.Add('Total views: ' + totalViews.ToString());
+  LblTotalAlbum.Caption := 'Total views: ' + totalViews.ToString();
   Result := totalViews;
 end;
 
@@ -5207,16 +5251,8 @@ begin
   end;
   if valueYesterday = valueToday then //red
   begin
-    if valueYesterday > 0 then
-    begin
-      arrow1.visible := true;
-      label1.caption := '+' + Format('%n',[100.00]).Replace('.00','') + '%'
-    end
-    else
-    begin
       arrow2.visible := true;
       label1.caption := '+' + Format('%n',[0.00]).Replace('.00','') + '%';
-    end;
   end;
   if valueYesterday > valueToday then //red
   begin

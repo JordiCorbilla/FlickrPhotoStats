@@ -66,6 +66,7 @@ function TXMLHelper.getBool: boolean;
 var
   value : boolean;
 begin
+  value := false;
   if FAttribute <> null then
   begin
     try
@@ -81,6 +82,7 @@ function TXMLHelper.getInt: integer;
 var
   value : integer;
 begin
+  value := 0;
   if FAttribute <> null then
   begin
     try

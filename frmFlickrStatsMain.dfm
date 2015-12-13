@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = Dashboard
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -3696,12 +3696,13 @@ object frmFlickrMain: TfrmFlickrMain
       ImageIndex = 3
       object Splitter3: TSplitter
         Left = 0
-        Top = 376
+        Top = 321
         Width = 1503
         Height = 4
         Cursor = crVSplit
         Align = alTop
-        ExplicitTop = 368
+        ExplicitLeft = 18
+        ExplicitTop = 348
       end
       object Panel13: TPanel
         Left = 0
@@ -3711,6 +3712,13 @@ object frmFlickrMain: TfrmFlickrMain
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
+        object lblTotalAlbum: TLabel
+          Left = 118
+          Top = 23
+          Width = 54
+          Height = 13
+          Caption = 'Total Items'
+        end
         object Button9: TButton
           Left = 0
           Top = 1
@@ -3744,27 +3752,11 @@ object frmFlickrMain: TfrmFlickrMain
           OnMouseEnter = Button10MouseEnter
         end
       end
-      object listAlbums: TMemo
-        Left = 0
-        Top = 41
-        Width = 1503
-        Height = 335
-        Align = alTop
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssVertical
-        TabOrder = 1
-      end
       object Memo2: TMemo
         Left = 0
-        Top = 380
+        Top = 325
         Width = 1503
-        Height = 317
+        Height = 372
         Align = alClient
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -3774,7 +3766,38 @@ object frmFlickrMain: TfrmFlickrMain
         ParentFont = False
         ReadOnly = True
         ScrollBars = ssVertical
+        TabOrder = 1
+        ExplicitTop = 380
+        ExplicitHeight = 317
+      end
+      object lvAlbums: TListView
+        Left = 0
+        Top = 41
+        Width = 1503
+        Height = 280
+        Align = alTop
+        Columns = <
+          item
+            Caption = 'Id'
+            Width = 150
+          end
+          item
+            Caption = 'Title'
+            Width = 150
+          end
+          item
+            Caption = 'Photos'
+            Width = 100
+          end
+          item
+            Caption = 'Views'
+            Width = 100
+          end>
+        ReadOnly = True
+        RowSelect = True
+        PopupMenu = PopupMenu4
         TabOrder = 2
+        ViewStyle = vsReport
       end
     end
     object TabSheet6: TTabSheet
@@ -5458,7 +5481,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 304
     Bitmap = {
-      494C0101ED002001100210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001140210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13607,5 +13630,16 @@ object frmFlickrMain: TfrmFlickrMain
     AutoUpdateTile = True
     Left = 572
     Top = 311
+  end
+  object PopupMenu4: TPopupMenu
+    Images = ImageList1
+    Left = 508
+    Top = 313
+    object ShowGraph1: TMenuItem
+      Caption = 'Show Graph'
+      SubMenuImages = ImageList1
+      ImageIndex = 217
+      OnClick = ShowGraph1Click
+    end
   end
 end

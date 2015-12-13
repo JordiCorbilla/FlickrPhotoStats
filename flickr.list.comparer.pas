@@ -103,7 +103,7 @@ type
 implementation
 
 uses
-  Sysutils, vcl.Dialogs, System.UITypes, windows, DateUtils;
+  Sysutils, vcl.Dialogs, System.UITypes, windows, DateUtils, StrUtils;
 
 { TIPhotoComparer }
 
@@ -175,12 +175,33 @@ end;
 { TIPhotoComparerTaken }
 
 function TIPhotoComparerTaken.Compare(const Left, Right: IPhoto): Integer;
+  function getNewDate(_date : string) : string;
+  var
+    value : string;
+    day, month, year : string;
+  begin
+    value := _date;
+    year := AnsiLeftStr(value, AnsiPos('-', value));
+    value := AnsiRightStr(value, length(value) - length(year));
+
+    month := AnsiLeftStr(value, AnsiPos('-', value));
+    value := AnsiRightStr(value, length(value) - length(month));
+
+    day := AnsiLeftStr(value, AnsiPos(' ', value));
+    value := AnsiRightStr(value, length(value) - length(day));
+
+    year := year.Replace('-','');
+    month := month.Replace('-','');
+    day := day.Replace(' ','');
+
+    result := day + '/' + month + '/' + year + ' ' + value;
+  end;
 var
   LeftTerm, RightTerm: TDateTime;
 begin
-  LeftTerm := StrToDateTime(Left.Taken);
-  RightTerm := StrToDateTime(Right.Taken);
-  Result := Round(LeftTerm - RightTerm);
+  LeftTerm := StrToDateTime(getNewDate(Left.Taken));
+  RightTerm := StrToDateTime(getNewDate(Right.Taken));
+  Result := -1 * CompareDateTime(LeftTerm, RightTerm);
 end;
 
 { TIPhotoComparerAlbums }
