@@ -413,6 +413,8 @@ type
     PopupMenu4: TPopupMenu;
     ShowGraph1: TMenuItem;
     lblTotalAlbum: TLabel;
+    Label18: TLabel;
+    edtAppId: TEdit;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -2695,6 +2697,7 @@ begin
   optionsEmail.userToken := userToken;
   optionsEmail.userTokenSecret := userTokenSecret;
   optionsEmail.flickrUserId := edtUserId.Text;
+  optionsEmail.AppId := edtAppId.Text;
   optionsEMail.save;
   showmessage('Options Saved sucessfully');
   FDirtyOptions := false;
@@ -2770,6 +2773,7 @@ begin
   apikey.Text := optionsEmail.flickrApiKey;
   secret.Text := optionsEMail.secret;
   edtUserId.Text := optionsEmail.flickrUserId;
+  edtAppId.Text := optionsEmail.AppId;
 end;
 
 procedure TfrmFlickrMain.btnLoadOptionsClick(Sender: TObject);
@@ -5244,6 +5248,8 @@ begin
   begin
     arrow1.visible := true;
     value := ((valueToday / valueYesterday) -1 )* 100.0;
+    if (valueToday > 0) and (value < 0) then
+      value := value * -1;
     if value > 0 then
       label1.caption := '+' + Format('%n',[value]).Replace('.00','') + '%'
     else
@@ -5377,9 +5383,10 @@ end;
 procedure TfrmFlickrMain.FormShow(Sender: TObject);
 var
   setup: TfrmSetupApp;
+  MyGuid1 : TGUID;
 begin
   LoadOptions;
-  if (Apikey.Text = '') or (secret.Text = '') or (edtUserId.Text = '')  or (edtWorkspace.Text = '') then
+  if (Apikey.Text = '') or (secret.Text = '') or (edtUserId.Text = '')  or (edtWorkspace.Text = '') or (edtAppId.Text = '') then
   begin
     setup := TfrmSetupApp.Create(Application);
     try
@@ -5391,6 +5398,13 @@ begin
         setup.edtUserId.Text := edtUserId.Text;
       if edtWorkspace.Text <> '' then
         setup.edtWorkspace.Text := edtWorkspace.Text;
+      if edtAppId.Text <> '' then
+        setup.edtAppId.Text := edtAppId.Text
+      else
+      begin
+        CreateGUID(MyGuid1);
+        setup.edtAppId.Text := GUIDToString(MyGuid1);
+      end;
       setup.ShowModal;
     finally
       setup.Free;

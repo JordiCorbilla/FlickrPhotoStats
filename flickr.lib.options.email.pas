@@ -49,6 +49,8 @@ type
     function Getsecret() : string;
     function GetflickrUserId() : string;
     procedure SetflickrUserId(const Value: string);
+    procedure SetAppId(const Value: string);
+    function GetAppId() : string;
     property server : string read Getserver write Setserver;
     property port : integer read Getport write Setport;
     property user : string read Getuser write Setuser;
@@ -58,6 +60,7 @@ type
     property flickrApiKey : string read GetflickrApiKey write SetflickrApiKey;
     property secret : string read Getsecret write Setsecret;
     property flickrUserId : string read GetflickrUserId write SetflickrUserId;
+    property AppId : string read GetAppId write SetAppId;
     function Load() : IOptionsEmail;
     procedure Save();
   end;
@@ -73,6 +76,7 @@ type
     Fsecret: string;
     FflickrApiKey: string;
     FflickrUserId: string;
+    FAppId: string;
     procedure Setpassword(const Value: string);
     procedure Setport(const Value: integer);
     procedure Setserver(const Value: string);
@@ -91,6 +95,8 @@ type
     function Getsecret() : string;
     function GetflickrUserId() : string;
     procedure SetflickrUserId(const Value: string);
+    procedure SetAppId(const Value: string);
+    function GetAppId() : string;
   public
     property server : string read Getserver write Setserver;
     property port : integer read Getport write Setport;
@@ -101,6 +107,7 @@ type
     property flickrApiKey : string read GetflickrApiKey write SetflickrApiKey;
     property secret : string read Getsecret write Setsecret;
     property flickrUserId : string read GetflickrUserId write SetflickrUserId;
+    property AppId : string read GetAppId write SetAppId;
     class function New(): IOptionsEmail;
     function Load() : IOptionsEmail;
     procedure Save();
@@ -112,6 +119,11 @@ uses
   System.inifiles, SysUtils, flickr.lib.encoding;
 
 { TOptionsEmail }
+
+function TOptionsEmail.GetAppId: string;
+begin
+  result := FAppId;
+end;
 
 function TOptionsEmail.GetflickrApiKey: string;
 begin
@@ -173,6 +185,7 @@ begin
     FflickrApiKey := THelper.Decode(inifile.ReadString('System', 'FlickrApiKey', ''));
     FSecret := THelper.Decode(inifile.ReadString('System', 'Secret', ''));
     FFlickrUserId := THelper.Decode(inifile.ReadString('System', 'FlickrUserId', ''));
+    FAppId := THelper.Decode(inifile.ReadString('System', 'AppId', ''));
   finally
     inifile.Free;
   end;
@@ -199,9 +212,15 @@ begin
     inifile.WriteString('System', 'FlickrApiKey', THelper.Encode(FflickrApiKey));
     inifile.WriteString('System', 'Secret', THelper.Encode(FSecret));
     inifile.WriteString('System', 'FlickrUserId', THelper.Encode(FFlickrUserId));
+    inifile.WriteString('System', 'AppId', THelper.Encode(FAppId));
   finally
     inifile.Free;
   end;
+end;
+
+procedure TOptionsEmail.SetAppId(const Value: string);
+begin
+  FAppId := Value;
 end;
 
 procedure TOptionsEmail.SetflickrApiKey(const Value: string);

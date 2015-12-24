@@ -54,6 +54,8 @@ type
     edtWorkspace: TEdit;
     Label10: TLabel;
     btnLoadDirectory: TButton;
+    Label11: TLabel;
+    edtAppId: TEdit;
     procedure Label4Click(Sender: TObject);
     procedure btnConfirmClick(Sender: TObject);
     procedure btnDenyClick(Sender: TObject);
@@ -86,6 +88,7 @@ begin
   frmFlickrMain.secret.Text := secret.Text;
   frmFlickrMain.edtuserid.Text := edtuserid.Text;
   frmFlickrMain.edtWorkspace.text := edtWorkspace.Text;
+  frmFlickrMain.edtAppId.Text := edtAppId.Text;
   //Save the file
   frmFlickrMain.btnSaveOptionsClick(sender);
   //Create the new folders

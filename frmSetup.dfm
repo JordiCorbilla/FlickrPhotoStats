@@ -4,7 +4,7 @@ object frmSetupApp: TfrmSetupApp
   BorderIcons = []
   BorderStyle = bsDialog
   Caption = 'Application Set up, first steps.'
-  ClientHeight = 408
+  ClientHeight = 448
   ClientWidth = 807
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -59,7 +59,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label4: TLabel
     Left = 387
-    Top = 144
+    Top = 184
     Width = 294
     Height = 19
     Caption = 'https://www.flickr.com/services/api/keys/'
@@ -73,7 +73,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label2: TLabel
     Left = 16
-    Top = 144
+    Top = 184
     Width = 356
     Height = 19
     Caption = 'To get started, you can ask for your API key here:'
@@ -86,7 +86,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label3: TLabel
     Left = 50
-    Top = 189
+    Top = 229
     Width = 44
     Height = 13
     Caption = 'User Id:'
@@ -99,7 +99,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label5: TLabel
     Left = 16
-    Top = 224
+    Top = 264
     Width = 311
     Height = 19
     Caption = 'To find your UserId, visit the following link:'
@@ -112,7 +112,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label6: TLabel
     Left = 339
-    Top = 224
+    Top = 264
     Width = 457
     Height = 19
     Caption = 
@@ -128,7 +128,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label7: TLabel
     Left = 16
-    Top = 256
+    Top = 296
     Width = 331
     Height = 19
     Caption = 'Value should be displayed under useful values.'
@@ -141,7 +141,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label9: TLabel
     Left = 28
-    Top = 325
+    Top = 365
     Width = 66
     Height = 13
     Caption = 'Workspace:'
@@ -154,7 +154,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object Label10: TLabel
     Left = 16
-    Top = 288
+    Top = 328
     Width = 451
     Height = 19
     Caption = 'Then define your workspace, where all your files will be placed:'
@@ -163,6 +163,19 @@ object frmSetupApp: TfrmSetupApp
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
+    ParentFont = False
+  end
+  object Label11: TLabel
+    Left = 21
+    Top = 140
+    Width = 38
+    Height = 13
+    Caption = 'App id:'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
     ParentFont = False
   end
   object apikey: TEdit
@@ -181,7 +194,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object btnConfirm: TButton
     Left = 702
-    Top = 365
+    Top = 405
     Width = 49
     Height = 38
     Caption = 'Confirm'
@@ -195,7 +208,7 @@ object frmSetupApp: TfrmSetupApp
   end
   object btnDeny: TButton
     Left = 752
-    Top = 365
+    Top = 405
     Width = 50
     Height = 38
     Caption = 'Deny'
@@ -209,26 +222,34 @@ object frmSetupApp: TfrmSetupApp
   end
   object edtUserId: TEdit
     Left = 120
-    Top = 186
+    Top = 226
     Width = 233
     Height = 21
     TabOrder = 4
   end
   object edtWorkspace: TEdit
     Left = 120
-    Top = 322
+    Top = 362
     Width = 210
     Height = 21
     TabOrder = 5
   end
   object btnLoadDirectory: TButton
     Left = 328
-    Top = 321
+    Top = 361
     Width = 25
     Height = 23
     Caption = '...'
     TabOrder = 6
     OnClick = btnLoadDirectoryClick
+  end
+  object edtAppId: TEdit
+    Left = 120
+    Top = 137
+    Width = 233
+    Height = 21
+    ReadOnly = True
+    TabOrder = 7
   end
   object ImageList1: TImageList
     BlendColor = clWhite
@@ -236,7 +257,7 @@ object frmSetupApp: TfrmSetupApp
     Left = 448
     Top = 68
     Bitmap = {
-      494C0101ED002001280110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001380110001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
