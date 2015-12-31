@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 729
-    ActivePage = TabSheet7
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -4060,9 +4060,9 @@ object frmFlickrMain: TfrmFlickrMain
         object Label18: TLabel
           Left = 16
           Top = 85
-          Width = 40
+          Width = 81
           Height = 13
-          Caption = 'App Id:'
+          Caption = 'Application Id:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11
@@ -5478,7 +5478,7 @@ object frmFlickrMain: TfrmFlickrMain
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
     Left = 960
-    Top = 308
+    Top = 164
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -5488,20 +5488,20 @@ object frmFlickrMain: TfrmFlickrMain
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
     Left = 1208
-    Top = 308
+    Top = 164
   end
   object XMLDocument1: TXMLDocument
     Left = 888
-    Top = 308
+    Top = 164
     DOMVendorDesc = 'MSXML'
   end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
     Left = 1080
-    Top = 304
+    Top = 160
     Bitmap = {
-      494C0101ED002001200210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001240210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13435,16 +13435,16 @@ object frmFlickrMain: TfrmFlickrMain
     ProgressState = Normal
     TabProperties = []
     Left = 1360
-    Top = 304
+    Top = 160
   end
   object ActionList1: TActionList
     Left = 1024
-    Top = 305
+    Top = 161
   end
   object PopupMenu1: TPopupMenu
     Images = ImageList1
     Left = 1144
-    Top = 305
+    Top = 161
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
       ImageIndex = 22
@@ -13524,12 +13524,12 @@ object frmFlickrMain: TfrmFlickrMain
     Active = True
     TeePanel = dailyLikes
     Left = 1418
-    Top = 302
+    Top = 158
   end
   object PopupMenu2: TPopupMenu
     Images = ImageList1
     Left = 1300
-    Top = 304
+    Top = 160
     object ShowonFlickr2: TMenuItem
       Caption = 'Show on Flickr'
       ImageIndex = 120
@@ -13552,7 +13552,7 @@ object frmFlickrMain: TfrmFlickrMain
   object PopupMenu3: TPopupMenu
     Images = ImageList1
     Left = 788
-    Top = 304
+    Top = 160
     object MenuItem1: TMenuItem
       Caption = 'Check All'
       ImageIndex = 12
@@ -13567,7 +13567,7 @@ object frmFlickrMain: TfrmFlickrMain
   object MainMenu1: TMainMenu
     Images = ImageList1
     Left = 700
-    Top = 311
+    Top = 167
     object File1: TMenuItem
       Caption = 'File'
       object Open1: TMenuItem
@@ -13626,7 +13626,7 @@ object frmFlickrMain: TfrmFlickrMain
     Delay = 300
     HideAfter = 2000
     Left = 636
-    Top = 311
+    Top = 167
   end
   object LiveTile1: TLiveTile
     AppID = 'D0FC33BF-A910-47AA-98CA-4C95DBF72E6B'
@@ -13649,12 +13649,12 @@ object frmFlickrMain: TfrmFlickrMain
     WideTile.TileTemplate = 'TileWideText01'
     AutoUpdateTile = True
     Left = 572
-    Top = 311
+    Top = 167
   end
   object PopupMenu4: TPopupMenu
     Images = ImageList1
     Left = 508
-    Top = 313
+    Top = 169
     object ShowGraph1: TMenuItem
       Caption = 'Show Graph'
       SubMenuImages = ImageList1

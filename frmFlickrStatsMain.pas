@@ -583,6 +583,7 @@ type
     procedure UpdateListGroupsThrottleRemaining(base: IBase);
     procedure OpenPhotosAlbum(value: string);
     procedure OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
+    procedure SendParseUpdate;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -644,7 +645,8 @@ uses
   flickr.pools, flickr.albums, System.inifiles, flickr.time, ShellApi,
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
-  flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo;
+  flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
+  flickr.lib.parse;
 
 {$R *.dfm}
 
@@ -1540,6 +1542,28 @@ begin
   Button9.Enabled := true;
   btnLoadHall.Enabled := true;
   showMessage('Repository has been loaded');
+
+  //Send that the app has been started
+  SendParseUpdate();
+end;
+
+procedure TfrmFlickrMain.SendParseUpdate();
+var
+  success : boolean;
+  count : integer;
+begin
+  success := false;
+  count := 0;
+  while not success do
+  begin
+    success := TParseAnalyticsAPI.Active();
+    inc(count);
+    if count > 5 then
+    begin
+      success := true;
+      showMessage('Coudn''t connect with the server, please make sure your internet connection is on');
+    end;
+  end;
 end;
 
 procedure TfrmFlickrMain.btnLoadDirectoryClick(Sender: TObject);
@@ -2755,19 +2779,27 @@ begin
 
   listValuesViewsAlbums.Lines.Clear;
   listValuesViewsAlbumsID.Lines.Clear;
+  listValuesViewsAlbums.OnChange := nil;
+  listValuesViewsAlbumsID.OnChange := nil;
   for i := 0 to options.AlbumViews.count - 1 do
   begin
     listValuesViewsAlbums.Lines.Add(options.AlbumViews[i]);
     listValuesViewsAlbumsID.Lines.Add(options.AlbumViewsID[i]);
   end;
+  listValuesViewsAlbums.OnChange := listValuesViewsAlbumsChange;
+  listValuesViewsAlbumsID.OnChange := listValuesViewsAlbumsIDChange;
 
   listValuesLikesAlbums.Lines.Clear;
   listValuesLikesAlbumsID.Lines.Clear;
+  listValuesLikesAlbums.OnChange := nil;
+  listValuesLikesAlbumsID.OnChange := nil;
   for i := 0 to options.AlbumLikes.count - 1 do
   begin
     listValuesLikesAlbums.Lines.Add(options.AlbumLikes[i]);
     listValuesLikesAlbumsID.Lines.Add(options.AlbumLikesID[i]);
   end;
+  listValuesLikesAlbums.OnChange := listValuesLikesAlbumsChange;
+  listValuesLikesAlbumsID.OnChange := listValuesLikesAlbumsIDChange;
 
   optionsEMail := TOptionsEmail.New().load();
   apikey.Text := optionsEmail.flickrApiKey;

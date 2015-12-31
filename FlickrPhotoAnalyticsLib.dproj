@@ -188,6 +188,7 @@
         <DCCReference Include="flickr.repository.rest.pas"/>
         <DCCReference Include="flickr.xml.helper.pas"/>
         <DCCReference Include="flickr.lib.photos.load.pas"/>
+        <DCCReference Include="flickr.lib.parse.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

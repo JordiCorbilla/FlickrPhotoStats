@@ -106,10 +106,10 @@
         <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
         <DCC_Optimize>true</DCC_Optimize>
         <VerInfo_Build>1</VerInfo_Build>
-        <VerInfo_MinorVer>7</VerInfo_MinorVer>
+        <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.7;FileVersion=4.7.0.1;InternalName=Flickr Photo Stats v4.7;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.7;ProductName=Flickr Photo Stats v4.7;ProductVersion=4.7.0.0;Comments=Flickr Photo Stats v4.7</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Stats v4.8;FileVersion=4.8.0.1;InternalName=Flickr Photo Stats v4.8;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Stats v4.8;ProductName=Flickr Photo Stats v4.8;ProductVersion=4.8.0.0;Comments=Flickr Photo Stats v4.8</VerInfo_Keys>
         <VerInfo_MajorVer>4</VerInfo_MajorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
