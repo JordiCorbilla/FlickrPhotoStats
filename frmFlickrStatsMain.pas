@@ -913,6 +913,12 @@ begin
         organicStat.Following := totalContacts;
       end;
       organic.AddGlobals(organicStat);
+
+      TParseAnalyticsAPI.UpdateClient(edtAppId.Text, repository.photos.Count,
+        globalsRepository.globals[globalsRepository.globals.Count-1].views,
+        globalsRepository.globals[globalsRepository.globals.Count-1].likes,
+        globalsRepository.globals[globalsRepository.globals.Count-1].Comments,
+        TUtils.GetVersion);
     end;
 
     FProcessingStop := false;
@@ -2490,6 +2496,7 @@ var
   st : TSTopwatch;
   option : Integer;
   dateBackup : TDate;
+  noBackup : boolean;
 begin
   option := MessageDlg('Do you want to save the changes?',mtInformation, mbOKCancel, 0);
   if option = mrOK then
@@ -2500,13 +2507,16 @@ begin
       exit;
     end;
 
+    noBackup := false;
     try
+      if edtBackup.Text = '' then
+        noBackup := true;
       dateBackup := StrToDate(edtBackup.Text);
     except
       dateBackup := Date;
     end;
 
-    if DaysBetween(Date, dateBackup) > 5 then
+    if (DaysBetween(Date, dateBackup) > 5) or (noBackup) then
     begin
       option := MessageDlg('It''s been more than 5 days since your last backup, do you want to create it now?',mtInformation, mbOKCancel, 0);
       if option = mrOK then
