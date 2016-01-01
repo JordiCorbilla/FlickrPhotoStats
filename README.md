@@ -57,39 +57,13 @@ Code convention:
  
 Use **Batch Update** to easily update all the values and keep a good track record of your flickr stream.
 
-Version 3.0 (stable):
-
-- [FlickrPhotoStats(x86) v3.0](https://app.box.com/s/v3xdczujjdm1b85kcs8k). 
-- [FlickrPhotoStats(x64) v3.0](https://app.box.com/s/1i67o9g6krr0398kprk1).
-
-Version 3.1 (RC):
-
-- [FlickrPhotoStats(x86) v3.1](https://app.box.com/s/djm6lei8rli3pkfa1fy3).
-- [FlickrPhotoStats(x64) v3.1](https://app.box.com/s/w24hr4cq8nkh9c22z4iw).
-
-Version 4.1 (beta):
-
-- [FlickrPhotoStats(x86) v4.1](https://app.box.com/s/ydtsu1ceq3f5dkkilct20qhnkdahcddd).
-- [FlickrPhotoStats(x64) v4.1](https://app.box.com/s/x3ta5x4z3o6e5h7ozc82d6e49uslzjw5).
-
-Version 4.3 (RC):
-
-- [FlickrPhotoStats(x64) v4.3](https://app.box.com/s/3ftq5jts9srydqzwpj02adml1gkav435).
-
-Version 4.4 (RC):
-
-- [FlickrPhotoStats(x64) v4.4](https://app.box.com/s/qpe03ssodxwj55orhhzmd7xpms21qvd7).
-- [FlickrPhotoStats(x64) v4.4.0.82](https://app.box.com/s/1l6otaof0iefazqt8tp1602bv98bji9r).
-
-Version 4.5 (RC):
-
-- [FlickrPhotoStats(x64) v4.5.0.38](https://app.box.com/s/azfrwuna4m3kiihbq37ex9klnz8xv85p).
-
 Version 4.6 (RC):
 - [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
 
 Version 4.7 (Beta - latest development):
 - [FlickrPhotoStats(x64) v4.7.0.1](https://app.box.com/s/azjzckh6782o57159h7hpb2hmyqcejgh).
+
+Older versions can be found here: [Archive](https://github.com/JordiCorbilla/FlickrPhotoStats/tree/v4.6.0.1).
 
 ## Changelog
 ### Features for version 3.1:
