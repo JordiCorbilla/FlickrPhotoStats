@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Jordi Corbilla
+// Copyright (c) 2015-2016, Jordi Corbilla
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,8 @@ begin
   if ForceDirectories(edtWorkspace.Text + '\Albums') then
     if ForceDirectories(edtWorkspace.Text + '\Groups') then
       if ForceDirectories(edtWorkspace.Text + '\History') then
-      Showmessage('Application has been correctly configured!');
+        if ForceDirectories(edtWorkspace.Text + '\Users') then
+          Showmessage('Application has been correctly configured!');
   Self.Close;
 end;
 

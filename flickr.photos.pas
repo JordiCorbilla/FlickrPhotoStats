@@ -31,7 +31,8 @@ interface
 
 uses
   Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools,
-  flickr.albums, flickr.pools.list, winapi.msxml, flickr.albums.list;
+  flickr.albums, flickr.pools.list, winapi.msxml, flickr.albums.list, flickr.user.faves,
+  flickr.user.tracking;
 
 type
   IPhoto = interface
@@ -69,6 +70,8 @@ type
     procedure SetTotalLikes(const Value: integer);
     procedure SetTotalViews(const Value: integer);
     function GetTotalAlbums() : integer;
+    function GetUserTracking() : IUserTracking;
+    procedure SetUserTracking(const Value : IUserTracking);
 //    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
 //    function GetTotalLikes() : integer;
@@ -90,6 +93,7 @@ type
 //    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
+    property UserTracking : IUserTracking read GetUserTracking write SetUserTracking;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     function getTotalLikesDay(incday : integer = 0): Integer;
@@ -119,6 +123,7 @@ type
     FTotalViews: integer;
     FTotalLikes: integer;
     FTotalAlbums: integer;
+    FUserTracking: IUserTracking;
     procedure SetStats(value: TList<IStat>);
     procedure SetId(value: string);
     procedure SetTitle(value: string);
@@ -152,6 +157,8 @@ type
     function GetTotalAlbums() : integer;
 //    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
+    function GetUserTracking() : IUserTracking;
+    procedure SetUserTracking(const Value : IUserTracking);
 //    function GetTotalLikes() : integer;
 //    function GetTotalViews() : integer;
   public
@@ -172,6 +179,7 @@ type
 //    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
+    property UserTracking : IUserTracking read GetUserTracking write SetUserTracking;
     function AddStats(stat: IStat): boolean;
     procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
@@ -223,6 +231,7 @@ begin
   FStats := TList<IStat>.Create;
   FAlbums := TAlbumList.Create;
   FGroups := TPoolList.Create;
+  FUserTracking := TUserTracking.Create;
   SetId(Id);
   SetTitle(Title);
   SetTaken(taken);
@@ -235,6 +244,7 @@ begin
   FStats := TList<IStat>.Create;
   FAlbums := TAlbumList.Create;
   FGroups := TPoolList.Create;
+  FUserTracking := TUserTracking.Create;
 end;
 
 destructor TPhoto.Destroy;
@@ -242,6 +252,7 @@ begin
   FreeAndNil(FStats);
   FreeAndNil(FAlbums);
   FreeAndNil(FGroups);
+  FUserTracking := nil;
   inherited;
 end;
 
@@ -408,6 +419,11 @@ begin
   Comments := getTotalCommentsDay(0) - getTotalCommentsDay(-1);
   SetTodayTrend(numViews + numLikes + Comments);
   result := FTodayTrend;
+end;
+
+function TPhoto.GetUserTracking: IUserTracking;
+begin
+  result := FUserTracking;
 end;
 
 function TPhoto.InAlbum(albumId: string): boolean;
@@ -689,6 +705,11 @@ end;
 procedure TPhoto.SetTotalViews(const Value: integer);
 begin
   FTotalViews := Value;
+end;
+
+procedure TPhoto.SetUserTracking(const Value: IUserTracking);
+begin
+  FUserTracking := Value;
 end;
 
 end.

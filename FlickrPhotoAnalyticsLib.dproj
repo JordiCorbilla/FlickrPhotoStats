@@ -189,6 +189,9 @@
         <DCCReference Include="flickr.xml.helper.pas"/>
         <DCCReference Include="flickr.lib.photos.load.pas"/>
         <DCCReference Include="flickr.lib.parse.pas"/>
+        <DCCReference Include="flickr.user.tracking.pas"/>
+        <DCCReference Include="flickr.user.faves.pas"/>
+        <DCCReference Include="flickr.tracker.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

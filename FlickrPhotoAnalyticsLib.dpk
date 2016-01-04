@@ -115,7 +115,10 @@ contains
   flickr.repository.rest in 'flickr.repository.rest.pas',
   flickr.xml.helper in 'flickr.xml.helper.pas',
   flickr.lib.photos.load in 'flickr.lib.photos.load.pas',
-  flickr.lib.parse in 'flickr.lib.parse.pas';
+  flickr.lib.parse in 'flickr.lib.parse.pas',
+  flickr.user.tracking in 'flickr.user.tracking.pas',
+  flickr.user.faves in 'flickr.user.faves.pas',
+  flickr.tracker in 'flickr.tracker.pas';
 
 end.
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Jordi Corbilla
+// Copyright (c) 2015-2016, Jordi Corbilla
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ uses
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
   MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
-  flickr.base;
+  flickr.base, flickr.tracker;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -1316,6 +1316,8 @@ begin
         xmlDocument := nil;
       end;
     end;
+
+    TTracking.TrackPhoto(options.Workspace, id, apikey.Text, '1', '50', optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
 
     if repository.ExistPhoto(id, existing) then
     begin
@@ -5189,7 +5191,7 @@ begin
   startMark := -1;
   endMark := -1;
   flickrChart := TFlickrChart.create;
-  frmFlickrMain.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion;
+  frmFlickrMain.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion + ' - Free (non-commercial use only)';
   RepositoryLoaded := false;
   ClearAllCharts();
   FDirtyOptions := false;
