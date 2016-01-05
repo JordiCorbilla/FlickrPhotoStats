@@ -51,7 +51,8 @@ uses
   Generics.collections,
   Flickr.lib.photos.load,
   flickr.photos,
-  flickr.lib.options.email;
+  flickr.lib.options.email,
+  flickr.lib.parse;
 
 var
   repository: IFlickrRepository;
@@ -285,6 +286,22 @@ begin
       // repository := nil;
     end;
 
+    //Update Parse
+    try
+      WriteLn('Updating cloud analytics');
+      TParseAnalyticsAPI.UpdateClient(optionsEmail.AppId, repository.photos.Count,
+        globalsRepository.globals[globalsRepository.globals.Count-1].views,
+        globalsRepository.globals[globalsRepository.globals.Count-1].likes,
+        globalsRepository.globals[globalsRepository.globals.Count-1].Comments,
+        TUtils.GetVersion);
+    except
+      on E: Exception do
+      begin
+        TLogger.LogFile('Exception updating cloud analytics ' + E.message);
+        WriteLn(E.ClassName, ': ', E.message);
+      end;
+    end;
+
     // Send eMail
     description := nil;
     if loademail then
@@ -306,7 +323,7 @@ begin
             on E: Exception do
             begin
               success := false;
-              TLogger.LogFile('Exception Sending eMail' + E.message);
+              TLogger.LogFile('Exception Sending eMail ' + E.message);
               WriteLn(E.ClassName, ': ', E.message);
             end;
           end;
@@ -320,7 +337,7 @@ begin
       except
         on E: Exception do
         begin
-          TLogger.LogFile('Exception Sending eMail' + E.message);
+          TLogger.LogFile('Exception Sending eMail ' + E.message);
           WriteLn(E.ClassName, ': ', E.message);
         end;
       end;
@@ -334,7 +351,7 @@ begin
   except
     on E: Exception do
     begin
-      TLogger.LogFile('Exception Batch Update' + E.message);
+      TLogger.LogFile('Exception Batch Update ' + E.message);
       WriteLn(E.ClassName, ': ', E.message);
     end;
   end;

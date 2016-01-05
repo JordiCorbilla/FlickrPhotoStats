@@ -125,7 +125,6 @@ begin
   numPages := total.ToInteger;
   for i := 2 to numPages do
   begin
-    sleep(100);
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
     IdIOHandler.ReadTimeout := IdTimeoutInfinite;
     IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
