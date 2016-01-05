@@ -143,7 +143,12 @@ begin
         PhotosList := nil;
         TLogger.LogFile('Loading photos');
         try
+          st := TStopWatch.Create;
+          st.Start;
+          WriteLn('Looking for new pictures added in the stream');
           PhotosList := TPhotoLoader.load(apikey, userId);
+          st.Stop;
+          WriteLn('stream loaded: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         except
           on E: Exception do
           begin
@@ -156,6 +161,7 @@ begin
         begin
           if not repository.ExistPhoto(PhotosList[i], existing) then
           begin
+            WriteLn('New item found: ' + PhotosList[i]);
             TLogger.LogFile('New Photo Added ' + PhotosList[i]);
             stat := TStat.Create(Date, 0, 0, 0);
             photo := TPhoto.Create(PhotosList[i], 'New', '', '');
@@ -183,6 +189,7 @@ begin
           st := TStopWatch.Create;
           try
             st.Start;
+            WriteLn('The agent will now determine the number of threads to use for ' + repository.photos.count.ToString() + ' photos');
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin
