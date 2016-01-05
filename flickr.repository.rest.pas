@@ -232,13 +232,14 @@ begin
       xmlDocument := nil;
     end;
 
-    EnterCriticalSection(CritSect);
     st := TStopWatch.Create;
     st.Start;
     TTracking.TrackPhoto(options.Workspace, id, apikey, '1', '50', optionsEMail.userToken, optionsEMail.secret, optionsEMail.userTokenSecret);
     st.Stop;
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
     WriteLn('   Tracking users: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
+    EnterCriticalSection(CritSect);
     if repository.ExistPhoto(id, existing) then
     begin
       photo := existing;

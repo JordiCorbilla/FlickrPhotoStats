@@ -9,7 +9,7 @@
         <Projects Include="FlickrPhotoAnalytics.dproj">
             <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
         </Projects>
-        <Projects Include="FlickrPhotoAnalyticsBatchUpdate.dproj">
+        <Projects Include="FlickrPhotoAnalyticsAgent.dproj">
             <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
         </Projects>
         <Projects Include="UnitTests\FlickrPhotoAnalyticsTests.dproj">
@@ -44,14 +44,14 @@
     <Target Name="FlickrPhotoAnalytics:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
         <MSBuild Projects="FlickrPhotoAnalytics.dproj" Targets="Make"/>
     </Target>
-    <Target Name="FlickrPhotoAnalyticsBatchUpdate" DependsOnTargets="FlickrPhotoAnalyticsLib">
-        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj"/>
+    <Target Name="FlickrPhotoAnalyticsAgent" DependsOnTargets="FlickrPhotoAnalyticsLib">
+        <MSBuild Projects="FlickrPhotoAnalyticsAgent.dproj"/>
     </Target>
-    <Target Name="FlickrPhotoAnalyticsBatchUpdate:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
-        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj" Targets="Clean"/>
+    <Target Name="FlickrPhotoAnalyticsAgent:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
+        <MSBuild Projects="FlickrPhotoAnalyticsAgent.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="FlickrPhotoAnalyticsBatchUpdate:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
-        <MSBuild Projects="FlickrPhotoAnalyticsBatchUpdate.dproj" Targets="Make"/>
+    <Target Name="FlickrPhotoAnalyticsAgent:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
+        <MSBuild Projects="FlickrPhotoAnalyticsAgent.dproj" Targets="Make"/>
     </Target>
     <Target Name="FlickrPhotoAnalyticsTests">
         <MSBuild Projects="UnitTests\FlickrPhotoAnalyticsTests.dproj"/>
@@ -72,13 +72,13 @@
         <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsBatchUpdate;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsBatchUpdate:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsBatchUpdate:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

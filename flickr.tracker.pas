@@ -106,7 +106,7 @@ begin
           userFave.Marked := true;
           if (not userTracking.existsAdded(userFave, existing)) then
           begin
-            userTracking.Added.Add(userFave);
+            userTracking.Added.Add(userFave.Id, userFave);
           end
           else
           begin
@@ -166,7 +166,7 @@ begin
           userFave.Marked := true;
           if (not userTracking.existsAdded(userFave, existing)) then
           begin
-            userTracking.Added.Add(userFave);
+            userTracking.Added.Add(userFave.Id, userFave);
           end
           else
           begin

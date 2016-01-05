@@ -34,12 +34,12 @@ uses
 
 type
   IUserTracking = interface
-    function GetAdded(): TList<IUserFave>;
-    procedure SetAdded(value: TList<IUserFave>);
-    function GetRemoved(): TList<IUserFave>;
-    procedure SetRemoved(value: TList<IUserFave>);
-    property Added: TList<IUserFave> read GetAdded write SetAdded;
-    property Removed: TList<IUserFave> read GetRemoved write SetRemoved;
+    function GetAdded(): TDictionary<string, IUserFave>;
+    procedure SetAdded(value: TDictionary<string, IUserFave>);
+    function GetRemoved(): TDictionary<string, IUserFave>;
+    procedure SetRemoved(value: TDictionary<string, IUserFave>);
+    property Added: TDictionary<string, IUserFave> read GetAdded write SetAdded;
+    property Removed: TDictionary<string, IUserFave> read GetRemoved write SetRemoved;
     function ExistsAdded(value : IUSerFave; var user : IUSerFave) : boolean;
     function ExistsRemoved(value : IUSerFave; var user : IUSerFave) : boolean;
     procedure Load(path : string);
@@ -48,17 +48,17 @@ type
 
   TUserTracking = class (TInterfacedObject, IUserTracking)
   private
-    FAdded: TList<IUserFave>;
-    FRemoved: TList<IUserFave>;
-    function GetAdded(): TList<IUserFave>;
-    procedure SetAdded(value: TList<IUserFave>);
-    function GetRemoved(): TList<IUserFave>;
-    procedure SetRemoved(value: TList<IUserFave>);
+    FAdded: TDictionary<string, IUserFave>;
+    FRemoved: TDictionary<string, IUserFave>;
+    function GetAdded(): TDictionary<string, IUserFave>;
+    procedure SetAdded(value: TDictionary<string, IUserFave>);
+    function GetRemoved(): TDictionary<string, IUserFave>;
+    procedure SetRemoved(value: TDictionary<string, IUserFave>);
     function ExistsAdded(value : IUSerFave; var user : IUSerFave) : boolean;
     function ExistsRemoved(value : IUSerFave; var user : IUSerFave) : boolean;
   public
-    property Added: TList<IUserFave> read GetAdded write SetAdded;
-    property Removed: TList<IUserFave> read GetRemoved write SetRemoved;
+    property Added: TDictionary<string, IUserFave> read GetAdded write SetAdded;
+    property Removed: TDictionary<string, IUserFave> read GetRemoved write SetRemoved;
     constructor Create();
     destructor Destroy(); override;
     procedure Load(path : string);
@@ -74,8 +74,8 @@ uses
 
 constructor TUserTracking.Create;
 begin
-  FAdded := TList<IUserFave>.create;
-  FRemoved := TList<IUserFave>.create;
+  FAdded := TDictionary<string, IUserFave>.create;
+  FRemoved := TDictionary<string, IUserFave>.create;
 end;
 
 destructor TUserTracking.Destroy;
@@ -86,45 +86,21 @@ begin
 end;
 
 function TUserTracking.ExistsAdded(value: IUSerFave; var user: IUSerFave): boolean;
-var
-  i: integer;
-  found: Boolean;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < FAdded.count) do
-  begin
-    found := FAdded[i].id = value.id;
-    inc(i);
-  end;
-  if found then
-    user := FAdded[i - 1];
-  Result := found;
+  result := FAdded.TryGetValue(value.Id, user);
 end;
 
 function TUserTracking.ExistsRemoved(value: IUSerFave; var user: IUSerFave): boolean;
-var
-  i: integer;
-  found: Boolean;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < FRemoved.count) do
-  begin
-    found := FRemoved[i].id = value.id;
-    inc(i);
-  end;
-  if found then
-    user := FRemoved[i - 1];
-  Result := found;
+  result := FRemoved.TryGetValue(value.Id, user);
 end;
 
-function TUserTracking.GetAdded: TList<IUserFave>;
+function TUserTracking.GetAdded: TDictionary<string, IUserFave>;
 begin
   result := FAdded;
 end;
 
-function TUserTracking.GetRemoved: TList<IUserFave>;
+function TUserTracking.GetRemoved: TDictionary<string, IUserFave>;
 begin
   result := FRemoved;
 end;
@@ -148,13 +124,13 @@ begin
         begin
           userFave := TUserFave.Create;
           userFave.Load(iNode2);
-          FAdded.Add(userFave);
+          FAdded.Add(userFave.Id, userFave);
         end;
         if iNode2.NodeName = 'Removed' then
         begin
           userFave := TUserFave.Create;
           userFave.Load(iNode2);
-          FRemoved.Add(userFave);
+          FRemoved.Add(userFave.Id, userFave);
         end;
         iNode2 := iNode2.NextSibling;
       end;
@@ -166,48 +142,50 @@ end;
 
 procedure TUserTracking.Save(path: string);
 var
-  i: Integer;
   iNode, iNode2: IXMLNode;
   XMLDoc: TXMLDocument;
   existing : IUserFave;
+  Item: TPair<string, IUserFave>;
 begin
   // Create the XML file
   XMLDoc := TXMLDocument.Create(nil);
   XMLDoc.Active := true;
   iNode := XMLDoc.AddChild('Users');
-  for i := 0 to FAdded.count - 1 do
+
+  for Item in FAdded do
   begin
-    if FAdded[i].Marked then
+    if Item.Value.Marked then
     begin
       iNode2 := iNode.AddChild('Added');
-      FAdded[i].Save(iNode2);
+      Item.Value.Save(iNode2);
     end
     else
     begin
-      if not ExistsRemoved(Fadded[i], existing) then
+      if not ExistsRemoved(Item.Value, existing) then
       begin
         iNode2 := iNode.AddChild('Removed');
-        FAdded[i].Save(iNode2);
+        Item.Value.Save(iNode2);
       end;
     end;
   end;
-  for i := 0 to FRemoved.count - 1 do
+
+  for Item in FAdded do
   begin
-    if not ExistsAdded(FRemoved[i], existing) then
+    if not ExistsAdded(Item.Value, existing) then
     begin
       iNode2 := iNode.AddChild('Removed');
-      FRemoved[i].Save(iNode2);
+      Item.Value.Save(iNode2);
     end;
   end;
   XMLDoc.SaveToFile(path)
 end;
 
-procedure TUserTracking.SetAdded(value: TList<IUserFave>);
+procedure TUserTracking.SetAdded(value: TDictionary<string, IUserFave>);
 begin
   FAdded := value;
 end;
 
-procedure TUserTracking.SetRemoved(value: TList<IUserFave>);
+procedure TUserTracking.SetRemoved(value: TDictionary<string, IUserFave>);
 begin
   FRemoved := value;
 end;
