@@ -30,7 +30,7 @@ unit flickr.repository.rest;
 interface
 
 uses
-  Windows, flickr.repository, flickr.organic.stats;
+  Windows, flickr.repository, flickr.organic.stats, flickr.lib.options, flickr.lib.options.email;
 
 type
   IRepositoryRest = interface
@@ -38,7 +38,7 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
+    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsEmail);
     class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
     class function getNumberOfContacts() : integer;
   end;
@@ -53,11 +53,12 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
   System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
-  flickr.rest, System.SysUtils, flickr.lib.options.email, flickr.pools.list, flickr.albums.list;
+  flickr.rest, System.SysUtils, flickr.pools.list, flickr.albums.list,
+  flickr.tracker, Diagnostics, flickr.time;
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat : IFlickrOrganicStats; apikey, id: string; verbosity : boolean);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsEmail);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -73,6 +74,7 @@ var
   difference : integer;
   tags : string;
   photoGroups : IPhoto;
+  st: TStopWatch;
 begin
   CoInitialize(nil);
   try
@@ -231,6 +233,11 @@ begin
     end;
 
     EnterCriticalSection(CritSect);
+    st := TStopWatch.Create;
+    st.Start;
+    TTracking.TrackPhoto(options.Workspace, id, apikey, '1', '50', optionsEMail.userToken, optionsEMail.secret, optionsEMail.userTokenSecret);
+    st.Stop;
+    WriteLn('   Tracking users: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     if repository.ExistPhoto(id, existing) then
     begin

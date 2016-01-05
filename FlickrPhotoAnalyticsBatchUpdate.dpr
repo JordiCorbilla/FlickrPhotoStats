@@ -50,7 +50,8 @@ uses
   Winapi.Windows,
   Generics.collections,
   Flickr.lib.photos.load,
-  flickr.photos;
+  flickr.photos,
+  flickr.lib.options.email;
 
 var
   repository: IFlickrRepository;
@@ -68,6 +69,7 @@ var
   organic: IFlickrOrganic;
   organicStat: IFlickrOrganicStats;
   options: IOptions;
+  optionsEmail : IOptionsEmail;
   description: TStrings;
   totalContacts: Integer;
   PhotosList : TList<string>;
@@ -119,6 +121,7 @@ begin
     WriteLn('Loading Repository');
     repository := TFlickrRepository.Create();
     options := TOptions.New().Load;
+    optionsEmail := TOptionsEmail.New().Load;
     try
       st := TStopWatch.Create;
       st.Start;
@@ -182,7 +185,7 @@ begin
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin
-                TRepositoryRest.updatePhoto(repository, organicStat, apikey, repository.photos[index].id, verbosity);
+                TRepositoryRest.updatePhoto(repository, organicStat, apikey, repository.photos[index].id, verbosity, options, optionsEmail);
               end);
             st.Stop;
           finally

@@ -39,7 +39,10 @@ uses
   flickr.base in '..\flickr.base.pas',
   flickr.photo.trend.info in '..\flickr.photo.trend.info.pas',
   flickr.albums.list in '..\flickr.albums.list.pas',
-  flickr.xml.helper in '..\flickr.xml.helper.pas';
+  flickr.xml.helper in '..\flickr.xml.helper.pas',
+  flickr.tracker in '..\flickr.tracker.pas',
+  flickr.user.faves in '..\flickr.user.faves.pas',
+  flickr.user.tracking in '..\flickr.user.tracking.pas';
 
 var
   runner : ITestRunner;
