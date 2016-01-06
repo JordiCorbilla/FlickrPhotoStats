@@ -169,7 +169,7 @@ begin
     end;
   end;
 
-  for Item in FAdded do
+  for Item in FRemoved do
   begin
     if not ExistsAdded(Item.Value, existing) then
     begin

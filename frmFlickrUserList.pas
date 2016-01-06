@@ -96,7 +96,7 @@ begin
   if Listview1.ItemIndex <> -1 then
   begin
     id := Listview1.Items[Listview1.ItemIndex].Caption;
-    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/photos/'+id), nil, SW_SHOW);
+    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://m.flickr.com/'+id), nil, SW_SHOW);
   end;
 end;
 
@@ -109,7 +109,7 @@ begin
   if Listview2.ItemIndex <> -1 then
   begin
     id := Listview2.Items[Listview2.ItemIndex].Caption;
-    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://www.flickr.com/photos/'+id), nil, SW_SHOW);
+    ShellExecute(self.WindowHandle,'open','chrome.exe', PChar('https://m.flickr.com/'+id), nil, SW_SHOW);
   end;
 end;
 
