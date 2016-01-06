@@ -157,6 +157,10 @@
             <Form>frmFlickrPhotoSet</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="frmFlickrUserList.pas">
+            <Form>frmUserList</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

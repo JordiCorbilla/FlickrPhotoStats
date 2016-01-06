@@ -833,6 +833,10 @@ object frmFlickrMain: TfrmFlickrMain
     TabOrder = 1
     object Dashboard: TTabSheet
       Caption = 'Dashboard'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter6: TSplitter
         Left = 0
         Top = 216
@@ -2574,6 +2578,10 @@ object frmFlickrMain: TfrmFlickrMain
         TabOrder = 1
         object Statistics: TTabSheet
           Caption = 'Statistics'
+          ExplicitLeft = 0
+          ExplicitTop = 0
+          ExplicitWidth = 0
+          ExplicitHeight = 0
           object Panel4: TPanel
             Left = 0
             Top = 0
@@ -3530,6 +3538,10 @@ object frmFlickrMain: TfrmFlickrMain
             TabOrder = 1
             object tabList: TTabSheet
               Caption = 'List'
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object listGroups: TListView
                 Left = 0
                 Top = 0
@@ -3617,6 +3629,10 @@ object frmFlickrMain: TfrmFlickrMain
             object tabStatus: TTabSheet
               Caption = 'Status'
               ImageIndex = 1
+              ExplicitLeft = 0
+              ExplicitTop = 0
+              ExplicitWidth = 0
+              ExplicitHeight = 0
               object Panel10: TPanel
                 Left = 0
                 Top = 0
@@ -3649,6 +3665,10 @@ object frmFlickrMain: TfrmFlickrMain
     object TabSheet1: TTabSheet
       Caption = 'Hall of Fame'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel12: TPanel
         Left = 0
         Top = 0
@@ -3694,6 +3714,10 @@ object frmFlickrMain: TfrmFlickrMain
     object TabSheet4: TTabSheet
       Caption = 'Albums'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Splitter3: TSplitter
         Left = 0
         Top = 321
@@ -3801,6 +3825,10 @@ object frmFlickrMain: TfrmFlickrMain
     object TabSheet6: TTabSheet
       Caption = 'Logs'
       ImageIndex = 4
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object mLogs: TMemo
         Left = 0
         Top = 0
@@ -3816,6 +3844,10 @@ object frmFlickrMain: TfrmFlickrMain
       Caption = 'Options'
       ImageIndex = 5
       OnExit = TabSheet7Exit
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -4433,6 +4465,10 @@ object frmFlickrMain: TfrmFlickrMain
     object TabSheet8: TTabSheet
       Caption = 'Report'
       ImageIndex = 6
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Panel21: TPanel
         Left = 0
         Top = 0
@@ -5501,7 +5537,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 160
     Bitmap = {
-      494C0101ED002001300210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001340210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13470,6 +13506,11 @@ object frmFlickrMain: TfrmFlickrMain
       Caption = 'Show on Flickr'
       ImageIndex = 71
       OnClick = ShowonFlickr1Click
+    end
+    object ShowFavesList1: TMenuItem
+      Caption = 'Show Faves List'
+      ImageIndex = 195
+      OnClick = ShowFavesList1Click
     end
     object N3: TMenuItem
       Caption = '-'

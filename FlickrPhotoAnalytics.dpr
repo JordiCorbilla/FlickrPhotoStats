@@ -40,7 +40,8 @@ uses
   frmAuthentication in 'frmAuthentication.pas' {frmAuthenticate},
   frmSetup in 'frmSetup.pas' {frmSetupApp},
   frmChart in 'frmChart.pas' {frmChartViewer},
-  frmFlickrPhotoSetInfo in 'frmFlickrPhotoSetInfo.pas' {frmFlickrPhotoSet};
+  frmFlickrPhotoSetInfo in 'frmFlickrPhotoSetInfo.pas' {frmFlickrPhotoSet},
+  frmFlickrUserList in 'frmFlickrUserList.pas' {frmUserList};
 
 {$R *.res}
 

@@ -34,7 +34,7 @@ uses
   Dialogs, StdCtrls, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls,
-  flickr.repository,
+  flickr.repository, frmFlickrUserList,
   ExtCtrls, TeEngine, TeeProcs, Chart, Series, VclTee.TeeGDIPlus,
   System.UITypes, flickr.globals,
   Vcl.ImgList, Vcl.Buttons, System.Win.TaskbarCore, Vcl.Taskbar, System.Actions,
@@ -415,6 +415,7 @@ type
     lblTotalAlbum: TLabel;
     Label18: TLabel;
     edtAppId: TEdit;
+    ShowFavesList1: TMenuItem;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -544,6 +545,7 @@ type
     procedure chartAlbumMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure ShowGraph1Click(Sender: TObject);
+    procedure ShowFavesList1Click(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -595,6 +597,7 @@ type
     FilteredGroupList: IFilteredList;
     NavigationUrl : String;
     ListDisplay : TfrmFlickrContext;
+    ListUsers : TfrmUserList;
     startMark : integer;
     endMark : integer;
     flickrChart : IFlickrChart;
@@ -3743,6 +3746,19 @@ end;
 procedure TfrmFlickrMain.btnSaveProfileMouseEnter(Sender: TObject);
 begin
   ShowHint('Save or update a profile when ''override profile'' is not ticked', Sender);
+end;
+
+procedure TfrmFlickrMain.ShowFavesList1Click(Sender: TObject);
+var
+  id : string;
+begin
+  ListUsers := TfrmUserList.Create(self);
+  if listPhotos.ItemIndex <> -1 then
+  begin
+    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+    ListUsers.PopulateList(options.Workspace, id);
+  end;
+  ListUsers.Show;
 end;
 
 procedure TfrmFlickrMain.ShowGraph1Click(Sender: TObject);
