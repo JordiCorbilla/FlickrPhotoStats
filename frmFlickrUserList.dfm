@@ -114,6 +114,7 @@ object frmUserList: TfrmUserList
     Top = 168
     object ShowUser1: TMenuItem
       Caption = 'Show User'
+      SubMenuImages = frmFlickrMain.ImageList1
       ImageIndex = 73
       OnClick = ShowUser1Click
     end
@@ -124,6 +125,7 @@ object frmUserList: TfrmUserList
     Top = 168
     object ShowUser2: TMenuItem
       Caption = 'Show User'
+      SubMenuImages = frmFlickrMain.ImageList1
       ImageIndex = 73
       OnClick = ShowUser2Click
     end

@@ -76,6 +76,8 @@ begin
           zipfile.ZipDirectoryContents(folderName + '\' + 'flickrStatsAlbums.zip', folder + '\Albums');
         if DirectoryExists(folder + '\Groups') then
           zipfile.ZipDirectoryContents(folderName + '\' + 'flickrStatsGroups.zip', folder + '\Groups');
+        if DirectoryExists(folder + '\Users') then
+          zipfile.ZipDirectoryContents(folderName + '\' + 'flickrStatsUsers.zip', folder + '\Users');
         ZipFile.Close;
       end;
     end;
