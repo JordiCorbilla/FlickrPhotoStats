@@ -416,6 +416,7 @@ type
     Label18: TLabel;
     edtAppId: TEdit;
     ShowFavesList1: TMenuItem;
+    totalLostLabel: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -1003,6 +1004,7 @@ var
   likesYesterday, likesToday, commentsYesterday : integer;
   totalViews : integer;
   Rate1, Rate2 : double;
+  i: Integer;
 begin
   if globalsRepository.globals.Count > 3 then
   begin
@@ -1065,15 +1067,22 @@ begin
   UpdateArrows(commentsYesterday, commentsToday, Rate1, Rate2, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
 
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
-
   TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
+
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
-
   TotalLikesLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
-  totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
 
+  totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
   TotalCommentsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   UpdateTimeLabel.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
+
+  totalViews := 0;
+  for i := 0 to organic.globals.Count-1 do
+  begin
+    totalViews := totalViews + organic.Globals[i].negativeLikes;
+  end;
+  totalLostlabel.Caption := Format('-%n',[totalViews.ToDouble]).Replace('.00','');
+
 end;
 
 procedure TfrmFlickrMain.EndMarking1Click(Sender: TObject);
