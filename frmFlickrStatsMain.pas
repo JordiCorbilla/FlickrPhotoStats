@@ -1079,7 +1079,7 @@ begin
   totalViews := 0;
   for i := 0 to organic.globals.Count-1 do
   begin
-    totalViews := totalViews + organic.Globals[i].negativeLikes;
+    totalViews := totalViews + organic.Globals[i].lostLikes;
   end;
   totalLostlabel.Caption := Format('-%n',[totalViews.ToDouble]).Replace('.00','');
 
@@ -5259,6 +5259,7 @@ begin
   totals := 0.0;
   TotalViewsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
   TotalLikesLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
+  totalLostlabel.Caption := Format('%n',[totals]).Replace('.00','');
   TotalCommentsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
   totalGroupsLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' group spread';
   totalGroupsRateLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' groups/photo';
