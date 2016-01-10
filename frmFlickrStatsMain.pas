@@ -791,27 +791,30 @@ procedure TfrmFlickrMain.MarkGroups1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
-  i: Integer;
   j: Integer;
+  pool : IPool;
 begin
   //Mark the groups
   if listgroups.Items.Count > 0 then
   begin
     if listPhotos.ItemIndex <> -1 then
     begin
-    btnFilterCancelClick(sender);
-    id := listPhotos.Items[listPhotos.ItemIndex].Caption;
-    photo := repository.GetPhoto(id);
-    for i := 0 to photo.Groups.Count-1 do
-    begin
+      btnFilterCancelClick(sender);
+      listGroups.Visible := false;
+      listGroups.OnItemChecked := nil;
+      listgroups.OnCustomDrawItem := nil;
+      id := listPhotos.Items[listPhotos.ItemIndex].Caption;
+      photo := repository.GetPhoto(id);
+
       for j := 0 to listgroups.Items.count-1 do
       begin
-        if photo.Groups[i].Id = listgroups.Items[j].caption then
-        begin
+        if photo.Groups.Exists(listgroups.Items[j].caption, pool) then
           listgroups.Items[j].Checked := true;
-        end;
       end;
-    end;
+
+      listGroups.Visible := true;
+      listGroups.OnItemChecked := listGroupsItemChecked;
+      listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
     end;
   end;
 end;
@@ -5071,16 +5074,16 @@ procedure TfrmFlickrMain.ShowListGroups1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
-  i : integer;
+  Item: TPair<string, IPool>;
 begin
   ListDisplay := TfrmFlickrContext.Create(self);
   if listPhotos.ItemIndex <> -1 then
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
     photo := repository.GetPhoto(id);
-    for i := 0 to photo.Groups.Count-1 do
+    for Item in photo.Groups do
     begin
-      ListDisplay.AddItem(photo.groups[i].id, photo.groups[i].title, DateToStr(photo.groups[i].Added));
+      ListDisplay.AddItem(Item.Value.id, Item.Value.title, DateToStr(Item.Value.Added));
     end;
   end;
   ListDisplay.Show;

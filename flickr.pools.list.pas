@@ -33,10 +33,11 @@ uses
   Contnrs, Generics.Collections, flickr.pools;
 
 type
-  TPoolList = class(TList<IPool>)
+  TPoolList = class(TDictionary<String, IPool>)
   public
     function AddItem(pool : IPool) : integer;
-    function Exists(const pool : IPool; var existing: IPool) : boolean;
+    function Exists(const pool : IPool; var existing: IPool) : boolean; overload;
+    function Exists(const pool : string; var existing: IPool) : boolean; overload;
   end;
 
 implementation
@@ -49,26 +50,19 @@ var
 begin
   result := 0;
   if not Exists(pool, poolRet) then
-    result := Add(pool)
+    Add(pool.Id, pool)
   else
     pool := nil;
 end;
 
 function TPoolList.Exists(const pool: IPool; var existing: IPool): boolean;
-var
-  i: Integer;
-  found: boolean;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < Self.count) do
-  begin
-    found := Self[i].id = pool.id;
-    inc(i);
-  end;
-  if found then
-    existing := Self[i - 1];
-  result := found;
+  result := TryGetValue(pool.Id, existing);
+end;
+
+function TPoolList.Exists(const pool: string; var existing: IPool): boolean;
+begin
+  result := TryGetValue(pool, existing);
 end;
 
 end.

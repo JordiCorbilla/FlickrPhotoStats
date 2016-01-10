@@ -31,7 +31,7 @@ unit flickr.pools.histogram;
 interface
 
 uses
-  flickr.pools.list, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item;
+  flickr.pools.list, Contnrs, Generics.Collections, Generics.defaults, flickr.lib.item, flickr.pools;
 
 type
   TPoolHistogram = class(TObject)
@@ -56,17 +56,17 @@ end;
 
 function TPoolHistogram.Histogram: TList<IItem>;
 var
-  i : integer;
   item : IItem;
   FHistogram : TItemList;
   accumulated : integer;
+  pool: TPair<string, IPool>;
 begin
   FHistogram := TItemList.create;
 
   accumulated := 1;
-  for i := 0 to FGroupPool.Count-1 do
+  for pool in FGroupPool do
   begin
-    if FHistogram.Exists(FGroupPool[i].Added, item) then
+    if FHistogram.Exists(pool.Value.Added, item) then
     begin
       item.count := item.count + 1;
       accumulated := accumulated + 1;
@@ -74,7 +74,7 @@ begin
     else
     begin
       item := TItem.Create;
-      item.date := FGroupPool[i].Added;
+      item.date := pool.Value.Added;
       item.count := item.count + 1 + accumulated;
       FHistogram.Add(item);
     end;

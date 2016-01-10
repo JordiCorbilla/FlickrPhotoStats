@@ -443,17 +443,9 @@ end;
 
 function TPhoto.InGroup(groupId: string): boolean;
 var
-  i: integer;
-  found: Boolean;
+  pool : Ipool;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < FGroups.count) do
-  begin
-    found := FGroups[i].id = groupid;
-    inc(i);
-  end;
-  Result := found;
+  result := FGroups.TryGetValue(groupId, pool);
 end;
 
 procedure TPhoto.Load(iNode: IXMLNode);
@@ -555,6 +547,7 @@ var
   i: Integer;
   iNode2: IXMLNode;
   XMLDoc: TXMLDocument;
+  item : TPair<string, IPool>;
 begin
   iNode2 := iNode.AddChild('Photo');
   iNode2.Attributes['id'] := FId;
@@ -609,12 +602,12 @@ begin
   XMLDoc := TXMLDocument.Create(nil);
   XMLDoc.Active := true;
   iNode := XMLDoc.AddChild('Groups');
-  for i := 0 to FGroups.count - 1 do
+  for Item in FGroups do
   begin
     iNode2 := iNode.AddChild('Pool');
-    iNode2.Attributes['id'] := FGroups[i].Id;
-    iNode2.Attributes['title'] := FGroups[i].Title;
-    iNode2.Attributes['added'] := FGroups[i].Added;
+    iNode2.Attributes['id'] := Item.Value.Id;
+    iNode2.Attributes['title'] := Item.Value.Title;
+    iNode2.Attributes['added'] := Item.Value.Added;
   end;
   if DirectoryExists(FFolder + 'Groups') then
     XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
