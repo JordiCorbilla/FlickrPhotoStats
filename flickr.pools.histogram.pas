@@ -58,27 +58,29 @@ function TPoolHistogram.Histogram: TList<IItem>;
 var
   item : IItem;
   FHistogram : TItemList;
-  accumulated : integer;
   pool: TPair<string, IPool>;
+  IPoolComparer : TComparer<IItem>;
 begin
-  FHistogram := TItemList.create;
+  IPoolComparer := TITemComparerDate.Create;
 
-  accumulated := 1;
+  FHistogram := TItemList.create(IPoolComparer);
+
   for pool in FGroupPool do
   begin
     if FHistogram.Exists(pool.Value.Added, item) then
     begin
       item.count := item.count + 1;
-      accumulated := accumulated + 1;
     end
     else
     begin
       item := TItem.Create;
       item.date := pool.Value.Added;
-      item.count := item.count + 1 + accumulated;
+      item.count := item.count + 1;
       FHistogram.Add(item);
     end;
   end;
+
+  FHistogram.Sort;
 
   result := FHistogram;
 end;

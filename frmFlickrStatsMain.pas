@@ -5606,6 +5606,7 @@ var
   vTendency : integer;
   poolHistogram : TPoolHistogram;
   histogram :  TList<IItem>;
+  acc : integer;
 begin
   if (Item.Checked) and (not chkAddItem.Checked) then
   begin
@@ -5648,9 +5649,11 @@ begin
       poolHistogram := TPoolHistogram.Create(photo.Groups);
       colour := RGB(Random(255), Random(255), Random(255));
       histogram := poolHistogram.Histogram;
+      acc := 0;
       for i := 0 to histogram.Count-1 do
       begin
-        SeriesPool.AddXY(histogram[i].date, histogram[i].count, '', colour);
+        acc := acc + histogram[i].count;
+        SeriesPool.AddXY(histogram[i].date, acc, '', colour);
       end;
       histogram.Free;
       poolHistogram.Free;

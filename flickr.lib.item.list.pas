@@ -53,11 +53,11 @@ uses
 
 function TITemComparerDate.Compare(const Left, Right: IItem): integer;
 var
-  LeftTerm, RightTerm: double;
+  LeftTerm, RightTerm: TDateTime;
 begin
   LeftTerm := Left.Date;
   RightTerm := Right.Date;
-  Result := Round(LeftTerm - RightTerm);
+  Result := CompareDateTime(LeftTerm, RightTerm);
 end;
 
 { TItemList }
