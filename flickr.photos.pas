@@ -428,17 +428,9 @@ end;
 
 function TPhoto.InAlbum(albumId: string): boolean;
 var
-  i: integer;
-  found: Boolean;
+  album : IAlbum;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < FAlbums.count) do
-  begin
-    found := FAlbums[i].id = albumId;
-    inc(i);
-  end;
-  Result := found;
+  Result := FAlbums.Exists(albumId, album);
 end;
 
 function TPhoto.InGroup(groupId: string): boolean;
@@ -548,6 +540,7 @@ var
   iNode2: IXMLNode;
   XMLDoc: TXMLDocument;
   item : TPair<string, IPool>;
+  album : TPair<string, IAlbum>;
 begin
   iNode2 := iNode.AddChild('Photo');
   iNode2.Attributes['id'] := FId;
@@ -587,11 +580,11 @@ begin
   XMLDoc := TXMLDocument.Create(nil);
   XMLDoc.Active := true;
   iNode := XMLDoc.AddChild('Albums');
-  for i := 0 to FAlbums.count - 1 do
+  for album in FAlbums do
   begin
     iNode2 := iNode.AddChild('Set');
-    iNode2.Attributes['id'] := FAlbums[i].Id;
-    iNode2.Attributes['title'] := FAlbums[i].Title;
+    iNode2.Attributes['id'] := album.value.Id;
+    iNode2.Attributes['title'] := album.value.Title;
   end;
   if DirectoryExists(FFolder + 'Albums') then
     XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')

@@ -33,10 +33,11 @@ uses
   Contnrs, Generics.Collections, flickr.albums;
 
 type
-  TAlbumList = class(TList<IAlbum>)
+  TAlbumList = class(TDictionary<String, IAlbum>)
   public
     function AddItem(album : IAlbum) : integer;
-    function Exists(const album : IAlbum; var existing: IAlbum) : boolean;
+    function Exists(const album : IAlbum; var existing: IAlbum) : boolean; overload;
+    function Exists(const album : string; var existing: IAlbum) : boolean; overload;
   end;
 
 implementation
@@ -49,26 +50,19 @@ var
 begin
   result := 0;
   if not Exists(album, albumRet) then
-    result := Add(album)
+    Add(album.Id, album)
   else
     album := nil;
 end;
 
 function TAlbumList.Exists(const album: IAlbum; var existing: IAlbum): boolean;
-var
-  i: Integer;
-  found: boolean;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < Self.count) do
-  begin
-    found := Self[i].id = album.id;
-    inc(i);
-  end;
-  if found then
-    existing := Self[i - 1];
-  result := found;
+  result := TryGetValue(album.Id, existing);
+end;
+
+function TAlbumList.Exists(const album: string; var existing: IAlbum): boolean;
+begin
+  result := TryGetValue(album, existing);
 end;
 
 end.

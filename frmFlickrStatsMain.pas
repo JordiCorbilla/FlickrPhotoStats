@@ -5055,16 +5055,16 @@ procedure TfrmFlickrMain.ShowListAlbums1Click(Sender: TObject);
 var
   id : string;
   photo : IPhoto;
-  i : integer;
+  album : TPair<string, IAlbum>;
 begin
   ListDisplay := TfrmFlickrContext.Create(self);
   if listPhotos.ItemIndex <> -1 then
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
     photo := repository.GetPhoto(id);
-    for i := 0 to photo.Albums.Count-1 do
+    for album in photo.Albums do
     begin
-      ListDisplay.AddItem(photo.Albums[i].id, photo.Albums[i].title);
+      ListDisplay.AddItem(album.value.id, album.value.title);
     end;
   end;
   ListDisplay.Show;
