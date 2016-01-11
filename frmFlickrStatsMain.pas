@@ -45,7 +45,7 @@ uses
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
   MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
-  flickr.base, flickr.tracker;
+  flickr.base, flickr.tracker, Vcl.DBCtrls, Data.DB;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -417,6 +417,8 @@ type
     edtAppId: TEdit;
     ShowFavesList1: TMenuItem;
     totalLostLabel: TLabel;
+    DBNavigator1: TDBNavigator;
+    DataSource1: TDataSource;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -547,6 +549,7 @@ type
       Y: Integer);
     procedure ShowGraph1Click(Sender: TObject);
     procedure ShowFavesList1Click(Sender: TObject);
+    procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -4082,6 +4085,28 @@ begin
   btnDeleteProfile.Enabled := true;
   //edtProfile.Enabled := true;
   btnSaveProfile.Enabled := true;
+end;
+
+procedure TfrmFlickrMain.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
+begin
+  case Button of
+    nbFirst:
+    begin
+        dailyViews.Page := 0;
+    end;
+    nbPrior:
+    begin
+      dailyViews.Pages.PreviousPage;
+    end;
+    nbNext:
+    begin
+      dailyViews.Pages.NextPage;
+    end;
+    nbLast:
+    begin
+      dailyViews.Page := dailyViews.Pages.Count-1;
+    end;
+  end;
 end;
 
 procedure TfrmFlickrMain.Delete1Click(Sender: TObject);

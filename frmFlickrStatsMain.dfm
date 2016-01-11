@@ -841,7 +841,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -957,6 +957,7 @@ object frmFlickrMain: TfrmFlickrMain
             LeftAxis.Ticks.Width = 0
             LeftAxis.TicksInner.Width = 0
             LeftAxis.Title.Font.Color = clLime
+            Pages.MaxPointsPerPage = 25
             RightAxis.Title.Font.Color = clLime
             TopAxis.Title.Font.Color = clLime
             View3D = False
@@ -2211,6 +2212,7 @@ object frmFlickrMain: TfrmFlickrMain
         Width = 1503
         Height = 216
         Legend.Visible = False
+        MarginTop = 10
         Title.Font.Color = clWhite
         Title.Text.Strings = (
           'Total Views')
@@ -2249,6 +2251,16 @@ object frmFlickrMain: TfrmFlickrMain
           15
           7)
         ColorPaletteIndex = 13
+        object DBNavigator1: TDBNavigator
+          Left = 2
+          Top = 1
+          Width = 222
+          Height = 25
+          DataSource = DataSource1
+          VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbCancel, nbRefresh]
+          TabOrder = 0
+          OnClick = DBNavigator1Click
+        end
         object LineSeries2: TBarSeries
           BarBrush.BackColor = clDefault
           BarPen.Color = 10708548
@@ -5514,7 +5526,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1080
     Top = 160
     Bitmap = {
-      494C0101ED002001440210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001480210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13679,5 +13691,9 @@ object frmFlickrMain: TfrmFlickrMain
       ImageIndex = 217
       OnClick = ShowGraph1Click
     end
+  end
+  object DataSource1: TDataSource
+    Left = 124
+    Top = 185
   end
 end
