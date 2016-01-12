@@ -50,7 +50,7 @@ begin
   ZipFile := TZipFile.Create;
   try
     folderName := DateToStr(Date).Replace('/','');
-    folderName := folder + '\backup_' + folderName;
+    folderName := folder + '\Backups\backup_' + folderName;
     if not DirectoryExists(folderName) then
     begin
       if ForceDirectories(folderName) then
