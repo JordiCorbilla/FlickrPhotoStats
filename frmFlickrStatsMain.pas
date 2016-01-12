@@ -45,7 +45,11 @@ uses
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
   MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
-  flickr.base, flickr.tracker, Vcl.DBCtrls, Data.DB;
+  flickr.base, flickr.tracker, Vcl.DBCtrls, Data.DB, FireDAC.Stan.Intf,
+  FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
+  FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
+  FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
+  FireDAC.Phys.MSSQL, FireDAC.Comp.Client, FireDAC.Comp.DataSet;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -417,8 +421,8 @@ type
     edtAppId: TEdit;
     ShowFavesList1: TMenuItem;
     totalLostLabel: TLabel;
-    DBNavigator1: TDBNavigator;
-    DataSource1: TDataSource;
+    btnUnbanGroups: TButton;
+    btnRemoveProfile: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -550,6 +554,10 @@ type
     procedure ShowGraph1Click(Sender: TObject);
     procedure ShowFavesList1Click(Sender: TObject);
     procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
+    procedure btnUnbanGroupsMouseEnter(Sender: TObject);
+    procedure btnUnbanGroupsClick(Sender: TObject);
+    procedure btnRemoveProfileMouseEnter(Sender: TObject);
+    procedure btnRemoveProfileClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -861,6 +869,7 @@ begin
     btnAddPhotos.Enabled := false;
     btnRemovePhoto.Enabled := false;
     btnBanGroups.Enabled := false;
+    btnUnBanGroups.Enabled := false;
     for i := 0 to listPhotos.Items.Count - 1 do
     begin
       if (listPhotos.Items[i].Checked) then
@@ -954,6 +963,7 @@ begin
     btnAddPhotos.Enabled := true;
     btnRemovePhoto.Enabled := true;
     btnBanGroups.Enabled := true;
+    btnUnBanGroups.Enabled := true;
     photos.Free;
   end;
   showMessage('Update has been completed');
@@ -3420,10 +3430,10 @@ begin
           if not OmitGroups.Contains(groupId) then
           begin
             OmitGroups := OmitGroups + groupId + ',';
-            mStatus.Lines.Add('Adding group to banned list for  : ' + photoId + ': ' + OmitGroups);
+            mStatus.Lines.Add('Adding photo to banned list for  : ' + photoId + ': ' + OmitGroups);
           end
           else
-            mStatus.Lines.Add('Group already in the banned list : ' + groupId);
+            mStatus.Lines.Add('Photo already in the banned list : ' + groupId);
         end;
         p.OmitGroups := OmitGroups;
       end;
@@ -3434,7 +3444,7 @@ begin
     photos.Free;
     groups.Free;
   end;
-  showMessage('Photos have been banned from the groups');
+  showMessage('Photos have been banned from the groups, please refresh the main grid!');
 end;
 
 procedure TfrmFlickrMain.btnBanGroupsMouseEnter(Sender: TObject);
@@ -3475,6 +3485,7 @@ var
   i: Integer;
   j: Integer;
   Item: TListItem;
+  groupId : string;
 begin
   try
     if ComboBox1.ItemIndex = -1 then
@@ -3496,10 +3507,8 @@ begin
       edtProfile.text := profileName;
       for i := 0 to FilteredGroupList.list.Count - 1 do
       begin
-        for j := 0 to profile.groupId.Count - 1 do
+        if profile.groupId.TryGetValue(FilteredGroupList.list[i].id, groupId) then
         begin
-          if FilteredGroupList.list[i].id = (profile.groupId[j]) then
-          begin
             Item := listGroups.Items.Add;
             Item.Caption := FilteredGroupList.list[i].id;
             Item.SubItems.Add(FilteredGroupList.list[i].title);
@@ -3520,7 +3529,6 @@ begin
             Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
             Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
             Item.checked := true;
-          end;
         end;
       end;
       listGroups.Visible := true;
@@ -3531,14 +3539,11 @@ begin
       begin
         listGroups.Visible := false;
         edtProfile.text := profileName;
-        for i := 0 to profile.groupId.Count - 1 do
-          for j := 0 to listGroups.Items.Count - 1 do
-          begin
-            if profile.groupId[i] = listGroups.Items[j].Caption then
-            begin
-              listGroups.Items[j].Checked := true;
-            end;
-          end;
+        for j := 0 to listGroups.Items.Count - 1 do
+        begin
+          if profile.groupId.TryGetValue(listGroups.Items[j].Caption, groupId) then
+            listGroups.Items[j].Checked := true;
+        end;
         listGroups.Visible := true;
       end;
     end;
@@ -3680,6 +3685,48 @@ end;
 procedure TfrmFlickrMain.btnRemovePhotoMouseEnter(Sender: TObject);
 begin
   ShowHint('Remove selected pictures from selected groups.', Sender);
+end;
+
+procedure TfrmFlickrMain.btnRemoveProfileClick(Sender: TObject);
+var
+  profile: IProfile;
+  i: Integer;
+  index : integer;
+begin
+  if edtProfile.text = '' then
+  begin
+    showmessage('profile name can''t be empty');
+    exit;
+  end;
+
+  // Give me the profile
+  index := ComboBox1.ItemIndex;
+  profile := flickrProfiles.getProfile(edtProfile.text);
+
+  if profile = nil then
+  begin
+    showmessage('profile needs to be existing!');
+    exit;
+  end
+  else
+  begin
+      for i := 0 to listGroups.Items.Count - 1 do
+      begin
+        if listGroups.Items[i].Checked then
+        begin
+          profile.RemoveId(listGroups.Items[i].Caption);
+        end;
+      end;
+  end;
+  flickrProfiles.save(options.workspace + '\flickrProfiles.xml');
+  LoadProfiles();
+  if index <> -1 then
+    combobox1.ItemIndex := index;
+end;
+
+procedure TfrmFlickrMain.btnRemoveProfileMouseEnter(Sender: TObject);
+begin
+  ShowHint('Remove selected groups from the profile.', Sender);
 end;
 
 procedure TfrmFlickrMain.btnSaveProfileClick(Sender: TObject);
@@ -3825,6 +3872,75 @@ end;
 procedure TfrmFlickrMain.btnShowReportMouseEnter(Sender: TObject);
 begin
   ShowHint('Show HTML report.', Sender);
+end;
+
+procedure TfrmFlickrMain.btnUnbanGroupsClick(Sender: TObject);
+var
+  photos: TList<string>;
+  groups: TList<string>;
+  i : integer;
+  j : integer;
+  photoId: string;
+  groupId: string;
+  p : IPhoto;
+  OmitGroups : string;
+  total : integer;
+  option : integer;
+begin
+  //Ban these groups in the photos selected.
+  PageControl3.ActivePage := tabStatus;
+  photos := TList<string>.Create;
+  groups := TList<string>.Create;
+  try
+    batchUpdate.Enabled := false;
+    for i := 0 to listPhotos.Items.Count - 1 do
+    begin
+      if listPhotos.Items[i].Checked then
+        photos.Add(listPhotos.Items[i].Caption);
+    end;
+    for i := 0 to listGroups.Items.Count - 1 do
+    begin
+      if listGroups.Items[i].Checked then
+        groups.Add(listGroups.Items[i].Caption);
+    end;
+    mStatus.Lines.Add('******************************************************************');
+    mStatus.Lines.Add('Unbanning ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each.');
+    total := photos.Count * groups.Count;
+    mStatus.Lines.Add('Total number of transactions: ' + total.ToString());
+    option := MessageDlg('Do you want to unban ' + photos.Count.ToString + ' photos from ' + groups.Count.ToString + ' groups each?', mtInformation, mbOKCancel, 0);
+    if option = mrOK then
+    begin
+      for i := 0 to photos.Count - 1 do
+      begin
+        photoId := photos[i];
+        p := repository.GetPhoto(photoId);
+        OmitGroups := p.OmitGroups;
+        for j := 0 to groups.Count - 1 do
+        begin
+          groupId := groups[j];
+          if OmitGroups.Contains(groupId) then
+          begin
+            OmitGroups := OmitGroups.Replace(groupId + ',', '');
+            mStatus.Lines.Add('Removing photo from banned list for  : ' + photoId + ': ' + OmitGroups);
+          end
+          else
+            mStatus.Lines.Add('Photo not in the banned list : ' + groupId);
+        end;
+        p.OmitGroups := OmitGroups;
+      end;
+    end;
+  finally
+    batchUpdate.Enabled := true;
+    mStatus.Lines.Add('******************************************************************');
+    photos.Free;
+    groups.Free;
+  end;
+  showMessage('Photos have been unbanned from the groups, please refresh the main grid!');
+end;
+
+procedure TfrmFlickrMain.btnUnbanGroupsMouseEnter(Sender: TObject);
+begin
+  ShowHint('Unban groups from photos.', Sender);
 end;
 
 procedure TfrmFlickrMain.Button8Click(Sender: TObject);
@@ -4085,6 +4201,7 @@ begin
   btnDeleteProfile.Enabled := true;
   //edtProfile.Enabled := true;
   btnSaveProfile.Enabled := true;
+  btnRemoveProfile.Enabled := true;
 end;
 
 procedure TfrmFlickrMain.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
@@ -4158,6 +4275,7 @@ end;
 procedure TfrmFlickrMain.edtProfileChange(Sender: TObject);
 begin
   btnSaveProfile.Enabled := edtProfile.Text <> '';
+  btnRemoveProfile.Enabled := btnSaveProfile.Enabled;
 end;
 
 procedure TfrmFlickrMain.edtUrlNameChange(Sender: TObject);
@@ -4383,6 +4501,7 @@ begin
   btnAddPhotos.Enabled := true;
   btnRemovePhoto.Enabled := true;
   btnBanGroups.Enabled := true;
+  btnUnBanGroups.Enabled := true;
   btnAddItems.Enabled := true;
   progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;

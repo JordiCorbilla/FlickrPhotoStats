@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Jordi Corbilla
+// Copyright (c) 2015-2016, Jordi Corbilla
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -34,33 +34,35 @@ uses
 
 type
   IProfile = interface
-    function GetGroupId: TList<String>;
+    function GetGroupId: TDictionary<String,String>;
     function GetName: string;
-    procedure SetGroupId(const Value: TList<String>);
+    procedure SetGroupId(const Value: TDictionary<String,String>);
     procedure SetName(const Value: string);
     property Name: string read GetName write SetName;
-    property GroupId: TList<String> read GetGroupId write SetGroupId;
+    property GroupId: TDictionary<String,String> read GetGroupId write SetGroupId;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure AddId(id : string);
+    procedure RemoveId(id : string);
     function Exists(id : string) : boolean;
   end;
 
   TProfile = class(TinterfacedObject, IProfile)
   private
     FName: string;
-    FGroupId: TList<String>;
-    function GetGroupId: TList<String>;
+    FGroupId: TDictionary<String,String>;
+    function GetGroupId: TDictionary<String,String>;
     function GetName: string;
-    procedure SetGroupId(const Value: TList<String>);
+    procedure SetGroupId(const Value: TDictionary<String,String>);
     procedure SetName(const Value: string);
   public
     property Name: string read GetName write SetName;
-    property GroupId: TList<String> read GetGroupId write SetGroupId;
+    property GroupId: TDictionary<String,String> read GetGroupId write SetGroupId;
     procedure Save(iNode: IXMLNode);
     procedure Load(iNode: IXMLNode);
     procedure AddId(id : string);
     function Exists(id : string) : boolean;
+    procedure RemoveId(id : string);
     constructor Create();
     destructor Destroy(); override;
   end;
@@ -72,12 +74,12 @@ implementation
 procedure TProfile.AddId(id: string);
 begin
   if not Exists(id) then
-    FGroupId.Add(id);
+    FGroupId.Add(id, id);
 end;
 
 constructor TProfile.Create;
 begin
-  FGroupId := TList<String>.Create();
+  FGroupId := TDictionary<String,String>.Create();
 end;
 
 destructor TProfile.Destroy;
@@ -88,20 +90,12 @@ end;
 
 function TProfile.Exists(id: string): boolean;
 var
-  i: Integer;
-  found: boolean;
+  foundId : string;
 begin
-  i := 0;
-  found := false;
-  while (not found) and (i < FGroupId.count) do
-  begin
-    found := FGroupId[i] = id;
-    inc(i);
-  end;
-  result := found;
+  result := FGroupId.TryGetValue(id, foundId);
 end;
 
-function TProfile.GetGroupId: TList<String>;
+function TProfile.GetGroupId: TDictionary<String,String>;
 begin
   result := FGroupId;
 end;
@@ -119,26 +113,31 @@ begin
   iNode2 := iNode.ChildNodes.First;
   while iNode2 <> nil do
   begin
-    FGroupId.Add(iNode2.Attributes['Id']);
+    FGroupId.Add(iNode2.Attributes['Id'], iNode2.Attributes['Id']);
     iNode2 := iNode2.NextSibling;
   end;
 end;
 
+procedure TProfile.RemoveId(id: string);
+begin
+  FGroupId.Remove(id);
+end;
+
 procedure TProfile.Save(iNode: IXMLNode);
 var
-  i: Integer;
   iNode2, iNode3: IXMLNode;
+  item : TPair<string, string>;
 begin
   iNode2 := iNode.AddChild('Profile');
   iNode2.Attributes['Name'] := FName;
-  for i := 0 to FGroupId.Count - 1 do
+  for item in FGroupId do
   begin
     iNode3 := iNode2.AddChild('Group');
-    iNode3.Attributes['Id'] := FGroupId[i];
+    iNode3.Attributes['Id'] := item.Value;
   end;
 end;
 
-procedure TProfile.SetGroupId(const Value: TList<String>);
+procedure TProfile.SetGroupId(const Value: TDictionary<String,String>);
 begin
   FGroupId := Value;
 end;

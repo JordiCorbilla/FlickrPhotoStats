@@ -30,7 +30,7 @@ unit flickr.profiles;
 interface
 
 uses
-  generics.collections, flickr.profile;
+  Contnrs, Generics.Collections, Generics.defaults, flickr.profile;
 
 type
   IProfiles = interface
@@ -42,6 +42,11 @@ type
     procedure Add(profile : IProfile);
     function Remove(name : string): boolean;
     function getProfile(name : string) : IProfile;
+  end;
+
+  TIProfileComparerName = class(TComparer<IProfile>)
+  public
+    function Compare(const Left, Right: IProfile): Integer; override;
   end;
 
   TProfiles = class(TInterfacedObject, IProfiles)
@@ -73,8 +78,11 @@ begin
 end;
 
 constructor TProfiles.Create;
+var
+  IPhotoComparer : TComparer<IProfile>;
 begin
-  FList := TList<IProfile>.Create;
+  IPhotoComparer := TIProfileComparerName.Create;
+  FList := TList<IProfile>.Create(IPhotoComparer);
 end;
 
 destructor TProfiles.Destroy;
@@ -130,9 +138,8 @@ begin
     finally
       Document := nil;
     end;
+    FList.Sort;
   end;
-//  else
-//    ShowMessage('File does not exists in location: ' + FileName);
 end;
 
 function TProfiles.Remove(name: string): boolean;
@@ -169,6 +176,13 @@ end;
 procedure TProfiles.setList(const Value: TList<IProfile>);
 begin
   FList := Value;
+end;
+
+{ TIProfileComparerName }
+
+function TIProfileComparerName.Compare(const Left, Right: IProfile): Integer;
+begin
+  Result := CompareStr(Left.Name, Right.Name);
 end;
 
 end.

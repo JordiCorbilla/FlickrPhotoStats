@@ -841,7 +841,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = Dashboard
+    ActivePage = TabSheet2
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -957,7 +957,6 @@ object frmFlickrMain: TfrmFlickrMain
             LeftAxis.Ticks.Width = 0
             LeftAxis.TicksInner.Width = 0
             LeftAxis.Title.Font.Color = clLime
-            Pages.MaxPointsPerPage = 25
             RightAxis.Title.Font.Color = clLime
             TopAxis.Title.Font.Color = clLime
             View3D = False
@@ -2251,16 +2250,6 @@ object frmFlickrMain: TfrmFlickrMain
           15
           7)
         ColorPaletteIndex = 13
-        object DBNavigator1: TDBNavigator
-          Left = 2
-          Top = 1
-          Width = 222
-          Height = 25
-          DataSource = DataSource1
-          VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbCancel, nbRefresh]
-          TabOrder = 0
-          OnClick = DBNavigator1Click
-        end
         object LineSeries2: TBarSeries
           BarBrush.BackColor = clDefault
           BarPen.Color = 10708548
@@ -3283,7 +3272,7 @@ object frmFlickrMain: TfrmFlickrMain
             BevelOuter = bvNone
             TabOrder = 0
             object Label5: TLabel
-              Left = 311
+              Left = 413
               Top = 63
               Width = 77
               Height = 13
@@ -3309,7 +3298,7 @@ object frmFlickrMain: TfrmFlickrMain
               ParentFont = False
             end
             object Label37: TLabel
-              Left = 777
+              Left = 879
               Top = 63
               Width = 92
               Height = 13
@@ -3370,16 +3359,16 @@ object frmFlickrMain: TfrmFlickrMain
               OnMouseEnter = btnAddPhotosMouseEnter
             end
             object edtFilterGroup: TEdit
-              Left = 394
+              Left = 496
               Top = 60
               Width = 306
               Height = 21
               TabOrder = 3
             end
             object Profiles: TGroupBox
-              Left = 311
+              Left = 413
               Top = 0
-              Width = 747
+              Width = 838
               Height = 57
               Caption = 'Profiles'
               TabOrder = 6
@@ -3473,6 +3462,21 @@ object frmFlickrMain: TfrmFlickrMain
                 OnClick = btnDeleteProfileClick
                 OnMouseEnter = btnDeleteProfileMouseEnter
               end
+              object btnRemoveProfile: TButton
+                Left = 739
+                Top = 11
+                Width = 70
+                Height = 25
+                CustomHint = BalloonHint1
+                Caption = 'Remove'
+                Enabled = False
+                ImageIndex = 80
+                ImageMargins.Left = 5
+                Images = ImageList1
+                TabOrder = 7
+                OnClick = btnRemoveProfileClick
+                OnMouseEnter = btnRemoveProfileMouseEnter
+              end
             end
             object btnRemovePhoto: TButton
               Left = 205
@@ -3491,7 +3495,7 @@ object frmFlickrMain: TfrmFlickrMain
               OnMouseEnter = btnRemovePhotoMouseEnter
             end
             object btnFilterOK: TButton
-              Left = 702
+              Left = 804
               Top = 58
               Width = 34
               Height = 25
@@ -3502,7 +3506,7 @@ object frmFlickrMain: TfrmFlickrMain
               OnClick = btnFilterOKClick
             end
             object btnFilterCancel: TButton
-              Left = 737
+              Left = 839
               Top = 58
               Width = 34
               Height = 25
@@ -3543,6 +3547,22 @@ object frmFlickrMain: TfrmFlickrMain
               TabOrder = 9
               OnClick = Button5Click
               OnMouseEnter = Button5MouseEnter
+            end
+            object btnUnbanGroups: TButton
+              Left = 306
+              Top = 2
+              Width = 50
+              Height = 38
+              Caption = 'Unban'
+              Enabled = False
+              ImageAlignment = iaTop
+              ImageIndex = 140
+              ImageMargins.Top = 5
+              ImageMargins.Bottom = -6
+              Images = ImageList1
+              TabOrder = 10
+              OnClick = btnUnbanGroupsClick
+              OnMouseEnter = btnUnbanGroupsMouseEnter
             end
           end
           object PageControl3: TPageControl
@@ -5502,8 +5522,8 @@ object frmFlickrMain: TfrmFlickrMain
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 960
-    Top = 164
+    Left = 936
+    Top = 302
   end
   object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
     MaxLineAction = maException
@@ -5512,21 +5532,21 @@ object frmFlickrMain: TfrmFlickrMain
     SSLOptions.Mode = sslmUnassigned
     SSLOptions.VerifyMode = []
     SSLOptions.VerifyDepth = 0
-    Left = 1208
-    Top = 164
+    Left = 1216
+    Top = 302
   end
   object XMLDocument1: TXMLDocument
-    Left = 888
-    Top = 164
+    Left = 866
+    Top = 302
     DOMVendorDesc = 'MSXML'
   end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
-    Left = 1080
-    Top = 160
+    Left = 1076
+    Top = 302
     Bitmap = {
-      494C0101ED002001480210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020014C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13459,17 +13479,17 @@ object frmFlickrMain: TfrmFlickrMain
       end>
     ProgressState = Normal
     TabProperties = []
-    Left = 1360
-    Top = 160
+    Left = 1356
+    Top = 302
   end
   object ActionList1: TActionList
-    Left = 1024
-    Top = 161
+    Left = 1006
+    Top = 302
   end
   object PopupMenu1: TPopupMenu
     Images = ImageList1
-    Left = 1144
-    Top = 161
+    Left = 1146
+    Top = 302
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
       ImageIndex = 22
@@ -13553,13 +13573,13 @@ object frmFlickrMain: TfrmFlickrMain
   object TeeGDIPlus1: TTeeGDIPlus
     Active = True
     TeePanel = dailyLikes
-    Left = 1418
-    Top = 158
+    Left = 1426
+    Top = 302
   end
   object PopupMenu2: TPopupMenu
     Images = ImageList1
-    Left = 1300
-    Top = 160
+    Left = 1286
+    Top = 302
     object ShowonFlickr2: TMenuItem
       Caption = 'Show on Flickr'
       ImageIndex = 120
@@ -13581,8 +13601,8 @@ object frmFlickrMain: TfrmFlickrMain
   end
   object PopupMenu3: TPopupMenu
     Images = ImageList1
-    Left = 788
-    Top = 160
+    Left = 796
+    Top = 302
     object MenuItem1: TMenuItem
       Caption = 'Check All'
       ImageIndex = 12
@@ -13596,8 +13616,8 @@ object frmFlickrMain: TfrmFlickrMain
   end
   object MainMenu1: TMainMenu
     Images = ImageList1
-    Left = 700
-    Top = 167
+    Left = 726
+    Top = 302
     object File1: TMenuItem
       Caption = 'File'
       object Open1: TMenuItem
@@ -13655,8 +13675,8 @@ object frmFlickrMain: TfrmFlickrMain
   object BalloonHint1: TBalloonHint
     Delay = 300
     HideAfter = 2000
-    Left = 636
-    Top = 167
+    Left = 656
+    Top = 302
   end
   object LiveTile1: TLiveTile
     AppID = 'D0FC33BF-A910-47AA-98CA-4C95DBF72E6B'
@@ -13678,22 +13698,18 @@ object frmFlickrMain: TfrmFlickrMain
       'Text Field 5=Text Field 5')
     WideTile.TileTemplate = 'TileWideText01'
     AutoUpdateTile = True
-    Left = 572
-    Top = 167
+    Left = 586
+    Top = 302
   end
   object PopupMenu4: TPopupMenu
     Images = ImageList1
-    Left = 508
-    Top = 169
+    Left = 516
+    Top = 302
     object ShowGraph1: TMenuItem
       Caption = 'Show Graph'
       SubMenuImages = ImageList1
       ImageIndex = 217
       OnClick = ShowGraph1Click
     end
-  end
-  object DataSource1: TDataSource
-    Left = 124
-    Top = 185
   end
 end

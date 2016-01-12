@@ -37,7 +37,6 @@ object frmUserList: TfrmUserList
       Align = alTop
       Caption = 'Added'
       TabOrder = 0
-      ExplicitWidth = 527
     end
     object ListView1: TListView
       Left = 1
@@ -58,9 +57,6 @@ object frmUserList: TfrmUserList
       PopupMenu = PopupMenu1
       TabOrder = 1
       ViewStyle = vsReport
-      ExplicitLeft = 41
-      ExplicitTop = 42
-      ExplicitWidth = 449
     end
   end
   object Panel2: TPanel
@@ -71,8 +67,6 @@ object frmUserList: TfrmUserList
     Align = alClient
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitLeft = 534
-    ExplicitWidth = 690
     object Panel4: TPanel
       Left = 1
       Top = 1
@@ -81,7 +75,6 @@ object frmUserList: TfrmUserList
       Align = alTop
       Caption = 'Lost'
       TabOrder = 0
-      ExplicitWidth = 688
     end
     object ListView2: TListView
       Left = 1
@@ -102,10 +95,6 @@ object frmUserList: TfrmUserList
       PopupMenu = PopupMenu2
       TabOrder = 1
       ViewStyle = vsReport
-      ExplicitLeft = 152
-      ExplicitTop = 362
-      ExplicitWidth = 538
-      ExplicitHeight = 199
     end
   end
   object PopupMenu1: TPopupMenu
