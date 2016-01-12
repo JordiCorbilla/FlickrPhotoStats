@@ -156,6 +156,7 @@ begin
   frmFlickrMain.btnAddPhotos.Enabled := true;
   frmFlickrMain.btnRemovePhoto.Enabled := true;
   frmFlickrMain.btnBanGroups.Enabled := true;
+  frmFlickrMain.btnUnBanGroups.Enabled := true;
   showmessage('Congratulations, application authenticated with token ' + oauth_token);
   authenticated := true;
   Self.Close;
