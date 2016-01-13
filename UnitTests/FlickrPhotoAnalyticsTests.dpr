@@ -42,7 +42,8 @@ uses
   flickr.xml.helper in '..\flickr.xml.helper.pas',
   flickr.tracker in '..\flickr.tracker.pas',
   flickr.user.faves in '..\flickr.user.faves.pas',
-  flickr.user.tracking in '..\flickr.user.tracking.pas';
+  flickr.user.tracking in '..\flickr.user.tracking.pas',
+  flickr.users.info in '..\flickr.users.info.pas';
 
 var
   runner : ITestRunner;
