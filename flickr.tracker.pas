@@ -105,7 +105,7 @@ begin
           userFave.isFriend := iXMLRootNode4.attributes['friend'];
           userFave.Marked := true;
           if userTracking.Exists(userFave, existing) then
-            userFave.Location := existing
+            userFave.Location := existing.Location
           else
             userFave.Location := TUserInfo.getLocation(userFave.Id, api_key, auth_token, secret, token_secret);
 
@@ -167,7 +167,7 @@ begin
           userFave.isFriend := iXMLRootNode4.attributes['friend'];
           userFave.Marked := true;
           if userTracking.Exists(userFave, existing) then
-            userFave.Location := existing
+            userFave.Location := existing.Location
           else
             userFave.Location := TUserInfo.getLocation(userFave.Id, api_key, auth_token, secret, token_secret);
           if (not userTracking.existsAdded(userFave, existing)) then

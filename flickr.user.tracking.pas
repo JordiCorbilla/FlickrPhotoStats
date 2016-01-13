@@ -91,7 +91,6 @@ function TUserTracking.Exists(value: IUserFave; var user : IUSerFave): boolean;
 var
   return : boolean;
 begin
-  return := false;
   if not FAdded.TryGetValue(value.Id, user) then
     return := FRemoved.TryGetValue(value.Id, user)
   else
