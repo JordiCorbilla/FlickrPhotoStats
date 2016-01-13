@@ -42,6 +42,7 @@ type
     property Removed: TDictionary<string, IUserFave> read GetRemoved write SetRemoved;
     function ExistsAdded(value : IUSerFave; var user : IUSerFave) : boolean;
     function ExistsRemoved(value : IUSerFave; var user : IUSerFave) : boolean;
+    function Exists(value : IUserFave; var user : IUSerFave) : boolean;
     procedure Load(path : string);
     procedure Save(path : string);
   end;
@@ -56,6 +57,7 @@ type
     procedure SetRemoved(value: TDictionary<string, IUserFave>);
     function ExistsAdded(value : IUSerFave; var user : IUSerFave) : boolean;
     function ExistsRemoved(value : IUSerFave; var user : IUSerFave) : boolean;
+    function Exists(value : IUserFave; var user : IUSerFave) : boolean;
   public
     property Added: TDictionary<string, IUserFave> read GetAdded write SetAdded;
     property Removed: TDictionary<string, IUserFave> read GetRemoved write SetRemoved;
@@ -83,6 +85,18 @@ begin
   FAdded.Free;
   FRemoved.Free;
   inherited;
+end;
+
+function TUserTracking.Exists(value: IUserFave; var user : IUSerFave): boolean;
+var
+  return : boolean;
+begin
+  return := false;
+  if not FAdded.TryGetValue(value.Id, user) then
+    return := FRemoved.TryGetValue(value.Id, user)
+  else
+    return := true;
+  result := return;
 end;
 
 function TUserTracking.ExistsAdded(value: IUSerFave; var user: IUSerFave): boolean;

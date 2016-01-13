@@ -1246,6 +1246,9 @@ begin
             iXMLRootNode5 := iXMLRootNode5.NextSibling;
           end;
         end;
+        if iXMLRootNode4.NodeName = 'location' then
+          break;
+
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     finally

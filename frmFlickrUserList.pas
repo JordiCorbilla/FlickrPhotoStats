@@ -90,6 +90,7 @@ begin
             listItem := Listview1.Items.Add;
             listItem.Caption := userFave.Id;
             listItem.SubItems.Add(userFave.username);
+            listItem.SubItems.Add(userFave.Location);
           finally
             userFave := nil;
           end;
@@ -102,6 +103,7 @@ begin
             listItem := Listview2.Items.Add;
             listItem.Caption := userFave.Id;
             listItem.SubItems.Add(userFave.username);
+            listItem.SubItems.Add(userFave.Location);
           finally
             userFave := nil;
           end;

@@ -33,7 +33,7 @@ uses
   flickr.user.tracking, SysUtils, IdHTTP, IdIOHandler, IdIOHandlerStream,
   IdIOHandlerSocket, IdIOHandlerStack, IDGlobal,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, flickr.rest,
-  flickr.user.faves;
+  flickr.user.faves, flickr.users.info;
 
 type
   TTracking = Class(Tobject)
@@ -104,10 +104,13 @@ begin
           userFave.isFamily := iXMLRootNode4.attributes['family'];
           userFave.isFriend := iXMLRootNode4.attributes['friend'];
           userFave.Marked := true;
+          if userTracking.Exists(userFave, existing) then
+            userFave.Location := existing
+          else
+            userFave.Location := TUserInfo.getLocation(userFave.Id, api_key, auth_token, secret, token_secret);
+
           if (not userTracking.existsAdded(userFave, existing)) then
-          begin
-            userTracking.Added.Add(userFave.Id, userFave);
-          end
+            userTracking.Added.Add(userFave.Id, userFave)
           else
           begin
             existing.Marked := true;
@@ -163,10 +166,12 @@ begin
           userFave.isFamily := iXMLRootNode4.attributes['family'];
           userFave.isFriend := iXMLRootNode4.attributes['friend'];
           userFave.Marked := true;
+          if userTracking.Exists(userFave, existing) then
+            userFave.Location := existing
+          else
+            userFave.Location := TUserInfo.getLocation(userFave.Id, api_key, auth_token, secret, token_secret);
           if (not userTracking.existsAdded(userFave, existing)) then
-          begin
-            userTracking.Added.Add(userFave.Id, userFave);
-          end
+            userTracking.Added.Add(userFave.Id, userFave)
           else
           begin
             existing.Marked := true;

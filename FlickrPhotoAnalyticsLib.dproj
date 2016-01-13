@@ -192,6 +192,7 @@
         <DCCReference Include="flickr.user.tracking.pas"/>
         <DCCReference Include="flickr.user.faves.pas"/>
         <DCCReference Include="flickr.tracker.pas"/>
+        <DCCReference Include="flickr.users.info.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

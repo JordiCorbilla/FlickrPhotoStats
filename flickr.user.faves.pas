@@ -46,12 +46,15 @@ type
     function GetIsFriend() : boolean;
     function GetUsername() : string;
     function GetMarked() : boolean;
+    function GetLocation() : string;
+    procedure SetLocation(const Value: string);
     property Id : string read GetId write SetId;
     property username : string read GetUsername write Setusername;
     property isContact : boolean read GetIsContact write SetisContact;
     property isFamily : boolean read GetIsFamily write SetisFamily;
     property isFriend : boolean read GetIsFriend write SetisFriend;
     property Marked : boolean read GetMarked write SetMarked;
+    property Location : string read GetLocation write SetLocation;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
   end;
@@ -64,6 +67,7 @@ type
     FisFriend: boolean;
     Fusername: string;
     Fmarked : boolean;
+    FLocation: string;
     procedure SetId(const Value: string);
     procedure SetisContact(const Value: boolean);
     procedure SetisFamily(const Value: boolean);
@@ -76,6 +80,8 @@ type
     function GetIsFriend() : boolean;
     function GetUsername() : string;
     function GetMarked() : boolean;
+    function GetLocation() : string;
+    procedure SetLocation(const Value: string);
   public
     property Id : string read GetId write SetId;
     property username : string read GetUsername write Setusername;
@@ -83,6 +89,7 @@ type
     property isFamily : boolean read GetIsFamily write SetisFamily;
     property isFriend : boolean read GetIsFriend write SetisFriend;
     property Marked : boolean read GetMarked write SetMarked;
+    property Location : string read GetLocation write SetLocation;
     procedure Load(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
   End;
@@ -114,6 +121,11 @@ begin
   result := FIsFriend;
 end;
 
+function TUserFave.GetLocation: string;
+begin
+  result := FLocation;
+end;
+
 function TUserFave.GetMarked: boolean;
 begin
   result := FMarked;
@@ -131,6 +143,7 @@ begin
   FIsContact := TXMLHelper.new(iNode.Attributes['Contact']).getBool;
   FIsFriend := TXMLHelper.new(iNode.Attributes['Friend']).getBool;
   FIsFamily := TXMLHelper.new(iNode.Attributes['Family']).getBool;
+  FLocation := TXMLHelper.new(iNode.Attributes['Location']).getString;
 end;
 
 procedure TUserFave.Save(iNode: IXMLNode);
@@ -140,6 +153,7 @@ begin
   iNode.Attributes['Contact'] := FIsContact.ToString;
   iNode.Attributes['Friend'] := FIsFriend.ToString;
   iNode.Attributes['Family'] := FIsFamily.ToString;
+  iNode.Attributes['Location'] := FLocation;
 end;
 
 procedure TUserFave.SetId(const Value: string);
@@ -160,6 +174,11 @@ end;
 procedure TUserFave.SetisFriend(const Value: boolean);
 begin
   FisFriend := Value;
+end;
+
+procedure TUserFave.SetLocation(const Value: string);
+begin
+  FLocation := Value;
 end;
 
 procedure TUserFave.SetMarked(const Value: boolean);

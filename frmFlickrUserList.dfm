@@ -51,7 +51,11 @@ object frmUserList: TfrmUserList
         end
         item
           Caption = 'Title'
-          Width = 330
+          Width = 200
+        end
+        item
+          Caption = 'Location'
+          Width = 150
         end>
       RowSelect = True
       PopupMenu = PopupMenu1
@@ -89,7 +93,11 @@ object frmUserList: TfrmUserList
         end
         item
           Caption = 'Title'
-          Width = 330
+          Width = 200
+        end
+        item
+          Caption = 'Location'
+          Width = 150
         end>
       RowSelect = True
       PopupMenu = PopupMenu2

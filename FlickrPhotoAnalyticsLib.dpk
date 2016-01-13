@@ -118,7 +118,8 @@ contains
   flickr.lib.parse in 'flickr.lib.parse.pas',
   flickr.user.tracking in 'flickr.user.tracking.pas',
   flickr.user.faves in 'flickr.user.faves.pas',
-  flickr.tracker in 'flickr.tracker.pas';
+  flickr.tracker in 'flickr.tracker.pas',
+  flickr.users.info in 'flickr.users.info.pas';
 
 end.
 
