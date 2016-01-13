@@ -79,6 +79,7 @@ var
   iteration : integer;
 begin
   try
+    Setpriorityclass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
     TLogger.LogFile('');
     TLogger.LogFile('Starting Batch Update ' + TUtils.GetVersion);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
