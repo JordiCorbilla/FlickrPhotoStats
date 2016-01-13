@@ -633,8 +633,8 @@ begin
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Views</b></td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].positiveViews]).Replace('.00','')+')</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].negativeViews]).Replace('.00','')+')</td>');
     description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
 
@@ -647,10 +647,10 @@ begin
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Likes</b></td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].positiveLikes]).Replace('.00','')+')</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].negativeLikes]).Replace('.00','')+')</td>');
     if itemToday2x > 0.0 then
-      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>')
+      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].lostLikes]).Replace('.00','')+')</td>')
     else
       description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
     description.add('  </tr>');
@@ -664,10 +664,10 @@ begin
 
     description.add('  <tr>');
     description.add('    <td '+tdStyle+'><b>Number of Comments</b></td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'%</td>');
-    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'%</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemTodayx]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].positiveComments]).Replace('.00','')+')</td>');
+    description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday1x]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].negativeComments]).Replace('.00','')+')</td>');
     if itemToday2x > 0.0 then
-      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>')
+      description.add('    <td '+tdStyleText.Replace('F7FDFA','FDCFCF')+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'% ('+Format('%n',[organic.Globals[organic.Globals.Count-1].lostComments]).Replace('.00','')+')</td>')
     else
       description.add('    <td '+tdStyleText+'>'+Format('%n',[itemToday2x]).Replace('.00','')+'%</td>');
 
