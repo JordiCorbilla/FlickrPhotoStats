@@ -841,7 +841,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -964,6 +964,8 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            OnMouseDown = dailyViewsMouseDown
+            OnMouseUp = dailyViewsMouseUp
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -2243,6 +2245,8 @@ object frmFlickrMain: TfrmFlickrMain
         Color = 2763306
         TabOrder = 2
         OnDblClick = ChartViewsDblClick
+        OnMouseDown = dailyViewsMouseDown
+        OnMouseUp = dailyViewsMouseUp
         DefaultCanvas = 'TGDIPlusCanvas'
         PrintMargins = (
           15
@@ -5546,7 +5550,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001500210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001540210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

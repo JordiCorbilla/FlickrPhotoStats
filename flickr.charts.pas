@@ -40,6 +40,8 @@ type
     function GetNewAreaSeries(parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
     function Get(series : string; parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TChartSeries;
+    procedure AutoZooming(zoomFactor : double; parent : TChart);
+    procedure UndoZooming(parent : TChart);
   end;
 
   TFlickrChart = Class(TInterfacedObject, IFlickrChart)
@@ -49,6 +51,8 @@ type
     function GetNewAreaSeries(parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TAreaSeries;
     procedure VisibleMarks(mainChart : TChart; option : boolean);
     function Get(series : string; parent : TChart; marks : boolean = false; lineColor : TColor = 0) : TChartSeries;
+    procedure AutoZooming(zoomFactor : double; parent : TChart);
+    procedure UndoZooming(parent : TChart);
   End;
 
 implementation
@@ -57,6 +61,21 @@ uses
   Windows;
 
 { TFlickrChart }
+
+procedure TFlickrChart.AutoZooming(zoomFactor: double; parent: TChart);
+var
+  rec : TRect;
+  x1, y1 : integer;
+  x2, y2 : integer;
+  point : TPoint;
+begin
+  x1 := round(zoomFactor * (parent.Width));
+  x2 := parent.Width;
+  y1 := 0;
+  y2 := parent.Height;
+  rec := TRect.Create(TPoint.Create(x1, y1), TPoint.Create(x2, y2));
+  parent.ZoomRect(rec);
+end;
 
 function TFlickrChart.Get(series: string; parent : TChart; marks : boolean = false; lineColor : TColor = 0): TChartSeries;
 begin
@@ -190,6 +209,11 @@ begin
   Series.OtherSlice.Legend.Visible := False;
   parent.Walls.Visible := false;
   result := Series;
+end;
+
+procedure TFlickrChart.UndoZooming(parent: TChart);
+begin
+  parent.UndoZoom;
 end;
 
 procedure TFlickrChart.VisibleMarks(mainChart: TChart; option: boolean);

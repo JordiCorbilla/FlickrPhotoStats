@@ -558,6 +558,10 @@ type
     procedure btnUnbanGroupsClick(Sender: TObject);
     procedure btnRemoveProfileMouseEnter(Sender: TObject);
     procedure btnRemoveProfileClick(Sender: TObject);
+    procedure dailyViewsMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure dailyViewsMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -598,6 +602,7 @@ type
     procedure OpenPhotosAlbum(value: string);
     procedure OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
     procedure SendParseUpdate;
+    procedure AutoZooming;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -1582,8 +1587,28 @@ begin
   btnLoadHall.Enabled := true;
   showMessage('Repository has been loaded');
 
+  AutoZooming();
+
   //Send that the app has been started
   SendParseUpdate();
+end;
+
+procedure TfrmFlickrMain.AutoZooming();
+begin
+  flickrChart.AutoZooming(2/3, dailyviews);
+  flickrChart.AutoZooming(2/3, dailylikes);
+  flickrChart.AutoZooming(2/3, dailycomments);
+  flickrChart.AutoZooming(2/3, chartViews);
+  flickrChart.AutoZooming(2/3, chartLikes);
+  flickrChart.AutoZooming(2/3, chartComments);
+  flickrChart.AutoZooming(2/3, ExecutionTime);
+  flickrChart.AutoZooming(2/3, mostViewsChart);
+  flickrChart.AutoZooming(2/3, mostLikesChart);
+  flickrChart.AutoZooming(2/3, chartFollowing);
+  flickrChart.AutoZooming(2/3, OrganicViews);
+  flickrChart.AutoZooming(2/3, OrganicLikes);
+  flickrChart.AutoZooming(2/3, OrganicComments);
+  flickrChart.AutoZooming(2/3, groupspread);
 end;
 
 procedure TfrmFlickrMain.SendParseUpdate();
@@ -4205,6 +4230,18 @@ begin
   //edtProfile.Enabled := true;
   btnSaveProfile.Enabled := true;
   btnRemoveProfile.Enabled := true;
+end;
+
+procedure TfrmFlickrMain.dailyViewsMouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Log('mouse down for ' + x.ToString() + ' ' + y.ToString());
+end;
+
+procedure TfrmFlickrMain.dailyViewsMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+  Log('mouse up for ' + x.ToString() + ' ' + y.ToString());
 end;
 
 procedure TfrmFlickrMain.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
