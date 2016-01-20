@@ -30,30 +30,30 @@ unit flickr.globals;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.stats;
+  Contnrs, Generics.Collections, flickr.stats.global;
 
 type
   IFlickrGlobals = interface
-    procedure SetGlobals(value: TList<IStat>);
-    function GetGlobals(): TList<IStat>;
-    function ExistGlobal(stat: IStat; var existing: IStat): boolean;
+    procedure SetGlobals(value: TList<IStatGlobal>);
+    function GetGlobals(): TList<IStatGlobal>;
+    function ExistGlobal(stat: IStatGlobal; var existing: IStatGlobal): boolean;
     procedure Save(FileName: string);
     procedure Load(FileName: string);
-    property Globals: TList<IStat>read GetGlobals write SetGlobals;
-    function AddGlobals(stat: IStat): boolean;
+    property Globals: TList<IStatGlobal>read GetGlobals write SetGlobals;
+    function AddGlobals(stat: IStatGlobal): boolean;
   end;
 
   TFlickrGlobals = class(TInterfacedObject, IFlickrGlobals)
   private
-    FGlobal: TList<IStat>;
-    procedure SetGlobals(value: TList<IStat>);
-    function GetGlobals(): TList<IStat>;
-    function ExistGlobal(stat: IStat; var existing: IStat): boolean;
+    FGlobal: TList<IStatGlobal>;
+    procedure SetGlobals(value: TList<IStatGlobal>);
+    function GetGlobals(): TList<IStatGlobal>;
+    function ExistGlobal(stat: IStatGlobal; var existing: IStatGlobal): boolean;
   public
     procedure Save(FileName: string);
     procedure Load(FileName: string);
-    property Globals: TList<IStat>read GetGlobals write SetGlobals;
-    function AddGlobals(stat: IStat): boolean;
+    property Globals: TList<IStatGlobal>read GetGlobals write SetGlobals;
+    function AddGlobals(stat: IStatGlobal): boolean;
     constructor Create();
     destructor Destroy(); override;
   end;
@@ -65,9 +65,9 @@ uses
 
 { TFlickrGlobals }
 
-function TFlickrGlobals.AddGlobals(stat: IStat): boolean;
+function TFlickrGlobals.AddGlobals(stat: IStatGlobal): boolean;
 var
-  existing: IStat;
+  existing: IStatGlobal;
 begin
   existing := nil;
   if not ExistGlobal(stat, existing) then
@@ -79,7 +79,7 @@ end;
 
 constructor TFlickrGlobals.Create;
 begin
-  FGlobal := TList<IStat>.Create;
+  FGlobal := TList<IStatGlobal>.Create;
 end;
 
 destructor TFlickrGlobals.Destroy;
@@ -88,7 +88,7 @@ begin
   inherited;
 end;
 
-function TFlickrGlobals.ExistGlobal(stat: IStat; var existing: IStat): boolean;
+function TFlickrGlobals.ExistGlobal(stat: IStatGlobal; var existing: IStatGlobal): boolean;
 var
   i: Integer;
   found: boolean;
@@ -105,7 +105,7 @@ begin
   result := found;
 end;
 
-function TFlickrGlobals.GetGlobals: TList<IStat>;
+function TFlickrGlobals.GetGlobals: TList<IStatGlobal>;
 begin
   result := FGlobal;
 end;
@@ -114,7 +114,7 @@ procedure TFlickrGlobals.Load(FileName: string);
 var
   Document: IXMLDocument;
   iXMLRootNode, iNode: IXMLNode;
-  Stats: IStat;
+  Stats: IStatGlobal;
 begin
   if fileExists(FileName) then
   begin
@@ -126,7 +126,7 @@ begin
     iNode := iXMLRootNode.ChildNodes.first;
     while iNode <> nil do
     begin
-      Stats := TStat.Create();
+      Stats := TStatGlobal.Create();
       Stats.Load(iNode);
       FGlobal.Add(Stats);
       iNode := iNode.NextSibling;
@@ -157,7 +157,7 @@ begin
   XMLDoc.SaveToFile(FileName);
 end;
 
-procedure TFlickrGlobals.SetGlobals(value: TList<IStat>);
+procedure TFlickrGlobals.SetGlobals(value: TList<IStatGlobal>);
 begin
   FGlobal := value;
 end;

@@ -332,20 +332,20 @@ object frmFlickrMain: TfrmFlickrMain
     TabOrder = 0
     OnDblClick = Label12DblClick
     object TotalViewsLabel: TLabel
-      Left = 390
+      Left = 374
       Top = 5
-      Width = 100
-      Height = 19
-      Caption = '999,999,999'
+      Width = 422
+      Height = 16
+      Caption = 'Stream Views: 999,999 Album Views: 999,999 Total: 999,999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object Label19: TLabel
-      Left = 1166
+      Left = 1241
       Top = 4
       Width = 190
       Height = 19
@@ -358,20 +358,20 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object PredictionLabel: TLabel
-      Left = 1360
+      Left = 1435
       Top = 4
-      Width = 65
+      Width = 59
       Height = 19
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBlack
       Font.Height = -16
       Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
     end
     object Label28: TLabel
-      Left = 953
+      Left = 1057
       Top = 4
       Width = 75
       Height = 19
@@ -384,20 +384,20 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object UpdateTimeLabel: TLabel
-      Left = 1034
+      Left = 1138
       Top = 4
-      Width = 98
+      Width = 84
       Height = 19
       Caption = '00/00/0000'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
     end
     object Label32: TLabel
-      Left = 1272
+      Left = 1347
       Top = 25
       Width = 84
       Height = 19
@@ -410,7 +410,47 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object FollowingLabel: TLabel
-      Left = 1360
+      Left = 1435
+      Top = 25
+      Width = 59
+      Height = 19
+      Caption = '999,999'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -16
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object Shape1: TShape
+      Left = 333
+      Top = 8
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+    end
+    object Shape2: TShape
+      Left = 333
+      Top = 27
+      Width = 12
+      Height = 12
+      Brush.Color = clLime
+    end
+    object totalLikesLabel: TLabel
+      Left = 374
+      Top = 26
+      Width = 265
+      Height = 16
+      Caption = 'Likes 999,999 Lost 99,999 Total: 999,999'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Tahoma'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object TotalCommentsLabel: TLabel
+      Left = 698
       Top = 25
       Width = 65
       Height = 19
@@ -422,79 +462,39 @@ object frmFlickrMain: TfrmFlickrMain
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object Shape1: TShape
-      Left = 349
-      Top = 8
-      Width = 12
-      Height = 12
-      Brush.Color = clLime
-    end
-    object Shape2: TShape
-      Left = 349
-      Top = 27
-      Width = 12
-      Height = 12
-      Brush.Color = clLime
-    end
-    object totalLikesLabel: TLabel
-      Left = 390
-      Top = 23
-      Width = 100
-      Height = 19
-      Caption = '999,999,999'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object TotalCommentsLabel: TLabel
-      Left = 560
-      Top = 4
-      Width = 100
-      Height = 19
-      Caption = '999,999,999'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -16
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
     object Shape3: TShape
-      Left = 521
-      Top = 8
+      Left = 659
+      Top = 29
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object Shape4: TShape
-      Left = 716
+      Left = 879
       Top = 8
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsLabel: TLabel
-      Left = 734
+      Left = 897
       Top = 4
-      Width = 192
-      Height = 19
+      Width = 155
+      Height = 16
       Caption = '9,999,999 group spread'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object PhotosLabel: TLabel
-      Left = 560
-      Top = 23
-      Width = 55
+      Left = 808
+      Top = 25
+      Width = 65
       Height = 19
-      Caption = '99,999'
+      Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
@@ -503,35 +503,35 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Shape5: TShape
-      Left = 521
-      Top = 27
+      Left = 769
+      Top = 29
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object Shape6: TShape
-      Left = 716
+      Left = 879
       Top = 27
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsRateLabel: TLabel
-      Left = 734
+      Left = 897
       Top = 23
-      Width = 171
-      Height = 19
+      Width = 139
+      Height = 16
       Caption = '99,999 groups/photo'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
     end
     object imagephoto: TImage
-      Left = 536
-      Top = 25
+      Left = 784
+      Top = 27
       Width = 16
       Height = 16
       AutoSize = True
@@ -558,7 +558,7 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Label43: TLabel
-      Left = 973
+      Left = 1077
       Top = 25
       Width = 55
       Height = 19
@@ -571,20 +571,20 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object SaveTimeLabel: TLabel
-      Left = 1034
+      Left = 1138
       Top = 25
-      Width = 98
+      Width = 84
       Height = 19
       Caption = '00/00/0000'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -16
       Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
+      Font.Style = []
       ParentFont = False
     end
     object Image4: TImage
-      Left = 363
+      Left = 347
       Top = 6
       Width = 27
       Height = 16
@@ -630,7 +630,7 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Image5: TImage
-      Left = 363
+      Left = 347
       Top = 25
       Width = 23
       Height = 24
@@ -672,8 +672,8 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Image10: TImage
-      Left = 536
-      Top = 4
+      Left = 674
+      Top = 25
       Width = 39
       Height = 19
       Picture.Data = {
@@ -718,19 +718,6 @@ object frmFlickrMain: TfrmFlickrMain
         49454E44AE426082}
       Proportional = True
       Transparent = True
-    end
-    object totalLostLabel: TLabel
-      Left = 421
-      Top = 38
-      Width = 69
-      Height = 13
-      Caption = '999,999,999'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
     end
     object ProgressBar1: TProgressBar
       Left = 1
@@ -5550,7 +5537,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001540210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001580210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

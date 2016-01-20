@@ -420,7 +420,6 @@ type
     Label18: TLabel;
     edtAppId: TEdit;
     ShowFavesList1: TMenuItem;
-    totalLostLabel: TLabel;
     btnUnbanGroups: TButton;
     btnRemoveProfile: TButton;
     procedure batchUpdateClick(Sender: TObject);
@@ -666,7 +665,7 @@ uses
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
-  flickr.lib.parse;
+  flickr.lib.parse, flickr.stats.global;
 
 {$R *.dfm}
 
@@ -986,7 +985,7 @@ var
   totalViews, totalViewsacc: Integer;
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
-  stat: IStat;
+  statGlobal: IStatGlobal;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -1006,8 +1005,8 @@ begin
 
   totalViewsacc := totalViewsacc + getTotalAlbumsCounts();
 
-  stat := TStat.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
-  globalsRepository.AddGlobals(stat);
+  statGlobal := TStatGlobal.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
+  globalsRepository.AddGlobals(statGlobal);
 
   if not onlyLabels then
   begin
@@ -1585,12 +1584,11 @@ begin
   btnShowReport.Enabled := true;
   Button9.Enabled := true;
   btnLoadHall.Enabled := true;
-  showMessage('Repository has been loaded');
-
   AutoZooming();
 
   //Send that the app has been started
   SendParseUpdate();
+  showMessage('Repository has been loaded');
 end;
 
 procedure TfrmFlickrMain.AutoZooming();

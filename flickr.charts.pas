@@ -67,7 +67,6 @@ var
   rec : TRect;
   x1, y1 : integer;
   x2, y2 : integer;
-  point : TPoint;
 begin
   x1 := round(zoomFactor * (parent.Width));
   x2 := parent.Width;
