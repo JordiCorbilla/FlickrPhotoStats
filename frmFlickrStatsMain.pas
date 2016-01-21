@@ -602,6 +602,7 @@ type
     procedure OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
     procedure SendParseUpdate;
     procedure AutoZooming;
+    function getTotalStreamViews: Integer;
   public
     repository: IFlickrRepository;
     globalsRepository: IFlickrGlobals;
@@ -665,7 +666,7 @@ uses
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
-  flickr.lib.parse, flickr.stats.global;
+  flickr.lib.parse, flickr.stats.global, flickr.users.info;
 
 {$R *.dfm}
 
@@ -986,6 +987,8 @@ var
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
   statGlobal: IStatGlobal;
+  totalAlbumViews : integer;
+  totalStreamViews : integer;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -1003,9 +1006,10 @@ begin
     totalCommentsacc := totalCommentsacc + totalComments;
   end;
 
-  totalViewsacc := totalViewsacc + getTotalAlbumsCounts();
+  totalAlbumViews := getTotalAlbumsCounts();
+  totalStreamViews := getTotalStreamViews();
 
-  statGlobal := TStatGlobal.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc);
+  statGlobal := TStatGlobal.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc, totalAlbumViews, totalStreamViews);
   globalsRepository.AddGlobals(statGlobal);
 
   if not onlyLabels then
@@ -1022,7 +1026,8 @@ procedure TfrmFlickrMain.UpdateLabels();
 var
   viewsYesterday, viewsToday, commentsToday, viewsBeforeYesterday : integer;
   likesYesterday, likesToday, commentsYesterday : integer;
-  totalViews : integer;
+  totalViews, albumViews, streamViews, totalLikes, totalNegLikes, AccLikes : integer;
+  totalViewsFormat, albumViewsFormat, streamViewsFormat : string;
   Rate1, Rate2 : double;
   i: Integer;
 begin
@@ -1087,22 +1092,28 @@ begin
   UpdateArrows(commentsYesterday, commentsToday, Rate1, Rate2, upgreen3, downred3, upgreen33, downred33, LabelArrow3);
 
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
-  TotalViewsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
+  albumViews := globalsRepository.globals[globalsRepository.globals.Count-1].albumViews;
+  streamViews := globalsRepository.globals[globalsRepository.globals.Count-1].streamViews;
+  totalViews := totalViews + albumViews + streamViews;
 
-  totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
-  TotalLikesLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
+  totalViewsFormat := Format('%n',[totalViews.ToDouble]).Replace('.00','');
+  albumViewsFormat := Format('%n',[albumViews.ToDouble]).Replace('.00','');
+  streamViewsFormat := Format('%n',[streamViews.ToDouble]).Replace('.00','');
+
+  TotalViewsLabel.Caption :=  'Stream Views: '+streamViewsFormat+' Album Views: '+albumViewsFormat+' Total: '+totalViewsFormat;
+
+  totalLikes := globalsRepository.globals[globalsRepository.globals.Count-1].likes;
+  totalNegLikes := 0;
+  for i := 0 to organic.globals.Count-1 do
+  begin
+    totalNegLikes := totalNegLikes + organic.Globals[i].lostLikes;
+  end;
+  AccLikes := totalLikes + totalNegLikes;
+  TotalLikesLabel.Caption :=  'Likes '+Format('%n',[totalLikes.ToDouble]).Replace('.00','')+' Lost '+Format('%n',[totalNegLikes.ToDouble]).Replace('.00','')+' Total: '+ Format('%n',[AccLikes.ToDouble]).Replace('.00','');
 
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].Comments;
   TotalCommentsLabel.Caption :=  Format('%n',[totalViews.ToDouble]).Replace('.00','');
   UpdateTimeLabel.Caption := DateToStr(globalsRepository.globals[globalsRepository.globals.Count-1].date);
-
-  totalViews := 0;
-  for i := 0 to organic.globals.Count-1 do
-  begin
-    totalViews := totalViews + organic.Globals[i].lostLikes;
-  end;
-  totalLostlabel.Caption := Format('-%n',[totalViews.ToDouble]).Replace('.00','');
-
 end;
 
 procedure TfrmFlickrMain.EndMarking1Click(Sender: TObject);
@@ -4695,6 +4706,11 @@ begin
   ShowHint('Reload the groups you belong from Flickr.', Sender);
 end;
 
+function TfrmFlickrMain.getTotalStreamViews() : Integer;
+begin
+  result := TUserInfo.getStreamViews(edtUserId.text, apikey.text, optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
+end;
+
 function TfrmFlickrMain.getTotalAlbumsCounts(): Integer;
 var
   response: string;
@@ -5444,7 +5460,6 @@ begin
   totals := 0.0;
   TotalViewsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
   TotalLikesLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
-  totalLostlabel.Caption := Format('%n',[totals]).Replace('.00','');
   TotalCommentsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
   totalGroupsLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' group spread';
   totalGroupsRateLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' groups/photo';
