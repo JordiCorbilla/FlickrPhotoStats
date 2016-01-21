@@ -54,7 +54,8 @@ uses
   flickr.photos,
   flickr.lib.options.email,
   flickr.lib.parse,
-  flickr.users.info;
+  flickr.users.info,
+  flickr.album.categoriser;
 
 var
   repository: IFlickrRepository;
@@ -291,6 +292,9 @@ begin
     finally
       // repository := nil;
     end;
+
+    //Add the items in the albums
+    TAlbumCategoriser.AutoAdd(repository, options, optionsEmail);
 
     //Update Parse
     try

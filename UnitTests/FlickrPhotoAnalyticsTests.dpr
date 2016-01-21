@@ -43,7 +43,8 @@ uses
   flickr.tracker in '..\flickr.tracker.pas',
   flickr.user.faves in '..\flickr.user.faves.pas',
   flickr.user.tracking in '..\flickr.user.tracking.pas',
-  flickr.users.info in '..\flickr.users.info.pas';
+  flickr.users.info in '..\flickr.users.info.pas',
+  flickr.stats.global in '..\flickr.stats.global.pas';
 
 var
   runner : ITestRunner;
