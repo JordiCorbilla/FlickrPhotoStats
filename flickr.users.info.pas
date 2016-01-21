@@ -149,7 +149,7 @@ begin
         begin
           if iXMLRootNode5.NodeName = 'views' then
           begin
-            views := TXMLHelper.new(iXMLRootNode4.NodeValue).getInt;
+            views := TXMLHelper.new(iXMLRootNode5.NodeValue).getInt;
             ifbreak := true;
             break;
           end;

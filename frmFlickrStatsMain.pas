@@ -5458,8 +5458,8 @@ begin
   Shape5.brush.Color := FColorPhotos;
   Shape6.brush.Color := FColorSpread;
   totals := 0.0;
-  TotalViewsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
-  TotalLikesLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
+  TotalViewsLabel.Caption :=  'Stream Views: '+Format('%n',[totals]).Replace('.00','')+' Album Views: '+Format('%n',[totals]).Replace('.00','')+' Total: '+Format('%n',[totals]).Replace('.00','');
+  TotalLikesLabel.Caption :=  'Likes '+Format('%n',[totals]).Replace('.00','')+' Lost '+Format('%n',[totals]).Replace('.00','')+' Total: '+ Format('%n',[totals]).Replace('.00','');
   TotalCommentsLabel.Caption :=  Format('%n',[totals]).Replace('.00','');
   totalGroupsLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' group spread';
   totalGroupsRateLabel.caption :=  Format('%n',[totals]).Replace('.00','') + ' groups/photo';

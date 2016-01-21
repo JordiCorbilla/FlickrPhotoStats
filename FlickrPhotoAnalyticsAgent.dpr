@@ -37,6 +37,7 @@ uses
   flickr.lib.parallel,
   flickr.globals,
   flickr.stats,
+  flickr.stats.global,
   flickr.time,
   flickr.lib.logging,
   flickr.organic,
@@ -52,7 +53,8 @@ uses
   Flickr.lib.photos.load,
   flickr.photos,
   flickr.lib.options.email,
-  flickr.lib.parse;
+  flickr.lib.parse,
+  flickr.users.info;
 
 var
   repository: IFlickrRepository;
@@ -64,8 +66,10 @@ var
   i: Integer;
   totalViews, totalViewsacc: Integer;
   totalLikes, totalLikesacc: Integer;
+  streamViews, albumViews : integer;
   totalComments, totalCommentsacc: Integer;
   stat: IStat;
+  globalStat : IStatGlobal;
   verbosity, loadrepository, loadglobals, loademail: boolean;
   organic: IFlickrOrganic;
   organicStat: IFlickrOrganicStats;
@@ -268,10 +272,11 @@ begin
           totalCommentsacc := totalCommentsacc + totalComments;
         end;
 
-        totalViewsacc := totalViewsacc + TRepositoryRest.getTotalAlbumsCounts(apikey, userId, verbosity);
+        AlbumViews := TRepositoryRest.getTotalAlbumsCounts(apikey, userId, verbosity);
+        StreamViews := TUserInfo.getStreamViews(userId, apikey, optionsEMail.userToken, optionsEmail.secret, optionsEMail.userTokenSecret);
 
-        stat := TStat.Create(date, totalViewsacc, totalLikesacc, totalCommentsacc);
-        globalsRepository.AddGlobals(stat);
+        globalStat := TStatGlobal.Create(date, totalViewsacc, totalLikesacc, totalCommentsacc, AlbumViews, StreamViews);
+        globalsRepository.AddGlobals(globalStat);
         st.Stop;
         WriteLn('Update flickrRepositoryGlobal: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         st := TStopWatch.Create;

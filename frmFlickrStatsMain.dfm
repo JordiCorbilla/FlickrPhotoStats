@@ -451,13 +451,13 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object TotalCommentsLabel: TLabel
       Left = 698
-      Top = 25
-      Width = 65
-      Height = 19
+      Top = 26
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -471,14 +471,14 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object Shape4: TShape
       Left = 879
-      Top = 8
+      Top = 9
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsLabel: TLabel
       Left = 897
-      Top = 4
+      Top = 5
       Width = 155
       Height = 16
       Caption = '9,999,999 group spread'
@@ -491,13 +491,13 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object PhotosLabel: TLabel
       Left = 808
-      Top = 25
-      Width = 65
-      Height = 19
+      Top = 26
+      Width = 52
+      Height = 16
       Caption = '999,999'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -16
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
@@ -511,14 +511,14 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object Shape6: TShape
       Left = 879
-      Top = 27
+      Top = 29
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsRateLabel: TLabel
       Left = 897
-      Top = 23
+      Top = 26
       Width = 139
       Height = 16
       Caption = '99,999 groups/photo'
@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = Dashboard
+    ActivePage = TabSheet4
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -5537,7 +5537,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001580210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020015C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
