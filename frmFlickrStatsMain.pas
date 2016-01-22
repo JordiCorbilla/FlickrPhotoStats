@@ -1008,7 +1008,7 @@ begin
 
   totalAlbumViews := getTotalAlbumsCounts();
   totalStreamViews := getTotalStreamViews();
-
+  totalViewsacc := totalViewsacc + totalAlbumViews + totalStreamViews;
   statGlobal := TStatGlobal.Create(Date, totalViewsacc, totalLikesacc, totalCommentsacc, totalAlbumViews, totalStreamViews);
   globalsRepository.AddGlobals(statGlobal);
 
@@ -1094,7 +1094,6 @@ begin
   totalViews := globalsRepository.globals[globalsRepository.globals.Count-1].views;
   albumViews := globalsRepository.globals[globalsRepository.globals.Count-1].albumViews;
   streamViews := globalsRepository.globals[globalsRepository.globals.Count-1].streamViews;
-  totalViews := totalViews + albumViews + streamViews;
 
   totalViewsFormat := Format('%n',[totalViews.ToDouble]).Replace('.00','');
   albumViewsFormat := Format('%n',[albumViews.ToDouble]).Replace('.00','');

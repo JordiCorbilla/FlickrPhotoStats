@@ -126,9 +126,12 @@ begin
 end;
 
 class procedure TParallel.ForEach(aMin, aMax: Integer; aProc: TParallelProc);
+var
+  CPUMaxOut : integer;
 begin
-  Writeln('Number of threads: ' + CPUCount.ToString());
-  ForEach(aMin, aMax, CPUCount * 4, aProc);
+  CPUMaxOut := CPUCount * 4;
+  Writeln('Number of threads: ' + CPUMaxOut.ToString());
+  ForEach(aMin, aMax, CPUMaxOut, aProc);
 end;
 
 function TParallel.GetNextValue: Integer;

@@ -275,7 +275,7 @@ begin
 
         AlbumViews := TRepositoryRest.getTotalAlbumsCounts(apikey, userId, verbosity);
         StreamViews := TUserInfo.getStreamViews(userId, apikey, optionsEMail.userToken, optionsEmail.secret, optionsEMail.userTokenSecret);
-
+        totalViewsacc := totalViewsacc +  AlbumViews +  StreamViews;
         globalStat := TStatGlobal.Create(date, totalViewsacc, totalLikesacc, totalCommentsacc, AlbumViews, StreamViews);
         globalsRepository.AddGlobals(globalStat);
         st.Stop;
