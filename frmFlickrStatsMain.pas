@@ -49,7 +49,7 @@ uses
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
-  FireDAC.Phys.MSSQL, FireDAC.Comp.Client, FireDAC.Comp.DataSet;
+  FireDAC.Phys.MSSQL, FireDAC.Comp.Client, FireDAC.Comp.DataSet, flickr.album.categoriser;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -2626,85 +2626,18 @@ begin
 end;
 
 procedure TfrmFlickrMain.Button10Click(Sender: TObject);
-var
-  I: Integer;
-  j : Integer;
-  photo : IPhoto;
-  urlAdd : string;
-  timedOut : boolean;
-  response : string;
-  value : string;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
     showmessage('You are not authorized!');
     exit;
   end;
-  //Organise pictures.
-  //Get the picture from the left and with current value of views and likes and move them to the album.
-  for I := 0 to repository.photos.Count-1 do
-  begin
-    for j := 0 to listValuesViewsAlbums.Lines.Count-1 do
+  TAlbumCategoriser.AutoAdd(repository, options, optionsEmail,
+    procedure (value : string)
     begin
-      photo := repository.photos[i];
-      value := listValuesViewsAlbums.Lines[j].Replace('.','');
-      if (photo.getTotalViewsDay() >= value.ToInteger) then
-      begin
-        //Add the photo to the album
-        if not photo.inAlbum(listValuesViewsAlbumsID.Lines[j]) then
-        begin
-          urlAdd := TFlickrRest.New().getPhotoSetsAdd(apikey.text, userToken, secret.text, userTokenSecret, photo.Id, listValuesViewsAlbumsID.Lines[j]);
-          timedout := false;
-          while (not timedout) do
-          begin
-            try
-              response := IdHTTP1.Get(urlAdd);
-              response := TResponse.filter(response);
-              AlbumLog(response + ' ' + photo.Title + ' -> ' + value);
-              timedout := true;
-            except
-              on e: exception do
-              begin
-                sleep(timeout);
-                timedout := false;
-              end;
-            end;
-          end;
-        end;
-      end;
-    end;
+      AlbumLog(value);
+    end);
 
-    for j := 0 to listValuesLikesAlbums.Lines.Count-1 do
-    begin
-      photo := repository.photos[i];
-      value := listValuesLikesAlbums.Lines[j].Replace('.','');
-      if (photo.getTotalLikesDay() >= value.ToInteger) then
-      begin
-        //Add the photo to the album
-        if not photo.inAlbum(listValuesLikesAlbumsID.Lines[j]) then
-        begin
-          urlAdd := TFlickrRest.New().getPhotoSetsAdd(apikey.text, userToken, secret.text, userTokenSecret, photo.Id, listValuesLikesAlbumsID.Lines[j]);
-          timedout := false;
-          while (not timedout) do
-          begin
-            try
-              response := IdHTTP1.Get(urlAdd);
-              response := TResponse.filter(response);
-              response := response.Replace('"', '');
-              AlbumLog(response + ' ' + photo.Title + ' -> ' + value);
-              timedout := true;
-            except
-              on e: exception do
-              begin
-                sleep(timeout);
-                timedout := false;
-              end;
-            end;
-          end;
-        end;
-      end;
-    end;
-  end;
   showMessage('Pictures have been added to the albums');
 end;
 
