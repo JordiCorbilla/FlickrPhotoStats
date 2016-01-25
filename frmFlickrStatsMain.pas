@@ -2419,19 +2419,20 @@ var
   theDate: TDateTime;
   views, viewsTotal, average: Integer;
   averageSeries, tendencySeries: TLineSeries;
-  viewsTendency : ITendency;
+  //viewsTendency : ITendency;
+  min : integer;
 begin
   if chartStreamViews.SeriesList.Count > 0 then
     chartStreamViews.RemoveAllSeries;
 
   Series := flickrChart.GetNewAreaSeries(chartStreamViews, false, FHardBlue);
-  viewsTendency := TTendency.Create;
+  //viewsTendency := TTendency.Create;
 
   if globalsRepository.globals.Count = 1 then
   begin
     theDate := globalsRepository.globals[0].Date;
     views := globalsRepository.globals[0].streamViews;
-    viewsTendency.AddXY(0, views);
+    //viewsTendency.AddXY(0, views);
     Series.AddXY(theDate, views, '', FSoftBlue);
   end
   else
@@ -2442,7 +2443,7 @@ begin
       views := globalsRepository.globals[i].streamViews;
       if views > 0 then
       begin
-        viewsTendency.AddXY(i, views);
+        //viewsTendency.AddXY(i, views);
         Series.AddXY(theDate, views, '', FSoftBlue);
       end;
     end;
@@ -2450,45 +2451,50 @@ begin
 
   chartStreamViews.AddSeries(Series);
 
-  viewsTendency.Calculate;
+  //viewsTendency.Calculate;
 
   // Add average views
-  averageSeries := flickrChart.GetNewLineSeries(chartStreamViews);
+//  averageSeries := flickrChart.GetNewLineSeries(chartStreamViews);
+//
+//  viewsTotal := 0;
+//  for i := 1 to globalsRepository.globals.Count - 1 do
+//    viewsTotal := viewsTotal + (globalsRepository.globals[i].streamViews - globalsRepository.globals[i - 1].streamViews);
+//
+//  average := round(viewsTotal / globalsRepository.globals.Count);
+//
+//  min := -1;
+//  for i := 0 to globalsRepository.globals.Count - 1 do
+//  begin
+//    theDate := globalsRepository.globals[i].Date;
+//    views := globalsRepository.globals[i].streamViews;
+//    if views > 0 then
+//    begin
+//      if min = -1 then
+//        min := i;
+//      averageSeries.AddXY(theDate, average, '', FRed);
+//    end;
+//  end;
 
-  viewsTotal := 0;
-  for i := 1 to globalsRepository.globals.Count - 1 do
-    viewsTotal := viewsTotal + (globalsRepository.globals[i].streamViews - globalsRepository.globals[i - 1].streamViews);
-
-  average := round(viewsTotal / globalsRepository.globals.Count);
-
-  for i := 0 to globalsRepository.globals.Count - 1 do
-  begin
-    theDate := globalsRepository.globals[i].Date;
-    views := globalsRepository.globals[i].streamViews;
-    if views > 0 then
-      averageSeries.AddXY(theDate, average, '', FRed);
-  end;
-
-  chartStreamViews.AddSeries(averageSeries);
+  //chartStreamViews.AddSeries(averageSeries);
 
   //Add tendency line
-  if globalsRepository.globals.Count > 1 then
-  begin
-    tendencySeries := flickrChart.GetNewLineSeries(chartStreamViews);
-
-    //Adding only first and last item
-    theDate := globalsRepository.globals[0].Date;
-    views := viewsTendency.tendencyResult(0);
-    tendencySeries.AddXY(theDate, views, '', FYellow);
-    theDate := globalsRepository.globals[globalsRepository.globals.Count - 1].Date;
-    views := viewsTendency.tendencyResult(globalsRepository.globals.Count - 1);
-    tendencySeries.AddXY(theDate, views, '', FYellow);
-
-    chartStreamViews.AddSeries(tendencySeries);
-
-    views := viewsTendency.tendencyResult(globalsRepository.globals.Count);
-    PredictionLabel.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-  end;
+//  if globalsRepository.globals.Count > 1 then
+//  begin
+//    tendencySeries := flickrChart.GetNewLineSeries(chartStreamViews);
+//
+//    //Adding only first and last item
+//    theDate := globalsRepository.globals[min].Date;
+//    views := viewsTendency.tendencyResult(0);
+//    tendencySeries.AddXY(theDate, views, '', FYellow);
+//    theDate := globalsRepository.globals[globalsRepository.globals.Count - 1].Date;
+//    views := viewsTendency.tendencyResult(globalsRepository.globals.Count - 1);
+//    tendencySeries.AddXY(theDate, views, '', FYellow);
+//
+//    chartStreamViews.AddSeries(tendencySeries);
+//
+//    views := viewsTendency.tendencyResult(globalsRepository.globals.Count);
+//    PredictionLabel.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
+//  end;
 end;
 
 procedure TfrmFlickrMain.UpdateAnalytics;
