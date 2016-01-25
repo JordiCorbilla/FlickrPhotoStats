@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = TabSheet4
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
@@ -1757,7 +1757,7 @@ object frmFlickrMain: TfrmFlickrMain
           TabOrder = 0
           object Splitter13: TSplitter
             Left = 1
-            Top = 178
+            Top = 194
             Width = 526
             Height = 3
             Cursor = crVSplit
@@ -1767,7 +1767,7 @@ object frmFlickrMain: TfrmFlickrMain
           end
           object Splitter14: TSplitter
             Left = 1
-            Top = 372
+            Top = 388
             Width = 526
             Height = 3
             Cursor = crVSplit
@@ -1777,7 +1777,7 @@ object frmFlickrMain: TfrmFlickrMain
           end
           object dailyLikes: TChart
             Left = 1
-            Top = 181
+            Top = 197
             Width = 526
             Height = 191
             Legend.Visible = False
@@ -1812,6 +1812,7 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
+            ExplicitTop = 181
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1836,9 +1837,9 @@ object frmFlickrMain: TfrmFlickrMain
           end
           object dailyComments: TChart
             Left = 1
-            Top = 375
+            Top = 391
             Width = 526
-            Height = 100
+            Height = 84
             Legend.Visible = False
             Title.Font.Color = clWhite
             Title.Text.Strings = (
@@ -1871,6 +1872,8 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
+            ExplicitTop = 375
+            ExplicitHeight = 100
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1893,55 +1896,128 @@ object frmFlickrMain: TfrmFlickrMain
               YValues.Order = loNone
             end
           end
-          object ChartGeneral: TChart
+          object Panel30: TPanel
             Left = 1
             Top = 1
             Width = 526
-            Height = 177
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Globals')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 0.000000011574074074
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.LabelsSeparation = 0
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
+            Height = 193
             Align = alTop
-            Color = 2763306
+            Caption = 'Panel30'
             TabOrder = 2
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              44
-              15
-              44)
-            ColorPaletteIndex = 13
-            object Series4: TBarSeries
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
+            ExplicitLeft = 2
+            ExplicitTop = 9
+            object Splitter27: TSplitter
+              Left = 257
+              Top = 1
+              Height = 191
+              ExplicitLeft = 240
+              ExplicitTop = 24
+              ExplicitHeight = 100
+            end
+            object chartStreamViews: TChart
+              Left = 1
+              Top = 1
+              Width = 256
+              Height = 191
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Stream Views')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 0.000000011574074074
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.LabelsSeparation = 0
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alLeft
+              Color = 2763306
+              TabOrder = 0
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                44
+                15
+                44)
+              ColorPaletteIndex = 13
+              object Series4: TBarSeries
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
+            end
+            object ChartAlbumViews: TChart
+              Left = 260
+              Top = 1
+              Width = 265
+              Height = 191
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Album Views')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 0.000000011574074074
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.LabelsSeparation = 0
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alClient
+              Color = 2763306
+              TabOrder = 1
+              OnDblClick = ChartViewsDblClick
+              ExplicitLeft = 9
+              ExplicitTop = 2
+              ExplicitWidth = 224
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                44
+                15
+                44)
+              ColorPaletteIndex = 13
+              object BarSeries9: TBarSeries
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
             end
           end
         end
@@ -5537,7 +5613,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001640210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001680210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

@@ -294,7 +294,11 @@ begin
     end;
 
     //Add the items in the albums
-    TAlbumCategoriser.AutoAdd(repository, options, optionsEmail);
+    TAlbumCategoriser.AutoAdd(repository, options, optionsEmail, procedure (value : string)
+      begin
+        WriteLn(value);
+        TLogger.LogFile(value);
+      end);
 
     //Update Parse
     try
