@@ -136,14 +136,14 @@
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <DCC_Optimize>true</DCC_Optimize>
-        <VerInfo_Build>1</VerInfo_Build>
+        <VerInfo_Build>2</VerInfo_Build>
         <Debugger_RunParams>-v -r -g -e</Debugger_RunParams>
         <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
         <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Analytics Agent v4.8;FileVersion=4.8.0.1;InternalName=Flickr Photo Analytics Agent v4.8;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Analytics Agent v4.8;ProductName=Flickr Photo Analytics Agent v4.8;ProductVersion=4.8.0.1;Comments=Flickr Photo Analytics Agent v4.8</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Analytics Agent v4.8;FileVersion=4.8.0.2;InternalName=Flickr Photo Analytics Agent v4.8;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Analytics Agent v4.8;ProductName=Flickr Photo Analytics Agent v4.8;ProductVersion=4.8.0.2;Comments=Flickr Photo Analytics Agent v4.8</VerInfo_Keys>
         <Icon_MainIcon>FlickrPhotoAnalyticsBatchUpdate_Icon.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
