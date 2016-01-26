@@ -345,7 +345,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Label19: TLabel
-      Left = 1241
+      Left = 1261
       Top = 4
       Width = 190
       Height = 19
@@ -358,7 +358,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object PredictionLabel: TLabel
-      Left = 1435
+      Left = 1455
       Top = 4
       Width = 59
       Height = 19
@@ -371,7 +371,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Label28: TLabel
-      Left = 1057
+      Left = 1077
       Top = 4
       Width = 75
       Height = 19
@@ -384,7 +384,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object UpdateTimeLabel: TLabel
-      Left = 1138
+      Left = 1158
       Top = 4
       Width = 84
       Height = 19
@@ -397,7 +397,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Label32: TLabel
-      Left = 1347
+      Left = 1367
       Top = 25
       Width = 84
       Height = 19
@@ -410,7 +410,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object FollowingLabel: TLabel
-      Left = 1435
+      Left = 1455
       Top = 25
       Width = 59
       Height = 19
@@ -531,7 +531,7 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object imagephoto: TImage
       Left = 784
-      Top = 27
+      Top = 26
       Width = 16
       Height = 16
       AutoSize = True
@@ -558,7 +558,7 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Label43: TLabel
-      Left = 1077
+      Left = 1097
       Top = 25
       Width = 55
       Height = 19
@@ -571,7 +571,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object SaveTimeLabel: TLabel
-      Left = 1138
+      Left = 1158
       Top = 25
       Width = 84
       Height = 19

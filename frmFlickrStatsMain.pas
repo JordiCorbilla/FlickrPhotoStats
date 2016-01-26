@@ -5543,7 +5543,8 @@ end;
 
 procedure TfrmFlickrMain.ClearAllCharts();
 begin
-  //ChartGeneral.RemoveAllSeries;
+  ChartStreamViews.RemoveAllSeries;
+  ChartAlbumViews.RemoveAllSeries;
   ChartViews.RemoveAllSeries;
   totalPhotos.RemoveAllSeries;
   ChartLikes.RemoveAllSeries;
