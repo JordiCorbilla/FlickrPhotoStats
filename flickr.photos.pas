@@ -72,10 +72,10 @@ type
     function GetTotalAlbums() : integer;
     function GetUserTracking() : IUserTracking;
     procedure SetUserTracking(const Value : IUserTracking);
-//    function GetTotalComments() : integer;
+    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
-//    function GetTotalLikes() : integer;
-//    function GetTotalViews() : integer;
+    function GetTotalLikes() : integer;
+    function GetTotalViews() : integer;
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
     property LastUpdate: TDatetime read getLastUpdate write SetLastUpdate;
@@ -88,14 +88,16 @@ type
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     property Folder : string read GetFolder write SetFolder;
-//    property TotalViews : integer read GetTotalViews write SetTotalViews;
-//    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
-//    property TotalComments : integer read GetTotalComments write SetTotalComments;
+    property TotalViews : integer read GetTotalViews write SetTotalViews;
+    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
+    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     property UserTracking : IUserTracking read GetUserTracking write SetUserTracking;
     procedure Load(iNode: IXMLNode);
+    procedure LoadNew(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
+    procedure SaveNew(iNode: IXMLNode);
     function getTotalLikesDay(incday : integer = 0): Integer;
     function getTotalCommentsDay(incday : integer = 0): Integer;
     function getTotalViewsDay(incday : integer = 0): Integer;
@@ -155,12 +157,12 @@ type
     procedure SetTotalLikes(const Value: integer);
     procedure SetTotalViews(const Value: integer);
     function GetTotalAlbums() : integer;
-//    function GetTotalComments() : integer;
+    function GetTotalComments() : integer;
     function GetTotalGroups() : integer;
     function GetUserTracking() : IUserTracking;
     procedure SetUserTracking(const Value : IUserTracking);
-//    function GetTotalLikes() : integer;
-//    function GetTotalViews() : integer;
+    function GetTotalLikes() : integer;
+    function GetTotalViews() : integer;
   public
     property Id: string read getId write SetId;
     property Title: string read getTitle write SetTitle;
@@ -174,9 +176,9 @@ type
     property TodayTrend : integer read GetTodayTrend write SetTodayTrend;
     property OmitGroups : string read GetOmitGroups write SetOmitGroups;
     property Folder : string read GetFolder write SetFolder;
-//    property TotalViews : integer read GetTotalViews write SetTotalViews;
-//    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
-//    property TotalComments : integer read GetTotalComments write SetTotalComments;
+    property TotalViews : integer read GetTotalViews write SetTotalViews;
+    property TotalLikes : integer read GetTotalLikes write SetTotalLikes;
+    property TotalComments : integer read GetTotalComments write SetTotalComments;
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     property UserTracking : IUserTracking read GetUserTracking write SetUserTracking;
@@ -188,7 +190,9 @@ type
     constructor Create(Id: string; Title: string; taken : string; tags : string); overload;
     destructor Destroy(); override;
     procedure Load(iNode: IXMLNode);
+    procedure LoadNew(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
+    procedure SaveNew(iNode: IXMLNode);
     function getTotalLikesDay(incday : integer = 0): Integer;
     function getTotalCommentsDay(incday : integer = 0): Integer;
     function getTotalViewsDay(incday : integer = 0): Integer;
@@ -202,16 +206,13 @@ implementation
 { TPhoto }
 
 uses
-  SysUtils, System.Variants, DateUtils;
+  SysUtils, System.Variants, DateUtils, flickr.xml.helper;
 
 procedure TPhoto.AddCollections(albums: TAlbumList; groups: TPoolList);
 begin
   if Assigned(FAlbums) then
     FAlbums.Free;
   FAlbums := albums;
-//  if Assigned(FGroups) then
-//    FGroups.Free;
-  //FGroups := groups;
 end;
 
 function TPhoto.AddStats(stat: IStat): boolean;
@@ -366,10 +367,10 @@ begin
   result := FTotalAlbums;
 end;
 
-//function TPhoto.GetTotalComments: integer;
-//begin
-//  result := FTotalComments;
-//end;
+function TPhoto.GetTotalComments: integer;
+begin
+  result := FTotalComments;
+end;
 
 function TPhoto.getTotalCommentsDay(incday : integer = 0): Integer;
 begin
@@ -384,10 +385,10 @@ begin
   result := FTotalGroups;
 end;
 
-//function TPhoto.GetTotalLikes: integer;
-//begin
-//  result := FTotalLikes;
-//end;
+function TPhoto.GetTotalLikes: integer;
+begin
+  result := FTotalLikes;
+end;
 
 function TPhoto.getTotalLikesDay(incday : integer = 0): Integer;
 begin
@@ -397,10 +398,10 @@ begin
     result := 0;
 end;
 
-//function TPhoto.GetTotalViews: integer;
-//begin
-//  result := FTotalViews;
-//end;
+function TPhoto.GetTotalViews: integer;
+begin
+  result := FTotalViews;
+end;
 
 function TPhoto.getTotalViewsDay(incday : integer = 0): Integer;
 begin
@@ -454,33 +455,9 @@ begin
   FTitle := iNode.Attributes['title'];
   FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
   FTaken := iNode.Attributes['Taken'];
-
-  try
-    if iNode.Attributes['Tags'] <> null then
-      FTags := iNode.Attributes['Tags']
-    else
-      FTags := '';
-  except
-    FTags := '';
-  end;
-
-  try
-    if iNode.Attributes['OmitGroups'] <> null then
-      FOmitGroups := iNode.Attributes['OmitGroups']
-    else
-      FOmitGroups := '';
-  except
-    FOmitGroups := '';
-  end;
-
-  try
-    if iNode.Attributes['Banned'] <> null then
-      FBanned := iNode.Attributes['Banned']
-    else
-      FBanned := false;
-  except
-    FBanned := false;
-  end;
+  FTags := TXMLHelper.new(iNode.attributes['Tags']).getString;
+  FOmitGroups := TXMLHelper.new(iNode.Attributes['OmitGroups']).getString;
+  FBanned := TXMLHelper.new(iNode.Attributes['Banned']).getBool;
 
   iNode2 := iNode.ChildNodes.First;
   while iNode2 <> nil do
@@ -534,7 +511,73 @@ begin
   end;
 end;
 
-procedure TPhoto.Save(iNode: IXMLNode);
+procedure TPhoto.LoadNew(iNode: IXMLNode);
+var
+  iNode2: IXMLNode;
+  Document: IXMLDocument;
+  iXMLRootNode: IXMLNode;
+  id : string;
+  title : string;
+  added : tdatetime;
+begin
+  FId := iNode.Attributes['id'];
+  FTitle := iNode.Attributes['title'];
+  FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
+  FTaken := iNode.Attributes['Taken'];
+  FTags := TXMLHelper.new(iNode.attributes['Tags']).getString;
+  FOmitGroups := TXMLHelper.new(iNode.Attributes['OmitGroups']).getString;
+  FBanned := TXMLHelper.new(iNode.Attributes['Banned']).getBool;
+
+  FTotalViews := TXMLHelper.new(iNode.Attributes['TotalViews']).getInt;
+  FTotalLikes := TXMLHelper.new(iNode.Attributes['TotalLikes']).getInt;
+  FTotalComments := TXMLHelper.new(iNode.Attributes['TotalComments']).getInt;
+  FTotalAlbums := TXMLHelper.new(iNode.Attributes['TotalAlbums']).getInt;
+  FTotalGroups := TXMLHelper.new(iNode.Attributes['TotalGroups']).getInt;
+
+  FAlbums.Clear;
+  if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(FFolder + 'Albums\'+ FId + '.xml');
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode2 := iXMLRootNode.ChildNodes.first;
+      while iNode2 <> nil do
+      begin
+        FAlbums.AddItem(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
+        iNode2 := iNode2.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
+
+  FGroups.Clear;
+  if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(FFolder + 'Groups\'+ FId + '.xml');
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode2 := iXMLRootNode.ChildNodes.first;
+      while iNode2 <> nil do
+      begin
+        id := iNode2.attributes['id'];
+        title := iNode2.attributes['title'];
+        if iNode2.attributes['added'] <> null then
+          added := StrToDate(iNode2.attributes['added'])
+        else
+          added := Yesterday;
+        FGroups.AddItem(TPool.create(id, title, added));
+        iNode2 := iNode2.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
+end;
+
+procedure TPhoto.SaveNew(iNode: IXMLNode);
 var
   i: Integer;
   iNode2: IXMLNode;
@@ -551,25 +594,74 @@ begin
   iNode2.Attributes['Tags'] := FTags;
   iNode2.Attributes['OmitGroups'] := FOmitGroups;
 
-  //New nodes for version 4.6
-//  iNode2.Attributes['TotalViews'] := FTotalViews;
-//  iNode2.Attributes['TotalLikes'] := FTotalLikes;
-//  iNode2.Attributes['TotalComments'] := FTotalComments;
-//  iNode2.Attributes['TotalAlbums'] := FTotalAlbums;
-//  iNode2.Attributes['TotalGroups'] := FTotalGroups;
+  //New nodes for version 4.8.0.2
+  iNode2.Attributes['TotalViews'] := FStats[FStats.Count-1].views;
+  iNode2.Attributes['TotalLikes'] := FStats[FStats.Count-1].likes;
+  iNode2.Attributes['TotalComments'] := FStats[FStats.Count-1].Comments;
+  iNode2.Attributes['TotalAlbums'] := FAlbums.Count;
+  iNode2.Attributes['TotalGroups'] := FGroups.Count;
 
   // Create the XML file
-//  XMLDoc := TXMLDocument.Create(nil);
-//  XMLDoc.Active := true;
-//  iNode := XMLDoc.AddChild('History');
-//  for i := 0 to FStats.count - 1 do
-//  begin
-//    FStats[i].Save(iNode);
-//  end;
-//  if DirectoryExists(FFolder + 'History') then
-//    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
-//  else
-//    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('History');
+  for i := 0 to FStats.count - 1 do
+  begin
+    FStats[i].Save(iNode);
+  end;
+  if DirectoryExists(FFolder + 'History') then
+    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
+
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('Albums');
+  for album in FAlbums do
+  begin
+    iNode2 := iNode.AddChild('Set');
+    iNode2.Attributes['id'] := album.value.Id;
+    iNode2.Attributes['title'] := album.value.Title;
+  end;
+  if DirectoryExists(FFolder + 'Albums') then
+    XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Albums');
+
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('Groups');
+  for Item in FGroups do
+  begin
+    iNode2 := iNode.AddChild('Pool');
+    iNode2.Attributes['id'] := Item.Value.Id;
+    iNode2.Attributes['title'] := Item.Value.Title;
+    iNode2.Attributes['added'] := Item.Value.Added;
+  end;
+  if DirectoryExists(FFolder + 'Groups') then
+    XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
+end;
+
+procedure TPhoto.Save(iNode: IXMLNode);
+var
+  i: Integer;
+  iNode2: IXMLNode;
+  XMLDoc: TXMLDocument;
+  item : TPair<string, IPool>;
+  album : TPair<string, IAlbum>;
+begin
+  iNode2 := iNode.AddChild('Photo');
+  iNode2.Attributes['id'] := FId;
+  iNode2.Attributes['title'] := FTitle;
+  iNode2.Attributes['LastUpdate'] := DateToStr(FLastUpdate);
+  iNode2.Attributes['Taken'] := FTaken;
+  iNode2.Attributes['Banned'] := FBanned;
+  iNode2.Attributes['Tags'] := FTags;
+  iNode2.Attributes['OmitGroups'] := FOmitGroups;
 
   for i := 0 to FStats.count - 1 do
   begin

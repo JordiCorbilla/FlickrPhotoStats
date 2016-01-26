@@ -1538,6 +1538,7 @@ begin
   st := TStopWatch.Create;
   st.Start;
   repository.sorted := chksorting.Checked;
+  repository.version := TUtils.GetVersion;
   repository.load(options.Workspace + '\flickrRepository.xml');
   st.Stop;
   log('Loading repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -1746,25 +1747,25 @@ begin
     Item := listPhotos.Items.Add;
     Item.Caption := repository.photos[i].id;
     Item.SubItems.Add(repository.photos[i].title);
-    totalViews := repository.photos[i].getTotalViewsDay;
+    totalViews := repository.photos[i].TotalViews;
     totalViewsacc := totalViewsacc + totalViews;
     Item.SubItems.Add(IntToStr(totalViews));
-    totalLikes := repository.photos[i].getTotalLikesDay;
+    totalLikes := repository.photos[i].TotalLikes;
     totalLikesacc := totalLikesacc + totalLikes;
     Item.SubItems.Add(IntToStr(totalLikes));
-    totalComments := repository.photos[i].getTotalCommentsDay;
+    totalComments := repository.photos[i].TotalComments;
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
     Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
     Item.SubItems.Add(repository.photos[i].taken); //taken
-    Item.SubItems.Add(repository.photos[i].Albums.Count.ToString()); //albums
-    Item.SubItems.Add(repository.photos[i].Groups.Count.ToString()); //groups
+    Item.SubItems.Add(repository.photos[i].TotalAlbums.ToString()); //albums
+    Item.SubItems.Add(repository.photos[i].TotalGroups.ToString()); //groups
     if totalViews = 0 then
       totalViews := 1;
     Item.SubItems.Add(repository.photos[i].tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
     Item.SubItems.Add(repository.photos[i].banned.ToString());
-    Item.SubItems.Add(repository.photos[i].getTrend.ToString());
+    Item.SubItems.Add('0'); //repository.photos[i].getTrend.ToString()
     Item.SubItems.Add(repository.photos[i].OmitGroups);
   end;
 

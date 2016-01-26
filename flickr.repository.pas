@@ -53,6 +53,8 @@ type
     procedure Setsorted(const Value: boolean);
     procedure SetDateSaved(const Value: TDateTime);
     procedure Setversion(const Value: string);
+    procedure SetPreviousVersion(const Value: string);
+    function GetPreviousVersion() : string;
     function ExistPhoto(photo: IPhoto; var existing: IPhoto): Boolean; overload;
     function ExistPhoto(id: string; var existing: IPhoto): Boolean; overload;
     function isPhotoInGroup(photo : string; groupId : string; var resPhoto : IPhoto) : boolean;
@@ -63,6 +65,7 @@ type
     property sorted : boolean read Getsorted write Setsorted;
     property version : string read Getversion write Setversion;
     property DateSaved : TDateTime read GetDateSaved write SetDateSaved;
+    property PreviousVersion : string read GetPreviousVersion write SetPreviousVersion;
     function getTotalSpreadGroups() : integer;
   end;
 
@@ -75,6 +78,7 @@ type
     Fsorted: boolean;
     Fversion: string;
     FDateSaved: TDateTime;
+    FPreviousVersion: string;
     procedure SetApiKey(value: string);
     function GetApiKey(): string;
     function GetPhotos(): TList<IPhoto>;
@@ -86,9 +90,11 @@ type
     function Getsorted(): boolean;
     function Getversion() : string;
     function GetDateSaved() : TDateTime;
+    function GetPreviousVersion() : string;
     procedure Setsorted(const Value: boolean);
     procedure SetDateSaved(const Value: TDateTime);
     procedure Setversion(const Value: string);
+    procedure SetPreviousVersion(const Value: string);
   public
     procedure AddPhoto(photo: IPhoto);
     procedure Load(FileName: string);
@@ -107,6 +113,7 @@ type
     property sorted : boolean read Getsorted write Setsorted;
     property version : string read Getversion write Setversion;
     property DateSaved : TDateTime read GetDateSaved write SetDateSaved;
+    property PreviousVersion : string read GetPreviousVersion write SetPreviousVersion;
     procedure DeletePhoto(id : string);
   end;
 
@@ -228,6 +235,11 @@ begin
   Result := FPhotos;
 end;
 
+function TFlickrRepository.GetPreviousVersion: string;
+begin
+  result := FPreviousVersion;
+end;
+
 function TFlickrRepository.GetSecret: string;
 begin
   Result := FSecret;
@@ -300,7 +312,7 @@ begin
 
     try
       if (iXMLRootNode.attributes['Version'] <> null) then
-        Self.Fversion := iXMLRootNode.attributes['Version'];
+        Self.FPreviousversion := iXMLRootNode.attributes['Version'];
     except
       Self.Fversion := '';
     end;
@@ -317,7 +329,10 @@ begin
     begin
       photo := TPhoto.Create();
       photo.folder := ExtractFilePath(FileName);
-      photo.Load(iNode);
+      if (FPreviousVersion = '4.8.0.2') and (FVersion = '4.8.0.2') then
+        photo.LoadNew(iNode)
+      else
+        photo.Load(iNode);
       FPhotos.Add(photo);
       iNode := iNode.NextSibling;
     end;
@@ -351,7 +366,10 @@ begin
   for i := 0 to FPhotos.count - 1 do
   begin
     FPhotos[i].folder := ExtractFilePath(FileName);
-    FPhotos[i].Save(iNode);
+    if (FPreviousVersion = '4.8.0.1') and (Fversion = '4.8.0.2') then
+      FPhotos[i].SaveNew(iNode)
+    else
+      FPhotos[i].Save(iNode);
   end;
   XMLDoc.SaveToFile(FileName);
 end;
@@ -369,6 +387,11 @@ end;
 procedure TFlickrRepository.SetPhotos(value: TList<IPhoto>);
 begin
   FPhotos := value;
+end;
+
+procedure TFlickrRepository.SetPreviousVersion(const Value: string);
+begin
+  FPreviousVersion := Value;
 end;
 
 procedure TFlickrRepository.SetSecret(value: string);
