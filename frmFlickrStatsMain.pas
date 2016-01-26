@@ -5806,6 +5806,7 @@ begin
     photo := repository.GetPhoto(id);
     if photo <> nil then
     begin
+      photo.LoadStats;
       SeriesViews := flickrChart.GetNewLineSeries(chartItemViews);
       SeriesPool := flickrChart.GetNewAreaSeries(totalGroups);
       SeriesLikes := flickrChart.GetNewLineSeries(chartItemLikes);
@@ -5892,6 +5893,7 @@ begin
       chartItemComments.AddSeries(SeriesTendencyComments);
 
       UpdateSingleStats(id);
+      photo.Stats.Clear;
     end;
   end
   else

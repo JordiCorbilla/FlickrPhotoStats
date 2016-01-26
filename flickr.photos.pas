@@ -104,6 +104,9 @@ type
     function getTrend() : integer;
     function getHighestViews() : Integer;
     function getHighestLikes() : Integer;
+    procedure LoadStats();
+    procedure LoadGroups();
+    procedure LoadAlbums();
   end;
 
   TPhoto = class(TInterfacedObject, IPhoto)
@@ -190,6 +193,9 @@ type
     constructor Create(Id: string; Title: string; taken : string; tags : string); overload;
     destructor Destroy(); override;
     procedure Load(iNode: IXMLNode);
+    procedure LoadStats();
+    procedure LoadGroups();
+    procedure LoadAlbums();
     procedure LoadNew(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     procedure SaveNew(iNode: IXMLNode);
@@ -511,29 +517,12 @@ begin
   end;
 end;
 
-procedure TPhoto.LoadNew(iNode: IXMLNode);
+procedure TPhoto.LoadAlbums;
 var
   iNode2: IXMLNode;
   Document: IXMLDocument;
   iXMLRootNode: IXMLNode;
-  id : string;
-  title : string;
-  added : tdatetime;
 begin
-  FId := iNode.Attributes['id'];
-  FTitle := iNode.Attributes['title'];
-  FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
-  FTaken := iNode.Attributes['Taken'];
-  FTags := TXMLHelper.new(iNode.attributes['Tags']).getString;
-  FOmitGroups := TXMLHelper.new(iNode.Attributes['OmitGroups']).getString;
-  FBanned := TXMLHelper.new(iNode.Attributes['Banned']).getBool;
-
-  FTotalViews := TXMLHelper.new(iNode.Attributes['TotalViews']).getInt;
-  FTotalLikes := TXMLHelper.new(iNode.Attributes['TotalLikes']).getInt;
-  FTotalComments := TXMLHelper.new(iNode.Attributes['TotalComments']).getInt;
-  FTotalAlbums := TXMLHelper.new(iNode.Attributes['TotalAlbums']).getInt;
-  FTotalGroups := TXMLHelper.new(iNode.Attributes['TotalGroups']).getInt;
-
   FAlbums.Clear;
   if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
   begin
@@ -551,7 +540,15 @@ begin
       Document := nil;
     end;
   end;
+end;
 
+procedure TPhoto.LoadGroups;
+var
+  iNode2: IXMLNode;
+  Document: IXMLDocument;
+  iXMLRootNode: IXMLNode;
+  added : tdatetime;
+begin
   FGroups.Clear;
   if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
   begin
@@ -569,6 +566,51 @@ begin
         else
           added := Yesterday;
         FGroups.AddItem(TPool.create(id, title, added));
+        iNode2 := iNode2.NextSibling;
+      end;
+    finally
+      Document := nil;
+    end;
+  end;
+end;
+
+procedure TPhoto.LoadNew(iNode: IXMLNode);
+begin
+  FId := iNode.Attributes['id'];
+  FTitle := iNode.Attributes['title'];
+  FLastUpdate := StrToDate(iNode.Attributes['LastUpdate']);
+  FTaken := iNode.Attributes['Taken'];
+  FTags := TXMLHelper.new(iNode.attributes['Tags']).getString;
+  FOmitGroups := TXMLHelper.new(iNode.Attributes['OmitGroups']).getString;
+  FBanned := TXMLHelper.new(iNode.Attributes['Banned']).getBool;
+
+  FTotalViews := TXMLHelper.new(iNode.Attributes['TotalViews']).getInt;
+  FTotalLikes := TXMLHelper.new(iNode.Attributes['TotalLikes']).getInt;
+  FTotalComments := TXMLHelper.new(iNode.Attributes['TotalComments']).getInt;
+  FTotalAlbums := TXMLHelper.new(iNode.Attributes['TotalAlbums']).getInt;
+  FTotalGroups := TXMLHelper.new(iNode.Attributes['TotalGroups']).getInt;
+end;
+
+procedure TPhoto.LoadStats;
+var
+  iNode2: IXMLNode;
+  stat: IStat;
+  Document: IXMLDocument;
+  iXMLRootNode: IXMLNode;
+begin
+  FStats.Clear;
+  if fileExists(FFolder + 'History\'+ FId + '.xml') then
+  begin
+    Document := TXMLDocument.Create(nil);
+    try
+      Document.LoadFromFile(FFolder + 'History\'+ FId + '.xml');
+      iXMLRootNode := Document.ChildNodes.first;
+      iNode2 := iXMLRootNode.ChildNodes.first;
+      while iNode2 <> nil do
+      begin
+        stat := TStat.Create();
+        stat.Load(iNode2);
+        FStats.Add(stat);
         iNode2 := iNode2.NextSibling;
       end;
     finally
