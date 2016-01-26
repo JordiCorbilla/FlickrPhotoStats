@@ -2269,8 +2269,35 @@ begin
 end;
 
 procedure TfrmFlickrMain.UpdateDailyAlbumViewsChart;
+var
+  Series: TAreaSeries;
+  i: Integer;
+  theDate: TDateTime;
+  views: Integer;
 begin
+  if chartAlbumViews.SeriesList.Count > 0 then
+    chartAlbumViews.RemoveAllSeries;
 
+  Series := flickrChart.GetNewAreaSeries(chartAlbumViews, false, FHardBlue);
+
+  if globalsRepository.globals.Count = 1 then
+  begin
+    theDate := globalsRepository.globals[0].Date;
+    views := globalsRepository.globals[0].albumViews;
+    Series.AddXY(theDate, views, '', FSoftBlue);
+  end
+  else
+  begin
+    for i := 0 to globalsRepository.globals.Count - 1 do
+    begin
+      theDate := globalsRepository.globals[i].Date;
+      views := globalsRepository.globals[i].albumViews;
+      if views > 0 then
+        Series.AddXY(theDate, views, '', FSoftBlue);
+    end;
+  end;
+
+  chartAlbumViews.AddSeries(Series);
 end;
 
 procedure TfrmFlickrMain.UpdateDailyCommentsChart;
@@ -2417,22 +2444,17 @@ var
   Series: TAreaSeries;
   i: Integer;
   theDate: TDateTime;
-  views, viewsTotal, average: Integer;
-  averageSeries, tendencySeries: TLineSeries;
-  //viewsTendency : ITendency;
-  min : integer;
+  views: Integer;
 begin
   if chartStreamViews.SeriesList.Count > 0 then
     chartStreamViews.RemoveAllSeries;
 
   Series := flickrChart.GetNewAreaSeries(chartStreamViews, false, FHardBlue);
-  //viewsTendency := TTendency.Create;
 
   if globalsRepository.globals.Count = 1 then
   begin
     theDate := globalsRepository.globals[0].Date;
     views := globalsRepository.globals[0].streamViews;
-    //viewsTendency.AddXY(0, views);
     Series.AddXY(theDate, views, '', FSoftBlue);
   end
   else
@@ -2442,65 +2464,18 @@ begin
       theDate := globalsRepository.globals[i].Date;
       views := globalsRepository.globals[i].streamViews;
       if views > 0 then
-      begin
-        //viewsTendency.AddXY(i, views);
         Series.AddXY(theDate, views, '', FSoftBlue);
-      end;
     end;
   end;
 
   chartStreamViews.AddSeries(Series);
-
-  //viewsTendency.Calculate;
-
-  // Add average views
-//  averageSeries := flickrChart.GetNewLineSeries(chartStreamViews);
-//
-//  viewsTotal := 0;
-//  for i := 1 to globalsRepository.globals.Count - 1 do
-//    viewsTotal := viewsTotal + (globalsRepository.globals[i].streamViews - globalsRepository.globals[i - 1].streamViews);
-//
-//  average := round(viewsTotal / globalsRepository.globals.Count);
-//
-//  min := -1;
-//  for i := 0 to globalsRepository.globals.Count - 1 do
-//  begin
-//    theDate := globalsRepository.globals[i].Date;
-//    views := globalsRepository.globals[i].streamViews;
-//    if views > 0 then
-//    begin
-//      if min = -1 then
-//        min := i;
-//      averageSeries.AddXY(theDate, average, '', FRed);
-//    end;
-//  end;
-
-  //chartStreamViews.AddSeries(averageSeries);
-
-  //Add tendency line
-//  if globalsRepository.globals.Count > 1 then
-//  begin
-//    tendencySeries := flickrChart.GetNewLineSeries(chartStreamViews);
-//
-//    //Adding only first and last item
-//    theDate := globalsRepository.globals[min].Date;
-//    views := viewsTendency.tendencyResult(0);
-//    tendencySeries.AddXY(theDate, views, '', FYellow);
-//    theDate := globalsRepository.globals[globalsRepository.globals.Count - 1].Date;
-//    views := viewsTendency.tendencyResult(globalsRepository.globals.Count - 1);
-//    tendencySeries.AddXY(theDate, views, '', FYellow);
-//
-//    chartStreamViews.AddSeries(tendencySeries);
-//
-//    views := viewsTendency.tendencyResult(globalsRepository.globals.Count);
-//    PredictionLabel.Caption :=  Format('%n',[views.ToDouble]).Replace('.00','');
-//  end;
 end;
 
 procedure TfrmFlickrMain.UpdateAnalytics;
 begin
   UpdateDailyViewsChart();
   UpdateDailyStreamViewsChart();
+  UpdateDailyAlbumViewsChart();
   UpdateDailyLikesChart();
   UpdateDailyCommentsChart();
   UpdateMostViewedChart();
@@ -2612,46 +2587,28 @@ end;
 
 procedure TfrmFlickrMain.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
 var
-  Series: TBarSeries;
   values : double;
 begin
-//  if ChartGeneral.SeriesList.Count > 0 then
-//    ChartGeneral.RemoveAllSeries;
-
   Label16.Visible := true;
   imagephoto.Visible := true;
 
-//  Series := flickrChart.GetNewBarSeries(ChartGeneral, false);
-
-//  Series.AddBar(totalViews, 'Views', FColorViews);
-//  Series.AddBar(totalLikes, 'Likes', FColorLikes);
-//  Series.AddBar(totalComments, 'Comments', FColorComments);
-
-//  Series.AddBar(totalPhotos, 'Photos', FColorPhotos);
   values := totalPhotos.ToDouble;
   PhotosLabel.Caption :=  Format('%n',[values]).Replace('.00','');
 
-//  Series.AddBar(totalSpreadGroups, 'Group spread', FColorGroups);
   values := totalSpreadGroups.ToDouble;
   TotalGroupsLabel.Caption :=  Format('%n',[values]).Replace('.00','') + ' group spread';
 
-  //Series.AddBar(Round(totalViews / totalPhotos), 'Views per photo', FViewsP);
   values := totalViews / totalPhotos;
   LabelViewsPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' views/photo';
 
-  //Series.AddBar(Round(totalLikes / totalPhotos), 'Likes per photo', FLikesP);
   values := totalLikes / totalPhotos;
   LabelLikesPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' likes/photo';
 
-  //Series.AddBar(Round(totalComments / totalPhotos), 'Comments per photo', FCommentsP);
   values := totalComments / totalPhotos;
   LabelCommentsPhoto.Caption :=  Format('%n',[values]).Replace('.00','') + ' comments/photo';
 
-//  Series.AddBar(Round(totalSpreadGroups / totalPhotos), 'Groups per photo', FColorSpread);
   values := totalSpreadGroups / totalPhotos;
   TotalGroupsRateLabel.Caption :=  Format('%n',[values]).Replace('.00','') + ' groups/photo';
-
-//  ChartGeneral.AddSeries(Series);
 end;
 
 procedure TfrmFlickrMain.btnSaveClick(Sender: TObject);

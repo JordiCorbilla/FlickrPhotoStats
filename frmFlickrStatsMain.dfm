@@ -1812,7 +1812,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 0
             OnDblClick = ChartViewsDblClick
-            ExplicitTop = 181
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1872,8 +1871,6 @@ object frmFlickrMain: TfrmFlickrMain
             Color = 2763306
             TabOrder = 1
             OnDblClick = ChartViewsDblClick
-            ExplicitTop = 375
-            ExplicitHeight = 100
             DefaultCanvas = 'TGDIPlusCanvas'
             PrintMargins = (
               15
@@ -1904,8 +1901,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alTop
             Caption = 'Panel30'
             TabOrder = 2
-            ExplicitLeft = 2
-            ExplicitTop = 9
             object Splitter27: TSplitter
               Left = 257
               Top = 1
@@ -2002,9 +1997,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 2763306
               TabOrder = 1
               OnDblClick = ChartViewsDblClick
-              ExplicitLeft = 9
-              ExplicitTop = 2
-              ExplicitWidth = 224
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -5613,7 +5605,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001680210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020016C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
