@@ -18,6 +18,9 @@
         <Projects Include="FlickrPhotoAnalyticsMetropolisUI.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="FlickrPhotoMigrationTool.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="FlickrPhotoAnalyticsMetropolisUI:Make">
         <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FlickrPhotoMigrationTool">
+        <MSBuild Projects="FlickrPhotoMigrationTool.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoMigrationTool:Clean">
+        <MSBuild Projects="FlickrPhotoMigrationTool.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoMigrationTool:Make">
+        <MSBuild Projects="FlickrPhotoMigrationTool.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI;FlickrPhotoMigrationTool"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean;FlickrPhotoMigrationTool:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make;FlickrPhotoMigrationTool:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
