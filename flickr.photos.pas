@@ -107,6 +107,9 @@ type
     procedure LoadStats();
     procedure LoadGroups();
     procedure LoadAlbums();
+    procedure SaveStats();
+    procedure SaveGroups();
+    procedure SaveAlbums();
   end;
 
   TPhoto = class(TInterfacedObject, IPhoto)
@@ -196,9 +199,12 @@ type
     procedure LoadStats();
     procedure LoadGroups();
     procedure LoadAlbums();
+    procedure SaveGroups();
+    procedure SaveAlbums();
     procedure LoadNew(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     procedure SaveNew(iNode: IXMLNode);
+    procedure SaveStats();
     function getTotalLikesDay(incday : integer = 0): Integer;
     function getTotalCommentsDay(incday : integer = 0): Integer;
     function getTotalViewsDay(incday : integer = 0): Integer;
@@ -225,11 +231,15 @@ function TPhoto.AddStats(stat: IStat): boolean;
 var
   existing: IStat;
 begin
+  LoadStats;
+  LoadAlbums;
+  LoadGroups;
   existing := nil;
   if not ExistStat(stat, existing) then
     FStats.Add(stat)
   else
     existing.Copy(stat);
+  SaveStats();
   result := (existing = nil);
 end;
 
@@ -418,13 +428,14 @@ begin
 end;
 
 function TPhoto.getTrend: integer;
-var
-  numViews, numLikes, Comments : integer;
+//var
+//  numViews, numLikes, Comments : integer;
 begin
-  numViews := getTotalViewsDay(0) - getTotalViewsDay(-1);
-  numLikes := getTotalLikesDay(0) - getTotalLikesDay(-1);
-  Comments := getTotalCommentsDay(0) - getTotalCommentsDay(-1);
-  SetTodayTrend(numViews + numLikes + Comments);
+  //TODO: jc
+  //numViews := getTotalViewsDay(0) - getTotalViewsDay(-1);
+ // numLikes := getTotalLikesDay(0) - getTotalLikesDay(-1);
+  //Comments := getTotalCommentsDay(0) - getTotalCommentsDay(-1);
+  SetTodayTrend(0); //numViews + numLikes + Comments
   result := FTodayTrend;
 end;
 
@@ -688,6 +699,32 @@ begin
     raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
 end;
 
+procedure TPhoto.SaveStats;
+var
+  i: Integer;
+  iNode: IXMLNode;
+  XMLDoc: TXMLDocument;
+begin
+  FTotalViews := FStats[FStats.Count-1].views;
+  FTotalLikes := FStats[FStats.Count-1].likes;
+  FTotalComments := FStats[FStats.Count-1].Comments;
+  FTotalAlbums := FAlbums.Count;
+  FTotalGroups := FGroups.Count;
+
+  // Create the XML file
+  XMLDoc := TXMLDocument.Create(nil);
+  XMLDoc.Active := true;
+  iNode := XMLDoc.AddChild('History');
+  for i := 0 to FStats.count - 1 do
+  begin
+    FStats[i].Save(iNode);
+  end;
+  if DirectoryExists(FFolder + 'History') then
+    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
+  else
+    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
+end;
+
 procedure TPhoto.Save(iNode: IXMLNode);
 var
   i: Integer;
@@ -740,6 +777,16 @@ begin
     XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
   else
     raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
+end;
+
+procedure TPhoto.SaveAlbums;
+begin
+
+end;
+
+procedure TPhoto.SaveGroups;
+begin
+
 end;
 
 procedure TPhoto.SetAlbums(Value: TAlbumList);

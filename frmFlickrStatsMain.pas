@@ -672,7 +672,7 @@ uses
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
-  flickr.lib.parse, flickr.stats.global, flickr.users.info;
+  flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib;
 
 {$R *.dfm}
 
@@ -1202,15 +1202,10 @@ end;
 procedure TfrmFlickrMain.RequestInformation_REST_Flickr(id: string; organicStat : IFlickrOrganicStats);
 var
   Item, itemExisting: TListItem;
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
+  iXMLRootNode4, iXMLRootNode5: IXMLNode;
   views, title, likes, comments, taken: string;
   stat: IStat;
   photo, existing: IPhoto;
-  IdHTTP: TIdHTTP;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  xmlDocument: IXMLDocument;
-  timedout: Boolean;
   Albums: TAlbumList;
   Groups: TPoolList;
   tags : string;
@@ -1218,35 +1213,10 @@ var
 begin
   CoInitialize(nil);
   try
-    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-    xmlDocument := TXMLDocument.Create(nil);
-    IdHTTP := TIdHTTP.Create(nil);
-    try
-      IdHTTP.IOHandler := IdIOHandler;
-      timedout := false;
-      while (not timedout) do
-      begin
-        try
-          response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey.text, id));
-          timedout := true;
-        except
-          on e: exception do
-          begin
-            sleep(timeout);
-            timedout := false;
-          end;
-        end;
-
-      end;
-
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-      views := iXMLRootNode3.attributes['views'];
-      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <owner>
+    THttpRest.Post(TFlickrRest.New().getInfo(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+    begin
+      views := iXMLRootNode.attributes['views'];
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <owner>
       tags := '';
       while iXMLRootNode4 <> nil do
       begin
@@ -1271,51 +1241,21 @@ begin
 
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
-    finally
-      IdIOHandler.Free;
-      IdHTTP.Free;
-      xmlDocument := nil;
-    end;
+    end);
 
-    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-    xmlDocument := TXMLDocument.Create(nil);
-    IdHTTP := TIdHTTP.Create(nil);
-    try
-      IdHTTP.IOHandler := IdIOHandler;
-      timedout := false;
-      while (not timedout) do
-      begin
-        try
-          response := IdHTTP.Get(TFlickrRest.New().getFavorites(apikey.text, id));
-          timedout := true;
-        except
-          on e: exception do
-          begin
-            sleep(timeout);
-            timedout := false;
-          end;
-        end;
-      end;
-
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-      likes := iXMLRootNode3.attributes['total'];
-    finally
-      IdIOHandler.Free;
-      IdHTTP.Free;
-      xmlDocument := nil;
-    end;
+    THttpRest.Post(TFlickrRest.New().getFavorites(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+    begin
+      likes := iXMLRootNode.attributes['total'];
+    end);
 
     stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
 
     photoGroups := repository.GetPhoto(id);
     if photoGroups <> nil then
     begin
+      photoGroups.LoadGroups;
       Groups := photoGroups.Groups;
+      photoGroups.LoadAlbums;
       Albums := photoGroups.Albums;
     end
     else
@@ -1327,45 +1267,17 @@ begin
 
     if chkUpdateCollections.checked then
     begin
-      IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-      IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-      IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-      xmlDocument := TXMLDocument.Create(nil);
-      IdHTTP := TIdHTTP.Create(nil);
-      try
-        IdHTTP.IOHandler := IdIOHandler;
-        timedout := false;
-        while (not timedout) do
+      THttpRest.Post(TFlickrRest.New().getAllContexts(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+      begin
+        while iXMLRootNode <> nil do
         begin
-          try
-            response := IdHTTP.Get(TFlickrRest.New().getAllContexts(apikey.text, id));
-            timedout := true;
-          except
-            on e: exception do
-            begin
-              sleep(timeout);
-              timedout := false;
-            end;
-          end;
+          if iXMLRootNode.NodeName = 'set' then
+            Albums.AddItem(TAlbum.create(iXMLRootNode.attributes['id'], iXMLRootNode.attributes['title']));
+          if iXMLRootNode.NodeName = 'pool' then
+            Groups.AddItem(TPool.create(iXMLRootNode.attributes['id'], iXMLRootNode.attributes['title'], Date));
+          iXMLRootNode := iXMLRootNode.NextSibling;
         end;
-
-        xmlDocument.LoadFromXML(response);
-        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <set or pool>
-        while iXMLRootNode3 <> nil do
-        begin
-          if iXMLRootNode3.NodeName = 'set' then
-            Albums.AddItem(TAlbum.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title']));
-          if iXMLRootNode3.NodeName = 'pool' then
-            Groups.AddItem(TPool.create(iXMLRootNode3.attributes['id'], iXMLRootNode3.attributes['title'], Date));
-          iXMLRootNode3 := iXMLRootNode3.NextSibling;
-        end;
-      finally
-        IdIOHandler.Free;
-        IdHTTP.Free;
-        xmlDocument := nil;
-      end;
+      end);
     end;
 
     TTracking.TrackPhoto(options.Workspace, id, apikey.Text, '1', '50', optionsEMail.userToken, secret.Text, optionsEMail.userTokenSecret);
@@ -1423,8 +1335,8 @@ begin
       if views = '0' then
         views := '1';
       Item.SubItems.Add(taken);
-      Item.SubItems.Add(photo.Albums.Count.ToString());
-      Item.SubItems.Add(photo.Groups.Count.ToString());
+      Item.SubItems.Add(photo.TotalAlbums.ToString());
+      Item.SubItems.Add(photo.TotalGroups.ToString());
       Item.SubItems.Add(tags);
       Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       Item.SubItems.Add(photo.banned.ToString());
@@ -1443,8 +1355,8 @@ begin
       if views = '0' then
         views := '1';
       itemExisting.SubItems.Add(taken);
-      itemExisting.SubItems.Add(photo.Albums.Count.ToString());
-      itemExisting.SubItems.Add(photo.Groups.Count.ToString());
+      itemExisting.SubItems.Add(photo.TotalAlbums.ToString());
+      itemExisting.SubItems.Add(photo.TotalGroups.ToString());
       itemExisting.SubItems.Add(tags);
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       itemExisting.SubItems.Add(photo.banned.ToString());
@@ -2567,7 +2479,7 @@ begin
   color := RGB(Random(255), Random(255), Random(255));
 
   photo := repository.GetPhoto(id);
-
+  photo.LoadStats;
   for i := 1 to photo.stats.Count - 1 do
   begin
     theDate := photo.stats[i].Date;
@@ -2584,6 +2496,7 @@ begin
   chartItemViewsH.AddSeries(SeriesViews);
   chartItemLikesH.AddSeries(SeriesLikes);
   chartItemCommentsH.AddSeries(SeriesComments);
+  photo.stats.Clear;
 end;
 
 procedure TfrmFlickrMain.UpdateChart(totalViews, totalLikes, totalComments, totalPhotos, totalSpreadGroups: Integer);
@@ -5833,6 +5746,7 @@ begin
         SeriesComments.AddXY(stat.Date, stat.Comments, '', colour);
       end;
 
+      photo.LoadGroups;
       poolHistogram := TPoolHistogram.Create(photo.Groups);
       colour := RGB(Random(255), Random(255), Random(255));
       histogram := poolHistogram.Histogram;
@@ -5894,6 +5808,7 @@ begin
 
       UpdateSingleStats(id);
       photo.Stats.Clear;
+      photo.Groups.Clear;
     end;
   end
   else

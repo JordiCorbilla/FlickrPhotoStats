@@ -121,7 +121,8 @@ contains
   flickr.tracker in 'flickr.tracker.pas',
   flickr.users.info in 'flickr.users.info.pas',
   flickr.stats.global in 'flickr.stats.global.pas',
-  flickr.album.categoriser in 'flickr.album.categoriser.pas';
+  flickr.album.categoriser in 'flickr.album.categoriser.pas',
+  flickr.http.lib in 'flickr.http.lib.pas';
 
 end.
 
