@@ -32,7 +32,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, flickr.repository, UITypes,
-  flickr.lib.options, flickr.lib.options.email;
+  flickr.lib.options, flickr.lib.options.email, flickr.lib.utils;
 
 type
   TfrmMigration = class(TForm)
@@ -70,9 +70,15 @@ begin
     options := TOptions.New().Load;
     optionsEmail := TOptionsEmail.New().Load;
     try
+      repository.version := '4.8.0.2';
       repository.Load(options.Workspace + '\flickrRepository.xml');
-    finally
 
+      //Save the repository in the new format
+      repository.version := '4.8.0.2';
+      repository.DateSaved := Now;
+      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
+    finally
+      repository := nil;
     end;
   end;
 end;

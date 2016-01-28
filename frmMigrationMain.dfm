@@ -50,6 +50,9 @@ object frmMigration: TfrmMigration
     Top = 88
     Width = 511
     Height = 17
+    Position = 30
+    Smooth = True
+    Style = pbstMarquee
     TabOrder = 1
   end
 end

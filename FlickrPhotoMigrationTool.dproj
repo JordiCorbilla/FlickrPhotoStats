@@ -92,9 +92,13 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Migration Tool;FileVersion=4.8.0.2;InternalName=Flickr Migration Tool;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Migration Tool;ProductName=Flickr Migration Tool;ProductVersion=4.8.0.2;Comments=Flickr Migration Tool</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <Icon_MainIcon>FlickrPhotoMigrationTool_Icon1.ico</Icon_MainIcon>
+        <VerInfo_Build>2</VerInfo_Build>
         <DCC_ExeOutput>.\$(Config)\$(Platform)</DCC_ExeOutput>
+        <Icon_MainIcon>FlickrPhotoMigrationTool_Icon1.ico</Icon_MainIcon>
+        <VerInfo_MajorVer>4</VerInfo_MajorVer>
+        <VerInfo_MinorVer>8</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

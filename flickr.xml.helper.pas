@@ -38,6 +38,7 @@ type
     function getBool() : boolean;
     function getString() : string;
     function getDate() : TDatetime;
+    function getDateTime() : TDatetime;
   end;
 
   TXMLHelper = class(TInterfacedObject, IXMLHelper)
@@ -48,6 +49,7 @@ type
     function getBool() : boolean;
     function getString() : string;
     function getDate() : TDatetime;
+    function getDateTime() : TDatetime;
     constructor Create(attribute : Variant);
     class function New(attribute : Variant) : IXMLHelper;
   end;
@@ -89,6 +91,22 @@ begin
   begin
     try
       value := StrToDate(FAttribute);
+    except
+      value := 0;
+    end;
+  end;
+  result := value;
+end;
+
+function TXMLHelper.getDateTime: TDatetime;
+var
+  value : TDateTime;
+begin
+  value := 0;
+  if FAttribute <> null then
+  begin
+    try
+      value := StrToDateTime(FAttribute);
     except
       value := 0;
     end;

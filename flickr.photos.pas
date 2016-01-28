@@ -110,6 +110,7 @@ type
     procedure SaveStats();
     procedure SaveGroups();
     procedure SaveAlbums();
+    procedure SaveNewFinal(iNode: IXMLNode);
   end;
 
   TPhoto = class(TInterfacedObject, IPhoto)
@@ -204,6 +205,7 @@ type
     procedure LoadNew(iNode: IXMLNode);
     procedure Save(iNode: IXMLNode);
     procedure SaveNew(iNode: IXMLNode);
+    procedure SaveNewFinal(iNode: IXMLNode);
     procedure SaveStats();
     function getTotalLikesDay(incday : integer = 0): Integer;
     function getTotalCommentsDay(incday : integer = 0): Integer;
@@ -485,47 +487,8 @@ begin
     iNode2 := iNode2.NextSibling;
   end;
 
-  FAlbums.Clear;
-  if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(FFolder + 'Albums\'+ FId + '.xml');
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        FAlbums.AddItem(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
-        iNode2 := iNode2.NextSibling;
-      end;
-    finally
-      Document := nil;
-    end;
-  end;
-
-  FGroups.Clear;
-  if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(FFolder + 'Groups\'+ FId + '.xml');
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        id := iNode2.attributes['id'];
-        title := iNode2.attributes['title'];
-        if iNode2.attributes['added'] <> null then
-          added := StrToDate(iNode2.attributes['added'])
-        else
-          added := Yesterday;
-        FGroups.AddItem(TPool.create(id, title, added));
-        iNode2 := iNode2.NextSibling;
-      end;
-    finally
-      Document := nil;
-    end;
-  end;
+  LoadAlbums;
+  LoadGroups;
 end;
 
 procedure TPhoto.LoadAlbums;
@@ -697,6 +660,31 @@ begin
     XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
   else
     raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
+end;
+
+procedure TPhoto.SaveNewFinal(iNode: IXMLNode);
+var
+  i: Integer;
+  iNode2: IXMLNode;
+  XMLDoc: TXMLDocument;
+  item : TPair<string, IPool>;
+  album : TPair<string, IAlbum>;
+begin
+  iNode2 := iNode.AddChild('Photo');
+  iNode2.Attributes['id'] := FId;
+  iNode2.Attributes['title'] := FTitle;
+  iNode2.Attributes['LastUpdate'] := DateToStr(FLastUpdate);
+  iNode2.Attributes['Taken'] := FTaken;
+  iNode2.Attributes['Banned'] := FBanned;
+  iNode2.Attributes['Tags'] := FTags;
+  iNode2.Attributes['OmitGroups'] := FOmitGroups;
+
+  //New nodes for version 4.8.0.2
+  iNode2.Attributes['TotalViews'] := FTotalViews;
+  iNode2.Attributes['TotalLikes'] := FTotalLikes;
+  iNode2.Attributes['TotalComments'] := FTotalComments;
+  iNode2.Attributes['TotalAlbums'] := FTotalAlbums;
+  iNode2.Attributes['TotalGroups'] := FTotalGroups;
 end;
 
 procedure TPhoto.SaveStats;

@@ -122,7 +122,7 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants, Generics.defaults;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants, Generics.defaults, flickr.xml.helper;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -295,34 +295,10 @@ begin
     Document.LoadFromFile(FileName);
     iXMLRootNode := Document.ChildNodes.first;
     Self.FApiKey := iXMLRootNode.attributes['ApiKey'];
-
-    try
-      if (iXMLRootNode.attributes['UserId'] <>  null) then
-        Self.FUserId := iXMLRootNode.attributes['UserId'];
-    except
-      Self.FUserId := '';
-    end;
-
-    try
-      if (iXMLRootNode.attributes['Secret'] <> null) then
-        Self.FSecret := iXMLRootNode.attributes['Secret'];
-    except
-      Self.FSecret := '';
-    end;
-
-    try
-      if (iXMLRootNode.attributes['Version'] <> null) then
-        Self.FPreviousversion := iXMLRootNode.attributes['Version'];
-    except
-      Self.Fversion := '';
-    end;
-
-    try
-      if (iXMLRootNode.attributes['DateSaved'] <> null) then
-        Self.FDateSaved := StrToDateTime(iXMLRootNode.attributes['DateSaved']);
-    except
-      Self.FDateSaved := Now;
-    end;
+    Self.FUserId := TXMLHelper.new(iNode.Attributes['UserId']).getString;
+    Self.FSecret := TXMLHelper.new(iNode.Attributes['Secret']).getString;
+    Self.FPreviousversion := TXMLHelper.new(iNode.Attributes['Version']).getString;
+    Self.FDateSaved := TXMLHelper.new(iNode.Attributes['Version']).getDateTime;
 
     iNode := iXMLRootNode.ChildNodes.first;
     while iNode <> nil do
@@ -368,6 +344,8 @@ begin
     FPhotos[i].folder := ExtractFilePath(FileName);
     if (FPreviousVersion = '4.8.0.1') and (Fversion = '4.8.0.2') then
       FPhotos[i].SaveNew(iNode)
+    else if (FPreviousVersion = '4.8.0.2') and (Fversion = '4.8.0.2') then
+      FPhotos[i].SaveNewFinal(iNode)
     else
       FPhotos[i].Save(iNode);
   end;
