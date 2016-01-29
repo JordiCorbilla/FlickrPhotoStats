@@ -40,17 +40,21 @@ type
     Button1: TButton;
     ProgressBar1: TProgressBar;
     Label2: TLabel;
+    Memo1: TMemo;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
-    { Public declarations }
+    procedure Log(s : string);
   end;
 
 var
   frmMigration: TfrmMigration;
 
 implementation
+
+uses
+  System.Diagnostics, flickr.time;
 
 {$R *.dfm}
 
@@ -60,27 +64,74 @@ var
   repository: IFlickrRepository;
   options: IOptions;
   optionsEmail : IOptionsEmail;
+  st : TStopWatch;
 begin
   buttonSelected := MessageDlg('Attention, this operation cannot be undone, are you sure you want to migrate version?' +
     sLinebreak + 'Please remember to backup your repository files first!',
     mtCustom, [mbYes, mbCancel], 0);
   if buttonSelected = mrYes then
   begin
+    Log('Creating repository');
     repository := TFlickrRepository.Create();
+    Log('Loading options');
     options := TOptions.New().Load;
     optionsEmail := TOptionsEmail.New().Load;
     try
       repository.version := '4.8.0.2';
+      Log('Loading repository. This operation might take a while....');
+      st := TStopWatch.Create;
+      st.Start;
+      progressbar1.Position := 25;
       repository.Load(options.Workspace + '\flickrRepository.xml');
-
+      st.Stop;
+      Log('Repository loaded in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
       //Save the repository in the new format
       repository.version := '4.8.0.2';
       repository.DateSaved := Now;
+      progressbar1.Position := 50;
+      Log('Saving repository using new format');
+      st := TStopWatch.Create;
+      st.Start;
       repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
+      st.Stop;
+      Log('Repository saved in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+    finally
+      repository := nil;
+    end;
+
+
+    //Now try loading and saving again
+    Log('Now testing the new repository...');
+    Log('Creating repository');
+    repository := TFlickrRepository.Create();
+    try
+      repository.version := '4.8.0.2';
+      Log('Loading repository. This operation might be really fast....');
+      st := TStopWatch.Create;
+      st.Start;
+      progressbar1.Position := 75;
+      repository.Load(options.Workspace + '\flickrRepository.xml');
+      st.Stop;
+      Log('Repository loaded in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      //Save the repository in the new format
+      repository.version := '4.8.0.2';
+      repository.DateSaved := Now;
+      Log('Saving repository using new format');
+      st := TStopWatch.Create;
+      st.Start;
+      progressbar1.Position := 100;
+      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
+      st.Stop;
+      Log('Repository saved in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
     finally
       repository := nil;
     end;
   end;
+end;
+
+procedure TfrmMigration.Log(s: string);
+begin
+  Memo1.Lines.Add(DateTimeToStr(now) + ' ' + s);
 end;
 
 end.

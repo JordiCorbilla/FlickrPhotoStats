@@ -295,10 +295,10 @@ begin
     Document.LoadFromFile(FileName);
     iXMLRootNode := Document.ChildNodes.first;
     Self.FApiKey := iXMLRootNode.attributes['ApiKey'];
-    Self.FUserId := TXMLHelper.new(iNode.Attributes['UserId']).getString;
-    Self.FSecret := TXMLHelper.new(iNode.Attributes['Secret']).getString;
-    Self.FPreviousversion := TXMLHelper.new(iNode.Attributes['Version']).getString;
-    Self.FDateSaved := TXMLHelper.new(iNode.Attributes['Version']).getDateTime;
+    Self.FUserId := TXMLHelper.new(iXMLRootNode.Attributes['UserId']).getString;
+    Self.FSecret := TXMLHelper.new(iXMLRootNode.Attributes['Secret']).getString;
+    Self.FPreviousversion := TXMLHelper.new(iXMLRootNode.Attributes['Version']).getString;
+    Self.FDateSaved := TXMLHelper.new(iXMLRootNode.Attributes['DateSaved']).getDateTime;
 
     iNode := iXMLRootNode.ChildNodes.first;
     while iNode <> nil do

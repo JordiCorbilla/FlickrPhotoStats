@@ -2,7 +2,7 @@ object frmMigration: TfrmMigration
   Left = 0
   Top = 0
   Caption = 'Flickr Photo Migration Tool'
-  ClientHeight = 112
+  ClientHeight = 355
   ClientWidth = 527
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -50,9 +50,17 @@ object frmMigration: TfrmMigration
     Top = 88
     Width = 511
     Height = 17
-    Position = 30
     Smooth = True
-    Style = pbstMarquee
     TabOrder = 1
+  end
+  object Memo1: TMemo
+    Left = 8
+    Top = 111
+    Width = 511
+    Height = 236
+    Lines.Strings = (
+      '')
+    ScrollBars = ssVertical
+    TabOrder = 2
   end
 end

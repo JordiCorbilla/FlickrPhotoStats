@@ -464,11 +464,6 @@ procedure TPhoto.Load(iNode: IXMLNode);
 var
   iNode2: IXMLNode;
   stat: IStat;
-  Document: IXMLDocument;
-  iXMLRootNode: IXMLNode;
-  id : string;
-  title : string;
-  added : tdatetime;
 begin
   FId := iNode.Attributes['id'];
   FTitle := iNode.Attributes['title'];
@@ -664,11 +659,7 @@ end;
 
 procedure TPhoto.SaveNewFinal(iNode: IXMLNode);
 var
-  i: Integer;
   iNode2: IXMLNode;
-  XMLDoc: TXMLDocument;
-  item : TPair<string, IPool>;
-  album : TPair<string, IAlbum>;
 begin
   iNode2 := iNode.AddChild('Photo');
   iNode2.Attributes['id'] := FId;
