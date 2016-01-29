@@ -43,6 +43,7 @@ type
     Memo1: TMemo;
     procedure Button1Click(Sender: TObject);
   private
+    function CurrentProcessMemory: Cardinal;
     { Private declarations }
   public
     procedure Log(s : string);
@@ -54,9 +55,23 @@ var
 implementation
 
 uses
-  System.Diagnostics, flickr.time;
+  System.Diagnostics, flickr.time, psAPI;
 
 {$R *.dfm}
+
+function TfrmMigration.CurrentProcessMemory: Cardinal;
+var
+  MemCounters: TProcessMemoryCounters;
+begin
+  Result := 0;
+  MemCounters.cb := SizeOf(MemCounters);
+  if GetProcessMemoryInfo(GetCurrentProcess,
+      @MemCounters,
+      SizeOf(MemCounters)) then
+    Result := (MemCounters.WorkingSetSize div (1024*1024))
+  else
+    RaiseLastOSError;
+end;
 
 procedure TfrmMigration.Button1Click(Sender: TObject);
 var
@@ -65,13 +80,24 @@ var
   options: IOptions;
   optionsEmail : IOptionsEmail;
   st : TStopWatch;
+  previoustimeLoad : int64;
+  newtimeLoad : int64;
+  previoustimeSave : int64;
+  newtimeSave : int64;
+  previousmemoryLoad : integer;
+  newmemoryLoad : integer;
+  previousmemorySave : integer;
+  newmemorySave : integer;
+  calc : integer;
 begin
   buttonSelected := MessageDlg('Attention, this operation cannot be undone, are you sure you want to migrate version?' +
     sLinebreak + 'Please remember to backup your repository files first!',
     mtCustom, [mbYes, mbCancel], 0);
   if buttonSelected = mrYes then
   begin
+    memo1.Lines.Clear;
     Log('Creating repository');
+    Log('Memory footprint now: ' + CurrentProcessMemory.ToString() + ' Mb');
     repository := TFlickrRepository.Create();
     Log('Loading options');
     options := TOptions.New().Load;
@@ -84,7 +110,10 @@ begin
       progressbar1.Position := 25;
       repository.Load(options.Workspace + '\flickrRepository.xml');
       st.Stop;
-      Log('Repository loaded in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      previousmemoryLoad := CurrentProcessMemory;
+      Log('Memory footprint now: ' + previousmemoryLoad.ToString() + ' Mb');
+      previoustimeLoad := st.ElapsedMilliseconds;
+      Log('Repository loaded in ' + TTime.GetAdjustedTime(previoustimeLoad));
       //Save the repository in the new format
       repository.version := '4.8.0.2';
       repository.DateSaved := Now;
@@ -94,11 +123,13 @@ begin
       st.Start;
       repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
       st.Stop;
-      Log('Repository saved in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      previoustimeSave := st.ElapsedMilliseconds;
+      previousmemorySave := CurrentProcessMemory;
+      Log('Memory footprint now: ' + previousmemorySave.ToString() + ' Mb');
+      Log('Repository saved in ' + TTime.GetAdjustedTime(previoustimeSave));
     finally
       repository := nil;
     end;
-
 
     //Now try loading and saving again
     Log('Now testing the new repository...');
@@ -107,12 +138,16 @@ begin
     try
       repository.version := '4.8.0.2';
       Log('Loading repository. This operation might be really fast....');
+      Log('Memory footprint now: ' + CurrentProcessMemory.ToString() + ' Mb');
       st := TStopWatch.Create;
       st.Start;
       progressbar1.Position := 75;
       repository.Load(options.Workspace + '\flickrRepository.xml');
       st.Stop;
-      Log('Repository loaded in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      NewmemoryLoad := CurrentProcessMemory;
+      Log('Memory footprint now: ' + NewmemoryLoad.ToString() + ' Mb');
+      NewtimeLoad := st.ElapsedMilliseconds;
+      Log('Repository loaded in ' + TTime.GetAdjustedTime(NewtimeLoad));
       //Save the repository in the new format
       repository.version := '4.8.0.2';
       repository.DateSaved := Now;
@@ -122,11 +157,28 @@ begin
       progressbar1.Position := 100;
       repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
       st.Stop;
-      Log('Repository saved in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
+      NewtimeSave := st.ElapsedMilliseconds;
+      NewmemorySave := CurrentProcessMemory;
+      Log('Memory footprint now: ' + NewmemorySave.ToString() + ' Mb');
+      Log('Repository saved in ' + TTime.GetAdjustedTime(NewtimeSave));
     finally
       repository := nil;
     end;
   end;
+  memo1.Lines.Add('');
+  memo1.Lines.Add('Results: ');
+  memo1.Lines.Add('');
+  memo1.Lines.Add('Memory Footprint    before    after    % reduction ');
+  calc := 100 - ((NewmemoryLoad * 100) div previousmemoryLoad);
+  memo1.Lines.Add('   Load             '+previousmemoryLoad.ToString+' Mb    ' + NewmemoryLoad.ToString + ' Mb    ' + calc.ToString() + ' %');
+  calc := 100 - ((NewmemorySave * 100) div previousmemorySave);
+  memo1.Lines.Add('   Save             '+previousmemorySave.ToString+' Mb    ' + NewmemorySave.ToString + ' Mb    ' + calc.ToString() + ' %');
+  memo1.Lines.Add('');
+  memo1.Lines.Add('Time Footprint      before    after    % reduction ');
+  calc := 100 - ((NewtimeLoad * 100) div previoustimeLoad);
+  memo1.Lines.Add('   Load             '+previoustimeLoad.ToString+' ms ' + NewtimeLoad.ToString + ' ms  ' + calc.ToString() + ' %');
+  calc := 100 - ((Newtimesave * 100) div previoustimeSave);
+  memo1.Lines.Add('   Load             '+previoustimeSave.ToString+' ms ' + Newtimesave.ToString + ' ms  ' + calc.ToString() + ' %');
 end;
 
 procedure TfrmMigration.Log(s: string);

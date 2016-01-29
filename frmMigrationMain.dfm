@@ -58,8 +58,14 @@ object frmMigration: TfrmMigration
     Top = 111
     Width = 511
     Height = 236
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Courier New'
+    Font.Style = []
     Lines.Strings = (
       '')
+    ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 2
   end

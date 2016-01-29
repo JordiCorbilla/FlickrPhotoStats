@@ -517,6 +517,7 @@ var
   Document: IXMLDocument;
   iXMLRootNode: IXMLNode;
   added : tdatetime;
+  groupid : string;
 begin
   FGroups.Clear;
   if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
@@ -528,13 +529,13 @@ begin
       iNode2 := iXMLRootNode.ChildNodes.first;
       while iNode2 <> nil do
       begin
-        id := iNode2.attributes['id'];
+        groupid := iNode2.attributes['id'];
         title := iNode2.attributes['title'];
         if iNode2.attributes['added'] <> null then
           added := StrToDate(iNode2.attributes['added'])
         else
           added := Yesterday;
-        FGroups.AddItem(TPool.create(id, title, added));
+        FGroups.AddItem(TPool.create(groupid, title, added));
         iNode2 := iNode2.NextSibling;
       end;
     finally

@@ -19,7 +19,7 @@
             <Dependencies/>
         </Projects>
         <Projects Include="FlickrPhotoMigrationTool.dproj">
-            <Dependencies/>
+            <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -74,13 +74,13 @@
     <Target Name="FlickrPhotoAnalyticsMetropolisUI:Make">
         <MSBuild Projects="FlickrPhotoAnalyticsMetropolisUI.dproj" Targets="Make"/>
     </Target>
-    <Target Name="FlickrPhotoMigrationTool">
+    <Target Name="FlickrPhotoMigrationTool" DependsOnTargets="FlickrPhotoAnalyticsLib">
         <MSBuild Projects="FlickrPhotoMigrationTool.dproj"/>
     </Target>
-    <Target Name="FlickrPhotoMigrationTool:Clean">
+    <Target Name="FlickrPhotoMigrationTool:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
         <MSBuild Projects="FlickrPhotoMigrationTool.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="FlickrPhotoMigrationTool:Make">
+    <Target Name="FlickrPhotoMigrationTool:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
         <MSBuild Projects="FlickrPhotoMigrationTool.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
