@@ -518,6 +518,7 @@ var
   iXMLRootNode: IXMLNode;
   added : tdatetime;
   groupid : string;
+  groupTitle : string;
 begin
   FGroups.Clear;
   if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
@@ -530,12 +531,12 @@ begin
       while iNode2 <> nil do
       begin
         groupid := iNode2.attributes['id'];
-        title := iNode2.attributes['title'];
+        groupTitle := iNode2.attributes['title'];
         if iNode2.attributes['added'] <> null then
           added := StrToDate(iNode2.attributes['added'])
         else
           added := Yesterday;
-        FGroups.AddItem(TPool.create(groupid, title, added));
+        FGroups.AddItem(TPool.create(groupid, groupTitle, added));
         iNode2 := iNode2.NextSibling;
       end;
     finally
@@ -709,9 +710,6 @@ procedure TPhoto.Save(iNode: IXMLNode);
 var
   i: Integer;
   iNode2: IXMLNode;
-  XMLDoc: TXMLDocument;
-  item : TPair<string, IPool>;
-  album : TPair<string, IAlbum>;
 begin
   iNode2 := iNode.AddChild('Photo');
   iNode2.Attributes['id'] := FId;
@@ -727,6 +725,16 @@ begin
     FStats[i].Save(iNode2);
   end;
 
+  SaveAlbums;
+  SaveGroups;
+end;
+
+procedure TPhoto.SaveAlbums;
+var
+  iNode, iNode2: IXMLNode;
+  XMLDoc: TXMLDocument;
+  album : TPair<string, IAlbum>;
+begin
   // Create the XML file
   XMLDoc := TXMLDocument.Create(nil);
   XMLDoc.Active := true;
@@ -741,7 +749,14 @@ begin
     XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')
   else
     raise Exception.Create('Directory can''t be found: ' + FFolder + 'Albums');
+end;
 
+procedure TPhoto.SaveGroups;
+var
+  iNode, iNode2: IXMLNode;
+  XMLDoc: TXMLDocument;
+  item : TPair<string, IPool>;
+begin
   // Create the XML file
   XMLDoc := TXMLDocument.Create(nil);
   XMLDoc.Active := true;
@@ -757,16 +772,6 @@ begin
     XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
   else
     raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
-end;
-
-procedure TPhoto.SaveAlbums;
-begin
-
-end;
-
-procedure TPhoto.SaveGroups;
-begin
-
 end;
 
 procedure TPhoto.SetAlbums(Value: TAlbumList);

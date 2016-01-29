@@ -121,7 +121,7 @@ begin
       Log('Saving repository using new format');
       st := TStopWatch.Create;
       st.Start;
-      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
+      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.flickrUserId, options.Workspace + '\flickrRepository.xml');
       st.Stop;
       previoustimeSave := st.ElapsedMilliseconds;
       previousmemorySave := CurrentProcessMemory;
@@ -155,7 +155,7 @@ begin
       st := TStopWatch.Create;
       st.Start;
       progressbar1.Position := 100;
-      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.user, options.Workspace + '\flickrRepository.xml');
+      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.flickrUserId, options.Workspace + '\flickrRepository.xml');
       st.Stop;
       NewtimeSave := st.ElapsedMilliseconds;
       NewmemorySave := CurrentProcessMemory;
