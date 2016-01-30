@@ -258,7 +258,7 @@ begin
   total := 0;
   for i := 0 to FPhotos.Count-1 do
   begin
-    total := total + FPhotos[i].Groups.Count;
+    total := total + FPhotos[i].TotalGroups;
   end;
   result := total;
 end;
@@ -307,8 +307,10 @@ begin
       photo.folder := ExtractFilePath(FileName);
       if (FPreviousVersion = '4.8.0.2') and (FVersion = '4.8.0.2') then
         photo.LoadNew(iNode)
+      else if (FPreviousVersion = '4.8.0.1') and (FVersion = '4.8.0.2') then
+        photo.Load(iNode)
       else
-        photo.Load(iNode);
+        raise Exception.Create('Can''t open this repository. it''s an outdated version!');
       FPhotos.Add(photo);
       iNode := iNode.NextSibling;
     end;

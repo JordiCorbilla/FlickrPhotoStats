@@ -21,6 +21,9 @@
         <Projects Include="FlickrPhotoMigrationTool.dproj">
             <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
         </Projects>
+        <Projects Include="FlickrPhotoThreadMonitor.dproj">
+            <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -83,14 +86,23 @@
     <Target Name="FlickrPhotoMigrationTool:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
         <MSBuild Projects="FlickrPhotoMigrationTool.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FlickrPhotoThreadMonitor" DependsOnTargets="FlickrPhotoAnalyticsLib">
+        <MSBuild Projects="FlickrPhotoThreadMonitor.dproj"/>
+    </Target>
+    <Target Name="FlickrPhotoThreadMonitor:Clean" DependsOnTargets="FlickrPhotoAnalyticsLib:Clean">
+        <MSBuild Projects="FlickrPhotoThreadMonitor.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FlickrPhotoThreadMonitor:Make" DependsOnTargets="FlickrPhotoAnalyticsLib:Make">
+        <MSBuild Projects="FlickrPhotoThreadMonitor.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI;FlickrPhotoMigrationTool"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsTests;FlickrPhotoAnalyticsMetropolisUI;FlickrPhotoMigrationTool;FlickrPhotoThreadMonitor"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean;FlickrPhotoMigrationTool:Clean"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsTests:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean;FlickrPhotoMigrationTool:Clean;FlickrPhotoThreadMonitor:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make;FlickrPhotoMigrationTool:Make"/>
+        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsTests:Make;FlickrPhotoAnalyticsMetropolisUI:Make;FlickrPhotoMigrationTool:Make;FlickrPhotoThreadMonitor:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -34,11 +34,14 @@ uses
 
 type
   TParallelProc = reference to procedure(index: Integer; ThreadID: Integer);
+  TSyncProc = reference to procedure();
 
   TParallel = class(TThread)
   private
     FProc: TParallelProc;
+    FSync : TSyncProc;
     FThreadID: Integer;
+    procedure DoVisualChange();
   protected
     procedure Execute; override;
     function GetNextValue: Integer;
@@ -46,14 +49,18 @@ type
     constructor Create;
     destructor Destroy; override;
     property Proc: TParallelProc read FProc write FProc;
+    property Sync: TSyncProc read FSync write FSync;
+    class var
+      FCriticalSection: TCriticalSection;
+      FThreadCount: Integer;
+      FCurrentIndex: Integer;
+      FMaxIndex: Integer;
+    class procedure ForEach(aMin, aMax, aThreads: Integer; aProc: TParallelProc; aSync: TSyncProc); overload;
+    class procedure ForEach(aMin, aMax: Integer; aProc: TParallelProc; aSync: TSyncProc); overload;
+  end;
 
-  class var
-    FCriticalSection: TCriticalSection;
-    FThreadCount: Integer;
-    FCurrentIndex: Integer;
-    FMaxIndex: Integer;
-  class procedure ForEach(aMin, aMax, aThreads: Integer; aProc: TParallelProc); overload;
-  class procedure ForEach(aMin, aMax: Integer; aProc: TParallelProc); overload;
+  TParallelSync = class(TThread)
+
   end;
 
 implementation
@@ -77,6 +84,11 @@ begin
   inherited;
 end;
 
+procedure TParallel.DoVisualChange;
+begin
+  FSync();
+end;
+
 procedure TParallel.Execute;
 var
   nCurrent: Integer;
@@ -85,11 +97,12 @@ begin
   while nCurrent <= FMaxIndex do
   begin
     Proc(nCurrent, FThreadID);
+    Synchronize(DoVisualChange);
     nCurrent := GetNextValue;
   end;
 end;
 
-class procedure TParallel.ForEach(aMin, aMax, aThreads: Integer; aProc: TParallelProc);
+class procedure TParallel.ForEach(aMin, aMax, aThreads: Integer; aProc: TParallelProc; aSync: TSyncProc);
 var
   threads: array of TParallel;
   index: Integer;
@@ -109,6 +122,7 @@ begin
     threads[index] := TParallel.Create;
     threads[index].FThreadID := index;
     threads[index].Proc := aProc;
+    threads[index].FSync := aSync;
     threads[index].Start;
   end;
 
@@ -125,13 +139,14 @@ begin
   TParallel.FCriticalSection.Free;
 end;
 
-class procedure TParallel.ForEach(aMin, aMax: Integer; aProc: TParallelProc);
+class procedure TParallel.ForEach(aMin, aMax: Integer; aProc: TParallelProc; aSync: TSyncProc);
 var
   CPUMaxOut : integer;
 begin
   CPUMaxOut := CPUCount * 8;
-  Writeln('Number of threads: ' + CPUMaxOut.ToString());
-  ForEach(aMin, aMax, CPUMaxOut, aProc);
+  //{$IF CONSOLE}
+  //Writeln('Number of threads: ' + CPUMaxOut.ToString());
+  ForEach(aMin, aMax, CPUMaxOut, aProc, aSync);
 end;
 
 function TParallel.GetNextValue: Integer;
