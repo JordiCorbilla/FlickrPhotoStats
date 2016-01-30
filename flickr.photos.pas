@@ -313,31 +313,13 @@ begin
 end;
 
 function TPhoto.getHighestLikes: Integer;
-var
-  i: Integer;
-  max : integer;
 begin
-  max := 0;
-  for i := 0 to FStats.count - 1 do
-  begin
-    if FStats[i].likes >= max then
-      max := FStats[i].likes;
-  end;
-  result := max;
+  result := FTotalLikes;
 end;
 
 function TPhoto.getHighestViews: Integer;
-var
-  i: Integer;
-  max : integer;
 begin
-  max := 0;
-  for i := 0 to FStats.count - 1 do
-  begin
-    if FStats[i].views >= max then
-      max := FStats[i].views;
-  end;
-  result := max;
+  result := FTotalViews;
 end;
 
 function TPhoto.getId: string;

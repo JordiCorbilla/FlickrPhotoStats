@@ -179,6 +179,7 @@ begin
   memo1.Lines.Add('   Load             '+previoustimeLoad.ToString+' ms ' + NewtimeLoad.ToString + ' ms  ' + calc.ToString() + ' %');
   calc := 100 - ((Newtimesave * 100) div previoustimeSave);
   memo1.Lines.Add('   Load             '+previoustimeSave.ToString+' ms ' + Newtimesave.ToString + ' ms  ' + calc.ToString() + ' %');
+  ShowMessage('Operation completed successfully!');
 end;
 
 procedure TfrmMigration.Log(s: string);
