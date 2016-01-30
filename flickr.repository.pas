@@ -339,16 +339,33 @@ begin
   iNode.Attributes['Version'] := FVersion;
   iNode.Attributes['DateSaved'] := DateTimeToStr(FDateSaved);
 
-  for i := 0 to FPhotos.count - 1 do
+  if (FPreviousVersion = '4.8.0.1') and (Fversion = '4.8.0.2') then
   begin
-    FPhotos[i].folder := ExtractFilePath(FileName);
-    if (FPreviousVersion = '4.8.0.1') and (Fversion = '4.8.0.2') then
-      FPhotos[i].SaveNew(iNode)
-    else if (FPreviousVersion = '4.8.0.2') and (Fversion = '4.8.0.2') then
-      FPhotos[i].SaveNewFinal(iNode)
-    else
+    for i := 0 to FPhotos.count - 1 do
+    begin
+      FPhotos[i].folder := ExtractFilePath(FileName);
+      FPhotos[i].SaveNew(iNode);
+    end;
+  end
+  else if (FPreviousVersion = '4.8.0.2') and (Fversion = '4.8.0.2') then
+  begin
+    for i := 0 to FPhotos.count - 1 do
+    begin
+      FPhotos[i].folder := ExtractFilePath(FileName);
+      FPhotos[i].SaveNewFinal(iNode);
+    end;
+  end
+  else if (FPreviousVersion = '4.8.0.1') and (Fversion = '4.8.0.1') then
+  begin
+    for i := 0 to FPhotos.count - 1 do
+    begin
+      FPhotos[i].folder := ExtractFilePath(FileName);
       FPhotos[i].Save(iNode);
-  end;
+    end;
+  end
+  else
+    raise Exception.Create('Can''t save this version!');
+
   XMLDoc.SaveToFile(FileName);
 end;
 

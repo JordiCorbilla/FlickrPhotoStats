@@ -1677,7 +1677,7 @@ begin
     Item.SubItems.Add(repository.photos[i].tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
     Item.SubItems.Add(repository.photos[i].banned.ToString());
-    Item.SubItems.Add('0'); //repository.photos[i].getTrend.ToString()
+    Item.SubItems.Add(repository.photos[i].getTrend.ToString());
     Item.SubItems.Add(repository.photos[i].OmitGroups);
   end;
 
