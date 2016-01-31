@@ -36,7 +36,8 @@ uses
 
 type
   IPhoto = interface
-    function AddStats(stat: IStat): boolean;
+    function AddStats(stat: IStat): boolean; overload;
+    function AddStats(stat: IStat; albums : TAlbumList; groups : TPoolList): boolean; overload;
     procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function getLastUpdate(): TDatetime;
     procedure SetId(value: string);
@@ -210,7 +211,8 @@ type
     property TotalAlbums : integer read GetTotalAlbums write SetTotalAlbums;
     property TotalGroups : integer read GetTotalGroups write SetTotalGroups;
     property UserTracking : IUserTracking read GetUserTracking write SetUserTracking;
-    function AddStats(stat: IStat): boolean;
+    function AddStats(stat: IStat): boolean; overload;
+    function AddStats(stat: IStat; albums : TAlbumList; groups : TPoolList): boolean; overload;
     procedure AddCollections(albums: TAlbumList; groups : TPoolList);
     function InGroup(groupId : string) : boolean;
     function InAlbum(albumId : string) : boolean;
@@ -258,6 +260,22 @@ begin
   LoadStats;
   LoadAlbums;
   LoadGroups;
+  existing := nil;
+  if not ExistStat(stat, existing) then
+    FStats.Add(stat)
+  else
+    existing.Copy(stat);
+  SaveStats();
+  result := (existing = nil);
+end;
+
+function TPhoto.AddStats(stat: IStat; albums: TAlbumList; groups: TPoolList): boolean;
+var
+  existing: IStat;
+begin
+  LoadStats;
+  FAlbums := albums;
+  FGroups := groups;
   existing := nil;
   if not ExistStat(stat, existing) then
     FStats.Add(stat)

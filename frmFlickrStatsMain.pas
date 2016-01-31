@@ -1313,12 +1313,12 @@ begin
       photo.Title := title; //replace the title as it changes
       photo.Taken := taken;
       photo.tags := tags;
-      photo.AddStats(stat);
+      photo.AddStats(stat, albums, groups);
       photo.LastUpdate := Date;
     end
     else
     begin
-      photo.AddStats(stat);
+      photo.AddStats(stat, albums, groups);
       photo.LastUpdate := Date;
       repository.AddPhoto(photo);
     end;
