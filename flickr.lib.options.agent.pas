@@ -25,12 +25,12 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit flickr.lib.options.email;
+unit flickr.lib.options.agent;
 
 interface
 
 type
-  IOptionsEmail = interface
+  IOptionsAgent = interface
     procedure Setpassword(const Value: string);
     procedure Setport(const Value: integer);
     procedure Setserver(const Value: string);
@@ -61,11 +61,11 @@ type
     property secret : string read Getsecret write Setsecret;
     property flickrUserId : string read GetflickrUserId write SetflickrUserId;
     property AppId : string read GetAppId write SetAppId;
-    function Load() : IOptionsEmail;
+    function Load() : IOptionsAgent;
     procedure Save();
   end;
 
-  TOptionsEmail = Class(TInterfacedObject, IOptionsEmail)
+  TOptionsAgent = Class(TInterfacedObject, IOptionsAgent)
   private
     FuserToken: string;
     Fport: integer;
@@ -108,8 +108,8 @@ type
     property secret : string read Getsecret write Setsecret;
     property flickrUserId : string read GetflickrUserId write SetflickrUserId;
     property AppId : string read GetAppId write SetAppId;
-    class function New(): IOptionsEmail;
-    function Load() : IOptionsEmail;
+    class function New(): IOptionsAgent;
+    function Load() : IOptionsAgent;
     procedure Save();
   End;
 
@@ -120,61 +120,61 @@ uses
 
 { TOptionsEmail }
 
-function TOptionsEmail.GetAppId: string;
+function TOptionsAgent.GetAppId: string;
 begin
   result := FAppId;
 end;
 
-function TOptionsEmail.GetflickrApiKey: string;
+function TOptionsAgent.GetflickrApiKey: string;
 begin
   result := FflickrApiKey;
 end;
 
-function TOptionsEmail.GetflickrUserId: string;
+function TOptionsAgent.GetflickrUserId: string;
 begin
   result := FflickrUserId;
 end;
 
-function TOptionsEmail.Getpassword: string;
+function TOptionsAgent.Getpassword: string;
 begin
   result := FPassword;
 end;
 
-function TOptionsEmail.Getport: integer;
+function TOptionsAgent.Getport: integer;
 begin
   result := FPort;
 end;
 
-function TOptionsEmail.Getsecret: string;
+function TOptionsAgent.Getsecret: string;
 begin
   result := Fsecret;
 end;
 
-function TOptionsEmail.Getserver: string;
+function TOptionsAgent.Getserver: string;
 begin
   result := FServer;
 end;
 
-function TOptionsEmail.Getuser: string;
+function TOptionsAgent.Getuser: string;
 begin
   result := FUser;
 end;
 
-function TOptionsEmail.GetuserToken: string;
+function TOptionsAgent.GetuserToken: string;
 begin
   result := FUserToken;
 end;
 
-function TOptionsEmail.GetuserTokenSecret: string;
+function TOptionsAgent.GetuserTokenSecret: string;
 begin
   result := FUserTokenSecret;
 end;
 
-function TOptionsEmail.Load: IOptionsEmail;
+function TOptionsAgent.Load: IOptionsAgent;
 var
   inifile : Tinifile;
 begin
-  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsEmail.ini');
+  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsAgent.ini');
   try
     FuserToken := THelper.Decode(inifile.ReadString('System', 'UserToken', ''));
     Fport := inifile.ReadInteger('System', 'Port', 0);
@@ -192,16 +192,16 @@ begin
   result := self;
 end;
 
-class function TOptionsEmail.New: IOptionsEmail;
+class function TOptionsAgent.New: IOptionsAgent;
 begin
   result := Create;
 end;
 
-procedure TOptionsEmail.Save;
+procedure TOptionsAgent.Save;
 var
   iniFile : TInifile;
 begin
-  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsEmail.ini');
+  inifile := TInifile.Create(ExtractFilePath(ParamStr(0)) + 'FlickrAnalyticsAgent.ini');
   try
     inifile.WriteString('System', 'UserToken', THelper.Encode(FuserToken));
     inifile.WriteInteger('System', 'Port', Fport);
@@ -218,52 +218,52 @@ begin
   end;
 end;
 
-procedure TOptionsEmail.SetAppId(const Value: string);
+procedure TOptionsAgent.SetAppId(const Value: string);
 begin
   FAppId := Value;
 end;
 
-procedure TOptionsEmail.SetflickrApiKey(const Value: string);
+procedure TOptionsAgent.SetflickrApiKey(const Value: string);
 begin
   FflickrApiKey := Value;
 end;
 
-procedure TOptionsEmail.SetflickrUserId(const Value: string);
+procedure TOptionsAgent.SetflickrUserId(const Value: string);
 begin
   FflickrUserId := Value;
 end;
 
-procedure TOptionsEmail.Setpassword(const Value: string);
+procedure TOptionsAgent.Setpassword(const Value: string);
 begin
   Fpassword := Value;
 end;
 
-procedure TOptionsEmail.Setport(const Value: integer);
+procedure TOptionsAgent.Setport(const Value: integer);
 begin
   Fport := Value;
 end;
 
-procedure TOptionsEmail.Setsecret(const Value: string);
+procedure TOptionsAgent.Setsecret(const Value: string);
 begin
   Fsecret := Value;
 end;
 
-procedure TOptionsEmail.Setserver(const Value: string);
+procedure TOptionsAgent.Setserver(const Value: string);
 begin
   Fserver := Value;
 end;
 
-procedure TOptionsEmail.Setuser(const Value: string);
+procedure TOptionsAgent.Setuser(const Value: string);
 begin
   Fuser := Value;
 end;
 
-procedure TOptionsEmail.SetuserToken(const Value: string);
+procedure TOptionsAgent.SetuserToken(const Value: string);
 begin
   FuserToken := Value;
 end;
 
-procedure TOptionsEmail.SetuserTokenSecret(const Value: string);
+procedure TOptionsAgent.SetuserTokenSecret(const Value: string);
 begin
   FuserTokenSecret := Value;
 end;
