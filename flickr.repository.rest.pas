@@ -39,7 +39,7 @@ type
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
     class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; id: string; verbosity : boolean; options : IOptions; optionsAgent : IOptionsAgent);
-    class function getTotalAlbumsCounts(userId : string; optionsAgent : IOptionsAgent; verbosity : boolean): Integer; static;
+    class function getTotalAlbumsCounts(optionsAgent : IOptionsAgent; verbosity : boolean): Integer; static;
     class function getNumberOfContacts(optionsAgent : IOptionsAgent) : integer;
   end;
 
@@ -224,7 +224,7 @@ begin
   result := views.ToInteger;
 end;
 
-class function TRepositoryRest.getTotalAlbumsCounts(userId : string; optionsAgent : IOptionsAgent; verbosity : boolean): Integer;
+class function TRepositoryRest.getTotalAlbumsCounts(optionsAgent : IOptionsAgent; verbosity : boolean): Integer;
 var
   iXMLRootNode4, iXMLRootNode5: IXMLNode;
   pages, total: string;
@@ -235,7 +235,7 @@ var
   title: string;
   countViews: Integer;
 begin
-  THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSets(userId, '1', '500'), procedure (iXMLRootNode : IXMLNode)
+  THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSets('1', '500'), procedure (iXMLRootNode : IXMLNode)
     begin
       pages := iXMLRootNode.attributes['pages'];
       total := iXMLRootNode.attributes['total'];
@@ -264,7 +264,7 @@ begin
 
     for i := 2 to numPages do
     begin
-      THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSets(userid, i.ToString, '500'), procedure (iXMLRootNode : IXMLNode)
+      THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'), procedure (iXMLRootNode : IXMLNode)
         begin
           pages := iXMLRootNode.attributes['pages'];
           iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>

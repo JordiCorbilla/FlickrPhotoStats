@@ -8,7 +8,7 @@ uses
 
 type
   TPhotoLoader = class(TObject)
-    class function load(userId: string; optionsAgent : IOptionsAgent): TList<String>;
+    class function load(optionsAgent : IOptionsAgent): TList<String>;
   end;
 
 implementation
@@ -18,7 +18,7 @@ uses
 
 { TPhotoLoader }
 
-class function TPhotoLoader.load(userId: string; optionsAgent : IOptionsAgent): TList<String>;
+class function TPhotoLoader.load(optionsAgent : IOptionsAgent): TList<String>;
 var
   iXMLRootNode4: IXMLNode;
   pages, title, id, ispublic, total: string;
@@ -27,7 +27,7 @@ var
   PhotoList: TList<String>;
 begin
   PhotoList := TList<string>.Create();
-  THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotos(userId, '1', '500'), procedure (iXMLRootNode : IXMLNode)
+  THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotos('1', '500'), procedure (iXMLRootNode : IXMLNode)
     begin
       pages := iXMLRootNode.attributes['pages'];
       total := iXMLRootNode.attributes['total'];
@@ -53,7 +53,7 @@ begin
   numPages := pages.ToInteger;
   for i := 2 to numPages do
   begin
-    THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotos(userId, i.ToString, '500'), procedure (iXMLRootNode : IXMLNode)
+    THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotos(i.ToString, '500'), procedure (iXMLRootNode : IXMLNode)
     begin
       pages := iXMLRootNode.attributes['pages'];
       iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photo>

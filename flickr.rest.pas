@@ -37,8 +37,8 @@ type
     function getFavorites(photo_id: string): string;
     function getInfo(photo_id: string): string;
     function getAllContexts(photo_id: string): string;
-    function getPhotos(user_id, page, per_page: string): string;
-    function getPhotoSets(user_id, page, per_page: string): string;
+    function getPhotos(page, per_page: string): string;
+    function getPhotoSets(page, per_page: string): string;
     function getGroups(page: string; per_page: string): string;
     function getGroupInfo(groupid: string): string;
     function getTestLogin(): string;
@@ -58,8 +58,8 @@ type
     function getFavorites(photo_id: string): string;
     function getInfo(photo_id: string): string;
     function getAllContexts(photo_id: string): string;
-    function getPhotos(user_id, page, per_page: string): string;
-    function getPhotoSets(user_id, page, per_page: string): string;
+    function getPhotos(page, per_page: string): string;
+    function getPhotoSets(page, per_page: string): string;
     function getGroups(page: string; per_page: string): string;
     function getGroupInfo(groupid: string): string;
     function getTestLogin(): string;
@@ -280,14 +280,14 @@ begin
   Result := rootUrl + '?method=flickr.photos.getInfo&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getPhotos(user_id, page, per_page: string): string;
+function TFlickrRest.getPhotos(page, per_page: string): string;
 begin
-  Result := rootUrl + '?method=flickr.people.getPhotos&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.people.getPhotos&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
 end;
 
-function TFlickrRest.getPhotoSets(user_id, page, per_page: string): string;
+function TFlickrRest.getPhotoSets(page, per_page: string): string;
 begin
-  Result := rootUrl + '?method=flickr.photosets.getList&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.photosets.getList&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
 end;
 
 function TFlickrRest.getPhotoSetsAdd(photoId : string; photosetId : string): string;

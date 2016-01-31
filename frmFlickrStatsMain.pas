@@ -1213,7 +1213,7 @@ var
 begin
   CoInitialize(nil);
   try
-    THttpRest.Post(TFlickrRest.New().getInfo(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+    THttpRest.Post(TFlickrRest.New(optionsAgent).getInfo(id), procedure (iXMLRootNode : IXMLNode)
     begin
       views := iXMLRootNode.attributes['views'];
       iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <owner>
@@ -1243,7 +1243,7 @@ begin
       end;
     end);
 
-    THttpRest.Post(TFlickrRest.New().getFavorites(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+    THttpRest.Post(TFlickrRest.New(optionsAgent).getFavorites(id), procedure (iXMLRootNode : IXMLNode)
     begin
       likes := iXMLRootNode.attributes['total'];
     end);
@@ -1267,7 +1267,7 @@ begin
 
     if chkUpdateCollections.checked then
     begin
-      THttpRest.Post(TFlickrRest.New().getAllContexts(apikey.text, id), procedure (iXMLRootNode : IXMLNode)
+      THttpRest.Post(TFlickrRest.New(optionsAgent).getAllContexts(id), procedure (iXMLRootNode : IXMLNode)
       begin
         while iXMLRootNode <> nil do
         begin
@@ -1280,7 +1280,7 @@ begin
       end);
     end;
 
-    TTracking.TrackPhoto(options.Workspace, id, apikey.Text, '1', '50', optionsAgent.userToken, secret.Text, optionsAgent.userTokenSecret);
+    TTracking.TrackPhoto(options.Workspace, id, '1', '50', optionsAgent);
 
     if repository.ExistPhoto(id, existing) then
     begin
@@ -2801,7 +2801,7 @@ var
   urlGroups: string;
   response: string;
 begin
-  urlGroups := TFlickrRest.New().getTestLogin(apikey.text, userToken, secret.text, userTokenSecret);
+  urlGroups := TFlickrRest.New(optionsAgent).getTestLogin();
   response := IdHTTP1.Get(urlGroups);
   showmessage(response);
 end;
@@ -3204,7 +3204,7 @@ begin
             begin
               if ((base.ThrottleRemaining > 0) and (base.ThrottleMode <> 'none')) or ((base.ThrottleMode = 'none')) then
               begin
-                urlAdd := TFlickrRest.New().getPoolsAdd(apikey.text, userToken, secret.text, userTokenSecret, photoId, base.Id);
+                urlAdd := TFlickrRest.New(optionsAgent).getPoolsAdd(photoId, base.Id);
                 while (not timedout) do
                 begin
                   try
@@ -3559,7 +3559,7 @@ begin
           timedout := false;
           if (repository.isPhotoInGroup(photoId, groupId, resultPhoto)) then
           begin
-            urlAdd := TFlickrRest.New().getPoolsRemove(apikey.text, userToken, secret.text, userTokenSecret, photoId, groupId);
+            urlAdd := TFlickrRest.New(optionsAgent).getPoolsRemove(photoId, groupId);
             while (not timedout) do
             begin
               try
@@ -3966,9 +3966,10 @@ begin
   frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
   try
     frmFlickrPhotoSet.repository := repository;
+    frmFlickrPhotoSet.optionsAgent := optionsAgent;
     frmFlickrPhotoSet.total := PhotosCount;
     frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
-    frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsAgent.userToken, secret.Text, optionsAgent.userTokenSecret);
+    frmFlickrPhotoSet.LoadPhotos(photoSetId);
     frmFlickrPhotoSet.ShowModal;
   finally
     frmFlickrPhotoSet.Free;
@@ -3980,9 +3981,10 @@ begin
   frmFlickrPhotoSet := TfrmFlickrPhotoSet.Create(nil);
   try
     frmFlickrPhotoSet.repository := repository;
+    frmFlickrPhotoSet.optionsAgent := optionsAgent;
     frmFlickrPhotoSet.total := PhotosCount;
     frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
-    frmFlickrPhotoSet.LoadPhotos(apikey.Text, edtUserId.Text, photoSetId, optionsAgent.userToken, secret.Text, optionsAgent.userTokenSecret);
+    frmFlickrPhotoSet.LoadPhotos(photoSetId);
     frmFlickrPhotoSet.ShowModal;
   finally
     frmFlickrPhotoSet.Free;
@@ -4257,13 +4259,11 @@ end;
 procedure TfrmFlickrMain.btnGetGroupsClick(Sender: TObject);
 var
   Item: TListItem;
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode4: IXMLNode;
   pages, title, id, ismember, total, totalitems: string;
   numPages: Integer;
   urlGroups: string;
   i: Integer;
-  timedout: Boolean;
   st : TStopWatch;
   photos : string;
   members : string;
@@ -4305,7 +4305,7 @@ begin
   progressbar1.Visible := true;
   Application.ProcessMessages;
 
-  urlGroups := TFlickrRest.New().getGroups(apikey.text, '1', '500', userToken, secret.text, userTokenSecret);
+  urlGroups := TFlickrRest.New(optionsAgent).getGroups('1', '500');
   THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
     begin
       pages := iXMLRootNode.attributes['page'];
@@ -4338,40 +4338,40 @@ begin
         Application.ProcessMessages;
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
+    end);
 
-      // Load the remaining pages
-      numPages := total.ToInteger;
-      for i := 2 to numPages do
+  // Load the remaining pages
+  numPages := total.ToInteger;
+  for i := 2 to numPages do
+  begin
+    urlGroups := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '500');
+    THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
+    begin
+      pages := iXMLRootNode.attributes['page'];
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
+      while iXMLRootNode4 <> nil do
       begin
-        urlGroups := TFlickrRest.New().getGroups(apikey.text, i.ToString, '500', userToken, secret.text, userTokenSecret);
-        THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
+        if iXMLRootNode4.NodeName = 'group' then
         begin
-          pages := iXMLRootNode.attributes['page'];
-          iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
-          while iXMLRootNode4 <> nil do
+          id := iXMLRootNode4.attributes['id'];
+          ismember := iXMLRootNode4.attributes['member'];
+          title := iXMLRootNode4.attributes['name'];
+          photos := iXMLRootNode4.attributes['photos'];
+          members := iXMLRootNode4.attributes['member_count'];
+          if ismember = '1' then
           begin
-            if iXMLRootNode4.NodeName = 'group' then
-            begin
-              id := iXMLRootNode4.attributes['id'];
-              ismember := iXMLRootNode4.attributes['member'];
-              title := iXMLRootNode4.attributes['name'];
-              photos := iXMLRootNode4.attributes['photos'];
-              members := iXMLRootNode4.attributes['member_count'];
-              if ismember = '1' then
-              begin
-                base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
-                AddAdditionalGroupDetails(base);
-                FilteredGroupList.Add(base);
-              end;
-            end;
-            progressbar1.position := progressbar1.position + 1;
-            Taskbar1.ProgressValue := progressbar1.position;
-            Application.ProcessMessages;
-            iXMLRootNode4 := iXMLRootNode4.NextSibling;
+            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
+            AddAdditionalGroupDetails(base);
+            FilteredGroupList.Add(base);
           end;
-        end);
+        end;
+        progressbar1.position := progressbar1.position + 1;
+        Taskbar1.ProgressValue := progressbar1.position;
+        Application.ProcessMessages;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     end);
+  end;
 
   // Add items to the listview
   st := TStopWatch.Create;
@@ -4460,7 +4460,7 @@ begin
     IdHTTP := TIdHTTP.Create(nil);
     try
       IdHTTP.IOHandler := IdIOHandler;
-      urlGroups := TFlickrRest.New().getGroupInfo(apikey.text, base.Id, userToken, secret.text, userTokenSecret);
+      urlGroups := TFlickrRest.New(optionsAgent).getGroupInfo(base.Id);
       timedout := false;
       while (not timedout) do
       begin
@@ -4575,7 +4575,7 @@ end;
 
 function TfrmFlickrMain.getTotalStreamViews() : Integer;
 begin
-  result := TUserInfo.getStreamViews(edtUserId.text, apikey.text, optionsAgent.userToken, secret.Text, optionsAgent.userTokenSecret);
+  result := TUserInfo.getStreamViews(edtUserId.text, optionsAgent);
 end;
 
 function TfrmFlickrMain.getTotalAlbumsCounts(): Integer;
@@ -4604,7 +4604,7 @@ begin
   progressbar1.Visible := true;
   lvAlbums.Clear;
   Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, '1', '500'));
+  response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets('1', '500'));
   XMLDocument1.LoadFromXML(response);
   iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
   iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -4649,7 +4649,7 @@ begin
   numPages := pages.ToInteger;
   for i := 2 to numPages do
   begin
-    response := IdHTTP1.Get(TFlickrRest.New().getPhotoSets(apikey.text, edtUserId.text, i.ToString, '500'));
+    response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'));
     XMLDocument1.LoadFromXML(response);
     iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
     iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
@@ -4735,7 +4735,7 @@ begin
     while (not timedout) do
     begin
       try
-        response := IdHTTP.Get(TFlickrRest.New().getPhotos(apikey.text, edtUserId.text, '1', '500'));
+        response := IdHTTP.Get(TFlickrRest.New(optionsAgent).getPhotos('1', '500'));
         timedout := true;
       except
         on e: exception do
@@ -4798,7 +4798,7 @@ begin
       while (not timedout) do
       begin
         try
-          response := IdHTTP.Get(TFlickrRest.New().getPhotos(apikey.text, edtUserId.text, i.ToString, '500'));
+          response := IdHTTP.Get(TFlickrRest.New(optionsAgent).getPhotos(i.ToString, '500'));
           timedout := true;
         except
           on e: exception do
