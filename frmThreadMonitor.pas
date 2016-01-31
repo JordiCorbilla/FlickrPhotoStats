@@ -77,20 +77,34 @@ begin
         j : integer;
         k: Integer;
         m : integer;
+        l: Integer;
       begin
         //Do the task here
-        for j := 0 to 100 do
+        for j := 0 to 1000 do
         begin
-          for k := 0 to 100 do
+          for k := 0 to 1000 do
           begin
-            m := j + k;
+            for l := 0 to 1000 do
+            begin
+              m := j + k;
+            end;
           end
         end;
       end,
-      procedure
+      procedure (index : integer)
       begin
         //Synchronize when finished
-        frmThreadMonitorPool.ProgressBar1.position := frmThreadMonitorPool.ProgressBar1.position + 1;
+        case index of
+          0 : frmThreadMonitorPool.ProgressBar1.position := frmThreadMonitorPool.ProgressBar1.position + 1;
+          1 : frmThreadMonitorPool.ProgressBar2.position := frmThreadMonitorPool.ProgressBar2.position + 1;
+          2 : frmThreadMonitorPool.ProgressBar3.position := frmThreadMonitorPool.ProgressBar3.position + 1;
+          3 : frmThreadMonitorPool.ProgressBar4.position := frmThreadMonitorPool.ProgressBar4.position + 1;
+          4 : frmThreadMonitorPool.ProgressBar5.position := frmThreadMonitorPool.ProgressBar5.position + 1;
+          5 : frmThreadMonitorPool.ProgressBar6.position := frmThreadMonitorPool.ProgressBar6.position + 1;
+          6 : frmThreadMonitorPool.ProgressBar7.position := frmThreadMonitorPool.ProgressBar7.position + 1;
+          7 : frmThreadMonitorPool.ProgressBar8.position := frmThreadMonitorPool.ProgressBar8.position + 1;
+        end;
+
       end);
 end;
 

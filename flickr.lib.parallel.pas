@@ -34,7 +34,7 @@ uses
 
 type
   TParallelProc = reference to procedure(index: Integer; ThreadID: Integer);
-  TSyncProc = reference to procedure();
+  TSyncProc = reference to procedure(index: Integer);
 
   TParallel = class(TThread)
   private
@@ -86,7 +86,7 @@ end;
 
 procedure TParallel.DoVisualChange;
 begin
-  FSync();
+  FSync(FThreadID);
 end;
 
 procedure TParallel.Execute;
