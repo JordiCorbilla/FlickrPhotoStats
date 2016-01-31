@@ -6,8 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, VclTee.TeeGDIPlus, Vcl.ExtCtrls,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, IdHTTP, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, ActiveX, IdGlobal,
-  Generics.collections, flickr.repository, flickr.photos;
+  Vcl.Imaging.pngimage, XMLIntf, Generics.collections, flickr.repository, flickr.photos, flickr.lib.options.agent;
 
 type
   TfrmFlickrPhotoSet = class(TForm)
@@ -48,8 +47,9 @@ type
     { Private declarations }
   public
     repository: IFlickrRepository;
+    optionsAgent : IOptionsAgent;
     total : string;
-    procedure LoadPhotos(api_key: string; user_id: string; photosetId : string; auth_token : string; secret : string; token_secret : string);
+    procedure LoadPhotos(photosetId : string);
   end;
 
 var
@@ -58,7 +58,7 @@ var
 implementation
 
 uses
-  Flickr.rest, flickr.charts;
+  Flickr.rest, flickr.charts, flickr.http.lib;
 
 {$R *.dfm}
 
@@ -79,18 +79,13 @@ begin
   panel29.Left := (panel26.Width-panel29.Width) div 2;
 end;
 
-procedure TfrmFlickrPhotoSet.LoadPhotos(api_key: string; user_id: string; photosetId : string; auth_token : string; secret : string; token_secret : string);
+procedure TfrmFlickrPhotoSet.LoadPhotos(photosetId : string);
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode4: IXMLNode;
   pages, total: string;
   numPages, numTotal: Integer;
   i: Integer;
   totalViews: Integer;
-  IdHTTP: TIdHTTP;
-  xmlDocument: IXMLDocument;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  timedout : boolean;
   ListPhotos : TList<string>;
   photoId : string;
   flickrChart : IFlickrChart;
@@ -107,86 +102,15 @@ begin
   if chartItemCommentsH.SeriesList.Count > 0 then
     chartItemCommentsH.RemoveAllSeries;
 
-  CoInitialize(nil);
+  ListPhotos := TList<string>.create();
   try
-    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-    xmlDocument := TXMLDocument.Create(nil);
-    IdHTTP := TIdHTTP.Create(nil);
-    ListPhotos := TList<string>.create();
-    try
-      IdHTTP.IOHandler := IdIOHandler;
-      timedout := false;
-      while (not timedout) do
+    THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotosPhotoSet(photosetId, '1', '500'), procedure (iXMLRootNode : IXMLNode)
       begin
-        try
-          response := IdHTTP.Get(TFlickrRest.New().getPhotosPhotoSet(api_key, user_id, photosetId, '1', '500', auth_token, secret, token_secret));
-          timedout := true;
-        except
-          on e: exception do
-          begin
-            sleep(200);
-            timedout := false;
-          end;
-        end;
-      end;
-
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
-      pages := iXMLRootNode3.attributes['pages'];
-      total := iXMLRootNode3.attributes['total'];
-      iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
-      numTotal := total.ToInteger();
-      totalViews := 0;
-      while iXMLRootNode4 <> nil do
-      begin
-        if iXMLRootNode4.NodeName = 'photo' then
-        begin
-          photoId := iXMLRootNode4.attributes['id'];
-          ListPhotos.Add(photoId);
-        end;
-        Application.ProcessMessages;
-        iXMLRootNode4 := iXMLRootNode4.NextSibling;
-      end;
-    finally
-      IdIOHandler.Free;
-      IdHTTP.Free;
-      xmlDocument := nil;
-    end;
-
-    numPages := pages.ToInteger;
-    for i := 2 to numPages do
-    begin
-      IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-      IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-      IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-      xmlDocument := TXMLDocument.Create(nil);
-      IdHTTP := TIdHTTP.Create(nil);
-      try
-        IdHTTP.IOHandler := IdIOHandler;
-        timedout := false;
-        while (not timedout) do
-        begin
-          try
-            response := IdHTTP.Get(TFlickrRest.New().getPhotosPhotoSet(api_key, user_id, photosetId, i.ToString(), '500', auth_token, secret, token_secret));
-            timedout := true;
-          except
-            on e: exception do
-            begin
-              sleep(200);
-              timedout := false;
-            end;
-          end;
-        end;
-
-        xmlDocument.LoadFromXML(response);
-        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
-        iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
+        pages := iXMLRootNode.attributes['pages'];
+        total := iXMLRootNode.attributes['total'];
+        iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>
+        numTotal := total.ToInteger();
+        totalViews := 0;
         while iXMLRootNode4 <> nil do
         begin
           if iXMLRootNode4.NodeName = 'photo' then
@@ -197,11 +121,25 @@ begin
           Application.ProcessMessages;
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
-      finally
-        IdIOHandler.Free;
-        IdHTTP.Free;
-        xmlDocument := nil;
-      end;
+      end);
+
+    numPages := pages.ToInteger;
+    for i := 2 to numPages do
+    begin
+      THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotosPhotoSet(photosetId, i.ToString(), '500'), procedure (iXMLRootNode : IXMLNode)
+      begin
+        iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>
+        while iXMLRootNode4 <> nil do
+        begin
+          if iXMLRootNode4.NodeName = 'photo' then
+          begin
+            photoId := iXMLRootNode4.attributes['id'];
+            ListPhotos.Add(photoId);
+          end;
+          Application.ProcessMessages;
+          iXMLRootNode4 := iXMLRootNode4.NextSibling;
+        end;
+      end);
     end;
 
     flickrChart := TFlickrChart.create;

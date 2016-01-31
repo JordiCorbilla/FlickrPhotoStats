@@ -932,7 +932,7 @@ begin
         if userToken <> '' then
         begin
           try
-            totalContacts := TRepositoryRest.getNumberOfContacts;
+            totalContacts := TRepositoryRest.getNumberOfContacts(optionsAgent);
           except on E: Exception do
             log('Exception reading contacts: ' + e.message);
           end;

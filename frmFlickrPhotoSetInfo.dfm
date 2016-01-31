@@ -54,8 +54,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Align = alClient
     Caption = 'Panel1'
     TabOrder = 0
-    ExplicitTop = 416
-    ExplicitWidth = 1074
     object chartItemCommentsH: TChart
       Left = 1
       Top = 1
@@ -92,9 +90,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Align = alClient
       Color = 2763306
       TabOrder = 0
-      ExplicitTop = 2
-      ExplicitWidth = 1145
-      ExplicitHeight = 122
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -126,8 +121,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Align = alTop
     Caption = 'Panel2'
     TabOrder = 1
-    ExplicitTop = 285
-    ExplicitWidth = 1074
     object chartitemLikesH: TChart
       Left = 1
       Top = 1
@@ -164,9 +157,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Align = alClient
       Color = 2763306
       TabOrder = 0
-      ExplicitTop = 2
-      ExplicitWidth = 1145
-      ExplicitHeight = 118
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -198,8 +188,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Align = alTop
     Caption = 'Panel3'
     TabOrder = 2
-    ExplicitTop = 197
-    ExplicitWidth = 1074
     object ChartItemViewsH: TChart
       Left = 1
       Top = 1
@@ -236,9 +224,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Align = alClient
       Color = 2763306
       TabOrder = 0
-      ExplicitTop = 3
-      ExplicitWidth = 1145
-      ExplicitHeight = 81
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -269,7 +254,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
     Height = 75
     Align = alTop
     TabOrder = 3
-    ExplicitHeight = 103
     object Panel24: TPanel
       Left = 1
       Top = 1
@@ -277,7 +261,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Height = 73
       Align = alLeft
       TabOrder = 0
-      ExplicitHeight = 101
       object Panel27: TPanel
         Left = 9
         Top = 1
@@ -467,9 +450,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Height = 73
       Align = alClient
       TabOrder = 1
-      ExplicitLeft = 752
-      ExplicitWidth = 391
-      ExplicitHeight = 101
       object Panel29: TPanel
         Left = 16
         Top = 1
@@ -613,7 +593,6 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
       Height = 73
       Align = alLeft
       TabOrder = 2
-      ExplicitHeight = 100
       object Panel28: TPanel
         Left = 8
         Top = 1

@@ -46,7 +46,7 @@ type
     function getPoolsRemove(photoId : string; groupId : string): string;
     function getPhotoSetsAdd(photoId : string; photosetId : string): string;
     function getContactListTotals(): string;
-    function getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
+    function getPhotosPhotoSet(photosetId : string; page: string; per_page: string): string;
     function getUserFavesPhoto(photoId : string; page: string; per_page: string): string;
     function getUserInfo(user_id: string): string;
   end;
@@ -67,7 +67,7 @@ type
     function getPoolsRemove(photoId : string; groupId : string): string;
     function getPhotoSetsAdd(photoId : string; photosetId : string): string;
     function getContactListTotals(): string;
-    function getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
+    function getPhotosPhotoSet(photosetId : string; page: string; per_page: string): string;
     function getUserFavesPhoto(photoId : string; page: string; per_page: string): string;
     function getUserInfo(user_id: string): string;
     class function New(optionsAgent: IOptionsAgent): IFlickrRest;
@@ -343,7 +343,7 @@ begin
   result := returnURL;
 end;
 
-function TFlickrRest.getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
+function TFlickrRest.getPhotosPhotoSet(photosetId : string; page: string; per_page: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -368,7 +368,7 @@ begin
   paramURL := paramURL + '&photoset_id=' + photosetId;
   paramURL := paramURL + '&per_page=' + per_page;
   paramURL := paramURL + '&page=' + page;
-  paramURL := paramURL + '&user_id=' + user_id;
+  paramURL := paramURL + '&user_id=' + FOptionsAgent.flickrUserId;
 
   paramURL := String(HTTPEncode(AnsiString(paramURL)));
 
@@ -394,7 +394,7 @@ begin
   returnURL := returnURL + '&oauth_version=1.0';
   returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
-  returnURL := returnURL + '&user_id=' + user_id;
+  returnURL := returnURL + '&user_id=' + FOptionsAgent.flickrUserId;
   returnURL := returnURL + '&method=flickr.photosets.getPhotos';
 
   result := returnURL;
