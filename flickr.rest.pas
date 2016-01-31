@@ -159,7 +159,7 @@ end;
 
 function TFlickrRest.getFavorites(photo_id: string): string;
 begin
-  Result := rootUrl + '?method=flickr.photos.getFavorites&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
+  Result := rootUrl + '?method=flickr.photos.getFavorites&api_key=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
 function TFlickrRest.getGroupInfo(groupid: string): string;
@@ -277,17 +277,17 @@ begin
   //  </photo>
   //</rsp>
 
-  Result := rootUrl + '?method=flickr.photos.getInfo&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
+  Result := rootUrl + '?method=flickr.photos.getInfo&api_key=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
 function TFlickrRest.getPhotos(page, per_page: string): string;
 begin
-  Result := rootUrl + '?method=flickr.people.getPhotos&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.people.getPhotos&api_key=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
 end;
 
 function TFlickrRest.getPhotoSets(page, per_page: string): string;
 begin
-  Result := rootUrl + '?method=flickr.photosets.getList&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.photosets.getList&api_key=' + FOptionsAgent.flickrApiKey + '&user_id=' + FOptionsAgent.flickrUserId + '&page=' + page + '&per_page=' + per_page;
 end;
 
 function TFlickrRest.getPhotoSetsAdd(photoId : string; photosetId : string): string;
