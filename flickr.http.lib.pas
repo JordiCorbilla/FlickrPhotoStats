@@ -38,7 +38,8 @@ type
   TNodeProcedure = reference to procedure(iXMLRootNode: IXMLNode);
 
   THttpRest = class(TObject)
-    class procedure Post(getString : string; node : TNodeProcedure);
+    class procedure Post(getString : string; node : TNodeProcedure); overload;
+    class procedure Post(getString : string; messageFilter : boolean; responseFilter : boolean; node : TNodeProcedure); overload;
   end;
 
 implementation
@@ -49,6 +50,11 @@ uses
 { THttpRest }
 
 class procedure THttpRest.Post(getString: string; node: TNodeProcedure);
+begin
+  Post(getString, false, false, node);
+end;
+
+class procedure THttpRest.Post(getString: string; messageFilter, responseFilter: boolean; node: TNodeProcedure);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3: IXMLNode;
@@ -77,15 +83,32 @@ begin
           begin
             sleep(200);
             timedout := false;
+            if messageFilter then
+              if e.Message.ToLower.Contains('unauthorized') then
+                timedout := true;
           end;
         end;
       end;
       response := response.Replace('’', ''); //found in one of the xml's
-      xmlDocument.LoadFromXML(response);
-      iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-      iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-      iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
-      node(iXMLRootNode3);
+      if responseFilter then
+      begin
+        if response.Contains('<rsp stat="ok">') then
+        begin
+          xmlDocument.LoadFromXML(response);
+          iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+          iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+          iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+          node(iXMLRootNode3);
+        end;
+      end
+      else
+      begin
+        xmlDocument.LoadFromXML(response);
+        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
+        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
+        node(iXMLRootNode3);
+      end;
     finally
       IdIOHandler.Free;
       IdHTTP.Free;

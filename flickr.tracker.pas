@@ -30,9 +30,7 @@ unit flickr.tracker;
 interface
 
 uses
-  flickr.user.tracking, SysUtils, IdHTTP, IdIOHandler, IdIOHandlerStream,
-  IdIOHandlerSocket, IdIOHandlerStack, IDGlobal,
-  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, flickr.rest,
+  flickr.user.tracking, SysUtils, XMLIntf, flickr.rest,
   flickr.user.faves, flickr.users.info, flickr.lib.options.agent;
 
 type
@@ -50,12 +48,7 @@ uses
 class procedure TTracking.TrackPhoto(folder, id : string; page: string; per_page: string; optionsAgent : IOptionsAgent);
 var
   userTracking : IUserTracking;
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  IdHTTP: TIdHTTP;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  xmlDocument: IXMLDocument;
-  timedout: Boolean;
+  iXMLRootNode4: IXMLNode;
   pages, total, totalitems: string;
   userFave, existing : IUserFave;
   numPages, i : integer;
