@@ -30,13 +30,13 @@ unit flickr.album.categoriser;
 interface
 
 uses
-  flickr.repository, flickr.lib.options, SysUtils, flickr.photos, flickr.rest, flickr.lib.options.email, flickr.lib.response;
+  flickr.repository, flickr.lib.options, SysUtils, flickr.photos, flickr.rest, flickr.lib.options.agent, flickr.lib.response;
 
 type
   TLogProcedure = reference to procedure(value : string);
 
   TAlbumCategoriser = Class(TObject)
-    class procedure AutoAdd(repository: IFlickrRepository; options: IOptions; optionsEmail: IOptionsEmail; log : TLogProcedure);
+    class procedure AutoAdd(repository: IFlickrRepository; options: IOptions; optionsEmail: IOptionsAgent; log : TLogProcedure);
   End;
 
 implementation
@@ -48,7 +48,7 @@ uses
 
 { TAlbumCategoriser }
 
-class procedure TAlbumCategoriser.AutoAdd(repository: IFlickrRepository; options: IOptions; optionsEmail: IOptionsEmail; log : TLogProcedure);
+class procedure TAlbumCategoriser.AutoAdd(repository: IFlickrRepository; options: IOptions; optionsEmail: IOptionsAgent; log : TLogProcedure);
 var
   i, j: integer;
   photo: IPhoto;

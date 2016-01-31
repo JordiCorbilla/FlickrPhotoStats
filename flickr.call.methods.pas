@@ -29,7 +29,7 @@ unit flickr.call.methods;
 interface
 
 uses
-  Generics.collections;
+  Generics.collections, flickr.lib.options.agent;
 
 type
   ICallMethod = interface
@@ -44,8 +44,8 @@ type
     FSecret : string;
     FToken_Secret : string;
   public
-    class function New(api_key: string; auth_token : string; secret : string; token_secret : string): ICallMethod;
-    constructor Create(api_key: string; auth_token : string; secret : string; token_secret : string);
+    class function New(optionsAgent : IOptionsAgent): ICallMethod;
+    constructor Create(optionsAgent : IOptionsAgent);
     function getURLmethodParams(method : string; params : TDictionary<string, string>) : string;
     function getURLmethod(method : string) : string;
   End;
@@ -57,12 +57,12 @@ uses
 
 { TCallMethod }
 
-constructor TCallMethod.Create(api_key, auth_token, secret, token_secret: string);
+constructor TCallMethod.Create(optionsAgent : IOptionsAgent);
 begin
-  FApi_key := api_key;
-  FAuth_token := auth_token;
-  FSecret := secret;
-  FToken_secret := token_secret;
+  FApi_key := optionsAgent.flickrApiKey;
+  FAuth_token := optionsAgent.userToken;
+  FSecret := optionsAgent.secret;
+  FToken_secret := optionsAgent.userTokenSecret;
 end;
 
 function TCallMethod.getURLmethod(method: string): string;
@@ -170,9 +170,9 @@ begin
   result := returnURL;
 end;
 
-class function TCallMethod.New(api_key: string; auth_token : string; secret : string; token_secret : string): ICallMethod;
+class function TCallMethod.New(optionsAgent : IOptionsAgent): ICallMethod;
 begin
-  result := TCallMethod.create(api_key, auth_token, secret, token_secret);
+  result := TCallMethod.create(optionsAgent);
 end;
 
 end.

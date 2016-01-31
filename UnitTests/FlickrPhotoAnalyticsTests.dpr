@@ -23,7 +23,7 @@ uses
   flickr.organic.stats in '..\flickr.organic.stats.pas',
   flickr.encoding.test in 'flickr.encoding.test.pas',
   flickr.repository in '..\flickr.repository.pas',
-  flickr.lib.options.email in '..\flickr.lib.options.email.pas',
+  flickr.lib.options.agent in '..\flickr.lib.options.agent.pas',
   flickr.lib.encoding in '..\flickr.lib.encoding.pas',
   flickr.photos in '..\flickr.photos.pas',
   flickr.albums in '..\flickr.albums.pas',

@@ -80,7 +80,7 @@ begin
           end;
         end;
       end;
-
+      response := response.Replace('’', ''); //found in one of the xml's
       xmlDocument.LoadFromXML(response);
       iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
       iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>

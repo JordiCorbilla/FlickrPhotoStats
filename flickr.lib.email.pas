@@ -44,7 +44,7 @@ type
 implementation
 
 uses
-  System.IniFiles, flickr.lib.options.email;
+  System.IniFiles, flickr.lib.options.agent;
 
 { TFlickrEmail }
 
@@ -53,9 +53,9 @@ var
   IdSMTP1: TIdSMTP;
   IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
   IdMessage1: TIdMessage;
-  options : IOptionsEmail;
+  options : IOptionsAgent;
 begin
-  options := TOptionsEmail.New.Load;
+  options := TOptionsAgent.New.Load;
   IdSSLIOHandlerSocketOpenSSL1 := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   IdSMTP1 := TIdSMTP.Create(nil);
   IdMessage1 := TIdMessage.Create(nil);
@@ -94,9 +94,9 @@ var
   IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
   IdMessage1: TIdMessage;
   htmtext : TIdText;
-  options : IOptionsEmail;
+  options : IOptionsAgent;
 begin
-  options := TOptionsEmail.New.Load;
+  options := TOptionsAgent.New.Load;
   if (options.Server = '') or (options.Port = 0) then
     exit;
 

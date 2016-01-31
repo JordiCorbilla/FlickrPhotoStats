@@ -30,7 +30,7 @@ unit flickr.repository.rest;
 interface
 
 uses
-  Windows, flickr.repository, flickr.organic.stats, flickr.lib.options, flickr.lib.options.email;
+  Windows, flickr.repository, flickr.organic.stats, flickr.lib.options, flickr.lib.options.agent;
 
 type
   IRepositoryRest = interface
@@ -38,7 +38,7 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsEmail);
+    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsAgent);
     class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
     class function getNumberOfContacts() : integer;
   end;
@@ -58,7 +58,7 @@ uses
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsEmail);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsAgent);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -320,11 +320,11 @@ var
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
-  options : IOptionsEmail;
+  options : IOptionsAgent;
 begin
   CoInitialize(nil);
   try
-    options := TOptionsEmail.New.Load;
+    options := TOptionsAgent.New.Load;
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
     IdIOHandler.ReadTimeout := IdTimeoutInfinite;
     IdIOHandler.ConnectTimeout := IdTimeoutInfinite;

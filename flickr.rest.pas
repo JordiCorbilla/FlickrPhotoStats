@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Jordi Corbilla
+// Copyright (c) 2015-2016, Jordi Corbilla
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,45 +29,53 @@ unit flickr.rest;
 
 interface
 
+uses
+  flickr.lib.options.agent;
+
 type
   IFlickrRest = interface
-    function getFavorites(api_key: string; photo_id: string): string;
-    function getInfo(api_key: string; photo_id: string): string;
-    function getAllContexts(api_key: string; photo_id: string): string;
-    function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getGroupInfo(api_key: string; groupid: string; auth_token : string; secret : string; token_secret : string): string;
-    function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
-    function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
-    function getPoolsRemove(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
-    function getPhotoSetsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; photosetId : string): string;
-    function getContactListTotals(api_key: string; auth_token : string; secret : string; token_secret : string): string;
-    function getPhotosPhotoSet(api_key: string; user_id: string; photosetId : string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getUserFavesPhoto(api_key: string; photoId : string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getUserInfo(api_key: string; user_id: string; auth_token : string; secret : string; token_secret : string): string;
+    function getFavorites(photo_id: string): string;
+    function getInfo(photo_id: string): string;
+    function getAllContexts(photo_id: string): string;
+    function getPhotos(user_id, page, per_page: string): string;
+    function getPhotoSets(user_id, page, per_page: string): string;
+    function getGroups(page: string; per_page: string): string;
+    function getGroupInfo(groupid: string): string;
+    function getTestLogin(): string;
+    function getPoolsAdd(photoId : string; groupId : string): string;
+    function getPoolsRemove(photoId : string; groupId : string): string;
+    function getPhotoSetsAdd(photoId : string; photosetId : string): string;
+    function getContactListTotals(): string;
+    function getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
+    function getUserFavesPhoto(photoId : string; page: string; per_page: string): string;
+    function getUserInfo(user_id: string): string;
   end;
 
   TFlickrRest = class(TInterfacedObject, IFlickrRest)
   private
+    FOptionsAgent: IOptionsAgent;
   public
-    function getFavorites(api_key: string; photo_id: string): string;
-    function getInfo(api_key: string; photo_id: string): string;
-    function getAllContexts(api_key: string; photo_id: string): string;
-    function getPhotos(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getPhotoSets(api_key: string; user_id: string; page: string; per_page: string): string;
-    function getGroups(api_key: string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getGroupInfo(api_key: string; groupid: string; auth_token : string; secret : string; token_secret : string): string;
-    function getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
-    function getPoolsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
-    function getPoolsRemove(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; groupId : string): string;
-    function getPhotoSetsAdd(api_key: string; auth_token : string; secret : string; token_secret : string; photoId : string; photosetId : string): string;
-    function getContactListTotals(api_key: string; auth_token : string; secret : string; token_secret : string): string;
-    function getPhotosPhotoSet(api_key: string; user_id: string; photosetId : string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getUserFavesPhoto(api_key: string; photoId : string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
-    function getUserInfo(api_key: string; user_id: string; auth_token : string; secret : string; token_secret : string): string;
-    class function New(): IFlickrRest;
+    function getFavorites(photo_id: string): string;
+    function getInfo(photo_id: string): string;
+    function getAllContexts(photo_id: string): string;
+    function getPhotos(user_id, page, per_page: string): string;
+    function getPhotoSets(user_id, page, per_page: string): string;
+    function getGroups(page: string; per_page: string): string;
+    function getGroupInfo(groupid: string): string;
+    function getTestLogin(): string;
+    function getPoolsAdd(photoId : string; groupId : string): string;
+    function getPoolsRemove(photoId : string; groupId : string): string;
+    function getPhotoSetsAdd(photoId : string; photosetId : string): string;
+    function getContactListTotals(): string;
+    function getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
+    function getUserFavesPhoto(photoId : string; page: string; per_page: string): string;
+    function getUserInfo(user_id: string): string;
+    class function New(optionsAgent: IOptionsAgent): IFlickrRest;
+    constructor Create(optionsAgent : IOptionsAgent);
   end;
+
+const
+  rootUrl = 'https://api.flickr.com/services/rest';
 
 implementation
 
@@ -76,7 +84,12 @@ uses
 
 { TFlickrRest }
 
-function TFlickrRest.getAllContexts(api_key, photo_id: string): string;
+constructor TFlickrRest.Create(optionsAgent: IOptionsAgent);
+begin
+  FOptionsAgent := OptionsAgent;
+end;
+
+function TFlickrRest.getAllContexts(photo_id: string): string;
 begin
   //Example respone
   //<?xml version="1.0" encoding="utf-8" ?>
@@ -93,10 +106,10 @@ begin
   //  <pool title="Experimental Dream" url="/groups/experimental_dream/pool/" id="32002189@N00" iconserver="4" iconfarm="1" members="8606" pool_count="204859" />
   //</xml>
 
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getAllContexts&api_key=' + api_key + '&photo_id=' + photo_id;
+  Result := rootUrl + '?method=flickr.photos.getAllContexts&api_key=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getContactListTotals(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+function TFlickrRest.getContactListTotals(): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -105,17 +118,17 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.contacts.getList';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
 
   paramURL := String(HTTPEncode(AnsiString(paramURL)));
@@ -125,31 +138,31 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.contacts.getList';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getFavorites(api_key, photo_id: string): string;
+function TFlickrRest.getFavorites(photo_id: string): string;
 begin
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getFavorites&api_key=' + api_key + '&photo_id=' + photo_id;
+  Result := rootUrl + '?method=flickr.photos.getFavorites&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getGroupInfo(api_key, groupid, auth_token, secret, token_secret: string): string;
+function TFlickrRest.getGroupInfo(groupid: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -158,7 +171,7 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
@@ -166,11 +179,11 @@ begin
   groupId := groupId.Replace('@', '%40');
   paramURL := paramURL + '&group_id=' + groupId;
   paramURL := paramURL + '&method=flickr.groups.getInfo';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
 
   paramURL := String(HTTPEncode(AnsiString(paramURL)));
@@ -180,38 +193,38 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
   returnURL := returnURL + '&group_id=' + groupId;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.groups.getInfo';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getGroups(api_key, page, per_page: string; auth_token : string; secret : string; token_secret : string): string;
+function TFlickrRest.getGroups(page: string; per_page: string): string;
 var
   params : TDictionary<string, string>;
 begin
   params := TDictionary<String, String>.create;
   params.Add('page', page);
   params.Add('per_page', per_page);
-  Result := TCallMethod.New(api_key, auth_token, secret, token_secret).getURLmethodParams('flickr.groups.pools.getGroups', params);
+  Result := TCallMethod.New(FOptionsAgent).getURLmethodParams('flickr.groups.pools.getGroups', params);
   params.Free;
 end;
 
-function TFlickrRest.getInfo(api_key, photo_id: string): string;
+function TFlickrRest.getInfo(photo_id: string): string;
 begin
   //Example response:
   //<?xml version="1.0" encoding="utf-8" ?>
@@ -264,20 +277,20 @@ begin
   //  </photo>
   //</rsp>
 
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=' + api_key + '&photo_id=' + photo_id;
+  Result := rootUrl + '?method=flickr.photos.getInfo&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&photo_id=' + photo_id;
 end;
 
-function TFlickrRest.getPhotos(api_key, user_id, page, per_page: string): string;
+function TFlickrRest.getPhotos(user_id, page, per_page: string): string;
 begin
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + api_key + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.people.getPhotos&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
 end;
 
-function TFlickrRest.getPhotoSets(api_key, user_id, page, per_page: string): string;
+function TFlickrRest.getPhotoSets(user_id, page, per_page: string): string;
 begin
-  Result := 'https://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key=' + api_key + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
+  Result := rootUrl + '?method=flickr.photosets.getList&FOptionsAgent.flickrApiKey=' + FOptionsAgent.flickrApiKey + '&user_id=' + user_id + '&page=' + page + '&per_page=' + per_page;
 end;
 
-function TFlickrRest.getPhotoSetsAdd(api_key, auth_token, secret, token_secret, photoId, photosetId: string): string;
+function TFlickrRest.getPhotoSetsAdd(photoId : string; photosetId : string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -286,18 +299,18 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   photosetId := photosetId.Replace('@', '%40');
   paramURL := paramURL + '&method=flickr.photosets.addPhoto';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
   paramURL := paramURL + '&photoset_id=' + photosetId;
@@ -309,28 +322,28 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
   returnURL := returnURL + '&photoset_id=' + photosetId;
   returnURL := returnURL + '&photo_id=' + photoId;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.photosets.addPhoto';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getPhotosPhotoSet(api_key: string; user_id: string; photosetId : string; page: string; per_page: string; auth_token : string; secret : string; token_secret : string): string;
+function TFlickrRest.getPhotosPhotoSet(user_id: string; photosetId : string; page: string; per_page: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -339,18 +352,18 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   photosetId := photosetId.Replace('@', '%40');
   paramURL := paramURL + '&method=flickr.photosets.getPhotos';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photoset_id=' + photosetId;
   paramURL := paramURL + '&per_page=' + per_page;
@@ -364,22 +377,22 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
   returnURL := returnURL + '&photoset_id=' + photosetId;
   returnURL := returnURL + '&per_page=' + per_page;
   returnURL := returnURL + '&page=' + page;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&user_id=' + user_id;
   returnURL := returnURL + '&method=flickr.photosets.getPhotos';
@@ -387,7 +400,7 @@ begin
   result := returnURL;
 end;
 
-function TFlickrRest.getPoolsAdd(api_key, auth_token, secret, token_secret, photoId, groupId: string): string;
+function TFlickrRest.getPoolsAdd(photoId : string; groupId : string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -396,7 +409,7 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
@@ -404,11 +417,11 @@ begin
   groupId := groupId.Replace('@', '%40');
   paramURL := paramURL + '&group_id=' + groupId;
   paramURL := paramURL + '&method=flickr.groups.pools.add';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
 
@@ -419,28 +432,28 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
   returnURL := returnURL + '&group_id=' + groupId;
   returnURL := returnURL + '&photo_id=' + photoId;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.groups.pools.add';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getPoolsRemove(api_key, auth_token, secret, token_secret, photoId, groupId: string): string;
+function TFlickrRest.getPoolsRemove(photoId : string; groupId : string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -449,7 +462,7 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
@@ -457,11 +470,11 @@ begin
   groupId := groupId.Replace('@', '%40');
   paramURL := paramURL + '&group_id=' + groupId;
   paramURL := paramURL + '&method=flickr.groups.pools.remove';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
 
@@ -472,33 +485,33 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
   returnURL := returnURL + '&group_id=' + groupId;
   returnURL := returnURL + '&photo_id=' + photoId;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.groups.pools.remove';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getTestLogin(api_key: string; auth_token : string; secret : string; token_secret : string): string;
+function TFlickrRest.getTestLogin(): string;
 begin
-  result := TCallMethod.New(api_key, auth_token, secret, token_secret).getURLmethod('flickr.test.login');
+  result := TCallMethod.New(FOptionsAgent).getURLmethod('flickr.test.login');
 end;
 
-function TFlickrRest.getUserFavesPhoto(api_key, photoId, page, per_page, auth_token, secret, token_secret: string): string;
+function TFlickrRest.getUserFavesPhoto(photoId : string; page: string; per_page: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -507,17 +520,17 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.photos.getFavorites';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
   paramURL := paramURL + '&per_page=' + per_page;
@@ -530,8 +543,8 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -541,18 +554,18 @@ begin
   returnURL := returnURL + '&photo_id=' + photoId;
   returnURL := returnURL + '&per_page=' + per_page;
   returnURL := returnURL + '&page=' + page;
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&method=flickr.photos.getFavorites';
 
   result := returnURL;
 end;
 
-function TFlickrRest.getUserInfo(api_key, user_id, auth_token, secret, token_secret: string): string;
+function TFlickrRest.getUserInfo(user_id: string): string;
 var
   baseURL, paramURL, encodedURL, returnURL : string;
   ConsumerSecret : string;
@@ -561,17 +574,17 @@ var
 begin
   //Generate request access token needs to generate:
 
-  baseURL := 'https://api.flickr.com/services/rest';
+  baseURL := rootUrl;
 
   baseURL := String(HTTPEncode(AnsiString(baseURL)));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.people.getInfo';
-  paramURL := paramURL + '&oauth_consumer_key=' + api_key;
+  paramURL := paramURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   paramURL := paramURL + '&oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   paramURL := paramURL + '&oauth_signature_method=HMAC-SHA1';
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
-  paramURL := paramURL + '&oauth_token=' + auth_token;
+  paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&user_id=' + user_id;
 
@@ -582,19 +595,19 @@ begin
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(token_secret)));
+  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
+  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
-  returnURL := 'https://api.flickr.com/services/rest';
+  returnURL := rootUrl;
   returnURL := returnURL + '?oauth_nonce=' + TSignature.getOAuthNonce(timeStamp);
   returnURL := returnURL + '&format=rest';
-  returnURL := returnURL + '&oauth_consumer_key=' + api_key;
+  returnURL := returnURL + '&oauth_consumer_key=' + FOptionsAgent.flickrApiKey;
   returnURL := returnURL + '&oauth_timestamp=' + timeStamp;
   returnURL := returnURL + '&oauth_signature_method=HMAC-SHA1';
   returnURL := returnURL + '&oauth_version=1.0';
-  returnURL := returnURL + '&oauth_token=' + auth_token;
+  returnURL := returnURL + '&oauth_token=' + FOptionsAgent.userToken;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
   returnURL := returnURL + '&user_id=' + user_id;
   returnURL := returnURL + '&method=flickr.people.getInfo';
@@ -602,9 +615,9 @@ begin
   result := returnURL;
 end;
 
-class function TFlickrRest.New: IFlickrRest;
+class function TFlickrRest.New(optionsAgent: IOptionsAgent): IFlickrRest;
 begin
-  Result := Create;
+  Result := Create(optionsAgent);
 end;
 
 end.

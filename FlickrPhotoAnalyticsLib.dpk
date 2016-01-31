@@ -96,7 +96,7 @@ contains
   flickr.lib.email in 'flickr.lib.email.pas',
   flickr.lib.options in 'flickr.lib.options.pas',
   flickr.lib.email.html in 'flickr.lib.email.html.pas',
-  flickr.lib.options.email in 'flickr.lib.options.email.pas',
+  flickr.lib.options.agent in 'flickr.lib.options.agent.pas',
   flickr.lib.encoding in 'flickr.lib.encoding.pas',
   flickr.lib.utils in 'flickr.lib.utils.pas',
   flickr.lib.doublelist in 'flickr.lib.doublelist.pas',
@@ -122,7 +122,8 @@ contains
   flickr.users.info in 'flickr.users.info.pas',
   flickr.stats.global in 'flickr.stats.global.pas',
   flickr.album.categoriser in 'flickr.album.categoriser.pas',
-  flickr.http.lib in 'flickr.http.lib.pas';
+  flickr.http.lib in 'flickr.http.lib.pas',
+  flickr.pool.details in 'flickr.pool.details.pas';
 
 end.
 

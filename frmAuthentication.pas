@@ -150,6 +150,8 @@ begin
 
   frmFlickrMain.userToken := oauth_token;
   frmFlickrMain.userTokenSecret := oauth_token_secret;
+  frmFlickrMain.optionsAgent.userToken := oauth_token;
+  frmFlickrMain.optionsAgent.userTokenSecret := oauth_token_secret;
   frmFlickrMain.Button10.Enabled := true;
   frmFlickrMain.btnGetGroups.Enabled := true;
   frmFlickrMain.Button5.Enabled := true;

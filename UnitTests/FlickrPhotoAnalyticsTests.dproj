@@ -138,7 +138,7 @@
         <DCCReference Include="..\flickr.organic.stats.pas"/>
         <DCCReference Include="flickr.encoding.test.pas"/>
         <DCCReference Include="..\flickr.repository.pas"/>
-        <DCCReference Include="..\flickr.lib.options.email.pas"/>
+        <DCCReference Include="..\flickr.lib.options.agent.pas"/>
         <DCCReference Include="..\flickr.lib.encoding.pas"/>
         <DCCReference Include="..\flickr.photos.pas"/>
         <DCCReference Include="..\flickr.albums.pas"/>
