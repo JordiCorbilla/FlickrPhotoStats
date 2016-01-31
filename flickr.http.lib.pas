@@ -32,7 +32,7 @@ interface
 uses
   XMLDoc, xmldom, XMLIntf, msxmldom, IdHTTP, IdIOHandler, IdIOHandlerStream,
   IdIOHandlerSocket, IdIOHandlerStack, IDGlobal, Activex,
-  IdSSL, IdSSLOpenSSL;
+  IdSSL, IdSSLOpenSSL, flickr.lib.procedures;
 
 type
   TNodeProcedure = reference to procedure(iXMLRootNode: IXMLNode);
@@ -40,12 +40,13 @@ type
   THttpRest = class(TObject)
     class procedure Post(getString : string; node : TNodeProcedure); overload;
     class procedure Post(getString : string; messageFilter : boolean; responseFilter : boolean; node : TNodeProcedure); overload;
+    class procedure Post(getString : string; arguments : string; log : TLogProcedure) overload;
   end;
 
 implementation
 
 uses
-  SysUtils;
+  SysUtils, flickr.lib.response;
 
 { THttpRest }
 
@@ -113,6 +114,46 @@ begin
       IdIOHandler.Free;
       IdHTTP.Free;
       xmlDocument := nil;
+    end;
+  finally
+    CoUninitialize;
+  end;
+end;
+
+class procedure THttpRest.Post(getString : string; arguments : string; log : TLogProcedure);
+var
+  response: string;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  timedout: Boolean;
+begin
+  CoInitialize(nil);
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(getString);
+          response := TResponse.filter(response);
+          log(response + ' ' + arguments);
+          timedout := true;
+        except
+          on e: exception do
+          begin
+            sleep(200);
+            timedout := false;
+          end;
+        end;
+      end;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
     end;
   finally
     CoUninitialize;

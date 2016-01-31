@@ -25,55 +25,13 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit flickr.album.categoriser;
+unit flickr.lib.procedures;
 
 interface
 
-uses
-  flickr.repository, flickr.lib.options, SysUtils, flickr.photos, flickr.rest, flickr.lib.options.agent, flickr.lib.response, flickr.lib.procedures;
-
 type
-  TAlbumCategoriser = Class(TObject)
-    class procedure AutoAdd(repository: IFlickrRepository; options: IOptions; optionsAgent: IOptionsAgent; log : TLogProcedure);
-  End;
+  TLogProcedure = reference to procedure(value : string);
 
 implementation
-
-uses
-  flickr.http.lib;
-
-{ TAlbumCategoriser }
-
-class procedure TAlbumCategoriser.AutoAdd(repository: IFlickrRepository; options: IOptions; optionsAgent: IOptionsAgent; log : TLogProcedure);
-var
-  i, j: integer;
-  photo: IPhoto;
-  value: string;
-begin
-  for i := 0 to repository.photos.Count - 1 do
-  begin
-    for j := 0 to options.AlbumViewsID.Count - 1 do
-    begin
-      photo := repository.photos[i];
-      value := options.AlbumViews[j].Replace('.', '');
-      if (photo.getTotalViewsDay() >= value.ToInteger) then
-      begin
-        if not photo.inAlbum(options.AlbumViewsID[j]) then
-          THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSetsAdd(photo.Id, options.AlbumViewsID[j]), photo.Title + ' -> ' + value, log);
-      end;
-    end;
-
-    for j := 0 to options.AlbumLikesID.Count - 1 do
-    begin
-      photo := repository.photos[i];
-      value := options.AlbumLikes[j].Replace('.', '');
-      if (photo.getTotalLikesDay() >= value.ToInteger) then
-      begin
-        if not photo.inAlbum(options.AlbumLikesID[j]) then
-          THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotoSetsAdd(photo.Id, options.AlbumLikesID[j]), photo.Title + ' -> ' + value, log);
-      end;
-    end;
-  end;
-end;
 
 end.

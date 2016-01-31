@@ -46,10 +46,8 @@ uses
 
 class procedure TPoolDetails.Load(base : IBase; optionsAgent : IOptionsAgent);
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  iXMLRootNode4: IXMLNode;
   urlGroups: string;
-  timedout: Boolean;
   description : string;
   IsModerated : boolean;
   ThrottleCount : integer;
