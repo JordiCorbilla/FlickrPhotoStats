@@ -32,7 +32,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, Vcl.StdCtrls, flickr.repository, UITypes,
-  flickr.lib.options, flickr.lib.options.email, flickr.lib.utils;
+  flickr.lib.options, flickr.lib.options.agent, flickr.lib.utils;
 
 type
   TfrmMigration = class(TForm)
@@ -78,7 +78,7 @@ var
   buttonSelected: integer;
   repository: IFlickrRepository;
   options: IOptions;
-  optionsEmail : IOptionsEmail;
+  optionsAgent : IOptionsAgent;
   st : TStopWatch;
   previoustimeLoad : int64;
   newtimeLoad : int64;
@@ -101,7 +101,7 @@ begin
     repository := TFlickrRepository.Create();
     Log('Loading options');
     options := TOptions.New().Load;
-    optionsEmail := TOptionsEmail.New().Load;
+    optionsAgent := ToptionsAgent.New().Load;
     try
       repository.version := '4.8.0.2';
       Log('Loading repository. This operation might take a while....');
@@ -121,7 +121,7 @@ begin
       Log('Saving repository using new format');
       st := TStopWatch.Create;
       st.Start;
-      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.flickrUserId, options.Workspace + '\flickrRepository.xml');
+      repository.save(optionsAgent.flickrApiKey, optionsAgent.secret, optionsAgent.flickrUserId, options.Workspace + '\flickrRepository.xml');
       st.Stop;
       previoustimeSave := st.ElapsedMilliseconds;
       previousmemorySave := CurrentProcessMemory;
@@ -155,7 +155,7 @@ begin
       st := TStopWatch.Create;
       st.Start;
       progressbar1.Position := 100;
-      repository.save(optionsemail.flickrApiKey, optionsemail.secret, optionsemail.flickrUserId, options.Workspace + '\flickrRepository.xml');
+      repository.save(optionsAgent.flickrApiKey, optionsAgent.secret, optionsAgent.flickrUserId, options.Workspace + '\flickrRepository.xml');
       st.Stop;
       NewtimeSave := st.ElapsedMilliseconds;
       NewmemorySave := CurrentProcessMemory;

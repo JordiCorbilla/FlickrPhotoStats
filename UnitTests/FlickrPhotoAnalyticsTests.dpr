@@ -44,7 +44,10 @@ uses
   flickr.user.faves in '..\flickr.user.faves.pas',
   flickr.user.tracking in '..\flickr.user.tracking.pas',
   flickr.users.info in '..\flickr.users.info.pas',
-  flickr.stats.global in '..\flickr.stats.global.pas';
+  flickr.stats.global in '..\flickr.stats.global.pas',
+  flickr.http.lib in '..\flickr.http.lib.pas',
+  flickr.lib.procedures in '..\flickr.lib.procedures.pas',
+  flickr.lib.response in '..\flickr.lib.response.pas';
 
 var
   runner : ITestRunner;

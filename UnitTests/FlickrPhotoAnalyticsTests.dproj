@@ -160,6 +160,9 @@
         <DCCReference Include="..\flickr.user.tracking.pas"/>
         <DCCReference Include="..\flickr.users.info.pas"/>
         <DCCReference Include="..\flickr.stats.global.pas"/>
+        <DCCReference Include="..\flickr.http.lib.pas"/>
+        <DCCReference Include="..\flickr.lib.procedures.pas"/>
+        <DCCReference Include="..\flickr.lib.response.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

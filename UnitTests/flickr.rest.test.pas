@@ -36,7 +36,7 @@ uses
   IdHTTP, IdIOHandler, IdIOHandlerStream, IdIOHandlerSocket, IdIOHandlerStack,
   IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, Vcl.ComCtrls, flickr.photos,
   System.SyncObjs, generics.collections, flickr.stats, flickr.Pools, flickr.Albums, IdGlobal,
-  System.SysUtils, flickr.lib.options.email;
+  System.SysUtils, flickr.lib.options.agent;
 
 type
 
@@ -74,11 +74,11 @@ var
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
-  options : IOptionsEmail;
+  options : IOptionsAgent;
 begin
   CoInitialize(nil);
   try
-    options := TOptionsEmail.New.Load;
+    options := TOptionsAgent.New.Load;
     IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
     IdIOHandler.ReadTimeout := IdTimeoutInfinite;
     IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
@@ -91,7 +91,7 @@ begin
       while (not timedout) do
       begin
         try
-          response := IdHTTP.Get(TFlickrRest.New().getContactListTotals(options.flickrApiKey, options.userToken, options.secret, options.userTokenSecret));
+          response := IdHTTP.Get(TFlickrRest.New(options).getContactListTotals());
           timedout := true;
         except
           on e: exception do

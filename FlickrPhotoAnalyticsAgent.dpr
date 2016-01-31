@@ -52,7 +52,7 @@ uses
   Generics.collections,
   Flickr.lib.photos.load,
   flickr.photos,
-  flickr.lib.options.email,
+  flickr.lib.options.agent,
   flickr.lib.parse,
   flickr.users.info,
   flickr.album.categoriser;
@@ -75,7 +75,7 @@ var
   organic: IFlickrOrganic;
   organicStat: IFlickrOrganicStats;
   options: IOptions;
-  optionsEmail : IOptionsEmail;
+  optionsAgent : IOptionsAgent;
   description: TStrings;
   totalContacts: Integer;
   PhotosList : TList<string>;
@@ -129,7 +129,7 @@ begin
     WriteLn('Loading Repository');
     repository := TFlickrRepository.Create();
     options := TOptions.New().Load;
-    optionsEmail := TOptionsEmail.New().Load;
+    optionsAgent := ToptionsAgent.New().Load;
     try
       st := TStopWatch.Create;
       st.Start;
@@ -153,7 +153,7 @@ begin
           st := TStopWatch.Create;
           st.Start;
           WriteLn('Looking for new pictures added in the stream');
-          PhotosList := TPhotoLoader.load(apikey, userId);
+          PhotosList := TPhotoLoader.load(optionsAgent);
           st.Stop;
           WriteLn('stream loaded: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
         except
@@ -200,7 +200,11 @@ begin
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin
-                TRepositoryRest.updatePhoto(repository, organicStat, apikey, repository.photos[index].id, verbosity, options, optionsEmail);
+                TRepositoryRest.updatePhoto(repository, organicStat, repository.photos[index].id, verbosity, options, optionsAgent);
+              end,
+              procedure (index : integer)
+              begin
+                //Do nothing
               end);
             st.Stop;
           finally
@@ -208,7 +212,7 @@ begin
             organicStat.date := date;
             try
               try
-                totalContacts := TRepositoryRest.getNumberOfContacts;
+                totalContacts := TRepositoryRest.getNumberOfContacts(optionsAgent);
               except
                 on E: Exception do
                   TLogger.LogFile('Exception reading contacts: ' + E.message);
@@ -273,8 +277,8 @@ begin
           totalCommentsacc := totalCommentsacc + totalComments;
         end;
 
-        AlbumViews := TRepositoryRest.getTotalAlbumsCounts(apikey, userId, verbosity);
-        StreamViews := TUserInfo.getStreamViews(userId, apikey, optionsEMail.userToken, optionsEmail.secret, optionsEMail.userTokenSecret);
+        AlbumViews := TRepositoryRest.getTotalAlbumsCounts(optionsAgent, verbosity);
+        StreamViews := TUserInfo.getStreamViews(userId, optionsAgent);
         totalViewsacc := totalViewsacc +  AlbumViews +  StreamViews;
         globalStat := TStatGlobal.Create(date, totalViewsacc, totalLikesacc, totalCommentsacc, AlbumViews, StreamViews);
         globalsRepository.AddGlobals(globalStat);
@@ -294,7 +298,7 @@ begin
     end;
 
     //Add the items in the albums
-    TAlbumCategoriser.AutoAdd(repository, options, optionsEmail, procedure (value : string)
+    TAlbumCategoriser.AutoAdd(repository, options, optionsAgent, procedure (value : string)
       begin
         WriteLn(value);
         TLogger.LogFile(value);
@@ -303,7 +307,7 @@ begin
     //Update Parse
     try
       WriteLn('Updating cloud analytics');
-      TParseAnalyticsAPI.UpdateClient(optionsEmail.AppId, repository.photos.Count,
+      TParseAnalyticsAPI.UpdateClient(optionsAgent.AppId, repository.photos.Count,
         globalsRepository.globals[globalsRepository.globals.Count-1].views,
         globalsRepository.globals[globalsRepository.globals.Count-1].likes,
         globalsRepository.globals[globalsRepository.globals.Count-1].Comments,

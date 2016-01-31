@@ -46,7 +46,6 @@ type
     ProgressBar8: TProgressBar;
     procedure TestClick(Sender: TObject);
   private
-    procedure increase;
     { Private declarations }
   public
     { Public declarations }
@@ -106,12 +105,6 @@ begin
         end;
 
       end);
-end;
-
-procedure TfrmThreadMonitorPool.increase();
-begin
-
-
 end;
 
 end.
