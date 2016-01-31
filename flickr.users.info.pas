@@ -30,142 +30,76 @@ unit flickr.users.info;
 interface
 
 uses
-  SysUtils, IdHTTP, IdIOHandler, IdIOHandlerStream,
-  IdIOHandlerSocket, IdIOHandlerStack, IDGlobal,
-  IdSSL, IdSSLOpenSSL, XMLDoc, xmldom, XMLIntf, msxmldom, flickr.rest,
-  flickr.xml.helper;
+  SysUtils, XMLIntf, flickr.rest,
+  flickr.xml.helper, flickr.lib.options.agent;
 
 type
   TUserInfo = class(TObject)
-    class function getLocation(user_id : string; api_key: string; auth_token : string; secret : string; token_secret : string): string;
-    class function getStreamViews(user_id : string; api_key: string; auth_token : string; secret : string; token_secret : string) : integer;
+    class function getLocation(user_id : string; optionsAgent : IOptionsAgent): string;
+    class function getStreamViews(user_id : string; optionsAgent : IOptionsAgent) : integer;
   end;
 
 implementation
 
+uses
+  flickr.http.lib;
+
 { TUserInfo }
 
-class function TUserInfo.getLocation(user_id : string; api_key: string; auth_token : string; secret : string; token_secret : string) : string;
+class function TUserInfo.getLocation(user_id : string; optionsAgent : IOptionsAgent) : string;
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  IdHTTP: TIdHTTP;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  xmlDocument: IXMLDocument;
-  timedout: Boolean;
+  iXMLRootNode4: IXMLNode;
   location : string;
 begin
   location := '';
-  IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-  IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-  IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-  xmlDocument := TXMLDocument.Create(nil);
-  IdHTTP := TIdHTTP.Create(nil);
-  try
-    IdHTTP.IOHandler := IdIOHandler;
-    timedout := false;
-    while (not timedout) do
+  THttpRest.Post(TFlickrRest.New(optionsAgent).getUserInfo(user_id), procedure (iXMLRootNode : IXMLNode)
     begin
-      try
-        response := IdHTTP.Get(TFlickrRest.New().getUserInfo(api_key, user_id, auth_token, secret, token_secret));
-        timedout := true;
-      except
-        on e: exception do
-        begin
-          sleep(200);
-          timedout := false;
-        end;
-      end;
-    end;
-
-    xmlDocument.LoadFromXML(response);
-    iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <person>
-    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <details>
-    while iXMLRootNode4 <> nil do
-    begin
-      if iXMLRootNode4.NodeName = 'location' then
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <details>
+      while iXMLRootNode4 <> nil do
       begin
-        location := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-        break;
+        if iXMLRootNode4.NodeName = 'location' then
+        begin
+          location := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+          break;
+        end;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
-      iXMLRootNode4 := iXMLRootNode4.NextSibling;
-    end;
-  finally
-    IdIOHandler.Free;
-    IdHTTP.Free;
-    xmlDocument := nil;
-  end;
-
+    end);
   result := location;
 end;
 
-class function TUserInfo.getStreamViews(user_id : string; api_key: string; auth_token : string; secret : string; token_secret : string) : integer;
+class function TUserInfo.getStreamViews(user_id : string; optionsAgent : IOptionsAgent) : integer;
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
-  IdHTTP: TIdHTTP;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-  xmlDocument: IXMLDocument;
-  timedout, ifbreak: Boolean;
+  iXMLRootNode4, iXMLRootNode5: IXMLNode;
+  ifbreak: Boolean;
   views : integer;
 begin
   views := 0;
-  IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-  IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-  IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-  xmlDocument := TXMLDocument.Create(nil);
-  IdHTTP := TIdHTTP.Create(nil);
-  try
-    IdHTTP.IOHandler := IdIOHandler;
-    timedout := false;
-    while (not timedout) do
+  THttpRest.Post(TFlickrRest.New(optionsAgent).getUserInfo(user_id), procedure (iXMLRootNode : IXMLNode)
     begin
-      try
-        response := IdHTTP.Get(TFlickrRest.New().getUserInfo(api_key, user_id, auth_token, secret, token_secret));
-        timedout := true;
-      except
-        on e: exception do
-        begin
-          sleep(200);
-          timedout := false;
-        end;
-      end;
-    end;
-
-    xmlDocument.LoadFromXML(response);
-    iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <person>
-    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <details>
-    ifbreak := false;
-    while iXMLRootNode4 <> nil do
-    begin
-      if iXMLRootNode4.NodeName = 'photos' then
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <details>
+      ifbreak := false;
+      while iXMLRootNode4 <> nil do
       begin
-        iXMLRootNode5 := iXMLRootNode4.ChildNodes.First;
-        while iXMLRootNode5 <> nil do
+        if iXMLRootNode4.NodeName = 'photos' then
         begin
-          if iXMLRootNode5.NodeName = 'views' then
+          iXMLRootNode5 := iXMLRootNode4.ChildNodes.First;
+          while iXMLRootNode5 <> nil do
           begin
-            views := TXMLHelper.new(iXMLRootNode5.NodeValue).getInt;
-            ifbreak := true;
-            break;
+            if iXMLRootNode5.NodeName = 'views' then
+            begin
+              views := TXMLHelper.new(iXMLRootNode5.NodeValue).getInt;
+              ifbreak := true;
+              break;
+            end;
+            iXMLRootNode5 := iXMLRootNode5.NextSibling;
           end;
-          iXMLRootNode5 := iXMLRootNode5.NextSibling;
         end;
+        if ifbreak then
+          break;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
-      if ifbreak then
-        break;
-      iXMLRootNode4 := iXMLRootNode4.NextSibling;
-    end;
-  finally
-    IdIOHandler.Free;
-    IdHTTP.Free;
-    xmlDocument := nil;
-  end;
-
+    end);
   result := views;
 end;
 

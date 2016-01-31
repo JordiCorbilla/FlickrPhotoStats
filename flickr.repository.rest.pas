@@ -38,8 +38,8 @@ type
   end;
 
   TRepositoryRest = class(TInterfacedObject, IRepositoryRest)
-    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsAgent);
-    class function getTotalAlbumsCounts(apikey, userId : string; verbosity : boolean): Integer; static;
+    class procedure UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; id: string; verbosity : boolean; options : IOptions; optionsAgent : IOptionsAgent);
+    class function getTotalAlbumsCounts(userId : string; optionsAgent : IOptionsAgent; verbosity : boolean): Integer; static;
     class function getNumberOfContacts() : integer;
   end;
 
@@ -58,7 +58,7 @@ uses
 
 { TRepositoryRest }
 
-class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; apikey, id: string; verbosity : boolean; options : IOptions; optionsEmail : IOptionsAgent);
+class procedure TRepositoryRest.UpdatePhoto(repository: IFlickrRepository; organicStat: IFlickrOrganicStats; id: string; verbosity : boolean; options : IOptions; optionsAgent : IOptionsAgent);
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
@@ -89,7 +89,7 @@ begin
       while (not timedout) do
       begin
         try
-          response := IdHTTP.Get(TFlickrRest.New().getInfo(apikey, id));
+          response := IdHTTP.Get(TFlickrRest.New(optionsAgent).getInfo(id));
           timedout := true;
         except
           on e: exception do
@@ -369,7 +369,7 @@ begin
   result := views.ToInteger;
 end;
 
-class function TRepositoryRest.getTotalAlbumsCounts(apikey, userId : string; verbosity: boolean): Integer;
+class function TRepositoryRest.getTotalAlbumsCounts(userId : string; optionsAgent : IOptionsAgent; verbosity : boolean): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;

@@ -40,7 +40,7 @@ type
 implementation
 
 uses
-  flickr.http.lib, xmlintf, flickr.rest;
+  flickr.http.lib, xmlintf, flickr.rest, flickr.xml.helper, StrUtils;
 
 { TPoolDetails }
 
@@ -65,10 +65,9 @@ var
   restricted_ok : boolean;
   has_geo : boolean;
 begin
-
-      urlGroups := TFlickrRest.New().getGroupInfo(apikey.text, base.Id, userToken, secret.text, userTokenSecret);
-      THttpRest.Post();
-
+    urlGroups := TFlickrRest.New(optionsAgent).getGroupInfo(base.Id);
+    THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
+    begin
       description := '';
       ThrottleCount := 0;
       ThrottleMode := '';
@@ -83,74 +82,57 @@ begin
       restricted_ok := false;
       has_geo := false;
 
-        IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
-        iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
+      IsModerated := TXMLHelper.new(iXMLRootNode.attributes['ispoolmoderated']).getBool;
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
 
-        while iXMLRootNode4 <> nil do
+      while iXMLRootNode4 <> nil do
+      begin
+        if iXMLRootNode4.NodeName = 'description' then
         begin
-          if iXMLRootNode4.NodeName = 'description' then
-          begin
-            try
-              description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-              description := AnsiLeftStr(description, 200);
-            except
-              log('');
-              log(base.Id);
-              log(description);
-              description := 'ERROR INVALID DESCRIPTION';
-            end;
+          try
+            description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+            description := AnsiLeftStr(description, 200);
+          except
+            description := 'ERROR INVALID DESCRIPTION';
           end;
-
-          if iXMLRootNode4.NodeName = 'throttle' then
-          begin
-            ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
-            ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
-            ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
-          end;
-
-          if iXMLRootNode4.NodeName = 'restrictions' then
-          begin
-            photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
-            videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
-            images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
-            screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
-            art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
-            safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
-            moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
-            restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
-            has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
-          end;
-          Application.ProcessMessages;
-          iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
-      except
-        log('');
-        log(base.Id);
-        log(response);
-        description := 'ERROR INVALID CHARACTERS';
-      end;
 
-      base.Description := description;
-      base.ThrottleCount := ThrottleCount;
-      base.ThrottleMode := ThrottleMode;
-      base.ThrottleRemaining := ThrottleRemaining;
-      base.photos_ok := photos_ok;
-      base.videos_ok := videos_ok;
-      base.images_ok := images_ok;
-      base.screens_ok := screens_ok;
-      base.art_ok := art_ok;
-      base.safe_ok := safe_ok;
-      base.moderate_ok := moderate_ok;
-      base.restricted_ok := restricted_ok;
-      base.has_geo := has_geo;
-    finally
-      IdIOHandler.Free;
-      IdHTTP.Free;
-      xmlDocument := nil;
-    end;
-  finally
-    CoUninitialize;
-  end;
+        if iXMLRootNode4.NodeName = 'throttle' then
+        begin
+          ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
+          ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
+          ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
+        end;
+
+        if iXMLRootNode4.NodeName = 'restrictions' then
+        begin
+          photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
+          videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
+          images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
+          screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
+          art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
+          safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
+          moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
+          restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
+          has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
+        end;
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      end;
+    end);
+
+    base.Description := description;
+    base.ThrottleCount := ThrottleCount;
+    base.ThrottleMode := ThrottleMode;
+    base.ThrottleRemaining := ThrottleRemaining;
+    base.photos_ok := photos_ok;
+    base.videos_ok := videos_ok;
+    base.images_ok := images_ok;
+    base.screens_ok := screens_ok;
+    base.art_ok := art_ok;
+    base.safe_ok := safe_ok;
+    base.moderate_ok := moderate_ok;
+    base.restricted_ok := restricted_ok;
+    base.has_geo := has_geo;
 end;
 
 end.
