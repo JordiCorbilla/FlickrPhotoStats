@@ -4593,96 +4593,71 @@ var
   Series : TPieSeries;
   color : TColor;
   Item : TListItem;
+  threadExec : TThreadExec;
+  threads: array of TThreadExec;
 begin
   if chartAlbum.SeriesList.Count > 0 then
     chartAlbum.RemoveAllSeries;
 
   Series := flickrChart.GetNewPieSeries(chartAlbum, true);
 
-
   listPhotosUser.Visible := false;
   progressbar1.Visible := true;
   lvAlbums.Clear;
-  Application.ProcessMessages;
-  response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets('1', '500'));
-  XMLDocument1.LoadFromXML(response);
-  iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
-  iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-  iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
-  pages := iXMLRootNode3.attributes['pages'];
-  total := iXMLRootNode3.attributes['total'];
-  iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
-  numTotal := total.ToInteger();
-  progressbar1.Max := numTotal;
-  Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-  Taskbar1.ProgressMaxValue := numTotal;
-  progressbar1.position := 0;
-  totalViews := 0;
-  while iXMLRootNode4 <> nil do
-  begin
-    if iXMLRootNode4.NodeName = 'photoset' then
-    begin
-      photosetId := iXMLRootNode4.attributes['id'];
-      numPhotos := iXMLRootNode4.attributes['photos'];
-      countViews := iXMLRootNode4.attributes['count_views'];
-      iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
-      title := iXMLRootNode5.text;
-      totalViews := totalViews + countViews;
-    end;
-    progressbar1.position := progressbar1.position + 1;
 
-    Item := lvAlbums.Items.Add;
-    Item.Caption := photosetId;
-    Item.SubItems.Add(title);
-    Item.SubItems.Add(numPhotos.ToString());
-    Item.SubItems.Add(countViews.ToString());
-
-    //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
-    color := RGB(Random(255), Random(255), Random(255));
-    Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
-    Taskbar1.ProgressValue := progressbar1.position;
-    Application.ProcessMessages;
-    iXMLRootNode4 := iXMLRootNode4.NextSibling;
+  threadExec := TThreadExec.create();
+  try
+    threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '500');
+    threadExec.progressBar := progressbar1;
+    threadExec.taskBar := taskbar1;
+    threadExec.series := Series;
+    threadExec.lvAlbums := lvAlbums;
+    threadExec.Start;
+    threadExec.WaitFor;
+    pages := threadExec.pages;
+  finally
+    threadExec.Free;
   end;
 
   // Load the remaining pages
-  numPages := pages.ToInteger;
-  for i := 2 to numPages do
-  begin
-    response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'));
-    XMLDocument1.LoadFromXML(response);
-    iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
-    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
-    pages := iXMLRootNode3.attributes['pages'];
-    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
-    while iXMLRootNode4 <> nil do
-    begin
-      if iXMLRootNode4.NodeName = 'photoset' then
-      begin
-        photosetId := iXMLRootNode4.attributes['id'];
-        numPhotos := iXMLRootNode4.attributes['photos'];
-        countViews := iXMLRootNode4.attributes['count_views'];
-        iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
-        title := iXMLRootNode5.text;
-        totalViews := totalViews + countViews;
-      end;
-      progressbar1.position := progressbar1.position + 1;
-
-      Item := lvAlbums.Items.Add;
-      Item.Caption := photosetId;
-      Item.SubItems.Add(title);
-      Item.SubItems.Add(numPhotos.ToString());
-      Item.SubItems.Add(countViews.ToString());
-
-      //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
-      color := RGB(Random(255), Random(255), Random(255));
-      Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
-      Taskbar1.ProgressValue := progressbar1.position;
-      Application.ProcessMessages;
-      iXMLRootNode4 := iXMLRootNode4.NextSibling;
-    end;
-  end;
+//  numPages := pages.ToInteger;
+//  SetLength(threads, numPages - 1);
+//  for i := 2 to numPages do
+//  begin
+//    response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'));
+//    XMLDocument1.LoadFromXML(response);
+//    iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
+//    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
+//    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
+//    pages := iXMLRootNode3.attributes['pages'];
+//    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
+//    while iXMLRootNode4 <> nil do
+//    begin
+//      if iXMLRootNode4.NodeName = 'photoset' then
+//      begin
+//        photosetId := iXMLRootNode4.attributes['id'];
+//        numPhotos := iXMLRootNode4.attributes['photos'];
+//        countViews := iXMLRootNode4.attributes['count_views'];
+//        iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+//        title := iXMLRootNode5.text;
+//        totalViews := totalViews + countViews;
+//      end;
+//      progressbar1.position := progressbar1.position + 1;
+//
+//      Item := lvAlbums.Items.Add;
+//      Item.Caption := photosetId;
+//      Item.SubItems.Add(title);
+//      Item.SubItems.Add(numPhotos.ToString());
+//      Item.SubItems.Add(countViews.ToString());
+//
+//      //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
+//      color := RGB(Random(255), Random(255), Random(255));
+//      Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
+//      Taskbar1.ProgressValue := progressbar1.position;
+//      Application.ProcessMessages;
+//      iXMLRootNode4 := iXMLRootNode4.NextSibling;
+//    end;
+//  end;
 
   chartAlbum.AddSeries(Series);
 

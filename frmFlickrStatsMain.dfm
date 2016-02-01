@@ -631,7 +631,7 @@ object frmFlickrMain: TfrmFlickrMain
     end
     object Image5: TImage
       Left = 347
-      Top = 25
+      Top = 24
       Width = 23
       Height = 24
       Picture.Data = {
@@ -828,7 +828,7 @@ object frmFlickrMain: TfrmFlickrMain
     Top = 129
     Width = 1511
     Height = 725
-    ActivePage = TabSheet2
+    ActivePage = Dashboard
     Align = alClient
     TabOrder = 1
     object Dashboard: TTabSheet
