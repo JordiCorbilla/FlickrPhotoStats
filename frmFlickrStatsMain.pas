@@ -4582,7 +4582,8 @@ function TfrmFlickrMain.getTotalAlbumsCounts(): Integer;
 var
   response: string;
   iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
-  pages, total: string;
+  pages: string;
+  total : integer;
   numPages, numTotal: Integer;
   i: Integer;
   totalViews: Integer;
@@ -4595,6 +4596,7 @@ var
   Item : TListItem;
   threadExec : TThreadExec;
   threads: array of TThreadExec;
+  results : array of integer;
 begin
   if chartAlbum.SeriesList.Count > 0 then
     chartAlbum.RemoveAllSeries;
@@ -4612,16 +4614,43 @@ begin
     threadExec.taskBar := taskbar1;
     threadExec.series := Series;
     threadExec.lvAlbums := lvAlbums;
+    threadExec.Initialize := true;
     threadExec.Start;
     threadExec.WaitFor;
     pages := threadExec.pages;
+    total := threadExec.TotalViews;
   finally
     threadExec.Free;
   end;
 
   // Load the remaining pages
-//  numPages := pages.ToInteger;
-//  SetLength(threads, numPages - 1);
+  numPages := pages.ToInteger;
+  SetLength(threads, numPages - 1);
+  SetLength(results, numPages - 1);
+  for i := 2 to numPages do
+  begin
+    threads[i-2] := TThreadExec.create();
+    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '500');
+    threads[i-2].progressBar := progressbar1;
+    threads[i-2].taskBar := taskbar1;
+    threads[i-2].series := Series;
+    threads[i-2].lvAlbums := lvAlbums;
+    threads[i-2].Initialize := false;
+    threads[i-2].Start;
+  end;
+
+  for i := 2 to numPages do
+  begin
+    threads[i-2].WaitFor;
+  end;
+
+  for i := 2 to numPages do
+  begin
+    threads[i-2].Free;
+  end;
+
+
+
 //  for i := 2 to numPages do
 //  begin
 //    response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'));

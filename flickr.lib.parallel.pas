@@ -73,6 +73,7 @@ type
     Ftitle: string;
     FtotalViews: Integer;
     FPages: string;
+    FInitialize: boolean;
     procedure DoInitialize();
     procedure DoUpdate();
   protected
@@ -85,6 +86,8 @@ type
     property series : TPieSeries read FSeries write FSeries;
     property lvAlbums: TListView read FlvAlbums write FlvAlbums;
     property pages : string read FPages write FPages;
+    property Initialize : boolean read FInitialize write FInitialize;
+    property TotalViews : integer read FTotalViews write FTotalViews;
   end;
 
 implementation
@@ -226,11 +229,17 @@ begin
       numTotal: Integer;
     begin
       FPages := iXMLRootNode.attributes['pages'];
-      total := iXMLRootNode.attributes['total'];
+      if FInitialize then
+        total := iXMLRootNode.attributes['total'];
       iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>
-      numTotal := total.ToInteger();
-      FTotal := numTotal;
-      Synchronize(DoInitialize);
+
+      if FInitialize then
+      begin
+        numTotal := total.ToInteger();
+        FTotal := numTotal;
+        Synchronize(DoInitialize);
+      end;
+
       FtotalViews := 0;
       while iXMLRootNode4 <> nil do
       begin
