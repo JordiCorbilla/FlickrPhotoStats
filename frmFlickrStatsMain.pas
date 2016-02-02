@@ -4589,7 +4589,12 @@ var
   threadExec : TThreadExec;
   threads: array of TThreadExec;
   results : array of integer;
+  st : TStopWatch;
+const
+  maxAlbumsLoad = '30';
 begin
+  st := TStopWatch.Create;
+  st.Start;
   if chartAlbum.SeriesList.Count > 0 then
     chartAlbum.RemoveAllSeries;
 
@@ -4598,10 +4603,10 @@ begin
   listPhotosUser.Visible := false;
   progressbar1.Visible := true;
   lvAlbums.Clear;
-
+  application.ProcessMessages;
   threadExec := TThreadExec.create();
   try
-    threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '30');
+    threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', maxAlbumsLoad);
     threadExec.progressBar := progressbar1;
     threadExec.taskBar := taskbar1;
     threadExec.series := Series;
@@ -4623,7 +4628,7 @@ begin
   for i := 2 to numPages do
   begin
     threads[i-2] := TThreadExec.create();
-    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets(i.toString(), '30');
+    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets(i.toString(), maxAlbumsLoad);
     threads[i-2].progressBar := progressbar1;
     threads[i-2].taskBar := taskbar1;
     threads[i-2].series := Series;
@@ -4650,6 +4655,8 @@ begin
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
   LblTotalAlbum.Caption := 'Total views: ' + total.ToString() + ' in ' + lvAlbums.Items.Count.ToString + ' albums';
+  st.Stop;
+  log('Loading Albums: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
   Result := total;
 end;
 

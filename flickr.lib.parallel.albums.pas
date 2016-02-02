@@ -25,20 +25,10 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-program FlickrPhotoMigrationTool;
+unit flickr.lib.parallel.albums;
 
-uses
-  Vcl.Forms,
-  frmMigrationMain in 'frmMigrationMain.pas' {frmMigration},
-  Vcl.Themes,
-  Vcl.Styles;
+interface
 
-{$R *.res}
+implementation
 
-begin
-  Application.Initialize;
-  Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Carbon');
-  Application.CreateForm(TfrmMigration, frmMigration);
-  Application.Run;
 end.

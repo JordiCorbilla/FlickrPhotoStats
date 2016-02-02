@@ -124,7 +124,8 @@ contains
   flickr.album.categoriser in 'flickr.album.categoriser.pas',
   flickr.http.lib in 'flickr.http.lib.pas',
   flickr.pool.details in 'flickr.pool.details.pas',
-  flickr.lib.procedures in 'flickr.lib.procedures.pas';
+  flickr.lib.procedures in 'flickr.lib.procedures.pas',
+  flickr.lib.parallel.albums in 'flickr.lib.parallel.albums.pas';
 
 end.
 
