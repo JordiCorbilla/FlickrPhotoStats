@@ -4580,20 +4580,12 @@ end;
 
 function TfrmFlickrMain.getTotalAlbumsCounts(): Integer;
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4, iXMLRootNode5: IXMLNode;
   pages: string;
   total : integer;
-  numPages, numTotal: Integer;
+  numPages: Integer;
   i: Integer;
   totalViews: Integer;
-  photosetId: string;
-  title: string;
-  countViews: Integer;
-  numPhotos: Integer;
   Series : TPieSeries;
-  color : TColor;
-  Item : TListItem;
   threadExec : TThreadExec;
   threads: array of TThreadExec;
   results : array of integer;
@@ -4609,7 +4601,7 @@ begin
 
   threadExec := TThreadExec.create();
   try
-    threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '500');
+    threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '30');
     threadExec.progressBar := progressbar1;
     threadExec.taskBar := taskbar1;
     threadExec.series := Series;
@@ -4623,6 +4615,7 @@ begin
     threadExec.Free;
   end;
 
+  application.ProcessMessages;
   // Load the remaining pages
   numPages := pages.ToInteger;
   SetLength(threads, numPages - 1);
@@ -4630,7 +4623,7 @@ begin
   for i := 2 to numPages do
   begin
     threads[i-2] := TThreadExec.create();
-    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', '500');
+    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets(i.toString(), '30');
     threads[i-2].progressBar := progressbar1;
     threads[i-2].taskBar := taskbar1;
     threads[i-2].series := Series;
@@ -4642,59 +4635,22 @@ begin
   for i := 2 to numPages do
   begin
     threads[i-2].WaitFor;
+    application.ProcessMessages;
+    total := total + threads[i-2].TotalViews;
   end;
 
   for i := 2 to numPages do
   begin
     threads[i-2].Free;
   end;
-
-
-
-//  for i := 2 to numPages do
-//  begin
-//    response := IdHTTP1.Get(TFlickrRest.New(optionsAgent).getPhotoSets(i.ToString, '500'));
-//    XMLDocument1.LoadFromXML(response);
-//    iXMLRootNode := XMLDocument1.ChildNodes.first; // <xml>
-//    iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-//    iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photosets>
-//    pages := iXMLRootNode3.attributes['pages'];
-//    iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <photoset>
-//    while iXMLRootNode4 <> nil do
-//    begin
-//      if iXMLRootNode4.NodeName = 'photoset' then
-//      begin
-//        photosetId := iXMLRootNode4.attributes['id'];
-//        numPhotos := iXMLRootNode4.attributes['photos'];
-//        countViews := iXMLRootNode4.attributes['count_views'];
-//        iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
-//        title := iXMLRootNode5.text;
-//        totalViews := totalViews + countViews;
-//      end;
-//      progressbar1.position := progressbar1.position + 1;
-//
-//      Item := lvAlbums.Items.Add;
-//      Item.Caption := photosetId;
-//      Item.SubItems.Add(title);
-//      Item.SubItems.Add(numPhotos.ToString());
-//      Item.SubItems.Add(countViews.ToString());
-//
-//      //listAlbums.Lines.Add('Id: ' + photosetId + ' title: ' + title + ' Photos: ' + numPhotos.ToString() + ' Views: ' + countViews.ToString());
-//      color := RGB(Random(255), Random(255), Random(255));
-//      Series.Add(countViews.ToDouble, photosetId + '/' + title + '/' + numPhotos.ToString() + '/' + countViews.ToString(), color);
-//      Taskbar1.ProgressValue := progressbar1.position;
-//      Application.ProcessMessages;
-//      iXMLRootNode4 := iXMLRootNode4.NextSibling;
-//    end;
-//  end;
-
+  application.ProcessMessages;
   chartAlbum.AddSeries(Series);
 
   progressbar1.Visible := false;
   Taskbar1.ProgressValue := 0;
   listPhotosUser.Visible := true;
-  LblTotalAlbum.Caption := 'Total views: ' + totalViews.ToString();
-  Result := totalViews;
+  LblTotalAlbum.Caption := 'Total views: ' + total.ToString() + ' in ' + lvAlbums.Items.Count.ToString + ' albums';
+  Result := total;
 end;
 
 procedure TfrmFlickrMain.btnGetListClick(Sender: TObject);
