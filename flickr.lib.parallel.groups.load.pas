@@ -42,10 +42,6 @@ type
     FSeries : TPieSeries;
     FTotal : integer;
     FlvGroups : TListView;
-    FphotosetId: string;
-    FnumPhotos: Integer;
-    FcountViews: Integer;
-    Ftitle: string;
     FtotalViews: Integer;
     FPages: string;
     FInitialize: boolean;
@@ -74,19 +70,20 @@ type
 implementation
 
 uses
-  Windows, flickr.http.lib, xmlintf, flickr.rest;
+  Windows, flickr.http.lib, xmlintf, flickr.rest, flickr.list.comparer;
 
 { TParallelGroupLoad }
 
 constructor TParallelGroupLoad.Create;
 begin
   inherited Create(True);
+  FFilteredGroupList := TFilteredList.Create(tCompareRemaining);
   FreeOnTerminate := False;
 end;
 
 destructor TParallelGroupLoad.Destroy;
 begin
-
+  FFilteredGroupList := nil;
   inherited;
 end;
 
@@ -109,14 +106,10 @@ procedure TParallelGroupLoad.Execute;
 begin
   THttpRest.Post(FRestURL, procedure (iXMLRootNode : IXMLNode)
     var
-      iXMLRootNode4, iXMLRootNode5: IXMLNode;
+      iXMLRootNode4: IXMLNode;
       total: string;
-      numTotal, totalitems: Integer;
-      Item: TListItem;
-      pages, title, id, ismember: string;
-      numPages: Integer;
-      urlGroups: string;
-      i: Integer;
+      totalitems : string;
+      title, id, ismember: string;
       photos : string;
       members : string;
       base : IBase;
@@ -160,11 +153,7 @@ end;
 
 procedure TParallelGroupLoad.AddAdditionalGroupDetails(base : IBase);
 var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  urlGroups: string;
-  timedout: Boolean;
-  xmlDocument: IXMLDocument;
+  iXMLRootNode4: IXMLNode;
   description : string;
   IsModerated : boolean;
   ThrottleCount : integer;
@@ -206,7 +195,7 @@ begin
           begin
             try
               description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-              description := AnsiLeftStr(description, 200);
+              description := string(LeftStr(AnsiString(description), 200));
             except
 //              log('');
 //              log(base.Id);
