@@ -4607,7 +4607,6 @@ begin
   threadExec := TParallelAlbum.create();
   try
     threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', maxAlbumsLoad);
-    threadExec.Bag.Add('taskbar', taskbar1);
     threadExec.progressBar := progressbar1;
     threadExec.taskBar := taskbar1;
     threadExec.series := Series;

@@ -125,7 +125,8 @@ contains
   flickr.http.lib in 'flickr.http.lib.pas',
   flickr.pool.details in 'flickr.pool.details.pas',
   flickr.lib.procedures in 'flickr.lib.procedures.pas',
-  flickr.lib.parallel.albums in 'flickr.lib.parallel.albums.pas';
+  flickr.lib.parallel.albums in 'flickr.lib.parallel.albums.pas',
+  flickr.lib.parallel.groups.load in 'flickr.lib.parallel.groups.load.pas';
 
 end.
 

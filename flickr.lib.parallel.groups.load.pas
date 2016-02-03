@@ -25,7 +25,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-unit flickr.lib.parallel.albums;
+unit flickr.lib.parallel.groups.load;
 
 interface
 
@@ -33,14 +33,14 @@ uses
   Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics, generics.collections;
 
 type
-  TParallelAlbum = class(TThread)
+  TParallelGroupLoad = class(TThread)
   private
     FRestURL : String;
     FProgressbar : TProgressBar;
     FTaskBar : TTaskbar;
     FSeries : TPieSeries;
     FTotal : integer;
-    FlvAlbums : TListView;
+    FlvGroups : TListView;
     FphotosetId: string;
     FnumPhotos: Integer;
     FcountViews: Integer;
@@ -59,7 +59,7 @@ type
     property progressBar : TProgressBar read FProgressBar write FProgressBar;
     property taskBar : TTaskBar read FTaskBar write FTaskBar;
     property series : TPieSeries read FSeries write FSeries;
-    property lvAlbums: TListView read FlvAlbums write FlvAlbums;
+    property lvGroups: TListView read FlvGroups write FlvGroups;
     property pages : string read FPages write FPages;
     property Initialize : boolean read FInitialize write FInitialize;
     property TotalViews : integer read FTotalViews write FTotalViews;
@@ -70,80 +70,86 @@ implementation
 uses
   Windows, flickr.http.lib, xmlintf;
 
-{ TParallelAlbum }
+{ TParallelGroupLoad }
 
-constructor TParallelAlbum.Create;
+constructor TParallelGroupLoad.Create;
 begin
   inherited Create(True);
   FreeOnTerminate := False;
 end;
 
-destructor TParallelAlbum.Destroy;
+destructor TParallelGroupLoad.Destroy;
 begin
+
   inherited;
 end;
 
-procedure TParallelAlbum.DoInitialize;
+procedure TParallelGroupLoad.DoInitialize;
 begin
-  Fprogressbar.Max := FTotal;
-  FTaskBar.ProgressState := TTaskBarProgressState.Normal;
-  FTaskBar.ProgressMaxValue := FTotal;
+  FlvGroups.Clear;
+  FProgressbar.Max := FTotal;
+  FTaskbar.ProgressState := TTaskBarProgressState.Normal;
+  FTaskbar.ProgressMaxValue := FTotal;
   Fprogressbar.position := 0;
 end;
 
-procedure TParallelAlbum.DoUpdate;
-var
-  Item : TListItem;
-  color : TColor;
+procedure TParallelGroupLoad.DoUpdate;
 begin
   Fprogressbar.position := Fprogressbar.position + 1;
-  Item := FlvAlbums.Items.Add;
-  Item.Caption := FphotosetId;
-  Item.SubItems.Add(Ftitle);
-  Item.SubItems.Add(FnumPhotos.ToString());
-  Item.SubItems.Add(FcountViews.ToString());
-
-  color := RGB(Random(255), Random(255), Random(255));
-  FSeries.Add(FcountViews.ToDouble, FphotosetId + '/' + Ftitle + '/' + FnumPhotos.ToString() + '/' + FcountViews.ToString(), color);
   FTaskbar.ProgressValue := Fprogressbar.position;
 end;
 
-procedure TParallelAlbum.Execute;
+procedure TParallelGroupLoad.Execute;
 begin
   THttpRest.Post(FRestURL, procedure (iXMLRootNode : IXMLNode)
     var
       iXMLRootNode4, iXMLRootNode5: IXMLNode;
       total: string;
-      numTotal: Integer;
+      numTotal, totalitems: Integer;
+      Item: TListItem;
+      pages, title, id, ismember: string;
+      numPages: Integer;
+      urlGroups: string;
+      i: Integer;
+      photos : string;
+      members : string;
     begin
-      FPages := iXMLRootNode.attributes['pages'];
+      FPages := iXMLRootNode.attributes['page'];
       if FInitialize then
-        total := iXMLRootNode.attributes['total'];
-      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>
+      begin
+        total := iXMLRootNode.attributes['pages'];
+        totalitems := iXMLRootNode.attributes['total'];
+      end;
+
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
 
       if FInitialize then
       begin
-        numTotal := total.ToInteger();
-        FTotal := numTotal;
+        FTotal := totalitems.ToInteger();
         Synchronize(DoInitialize);
       end;
 
-      FtotalViews := 0;
       while iXMLRootNode4 <> nil do
       begin
-        if iXMLRootNode4.NodeName = 'photoset' then
+        if iXMLRootNode4.NodeName = 'group' then
         begin
-          FphotosetId := iXMLRootNode4.attributes['id'];
-          FnumPhotos := iXMLRootNode4.attributes['photos'];
-          FcountViews := iXMLRootNode4.attributes['count_views'];
-          iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
-          Ftitle := iXMLRootNode5.text;
-          FtotalViews := FtotalViews + FcountViews;
+          id := iXMLRootNode4.attributes['id'];
+          ismember := iXMLRootNode4.attributes['member'];
+          title := iXMLRootNode4.attributes['name'];
+          photos := iXMLRootNode4.attributes['photos'];
+          members := iXMLRootNode4.attributes['member_count'];
+          if ismember = '1' then
+          begin
+            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
+            AddAdditionalGroupDetails(base);
+            FilteredGroupList.Add(base);
+          end;
         end;
         Synchronize(DoUpdate);
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     end);
+
 end;
 
 end.
