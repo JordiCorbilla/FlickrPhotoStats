@@ -30,7 +30,8 @@ unit flickr.lib.parallel.groups.load;
 interface
 
 uses
-  Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics, generics.collections;
+  Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics, generics.collections,
+  flickr.base, flickr.lib.options.agent, flickr.xml.helper, System.AnsiStrings, flickr.filtered.list;
 
 type
   TParallelGroupLoad = class(TThread)
@@ -48,8 +49,11 @@ type
     FtotalViews: Integer;
     FPages: string;
     FInitialize: boolean;
+    FOptionsAgent : IOptionsAgent;
+    FFilteredGroupList : IFilteredList;
     procedure DoInitialize();
     procedure DoUpdate();
+    procedure AddAdditionalGroupDetails(base: IBase);
   protected
     procedure Execute; override;
   public
@@ -63,12 +67,14 @@ type
     property pages : string read FPages write FPages;
     property Initialize : boolean read FInitialize write FInitialize;
     property TotalViews : integer read FTotalViews write FTotalViews;
+    property OptionsAgent : IOptionsAgent read FOptionsAgent write FOptionsAgent;
+    property FilteredGroupList: IFilteredList read FFilteredGroupList write FFilteredGroupList;
   end;
 
 implementation
 
 uses
-  Windows, flickr.http.lib, xmlintf;
+  Windows, flickr.http.lib, xmlintf, flickr.rest;
 
 { TParallelGroupLoad }
 
@@ -113,6 +119,7 @@ begin
       i: Integer;
       photos : string;
       members : string;
+      base : IBase;
     begin
       FPages := iXMLRootNode.attributes['page'];
       if FInitialize then
@@ -142,14 +149,115 @@ begin
           begin
             base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
             AddAdditionalGroupDetails(base);
-            FilteredGroupList.Add(base);
+            FFilteredGroupList.Add(base);
           end;
         end;
         Synchronize(DoUpdate);
         iXMLRootNode4 := iXMLRootNode4.NextSibling;
       end;
     end);
-
 end;
+
+procedure TParallelGroupLoad.AddAdditionalGroupDetails(base : IBase);
+var
+  response: string;
+  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
+  urlGroups: string;
+  timedout: Boolean;
+  xmlDocument: IXMLDocument;
+  description : string;
+  IsModerated : boolean;
+  ThrottleCount : integer;
+  ThrottleMode : string;
+  ThrottleRemaining : integer;
+  photos_ok : boolean;
+  videos_ok : boolean;
+  images_ok : boolean;
+  screens_ok : boolean;
+  art_ok : boolean;
+  safe_ok : boolean;
+  moderate_ok : boolean;
+  restricted_ok : boolean;
+  has_geo : boolean;
+begin
+  THttpRest.Post(TFlickrRest.New(FoptionsAgent).getGroupInfo(base.Id), procedure (iXMLRootNode : IXMLNode)
+    begin
+      description := '';
+      ThrottleCount := 0;
+      ThrottleMode := '';
+      ThrottleRemaining := 0;
+      photos_ok := false;
+      videos_ok := false;
+      images_ok := false;
+      screens_ok := false;
+      art_ok := false;
+      safe_ok := false;
+      moderate_ok := false;
+      restricted_ok := false;
+      has_geo := false;
+
+      try
+        IsModerated := TXMLHelper.new(iXMLRootNode.attributes['ispoolmoderated']).getBool;
+        iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
+
+        while iXMLRootNode4 <> nil do
+        begin
+          if iXMLRootNode4.NodeName = 'description' then
+          begin
+            try
+              description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
+              description := AnsiLeftStr(description, 200);
+            except
+//              log('');
+//              log(base.Id);
+//              log(description);
+              description := 'ERROR INVALID DESCRIPTION';
+            end;
+          end;
+
+          if iXMLRootNode4.NodeName = 'throttle' then
+          begin
+            ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
+            ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
+            ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
+          end;
+
+          if iXMLRootNode4.NodeName = 'restrictions' then
+          begin
+            photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
+            videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
+            images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
+            screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
+            art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
+            safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
+            moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
+            restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
+            has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
+          end;
+          iXMLRootNode4 := iXMLRootNode4.NextSibling;
+        end;
+      except
+//          log('');
+//          log(base.Id);
+//          log(response);
+        description := 'ERROR INVALID CHARACTERS';
+      end;
+
+      base.Description := description;
+      base.ThrottleCount := ThrottleCount;
+      base.ThrottleMode := ThrottleMode;
+      base.ThrottleRemaining := ThrottleRemaining;
+      base.photos_ok := photos_ok;
+      base.videos_ok := videos_ok;
+      base.images_ok := images_ok;
+      base.screens_ok := screens_ok;
+      base.art_ok := art_ok;
+      base.safe_ok := safe_ok;
+      base.moderate_ok := moderate_ok;
+      base.restricted_ok := restricted_ok;
+      base.has_geo := has_geo;
+    end);
+end;
+
 
 end.
