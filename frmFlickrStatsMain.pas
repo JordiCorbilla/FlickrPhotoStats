@@ -672,7 +672,7 @@ uses
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
-  flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib;
+  flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib, flickr.lib.parallel.albums;
 
 {$R *.dfm}
 
@@ -4586,8 +4586,8 @@ var
   i: Integer;
   totalViews: Integer;
   Series : TPieSeries;
-  threadExec : TThreadExec;
-  threads: array of TThreadExec;
+  threadExec : TParallelAlbum;
+  threads: array of TParallelAlbum;
   results : array of integer;
   st : TStopWatch;
 const
@@ -4604,9 +4604,10 @@ begin
   progressbar1.Visible := true;
   lvAlbums.Clear;
   application.ProcessMessages;
-  threadExec := TThreadExec.create();
+  threadExec := TParallelAlbum.create();
   try
     threadExec.restUrl := TFlickrRest.New(optionsAgent).getPhotoSets('1', maxAlbumsLoad);
+    threadExec.Bag.Add('taskbar', taskbar1);
     threadExec.progressBar := progressbar1;
     threadExec.taskBar := taskbar1;
     threadExec.series := Series;
@@ -4627,7 +4628,7 @@ begin
   SetLength(results, numPages - 1);
   for i := 2 to numPages do
   begin
-    threads[i-2] := TThreadExec.create();
+    threads[i-2] := TParallelAlbum.create();
     threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getPhotoSets(i.toString(), maxAlbumsLoad);
     threads[i-2].progressBar := progressbar1;
     threads[i-2].taskBar := taskbar1;

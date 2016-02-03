@@ -29,6 +29,125 @@ unit flickr.lib.parallel.albums;
 
 interface
 
+uses
+  Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics, generics.collections;
+
+type
+  TParallelAlbum = class(TThread)
+  private
+    FRestURL : String;
+    FProgressbar : TProgressBar;
+    FTaskBar : TTaskbar;
+    FSeries : TPieSeries;
+    FTotal : integer;
+    FlvAlbums : TListView;
+    FphotosetId: string;
+    FnumPhotos: Integer;
+    FcountViews: Integer;
+    Ftitle: string;
+    FtotalViews: Integer;
+    FPages: string;
+    FInitialize: boolean;
+    FBag : TDictionary<string, TComponent>;
+    procedure DoInitialize();
+    procedure DoUpdate();
+  protected
+    procedure Execute; override;
+  public
+    constructor Create;
+    destructor Destroy(); override;
+    property restUrl : string read FRestUrl write FRestUrl;
+    property progressBar : TProgressBar read FProgressBar write FProgressBar;
+    property taskBar : TTaskBar read FTaskBar write FTaskBar;
+    property series : TPieSeries read FSeries write FSeries;
+    property lvAlbums: TListView read FlvAlbums write FlvAlbums;
+    property pages : string read FPages write FPages;
+    property Initialize : boolean read FInitialize write FInitialize;
+    property TotalViews : integer read FTotalViews write FTotalViews;
+    property Bag : TDictionary<string, TComponent> read FBag write FBag;
+  end;
+
 implementation
+
+uses
+  Windows, flickr.http.lib, xmlintf;
+
+{ TThreadExec }
+
+constructor TParallelAlbum.Create;
+begin
+  inherited Create(True);
+  FBag := TDictionary<string, TComponent>.create();
+  FreeOnTerminate := False;
+end;
+
+destructor TParallelAlbum.Destroy;
+begin
+  FBag.Free;
+  inherited;
+end;
+
+procedure TParallelAlbum.DoInitialize;
+begin
+  Fprogressbar.Max := FTotal;
+  FTaskbar.ProgressState := TTaskBarProgressState.Normal;
+  FTaskbar.ProgressMaxValue := FTotal;
+  Fprogressbar.position := 0;
+end;
+
+procedure TParallelAlbum.DoUpdate;
+var
+  Item : TListItem;
+  color : TColor;
+begin
+  Fprogressbar.position := Fprogressbar.position + 1;
+  Item := FlvAlbums.Items.Add;
+  Item.Caption := FphotosetId;
+  Item.SubItems.Add(Ftitle);
+  Item.SubItems.Add(FnumPhotos.ToString());
+  Item.SubItems.Add(FcountViews.ToString());
+
+  color := RGB(Random(255), Random(255), Random(255));
+  FSeries.Add(FcountViews.ToDouble, FphotosetId + '/' + Ftitle + '/' + FnumPhotos.ToString() + '/' + FcountViews.ToString(), color);
+  FTaskbar.ProgressValue := Fprogressbar.position;
+end;
+
+procedure TParallelAlbum.Execute;
+begin
+  THttpRest.Post(FRestURL, procedure (iXMLRootNode : IXMLNode)
+    var
+      iXMLRootNode4, iXMLRootNode5: IXMLNode;
+      total: string;
+      numTotal: Integer;
+    begin
+      FPages := iXMLRootNode.attributes['pages'];
+      if FInitialize then
+        total := iXMLRootNode.attributes['total'];
+      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <photoset>
+
+      if FInitialize then
+      begin
+        numTotal := total.ToInteger();
+        FTotal := numTotal;
+        Synchronize(DoInitialize);
+      end;
+
+      FtotalViews := 0;
+      while iXMLRootNode4 <> nil do
+      begin
+        if iXMLRootNode4.NodeName = 'photoset' then
+        begin
+          FphotosetId := iXMLRootNode4.attributes['id'];
+          FnumPhotos := iXMLRootNode4.attributes['photos'];
+          FcountViews := iXMLRootNode4.attributes['count_views'];
+          iXMLRootNode5 := iXMLRootNode4.ChildNodes.first;
+          Ftitle := iXMLRootNode5.text;
+          FtotalViews := FtotalViews + FcountViews;
+        end;
+        Synchronize(DoUpdate);
+        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+      end;
+    end);
+end;
 
 end.
