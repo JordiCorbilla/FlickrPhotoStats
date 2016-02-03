@@ -39,14 +39,12 @@ type
     FRestURL : String;
     FProgressbar : TProgressBar;
     FTaskBar : TTaskbar;
-    FSeries : TPieSeries;
     FTotal : integer;
     FlvGroups : TListView;
-    FtotalViews: Integer;
     FPages: string;
     FInitialize: boolean;
     FOptionsAgent : IOptionsAgent;
-    FFilteredGroupList : IFilteredList;
+    FFilteredGroupList : TList<IBase>;
     procedure DoInitialize();
     procedure DoUpdate();
     procedure AddAdditionalGroupDetails(base: IBase);
@@ -58,13 +56,11 @@ type
     property restUrl : string read FRestUrl write FRestUrl;
     property progressBar : TProgressBar read FProgressBar write FProgressBar;
     property taskBar : TTaskBar read FTaskBar write FTaskBar;
-    property series : TPieSeries read FSeries write FSeries;
     property lvGroups: TListView read FlvGroups write FlvGroups;
     property pages : string read FPages write FPages;
     property Initialize : boolean read FInitialize write FInitialize;
-    property TotalViews : integer read FTotalViews write FTotalViews;
     property OptionsAgent : IOptionsAgent read FOptionsAgent write FOptionsAgent;
-    property FilteredGroupList: IFilteredList read FFilteredGroupList write FFilteredGroupList;
+    property FilteredGroupList: TList<IBase> read FFilteredGroupList write FFilteredGroupList;
   end;
 
 implementation
@@ -77,13 +73,13 @@ uses
 constructor TParallelGroupLoad.Create;
 begin
   inherited Create(True);
-  FFilteredGroupList := TFilteredList.Create(tCompareRemaining);
+  FFilteredGroupList := TList<IBase>.create;
   FreeOnTerminate := False;
 end;
 
 destructor TParallelGroupLoad.Destroy;
 begin
-  FFilteredGroupList := nil;
+  FFilteredGroupList.free;
   inherited;
 end;
 
@@ -114,10 +110,9 @@ begin
       members : string;
       base : IBase;
     begin
-      FPages := iXMLRootNode.attributes['page'];
       if FInitialize then
       begin
-        total := iXMLRootNode.attributes['pages'];
+        FPages := iXMLRootNode.attributes['pages'];
         totalitems := iXMLRootNode.attributes['total'];
       end;
 

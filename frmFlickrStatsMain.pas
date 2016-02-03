@@ -672,7 +672,8 @@ uses
   flickr.lib.response, flickr.lib.logging, frmSplash, flickr.lib.email.html,
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
-  flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib, flickr.lib.parallel.albums;
+  flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib, flickr.lib.parallel.albums,
+  flickr.lib.parallel.groups.load;
 
 {$R *.dfm}
 
@@ -4269,6 +4270,7 @@ var
   members : string;
   comparer : TCompareType;
   base : IBase;
+  threadExec : TParallelGroupLoad;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -4305,43 +4307,62 @@ begin
   progressbar1.Visible := true;
   Application.ProcessMessages;
 
-  urlGroups := TFlickrRest.New(optionsAgent).getGroups('1', '500');
-  THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
-    begin
-      pages := iXMLRootNode.attributes['page'];
-      total := iXMLRootNode.attributes['pages'];
-      totalitems := iXMLRootNode.attributes['total'];
-      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
-      listGroups.Clear;
-      progressbar1.Max := totalitems.ToInteger();
-      Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-      Taskbar1.ProgressMaxValue := totalitems.ToInteger();
-      progressbar1.position := 0;
-      while iXMLRootNode4 <> nil do
-      begin
-        if iXMLRootNode4.NodeName = 'group' then
-        begin
-          id := iXMLRootNode4.attributes['id'];
-          ismember := iXMLRootNode4.attributes['member'];
-          title := iXMLRootNode4.attributes['name'];
-          photos := iXMLRootNode4.attributes['photos'];
-          members := iXMLRootNode4.attributes['member_count'];
-          if ismember = '1' then
-          begin
-            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
-            AddAdditionalGroupDetails(base);
-            FilteredGroupList.Add(base);
-          end;
-        end;
-        progressbar1.position := progressbar1.position + 1;
-        Taskbar1.ProgressValue := progressbar1.position;
-        Application.ProcessMessages;
-        iXMLRootNode4 := iXMLRootNode4.NextSibling;
-      end;
-    end);
+
+  threadExec := TParallelGroupLoad.create();
+  try
+    threadExec.restUrl := TFlickrRest.New(optionsAgent).getGroups('1', '10');
+    threadExec.OptionsAgent := optionsAgent;
+    threadExec.progressBar := progressbar1;
+    threadExec.taskBar := taskbar1;
+    threadExec.lvGroups := listGroups;
+    threadExec.Initialize := true;
+    threadExec.Start;
+    threadExec.WaitFor;
+    pages := threadExec.pages;
+    for i := 0 to threadExec.FilteredGroupList.count-1 do
+      FilteredGroupList.Add(threadExec.FilteredGroupList[i]);
+  finally
+    threadExec.Free;
+  end;
+
+
+//  urlGroups :=
+//  THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
+//    begin
+//      pages := iXMLRootNode.attributes['page'];
+//      total := iXMLRootNode.attributes['pages'];
+//      totalitems := iXMLRootNode.attributes['total'];
+//      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
+//      listGroups.Clear;
+//      progressbar1.Max := totalitems.ToInteger();
+//      Taskbar1.ProgressState := TTaskBarProgressState.Normal;
+//      Taskbar1.ProgressMaxValue := totalitems.ToInteger();
+//      progressbar1.position := 0;
+//      while iXMLRootNode4 <> nil do
+//      begin
+//        if iXMLRootNode4.NodeName = 'group' then
+//        begin
+//          id := iXMLRootNode4.attributes['id'];
+//          ismember := iXMLRootNode4.attributes['member'];
+//          title := iXMLRootNode4.attributes['name'];
+//          photos := iXMLRootNode4.attributes['photos'];
+//          members := iXMLRootNode4.attributes['member_count'];
+//          if ismember = '1' then
+//          begin
+//            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
+//            AddAdditionalGroupDetails(base);
+//            FilteredGroupList.Add(base);
+//          end;
+//        end;
+//        progressbar1.position := progressbar1.position + 1;
+//        Taskbar1.ProgressValue := progressbar1.position;
+//        Application.ProcessMessages;
+//        iXMLRootNode4 := iXMLRootNode4.NextSibling;
+//      end;
+//    end);
 
   // Load the remaining pages
-  numPages := total.ToInteger;
+  numPages := pages.ToInteger;
   for i := 2 to numPages do
   begin
     urlGroups := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '500');
