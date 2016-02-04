@@ -602,7 +602,6 @@ type
     procedure UpdateArrows(valueYesterday, valueToday: integer; rateYesterday, rateToday: double; arrow1, arrow2, arrow3, arrow4: TImage; label1 : TLabel);
     procedure UpdateRate(valueBeforeYesterday, valueYesterday, valueToday: integer; out rateYesterday, rateToday: double); overload;
     procedure UpdateRate(viewsYesterday, viewsToday, likesYesterday, likesToday : integer; out rateYesterday : double; out rateToday : double); overload;
-    procedure AddAdditionalGroupDetails(base: IBase);
     procedure UpdateListGroupsThrottleRemaining(base: IBase);
     procedure OpenPhotosAlbum(value: string);
     procedure OpenPhotosAlbumId(photoSetId : string; title : string; PhotosCount : string);
@@ -4260,16 +4259,11 @@ end;
 procedure TfrmFlickrMain.btnGetGroupsClick(Sender: TObject);
 var
   Item: TListItem;
-  iXMLRootNode4: IXMLNode;
-  pages, title, id, ismember, total, totalitems: string;
+  pages: string;
   numPages: Integer;
-  urlGroups: string;
   i, j: Integer;
   st : TStopWatch;
-  photos : string;
-  members : string;
   comparer : TCompareType;
-  base : IBase;
   threadExec : TParallelGroupLoad;
   threads: array of TParallelGroupLoad;
 begin
@@ -4307,10 +4301,11 @@ begin
   listGroups.Visible := false;
   progressbar1.Visible := true;
   Application.ProcessMessages;
-
+  st := TStopWatch.Create;
+  st.Start;
   threadExec := TParallelGroupLoad.create();
   try
-    threadExec.restUrl := TFlickrRest.New(optionsAgent).getGroups('1', '10');
+    threadExec.restUrl := TFlickrRest.New(optionsAgent).getGroups('1', '100');
     threadExec.OptionsAgent := optionsAgent;
     threadExec.progressBar := progressbar1;
     threadExec.taskBar := taskbar1;
@@ -4331,7 +4326,7 @@ begin
   for i := 2 to numPages do
   begin
     threads[i-2] := TParallelGroupLoad.create();
-    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '10');
+    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '100');
     threads[i-2].OptionsAgent := optionsAgent;
     threads[i-2].progressBar := progressbar1;
     threads[i-2].taskBar := taskbar1;
@@ -4352,6 +4347,8 @@ begin
   begin
     threads[i-2].Free;
   end;
+  st.Stop;
+  log('loading groups in ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
   Application.ProcessMessages;
   // Add items to the listview
   st := TStopWatch.Create;
@@ -4407,147 +4404,6 @@ begin
   showMessage('Flickr groups have been loaded');
 end;
 
-procedure TfrmFlickrMain.AddAdditionalGroupDetails(base : IBase);
-var
-  response: string;
-  iXMLRootNode, iXMLRootNode2, iXMLRootNode3, iXMLRootNode4: IXMLNode;
-  urlGroups: string;
-  timedout: Boolean;
-  xmlDocument: IXMLDocument;
-  description : string;
-  IsModerated : boolean;
-  ThrottleCount : integer;
-  ThrottleMode : string;
-  ThrottleRemaining : integer;
-  photos_ok : boolean;
-  videos_ok : boolean;
-  images_ok : boolean;
-  screens_ok : boolean;
-  art_ok : boolean;
-  safe_ok : boolean;
-  moderate_ok : boolean;
-  restricted_ok : boolean;
-  has_geo : boolean;
-  IdHTTP: TIdHTTP;
-  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
-begin
-  CoInitialize(nil);
-  try
-    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-    xmlDocument := TXMLDocument.Create(nil);
-    IdHTTP := TIdHTTP.Create(nil);
-    try
-      IdHTTP.IOHandler := IdIOHandler;
-      urlGroups := TFlickrRest.New(optionsAgent).getGroupInfo(base.Id);
-      timedout := false;
-      while (not timedout) do
-      begin
-        try
-          response := IdHTTP.Get(urlGroups);
-          timedout := true;
-        except
-          on e: exception do //'EIdHTTPProtocolException'
-          begin
-            sleep(timeout);
-            TLogger.LogFile('reading groups first iteration: ' + e.Message);
-            application.ProcessMessages;
-            timedout := false;
-          end;
-        end;
-      end;
-
-      description := '';
-      ThrottleCount := 0;
-      ThrottleMode := '';
-      ThrottleRemaining := 0;
-      photos_ok := false;
-      videos_ok := false;
-      images_ok := false;
-      screens_ok := false;
-      art_ok := false;
-      safe_ok := false;
-      moderate_ok := false;
-      restricted_ok := false;
-      has_geo := false;
-
-      try
-        response := response.Replace('’', ''); //found in one of the xml's
-        xmlDocument.LoadFromXML(response);
-        iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
-        iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
-        iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <groups>
-        IsModerated := TXMLHelper.new(iXMLRootNode3.attributes['ispoolmoderated']).getBool;
-        iXMLRootNode4 := iXMLRootNode3.ChildNodes.first; // <group>
-
-        while iXMLRootNode4 <> nil do
-        begin
-          if iXMLRootNode4.NodeName = 'description' then
-          begin
-            try
-              description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
-              description := AnsiLeftStr(description, 200);
-            except
-              log('');
-              log(base.Id);
-              log(description);
-              description := 'ERROR INVALID DESCRIPTION';
-            end;
-          end;
-
-          if iXMLRootNode4.NodeName = 'throttle' then
-          begin
-            ThrottleCount := TXMLHelper.new(iXMLRootNode4.attributes['count']).getInt;
-            ThrottleMode := TXMLHelper.new(iXMLRootNode4.attributes['mode']).getString;
-            ThrottleRemaining := TXMLHelper.new(iXMLRootNode4.attributes['remaining']).getInt;
-          end;
-
-          if iXMLRootNode4.NodeName = 'restrictions' then
-          begin
-            photos_ok := TXMLHelper.new(iXMLRootNode4.attributes['photos_ok']).getBool;
-            videos_ok := TXMLHelper.new(iXMLRootNode4.attributes['videos_ok']).getBool;
-            images_ok := TXMLHelper.new(iXMLRootNode4.attributes['images_ok']).getBool;
-            screens_ok := TXMLHelper.new(iXMLRootNode4.attributes['screens_ok']).getBool;
-            art_ok := TXMLHelper.new(iXMLRootNode4.attributes['art_ok']).getBool;
-            safe_ok := TXMLHelper.new(iXMLRootNode4.attributes['safe_ok']).getBool;
-            moderate_ok := TXMLHelper.new(iXMLRootNode4.attributes['moderate_ok']).getBool;
-            restricted_ok := TXMLHelper.new(iXMLRootNode4.attributes['restricted_ok']).getBool;
-            has_geo := TXMLHelper.new(iXMLRootNode4.attributes['has_geo']).getBool;
-          end;
-          Application.ProcessMessages;
-          iXMLRootNode4 := iXMLRootNode4.NextSibling;
-        end;
-      except
-        log('');
-        log(base.Id);
-        log(response);
-        description := 'ERROR INVALID CHARACTERS';
-      end;
-
-      base.Description := description;
-      base.ThrottleCount := ThrottleCount;
-      base.ThrottleMode := ThrottleMode;
-      base.ThrottleRemaining := ThrottleRemaining;
-      base.photos_ok := photos_ok;
-      base.videos_ok := videos_ok;
-      base.images_ok := images_ok;
-      base.screens_ok := screens_ok;
-      base.art_ok := art_ok;
-      base.safe_ok := safe_ok;
-      base.moderate_ok := moderate_ok;
-      base.restricted_ok := restricted_ok;
-      base.has_geo := has_geo;
-    finally
-      IdIOHandler.Free;
-      IdHTTP.Free;
-      xmlDocument := nil;
-    end;
-  finally
-    CoUninitialize;
-  end;
-end;
-
 procedure TfrmFlickrMain.btnGetGroupsMouseEnter(Sender: TObject);
 begin
   ShowHint('Reload the groups you belong from Flickr.', Sender);
@@ -4564,7 +4420,6 @@ var
   total : integer;
   numPages: Integer;
   i: Integer;
-  totalViews: Integer;
   Series : TPieSeries;
   threadExec : TParallelAlbum;
   threads: array of TParallelAlbum;

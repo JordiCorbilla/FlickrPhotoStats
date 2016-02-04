@@ -103,7 +103,6 @@ begin
   THttpRest.Post(FRestURL, procedure (iXMLRootNode : IXMLNode)
     var
       iXMLRootNode4: IXMLNode;
-      total: string;
       totalitems : string;
       title, id, ismember: string;
       photos : string;

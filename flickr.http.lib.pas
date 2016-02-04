@@ -91,6 +91,11 @@ begin
         end;
       end;
       response := response.Replace('’', ''); //found in one of the xml's
+      //response := response.Replace('''#$A''', '');
+      //response := response.Replace('&gt;', '');
+      //response := response.Replace('&lt;', '');
+      //response := response.Replace('gt;', '');
+      //response := response.Replace('lt;', '');
       if responseFilter then
       begin
         if response.Contains('<rsp stat="ok">') then
