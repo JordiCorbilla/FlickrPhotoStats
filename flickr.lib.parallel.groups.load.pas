@@ -192,9 +192,6 @@ begin
               description := TXMLHelper.new(iXMLRootNode4.NodeValue).getString;
               description := string(LeftStr(AnsiString(description), 200));
             except
-//              log('');
-//              log(base.Id);
-//              log(description);
               description := 'ERROR INVALID DESCRIPTION';
             end;
           end;
@@ -221,9 +218,6 @@ begin
           iXMLRootNode4 := iXMLRootNode4.NextSibling;
         end;
       except
-//          log('');
-//          log(base.Id);
-//          log(response);
         description := 'ERROR INVALID CHARACTERS';
       end;
 

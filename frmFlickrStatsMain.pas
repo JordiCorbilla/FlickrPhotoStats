@@ -4264,13 +4264,14 @@ var
   pages, title, id, ismember, total, totalitems: string;
   numPages: Integer;
   urlGroups: string;
-  i: Integer;
+  i, j: Integer;
   st : TStopWatch;
   photos : string;
   members : string;
   comparer : TCompareType;
   base : IBase;
   threadExec : TParallelGroupLoad;
+  threads: array of TParallelGroupLoad;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -4307,7 +4308,6 @@ begin
   progressbar1.Visible := true;
   Application.ProcessMessages;
 
-
   threadExec := TParallelGroupLoad.create();
   try
     threadExec.restUrl := TFlickrRest.New(optionsAgent).getGroups('1', '10');
@@ -4324,76 +4324,35 @@ begin
   finally
     threadExec.Free;
   end;
-
-
-//  urlGroups :=
-//  THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
-//    begin
-//      pages := iXMLRootNode.attributes['page'];
-//      total := iXMLRootNode.attributes['pages'];
-//      totalitems := iXMLRootNode.attributes['total'];
-//      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
-//      listGroups.Clear;
-//      progressbar1.Max := totalitems.ToInteger();
-//      Taskbar1.ProgressState := TTaskBarProgressState.Normal;
-//      Taskbar1.ProgressMaxValue := totalitems.ToInteger();
-//      progressbar1.position := 0;
-//      while iXMLRootNode4 <> nil do
-//      begin
-//        if iXMLRootNode4.NodeName = 'group' then
-//        begin
-//          id := iXMLRootNode4.attributes['id'];
-//          ismember := iXMLRootNode4.attributes['member'];
-//          title := iXMLRootNode4.attributes['name'];
-//          photos := iXMLRootNode4.attributes['photos'];
-//          members := iXMLRootNode4.attributes['member_count'];
-//          if ismember = '1' then
-//          begin
-//            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
-//            AddAdditionalGroupDetails(base);
-//            FilteredGroupList.Add(base);
-//          end;
-//        end;
-//        progressbar1.position := progressbar1.position + 1;
-//        Taskbar1.ProgressValue := progressbar1.position;
-//        Application.ProcessMessages;
-//        iXMLRootNode4 := iXMLRootNode4.NextSibling;
-//      end;
-//    end);
-
+  Application.ProcessMessages;
   // Load the remaining pages
   numPages := pages.ToInteger;
+  SetLength(threads, numPages - 1);
   for i := 2 to numPages do
   begin
-    urlGroups := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '500');
-    THttpRest.Post(urlGroups, procedure (iXMLRootNode : IXMLNode)
-    begin
-      pages := iXMLRootNode.attributes['page'];
-      iXMLRootNode4 := iXMLRootNode.ChildNodes.first; // <group>
-      while iXMLRootNode4 <> nil do
-      begin
-        if iXMLRootNode4.NodeName = 'group' then
-        begin
-          id := iXMLRootNode4.attributes['id'];
-          ismember := iXMLRootNode4.attributes['member'];
-          title := iXMLRootNode4.attributes['name'];
-          photos := iXMLRootNode4.attributes['photos'];
-          members := iXMLRootNode4.attributes['member_count'];
-          if ismember = '1' then
-          begin
-            base := TBase.New(id, title, StrToInt(photos), StrToInt(members));
-            AddAdditionalGroupDetails(base);
-            FilteredGroupList.Add(base);
-          end;
-        end;
-        progressbar1.position := progressbar1.position + 1;
-        Taskbar1.ProgressValue := progressbar1.position;
-        Application.ProcessMessages;
-        iXMLRootNode4 := iXMLRootNode4.NextSibling;
-      end;
-    end);
+    threads[i-2] := TParallelGroupLoad.create();
+    threads[i-2].restUrl := TFlickrRest.New(optionsAgent).getGroups(i.ToString, '10');
+    threads[i-2].OptionsAgent := optionsAgent;
+    threads[i-2].progressBar := progressbar1;
+    threads[i-2].taskBar := taskbar1;
+    threads[i-2].lvGroups := listGroups;
+    threads[i-2].Initialize := false;
+    threads[i-2].Start;
   end;
-
+  Application.ProcessMessages;
+  for i := 2 to numPages do
+  begin
+    threads[i-2].WaitFor;
+    application.ProcessMessages;
+    for j := 0 to threads[i-2].FilteredGroupList.count-1 do
+      FilteredGroupList.Add(threads[i-2].FilteredGroupList[j]);
+  end;
+  Application.ProcessMessages;
+  for i := 2 to numPages do
+  begin
+    threads[i-2].Free;
+  end;
+  Application.ProcessMessages;
   // Add items to the listview
   st := TStopWatch.Create;
   FilteredGroupList.sort;
