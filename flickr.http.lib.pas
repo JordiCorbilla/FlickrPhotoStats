@@ -46,7 +46,7 @@ type
 implementation
 
 uses
-  SysUtils, flickr.lib.response;
+  SysUtils, flickr.lib.response, flickr.lib.logging;
 
 { THttpRest }
 
@@ -63,6 +63,8 @@ var
   IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
   xmlDocument: IXMLDocument;
   timedout: Boolean;
+  initialResponse : string;
+  i: Integer;
 begin
   CoInitialize(nil);
   try
@@ -90,12 +92,26 @@ begin
           end;
         end;
       end;
-      response := response.Replace('’', ''); //found in one of the xml's
-      //response := response.Replace('''#$A''', '');
-      //response := response.Replace('&gt;', '');
-      //response := response.Replace('&lt;', '');
-      //response := response.Replace('gt;', '');
-      //response := response.Replace('lt;', '');
+      //found in one of the xml
+      initialResponse := response;
+      response := response.Replace('’', '');
+      for i := 0 to 31 do
+        response := response.Replace(Char(i), '');
+      //response := response.Replace(Char(10), '');
+      //response := response.Replace(Char(9), '');
+      response := response.Replace('&gt;', '');
+      response := response.Replace('&lt;', '');
+      response := response.Replace('gt;', '');
+      response := response.Replace('lt;', '');
+      response := response.Replace('“', '');
+      response := response.Replace('”', '');
+      response := response.Replace('/B&amp;', '');
+      response := response.Replace('B&amp;', '');
+      response := response.Replace('/b&amp;', '');
+      response := response.Replace('b&amp;', '');
+      response := response.Replace('&amp;', '');
+
+      // found in the xml
       if responseFilter then
       begin
         if response.Contains('<rsp stat="ok">') then
@@ -109,7 +125,12 @@ begin
       end
       else
       begin
-        xmlDocument.LoadFromXML(response);
+        try
+          xmlDocument.LoadFromXML(response);
+        except
+          TLogger.LogFile(initialResponse);
+          TLogger.LogFile(response);
+        end;
         iXMLRootNode := xmlDocument.ChildNodes.first; // <xml>
         iXMLRootNode2 := iXMLRootNode.NextSibling; // <rsp>
         iXMLRootNode3 := iXMLRootNode2.ChildNodes.first; // <photo>
