@@ -4338,7 +4338,7 @@ begin
   for i := 2 to numPages do
   begin
     threads[i-2].WaitFor;
-    application.ProcessMessages;
+    //application.ProcessMessages;
     for j := 0 to threads[i-2].FilteredGroupList.count-1 do
       FilteredGroupList.Add(threads[i-2].FilteredGroupList[j]);
   end;
