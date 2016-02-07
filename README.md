@@ -1,11 +1,11 @@
 FlickrPhotoStats
 ================
 
-Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API.
+Flickr Photo stats provides you with the ability to request information from your Flickr stream using the Web REST API. This tool does not need a PRO account to run against. It will keep track of your stats locally overtime.
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1k-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![Stable Release](https://img.shields.io/badge/version-4.6.0.1rc-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly)
+[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Stable Release](https://img.shields.io/badge/version-4.8.0.1rc-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
@@ -57,11 +57,19 @@ Code convention:
  
 Use **Batch Update** to easily update all the values and keep a good track record of your flickr stream.
 
+Version 4.8.0.2 (Beta): *Note: this is still under development.
+- [FlickrPhotoStats(x64) v4.8.0.2](https://app.box.com/s/mrotr9368pw70d2aly84kouo9v4d72th).
+ 
+Version 4.8.0.1 (RC stable):
+- [FlickrPhotoStats(x64) v4.8.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
+
+## Older versions:
+
 Version 4.6 (RC):
 - [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
 
-Version 4.7 (Beta - latest development):
-- [FlickrPhotoStats(x64) v4.7.0.1](https://app.box.com/s/azjzckh6782o57159h7hpb2hmyqcejgh).
+Version 4.7 (RC):
+- [FlickrPhotoStats(x64) v4.7.0.1](https://app.box.com/s/9v3z1s1fu1wouipmlcfhfklda59qgzmb).
 
 Older versions can be found here: [Archive](https://github.com/JordiCorbilla/FlickrPhotoStats/tree/v4.6.0.1).
 
@@ -108,6 +116,22 @@ Older versions can be found here: [Archive](https://github.com/JordiCorbilla/Fli
 - Data Backup in zip format.
 - Trend upgrade.
 
+### Features for version 4.8.0.1:
+- Consolidation of bug fixes from 4.7 version.
+- Performance improvements.
+- Parse.com integration.
+
+### Features for version 4.8.0.2:
+- Reduction of memory and time footprint:
+   Memory Footprint    before    after    % reduction 
+     Load             768 Mb     25 Mb    97 %
+     Save             768 Mb     25 Mb    97 %
+
+   Time Footprint      before    after    % reduction 
+     Load             135551 ms  178 ms  100 %
+     Save             115745 ms  135 ms  100 %
+- Multi-threaded approach to increase performance. Reduction of 99% of the time.
+
 Source code is available here.
 
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
@@ -126,6 +150,13 @@ Developed with Delphi XE6 and C# and using [OpenSSL](https://www.openssl.org/) l
 ### Version 4.6:
 - Automatic backup.
 - Saving the history independently.
+
+### Version 4.7:
+- Stable and highly functional release.
+- Pool and album handling.
+
+### Version 4.8:
+- Memory and CPU performance.
 
 ### Version 5:
 - Saving the repository in a SQL DB (MySQL, SQL Server).
