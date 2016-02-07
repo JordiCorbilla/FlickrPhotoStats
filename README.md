@@ -63,7 +63,7 @@ Version 4.8.0.2 (Beta): *Note: this is still under development.
 Version 4.8.0.1 (RC stable):
 - [FlickrPhotoStats(x64) v4.8.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
 
-## Older versions:
+### Older versions:
 
 Version 4.6 (RC):
 - [FlickrPhotoStats(x64) v4.6.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
