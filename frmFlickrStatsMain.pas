@@ -3525,15 +3525,11 @@ begin
     batchUpdate.Enabled := false;
     PageControl3.ActivePage := tabStatus;
     for i := 0 to listPhotos.Items.Count - 1 do
-    begin
       if listPhotos.Items[i].Checked then
         photos.Add(listPhotos.Items[i].Caption);
-    end;
     for i := 0 to listGroups.Items.Count - 1 do
-    begin
       if listGroups.Items[i].Checked then
         groups.Add(listGroups.Items[i].Caption);
-    end;
 
     // add photos to the groups
     progressbar1.Visible := true;
@@ -4881,8 +4877,22 @@ begin
 
     Sheet.Cells[1, 1] := 'Id';
     Sheet.Cells[1, 2] := 'Title';
-    Sheet.Cells[1, 2] := 'Photos';
-    Sheet.Cells[1, 2] := 'Members';
+    Sheet.Cells[1, 3] := 'Photos';
+    Sheet.Cells[1, 4] := 'Members';
+    Sheet.Cells[1, 5] := 'Description';
+    Sheet.Cells[1, 6] := 'Moderated';
+    Sheet.Cells[1, 7] := 'Count';
+    Sheet.Cells[1, 8] := 'Mode';
+    Sheet.Cells[1, 9] := 'Remaining';
+    Sheet.Cells[1, 10] := 'PhotosOK';
+    Sheet.Cells[1, 11] := 'VideosOK';
+    Sheet.Cells[1, 12] := 'ImgOK';
+    Sheet.Cells[1, 13] := 'ScreenOK';
+    Sheet.Cells[1, 14] := 'ArtOK';
+    Sheet.Cells[1, 15] := 'SafeOK';
+    Sheet.Cells[1, 16] := 'ModerateOK';
+    Sheet.Cells[1, 17] := 'RestrictedOK';
+    Sheet.Cells[1, 18] := 'Geo';
 
     Row := 2;
     for i := 0 to AView.Items.Count - 1 do
@@ -4891,6 +4901,20 @@ begin
       Sheet.Cells[Row, 2] := AView.Items.Item[i].SubItems[0];
       Sheet.Cells[Row, 3] := AView.Items.Item[i].SubItems[1];
       Sheet.Cells[Row, 4] := AView.Items.Item[i].SubItems[2];
+      Sheet.Cells[Row, 5] := AView.Items.Item[i].SubItems[3];
+      Sheet.Cells[Row, 6] := AView.Items.Item[i].SubItems[4];
+      Sheet.Cells[Row, 7] := AView.Items.Item[i].SubItems[5];
+      Sheet.Cells[Row, 8] := AView.Items.Item[i].SubItems[6];
+      Sheet.Cells[Row, 9] := AView.Items.Item[i].SubItems[7];
+      Sheet.Cells[Row, 10] := AView.Items.Item[i].SubItems[8];
+      Sheet.Cells[Row, 11] := AView.Items.Item[i].SubItems[9];
+      Sheet.Cells[Row, 12] := AView.Items.Item[i].SubItems[10];
+      Sheet.Cells[Row, 13] := AView.Items.Item[i].SubItems[11];
+      Sheet.Cells[Row, 14] := AView.Items.Item[i].SubItems[12];
+      Sheet.Cells[Row, 15] := AView.Items.Item[i].SubItems[13];
+      Sheet.Cells[Row, 16] := AView.Items.Item[i].SubItems[14];
+      Sheet.Cells[Row, 17] := AView.Items.Item[i].SubItems[15];
+      Sheet.Cells[Row, 18] := AView.Items.Item[i].SubItems[16];
       inc(Row);
     end;
 

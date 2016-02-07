@@ -3716,6 +3716,7 @@ object frmFlickrMain: TfrmFlickrMain
                 ViewStyle = vsReport
                 OnCustomDrawItem = listGroupsCustomDrawItem
                 OnItemChecked = listGroupsItemChecked
+                ExplicitLeft = 11
               end
             end
             object tabStatus: TTabSheet
@@ -5611,7 +5612,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001940210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED0020019C0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
