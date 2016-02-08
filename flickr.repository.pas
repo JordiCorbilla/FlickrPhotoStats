@@ -279,7 +279,9 @@ var
 begin
   p := GetPhoto(photo);
   resPhoto := p;
+  p.LoadGroups;
   result := p.InGroup(groupid);
+  p.UnloadGroups;
 end;
 
 procedure TFlickrRepository.Load(FileName: string);

@@ -120,6 +120,7 @@ type
     procedure SaveStats();
     procedure SaveGroups();
     procedure SaveAlbums();
+    procedure UnloadGroups();
     procedure SaveNewFinal(iNode: IXMLNode);
   end;
 
@@ -222,6 +223,7 @@ type
     procedure Load(iNode: IXMLNode);
     procedure LoadStats();
     procedure LoadGroups();
+    procedure UnloadGroups();
     procedure LoadAlbums();
     procedure SaveGroups();
     procedure SaveAlbums();
@@ -911,6 +913,11 @@ end;
 procedure TPhoto.SetUserTracking(const Value: IUserTracking);
 begin
   FUserTracking := Value;
+end;
+
+procedure TPhoto.UnloadGroups;
+begin
+  FGroups.Clear;
 end;
 
 end.

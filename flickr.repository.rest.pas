@@ -107,7 +107,9 @@ begin
   photoGroups := repository.GetPhoto(id);
   if photoGroups <> nil then
   begin
+    photoGroups.LoadGroups;
     Groups := photoGroups.Groups;
+    photoGroups.LoadAlbums;
     Albums := photoGroups.Albums;
   end
   else
