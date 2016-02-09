@@ -31,7 +31,7 @@ interface
 
 uses
   Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics, generics.collections,
-  flickr.lib.options.agent, flickr.photos, flickr.tracker;
+  flickr.lib.options.agent, flickr.photos, flickr.tracker, flickr.stats;
 
 type
   TParallelPhotos = class(TThread)
@@ -42,6 +42,7 @@ type
     FPhotoRepository : IPhoto;
     FUpdateCollections : Boolean;
     FWorkspace : string;
+    FStat : IStat;
   protected
     procedure Execute; override;
   public
@@ -51,12 +52,13 @@ type
     property PhotoRepository : IPhoto read FPhotoRepository write FPhotoRepository;
     property UpdateCollections : Boolean read FUpdateCollections write FUpdateCollections;
     property Workspace : string read FWorkspace write FWorkspace;
+    property Stat: IStat read FStat write FStat;
   end;
 
 implementation
 
 uses
-  Windows, flickr.http.lib, xmlintf, flickr.albums.list, flickr.pools.list, flickr.stats, flickr.rest;
+  Windows, flickr.http.lib, xmlintf, flickr.albums.list, flickr.pools.list, flickr.rest;
 
 { TParallelPhotos }
 
@@ -65,7 +67,7 @@ var
   Item, itemExisting: TListItem;
   iXMLRootNode4, iXMLRootNode5: IXMLNode;
   views, title, likes, comments, taken: string;
-  stat: IStat;
+
   photo, existing: IPhoto;
   Albums: TAlbumList;
   Groups: TPoolList;
@@ -107,7 +109,7 @@ begin
       likes := iXMLRootNode.attributes['total'];
     end);
 
-    stat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
+    FStat := TStat.Create(Date, StrToInt(views), StrToInt(likes), StrToInt(comments));
 
     photoGroups := FPhotoRepository;
     if photoGroups <> nil then
@@ -140,90 +142,6 @@ begin
     end;
 
     TTracking.TrackPhoto(FWorkspace, id, '1', '50', FOptionsAgent);
-
-    if repository.ExistPhoto(id, existing) then
-    begin
-      photo := existing;
-
-      if organicStat <> nil then
-      begin
-        if photo.getTotalViewsDay() >= views.ToInteger() then
-          organicStat.negativeViews := organicStat.negativeViews + 1
-        else
-          organicStat.positiveViews := organicStat.positiveViews + 1;
-
-        if photo.getTotalLikesDay() > likes.ToInteger() then
-          organicStat.lostLikes := organicStat.lostLikes + 1
-        else if photo.getTotalLikesDay() = likes.ToInteger() then
-          organicStat.negativeLikes := organicStat.negativeLikes + 1
-        else
-          organicStat.positiveLikes := organicStat.positiveLikes + 1;
-
-        if photo.getTotalCommentsDay() > comments.ToInteger() then
-          organicStat.lostComments := organicStat.lostComments + 1
-        else if photo.getTotalCommentsDay() = comments.ToInteger() then
-          organicStat.negativeComments := organicStat.negativeComments + 1
-        else
-          organicStat.positiveComments := organicStat.positiveComments + 1;
-
-        organicStat.TotalGroups := repository.getTotalSpreadGroups();
-      end;
-
-      photo.Title := title; //replace the title as it changes
-      photo.Taken := taken;
-      photo.tags := tags;
-      photo.AddStats(stat, albums, groups);
-      photo.LastUpdate := Date;
-    end
-    else
-    begin
-      photo.AddStats(stat, albums, groups);
-      photo.LastUpdate := Date;
-      repository.AddPhoto(photo);
-    end;
-
-    if not ExistPhotoInList(id, itemExisting) then
-    begin
-      Item := frmFlickrMain.listPhotos.Items.Add;
-      Item.Caption := frmFlickrMain.photoId.text;
-      Item.SubItems.Add(title);
-      Item.SubItems.Add(views);
-      Item.SubItems.Add(likes);
-      Item.SubItems.Add(comments);
-      Item.SubItems.Add(DateToStr(Date));
-      if views = '0' then
-        views := '1';
-      Item.SubItems.Add(taken);
-      Item.SubItems.Add(photo.TotalAlbums.ToString());
-      Item.SubItems.Add(photo.TotalGroups.ToString());
-      Item.SubItems.Add(tags);
-      Item.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
-      Item.SubItems.Add(photo.banned.ToString());
-      Item.SubItems.Add(photo.getTrend.ToString());
-      Item.SubItems.Add(photo.OmitGroups);
-    end
-    else
-    begin
-      itemExisting.Caption := id;
-      itemExisting.SubItems.Clear;
-      itemExisting.SubItems.Add(title);
-      itemExisting.SubItems.Add(views);
-      itemExisting.SubItems.Add(likes);
-      itemExisting.SubItems.Add(comments);
-      itemExisting.SubItems.Add(DateToStr(Date));
-      if views = '0' then
-        views := '1';
-      itemExisting.SubItems.Add(taken);
-      itemExisting.SubItems.Add(photo.TotalAlbums.ToString());
-      itemExisting.SubItems.Add(photo.TotalGroups.ToString());
-      itemExisting.SubItems.Add(tags);
-      itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
-      itemExisting.SubItems.Add(photo.banned.ToString());
-      itemExisting.SubItems.Add(photo.getTrend.ToString());
-      itemExisting.SubItems.Add(photo.OmitGroups);
-    end;
-    if chkRealTime.Checked then
-      UpdateTotals(true);
 end;
 
 end.
