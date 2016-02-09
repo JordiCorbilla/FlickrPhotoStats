@@ -73,6 +73,19 @@ Version 4.7 (RC):
 
 Older versions can be found here: [Archive](https://github.com/JordiCorbilla/FlickrPhotoStats/tree/v4.6.0.1).
 
+### Usage of the Flickr API
+
+You can create an instance of ParseServer, and mount it on a new or existing Express website:
+
+```Delphi
+   //TFlickrRest exposes the methods of the Flickr API.
+   //THTTPRest exposes a REST approach with XML format
+   THttpRest.Post(TFlickrRest.New(optionsAgent).getInfo(id), procedure (iXMLRootNode : IXMLNode)
+    begin
+      views := iXMLRootNode.attributes['views'];
+    end);
+```
+
 ## Changelog
 ### Features for version 3.1:
 - Get the total list of photos using flickr.people.getPhotos for automatic population of the application.
