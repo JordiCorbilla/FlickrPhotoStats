@@ -58,7 +58,7 @@ type
 implementation
 
 uses
-  Windows, flickr.http.lib, xmlintf, flickr.albums.list, flickr.pools.list, flickr.rest;
+  Windows, flickr.http.lib, xmlintf, flickr.albums.list, flickr.pools.list, flickr.rest, flickr.albums, flickr.pools;
 
 { TParallelPhotos }
 
