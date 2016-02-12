@@ -64,11 +64,10 @@ uses
 
 procedure TParallelPhotos.Execute;
 var
-  Item, itemExisting: TListItem;
   iXMLRootNode4, iXMLRootNode5: IXMLNode;
   views, title, likes, comments, taken: string;
 
-  photo, existing: IPhoto;
+  photo: IPhoto;
   Albums: TAlbumList;
   Groups: TPoolList;
   tags : string;

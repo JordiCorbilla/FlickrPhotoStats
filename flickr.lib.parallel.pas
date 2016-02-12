@@ -30,7 +30,7 @@ unit flickr.lib.parallel;
 interface
 
 uses
-  Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, graphics;
+  Classes, SysUtils, System.SyncObjs, Vcl.ComCtrls, vcl.taskbar, VCLtee.series, System.Win.taskbarcore, vcl.graphics;
 
 type
   TParallelProc = reference to procedure(index: Integer; ThreadID: Integer);
