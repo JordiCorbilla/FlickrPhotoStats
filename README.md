@@ -5,7 +5,7 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Stable Release](https://img.shields.io/badge/version-4.8.0.1rc-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Delphi version](https://img.shields.io/badge/delphi-xe6-red.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u)
+[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Stable Release](https://img.shields.io/badge/version-4.8.0.1rc-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Delphi version](https://img.shields.io/badge/delphi-10Seattle-red.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
