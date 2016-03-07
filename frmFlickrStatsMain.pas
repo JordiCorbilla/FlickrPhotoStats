@@ -5498,6 +5498,7 @@ var
   poolHistogram : TPoolHistogram;
   histogram :  TList<IItem>;
   acc : integer;
+  accDate : TDateTime;
 begin
   if (Item.Checked) and (not chkAddItem.Checked) then
   begin
@@ -5546,7 +5547,8 @@ begin
       for i := 0 to histogram.Count-1 do
       begin
         acc := acc + histogram[i].count;
-        SeriesPool.AddXY(histogram[i].date, acc, '', colour);
+        accDate := histogram[i].date;
+        SeriesPool.AddXY(accDate, acc, '', colour);
       end;
       histogram.Free;
       poolHistogram.Free;
