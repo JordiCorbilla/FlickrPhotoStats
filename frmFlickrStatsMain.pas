@@ -44,12 +44,13 @@ uses
   flickr.organic.stats, flickr.lib.options.agent, flickr.rejected, flickr.lib.utils,
   frmAuthentication, frmSetup, frmChart, flickr.pools.list, flickr.list.comparer,
   flickr.lib.options, flickr.albums.list, flickr.lib.folder, flickr.repository.rest,
-  MetropolisUI.Tile, Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
+  Vcl.Imaging.pngimage, System.zip, DateUtils, flickr.lib.rates,
   flickr.base, flickr.tracker, Vcl.DBCtrls, Data.DB, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS,
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
-  FireDAC.Phys.MSSQL, FireDAC.Comp.Client, FireDAC.Comp.DataSet, flickr.album.categoriser;
+  FireDAC.Phys.MSSQL, FireDAC.Comp.Client, FireDAC.Comp.DataSet, flickr.album.categoriser,
+  System.ImageList;
 
 type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
@@ -334,7 +335,6 @@ type
     Label36: TLabel;
     btnDeleteProfile: TButton;
     Label37: TLabel;
-    LiveTile1: TLiveTile;
     chkShowButtonHint: TCheckBox;
     LineSeries3: TAreaSeries;
     dailyViews: TChart;

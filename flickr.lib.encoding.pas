@@ -38,7 +38,7 @@ type
 implementation
 
 uses
-  Soap.EncdDecd, SysUtils;
+  Soap.EncdDecd, SysUtils, NetEncoding;
 
 { THelper }
 
