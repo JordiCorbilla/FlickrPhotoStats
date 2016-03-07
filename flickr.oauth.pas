@@ -72,7 +72,7 @@ const
 implementation
 
 uses
-   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, flickr.signature;
+   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, flickr.signature, NetEncoding;
 
 { TOauth }
 
@@ -116,7 +116,7 @@ var
 begin
   baseURL := 'https://www.flickr.com/services/oauth/request_token';
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := OAuthCallbackKey+'=' + OAuthCallback;
   paramURL := paramURL + '&'+OAuthConsumerKeyKey+'=' + GetApiKey();
@@ -125,7 +125,7 @@ begin
   paramURL := paramURL + '&'+OAuthTimestampKey+'=' + timeStamp;
   paramURL := paramURL + '&'+OAuthVersionKey+'=' + OAuthVersion;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
@@ -139,7 +139,7 @@ begin
   //oauth_timestamp%3D1420675285%26
   //oauth_version%3D1.0'
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(GetSecret())));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(GetSecret()));
   TokenSecret := ''; //First time is empty
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;

@@ -74,7 +74,7 @@ const
 implementation
 
 uses
-   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, flickr.signature;
+   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, flickr.signature, NetEncoding;
 
 { TAccessToken }
 
@@ -110,7 +110,7 @@ begin
 
   baseURL := 'https://www.flickr.com/services/oauth/access_token';
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := OAuthConsumerKey+'=' + GetOauth_consumer_key;
   paramURL := paramURL + '&'+OAuthNonceKey+'=' + TSignature.getOAuthNonce(timeStamp);
@@ -120,7 +120,7 @@ begin
   paramURL := paramURL + '&'+OAuthVerifierKey+'=' + GetOauth_verifier;
   paramURL := paramURL + '&'+OAuthVersionKey+'=' + OAuthVersion;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
@@ -135,8 +135,8 @@ begin
   //oauth_verifier=5d1b96a26b494074
   //oauth_version%3D1.0'
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(GetConsumerSecret())));
-  TokenSecret := String(HTTPEncode(AnsiString(GetTokenSecret())));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(GetConsumerSecret()));
+  TokenSecret := String(TNetEncoding.URL.Encode(GetTokenSecret()));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 

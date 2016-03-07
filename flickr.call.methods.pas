@@ -53,7 +53,7 @@ type
 implementation
 
 uses
-  flickr.signature, HTTPApp;
+  flickr.signature, HTTPApp, NetEncoding;
 
 { TCallMethod }
 
@@ -76,7 +76,7 @@ begin
 
   baseURL := 'https://api.flickr.com/services/rest';
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=' + method;
@@ -87,15 +87,15 @@ begin
   paramURL := paramURL + '&oauth_token=' + Fauth_token;
   paramURL := paramURL + '&oauth_version=1.0';
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(Fsecret)));
-  TokenSecret := String(HTTPEncode(AnsiString(Ftoken_secret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(Fsecret));
+  TokenSecret := String(TNetEncoding.URL.Encode(Ftoken_secret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -125,7 +125,7 @@ begin
 
   baseURL := 'https://api.flickr.com/services/rest';
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=' + method;
@@ -140,15 +140,15 @@ begin
     paramURL := paramURL + '&' + keys + '=' + params.Items[keys];
   end;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(Fsecret)));
-  TokenSecret := String(HTTPEncode(AnsiString(Ftoken_secret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(Fsecret));
+  TokenSecret := String(TNetEncoding.URL.Encode(Ftoken_secret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 

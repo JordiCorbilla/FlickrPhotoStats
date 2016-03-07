@@ -30,7 +30,7 @@ unit flickr.signature;
 interface
 
 uses
-   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, SysUtils, IdGlobal;
+   IdHash, IdHMAC, IdHMACSHA1, Windows, IdHashMessageDigest, IdCoderMIME, IdURI, HTTPApp, SysUtils, IdGlobal, NetEncoding;
 
 type
   TSignature = class(TObject)
@@ -87,7 +87,7 @@ end;
 
 class function TSignature.Base64Encode(const Input: TIdBytes): string;
 begin
-  result := String(HTTPEncode(AnsiString(TIdEncoderMIME.EncodeBytes(Input))));
+  result := String(TNetEncoding.URL.Encode(TIdEncoderMIME.EncodeBytes(Input)));
 end;
 
 class function TSignature.EncryptHMACSha1(Input, AKey: string): TIdBytes;

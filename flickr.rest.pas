@@ -80,7 +80,7 @@ const
 implementation
 
 uses
-  flickr.signature, HTTPApp, flickr.call.methods, generics.collections, SysUtils;
+  flickr.signature, HTTPApp, flickr.call.methods, generics.collections, SysUtils, NetEncoding;
 
 { TFlickrRest }
 
@@ -120,7 +120,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.contacts.getList';
@@ -131,15 +131,15 @@ begin
   paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -173,7 +173,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   groupId := groupId.Replace('@', '%40');
@@ -186,15 +186,15 @@ begin
   paramURL := paramURL + '&oauth_token=' + FOptionsAgent.userToken;
   paramURL := paramURL + '&oauth_version=1.0';
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -301,7 +301,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   photosetId := photosetId.Replace('@', '%40');
@@ -315,15 +315,15 @@ begin
   paramURL := paramURL + '&photo_id=' + photoId;
   paramURL := paramURL + '&photoset_id=' + photosetId;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -354,7 +354,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   photosetId := photosetId.Replace('@', '%40');
@@ -370,15 +370,15 @@ begin
   paramURL := paramURL + '&page=' + page;
   paramURL := paramURL + '&user_id=' + FOptionsAgent.flickrUserId;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -411,7 +411,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   groupId := groupId.Replace('@', '%40');
@@ -425,15 +425,15 @@ begin
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -464,7 +464,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   groupId := groupId.Replace('@', '%40');
@@ -478,15 +478,15 @@ begin
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&photo_id=' + photoId;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -522,7 +522,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.photos.getFavorites';
@@ -536,15 +536,15 @@ begin
   paramURL := paramURL + '&per_page=' + per_page;
   paramURL := paramURL + '&page=' + page;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
@@ -576,7 +576,7 @@ begin
 
   baseURL := rootUrl;
 
-  baseURL := String(HTTPEncode(AnsiString(baseURL)));
+  baseURL := String(TNetEncoding.URL.Encode(baseURL));
   timeStamp := TSignature.getTimeStamp();
   paramURL := 'format=rest';
   paramURL := paramURL + '&method=flickr.people.getInfo';
@@ -588,15 +588,15 @@ begin
   paramURL := paramURL + '&oauth_version=1.0';
   paramURL := paramURL + '&user_id=' + user_id;
 
-  paramURL := String(HTTPEncode(AnsiString(paramURL)));
+  paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
   //Encode this to get the signature
   encodedURL := 'GET&' + baseURL + '&' + paramURL;
 
   //Example encoded URL:
 
-  ConsumerSecret := String(HTTPEncode(AnsiString(FOptionsAgent.Secret)));
-  TokenSecret := String(HTTPEncode(AnsiString(FOptionsAgent.userTokenSecret)));
+  ConsumerSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.Secret));
+  TokenSecret := String(TNetEncoding.URL.Encode(FOptionsAgent.userTokenSecret));
 
   ConsumerSecret := ConsumerSecret + '&' + TokenSecret;
 
