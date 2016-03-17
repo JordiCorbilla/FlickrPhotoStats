@@ -69,13 +69,14 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    Shape1: TShape;
     procedure FormResize(Sender: TObject);
   private
     { Private declarations }
   public
     repository: IFlickrRepository;
     optionsAgent : IOptionsAgent;
-    total : string;
+    totalFromAlbum : string;
     procedure LoadPhotos(photosetId : string);
   end;
 
@@ -200,7 +201,7 @@ begin
     LabelTodayViews.Caption :=  Format('%n',[totalViewsMark.ToDouble]).Replace('.00','');
     LabelTodayLikes.Caption :=  Format('%n',[totalLikesMark.ToDouble]).Replace('.00','');
     LabelTodayComments.Caption :=  Format('%n',[totalCommentsMark.ToDouble]).Replace('.00','');
-    valueTotal := total.toInteger();
+    valueTotal := totalFromAlbum.toInteger();
 
     Label2.Caption := Format('%n',[valueTotal.ToDouble]).Replace('.00','');
     valueTotal := valueTotal + totalViewsMark;

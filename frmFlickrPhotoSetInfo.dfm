@@ -381,6 +381,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
           Top = 10
           Width = 52
           Height = 16
+          Alignment = taRightJustify
           Caption = '999,999'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -407,6 +408,7 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
           Top = 27
           Width = 52
           Height = 16
+          Alignment = taRightJustify
           Caption = '999,999'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -416,11 +418,11 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
           ParentFont = False
         end
         object Label3: TLabel
-          Left = 90
-          Top = 42
-          Width = 115
+          Left = 168
+          Top = 47
+          Width = 37
           Height = 16
-          Caption = 'Total from Album:'
+          Caption = 'Total:'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -13
@@ -430,9 +432,10 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
         end
         object Label4: TLabel
           Left = 208
-          Top = 43
+          Top = 47
           Width = 52
           Height = 16
+          Alignment = taRightJustify
           Caption = '999,999'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -440,6 +443,12 @@ object frmFlickrPhotoSet: TfrmFlickrPhotoSet
           Font.Name = 'Tahoma'
           Font.Style = [fsBold]
           ParentFont = False
+        end
+        object Shape1: TShape
+          Left = 159
+          Top = 46
+          Width = 105
+          Height = 1
         end
       end
     end

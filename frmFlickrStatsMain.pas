@@ -3963,7 +3963,7 @@ begin
   try
     frmFlickrPhotoSet.repository := repository;
     frmFlickrPhotoSet.optionsAgent := optionsAgent;
-    frmFlickrPhotoSet.total := PhotosCount;
+    frmFlickrPhotoSet.totalFromAlbum := PhotosCount;
     frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
     frmFlickrPhotoSet.LoadPhotos(photoSetId);
     frmFlickrPhotoSet.ShowModal;
@@ -3978,7 +3978,7 @@ begin
   try
     frmFlickrPhotoSet.repository := repository;
     frmFlickrPhotoSet.optionsAgent := optionsAgent;
-    frmFlickrPhotoSet.total := PhotosCount;
+    frmFlickrPhotoSet.totalFromAlbum := PhotosCount;
     frmFlickrPhotoSet.Caption := 'PhotoSet info for ' + title;
     frmFlickrPhotoSet.LoadPhotos(photoSetId);
     frmFlickrPhotoSet.ShowModal;
