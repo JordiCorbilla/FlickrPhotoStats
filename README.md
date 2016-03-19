@@ -28,7 +28,7 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **New Dashboard (Windows 10 support) **:
 
-![](https://1.bp.blogspot.com/-zA1VpaRuKcA/Vu2GadESm9I/AAAAAAAAFRQ/E6wPisd-Si07PCjNgzHOnNtLfPJbRspPQ/s640/FlickrPhotoAnalytics482.png)
+![](https://1.bp.blogspot.com/-zA1VpaRuKcA/Vu2GadESm9I/AAAAAAAAFRQ/E6wPisd-Si07PCjNgzHOnNtLfPJbRspPQ/s1600/FlickrPhotoAnalytics482.png)
 
 **Dashboard**:
 
