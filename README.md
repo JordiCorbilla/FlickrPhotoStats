@@ -26,6 +26,10 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **Example of the app**:
 
+**New Dashboard (Windows 10 support) **:
+
+![](https://1.bp.blogspot.com/-zA1VpaRuKcA/Vu2GadESm9I/AAAAAAAAFRQ/E6wPisd-Si07PCjNgzHOnNtLfPJbRspPQ/s640/FlickrPhotoAnalytics482.png)
+
 **Dashboard**:
 
 ![](http://3.bp.blogspot.com/-fFx_AXjkKjk/VhkkWW1GF-I/AAAAAAAAFIE/aosoNiSmji0/s640/10102015Image.png)
