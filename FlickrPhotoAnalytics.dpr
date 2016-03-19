@@ -70,7 +70,7 @@ begin
   Application.Initialize;
   ReportMemoryLeaksOnShutdown := true;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Carbon');
+  TStyleManager.TrySetStyle('Windows10 Blue');
   Application.CreateForm(TfrmFlickrMain, frmFlickrMain);
   Application.Run;
 end.
