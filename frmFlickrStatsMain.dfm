@@ -3,7 +3,7 @@ object frmFlickrMain: TfrmFlickrMain
   Top = 0
   Caption = 'Flickr Photo Analytics v4.5'
   ClientHeight = 854
-  ClientWidth = 1511
+  ClientWidth = 1613
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -326,13 +326,14 @@ object frmFlickrMain: TfrmFlickrMain
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 1511
+    Width = 1613
     Height = 55
     Align = alTop
     TabOrder = 0
     OnDblClick = Label12DblClick
+    ExplicitWidth = 1511
     object TotalViewsLabel: TLabel
-      Left = 374
+      Left = 100
       Top = 5
       Width = 422
       Height = 16
@@ -423,21 +424,21 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Shape1: TShape
-      Left = 333
+      Left = 59
       Top = 8
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object Shape2: TShape
-      Left = 333
+      Left = 59
       Top = 27
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object totalLikesLabel: TLabel
-      Left = 374
+      Left = 100
       Top = 26
       Width = 265
       Height = 16
@@ -450,8 +451,8 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object TotalCommentsLabel: TLabel
-      Left = 698
-      Top = 26
+      Left = 634
+      Top = 5
       Width = 52
       Height = 16
       Caption = '999,999'
@@ -463,21 +464,21 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Shape3: TShape
-      Left = 659
-      Top = 29
+      Left = 595
+      Top = 8
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object Shape4: TShape
-      Left = 879
+      Left = 759
       Top = 9
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsLabel: TLabel
-      Left = 897
+      Left = 777
       Top = 5
       Width = 155
       Height = 16
@@ -490,8 +491,8 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object PhotosLabel: TLabel
-      Left = 808
-      Top = 26
+      Left = 634
+      Top = 27
       Width = 52
       Height = 16
       Caption = '999,999'
@@ -503,21 +504,21 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Shape5: TShape
-      Left = 769
-      Top = 29
+      Left = 595
+      Top = 30
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object Shape6: TShape
-      Left = 879
+      Left = 759
       Top = 29
       Width = 12
       Height = 12
       Brush.Color = clLime
     end
     object TotalGroupsRateLabel: TLabel
-      Left = 897
+      Left = 777
       Top = 26
       Width = 139
       Height = 16
@@ -530,8 +531,8 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object imagephoto: TImage
-      Left = 784
-      Top = 26
+      Left = 610
+      Top = 27
       Width = 16
       Height = 16
       AutoSize = True
@@ -575,7 +576,7 @@ object frmFlickrMain: TfrmFlickrMain
       ParentFont = False
     end
     object Image4: TImage
-      Left = 347
+      Left = 73
       Top = 6
       Width = 16
       Height = 16
@@ -598,7 +599,7 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Image5: TImage
-      Left = 347
+      Left = 73
       Top = 27
       Width = 16
       Height = 16
@@ -625,8 +626,8 @@ object frmFlickrMain: TfrmFlickrMain
       Transparent = True
     end
     object Image10: TImage
-      Left = 674
-      Top = 27
+      Left = 610
+      Top = 6
       Width = 16
       Height = 16
       Picture.Data = {
@@ -649,1217 +650,1078 @@ object frmFlickrMain: TfrmFlickrMain
       Proportional = True
       Transparent = True
     end
+    object Image6: TImage
+      Left = 7
+      Top = 8
+      Width = 32
+      Height = 32
+      AutoSize = True
+      Picture.Data = {
+        0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+        00200806000000737A7AF40000000467414D410000B18F0BFC61050000000662
+        4B4744000000000000F943BB7F000000097048597300000B1200000B1201D2DD
+        7EFC0000007D4944415478DAEDD7CB0D8040080450E8424BD2364CB62BCBF3D3
+        05B29A78F1E04164D88449B8EEBC84BDC0223210D1ACD3936F369D8915B002CA
+        6F440508A8FC4C3C006BFE2C7CF425203CE0EB277D7B2F01F101D6690F005F41
+        02E000EBB40780AF200170807512101FE09D1000E471BA57C048D779DE39972F
+        3AE500AEDA14143A21612F0000000049454E44AE426082}
+      OnClick = Image6Click
+    end
     object ProgressBar1: TProgressBar
       Left = 1
       Top = 50
-      Width = 1509
+      Width = 1611
       Height = 4
       Align = alBottom
       DoubleBuffered = False
       ParentDoubleBuffered = False
       Smooth = True
-      TabOrder = 4
-      Visible = False
-    end
-    object btnSave: TButton
-      Left = 55
-      Top = 6
-      Width = 50
-      Height = 38
-      Caption = 'Save'
-      Enabled = False
-      ImageAlignment = iaTop
-      ImageIndex = 221
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
       TabOrder = 0
-      OnClick = btnSaveClick
-      OnMouseEnter = btnSaveMouseEnter
-    end
-    object Authenticate: TButton
-      Left = 157
-      Top = 6
-      Width = 75
-      Height = 38
-      Caption = 'Authenticate'
-      ImageAlignment = iaTop
-      ImageIndex = 26
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
-      TabOrder = 1
-      OnClick = AuthenticateClick
-      OnMouseEnter = AuthenticateMouseEnter
-    end
-    object btnLoad: TButton
-      Left = 4
-      Top = 6
-      Width = 50
-      Height = 38
-      Caption = 'Open'
-      ImageAlignment = iaTop
-      ImageIndex = 58
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
-      TabOrder = 2
-      OnClick = btnLoadClick
-      OnMouseEnter = btnLoadMouseEnter
-    end
-    object btnAbout: TButton
-      Left = 233
-      Top = 6
-      Width = 47
-      Height = 38
-      Caption = 'About'
-      ImageAlignment = iaTop
-      ImageIndex = 3
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
-      TabOrder = 3
-      OnClick = btnAboutClick
-    end
-    object Button3: TButton
-      Left = 281
-      Top = 6
-      Width = 47
-      Height = 38
-      Caption = 'Help'
-      ImageAlignment = iaTop
-      ImageIndex = 157
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
-      TabOrder = 5
-      OnClick = Button3Click
-      OnMouseEnter = Button3MouseEnter
-    end
-    object btnBackup: TButton
-      Left = 106
-      Top = 6
-      Width = 50
-      Height = 38
-      Caption = 'Backup'
-      Enabled = False
-      ImageAlignment = iaTop
-      ImageIndex = 28
-      ImageMargins.Top = 5
-      ImageMargins.Bottom = -6
-      Images = ImageList1
-      TabOrder = 6
-      OnClick = backup1Click
-      OnMouseEnter = btnSaveMouseEnter
+      Visible = False
+      ExplicitWidth = 1509
     end
   end
-  object PageControl1: TPageControl
-    Left = 0
-    Top = 129
-    Width = 1511
-    Height = 725
-    ActivePage = Dashboard
+  object Panel31: TPanel
+    Left = 83
+    Top = 55
+    Width = 1530
+    Height = 799
     Align = alClient
     TabOrder = 1
-    object Dashboard: TTabSheet
-      Caption = 'Dashboard'
-      object Splitter6: TSplitter
-        Left = 0
-        Top = 216
-        Width = 1503
-        Height = 3
-        Cursor = crVSplit
-        Align = alTop
-        OnMoved = Splitter6Moved
-        ExplicitTop = 152
-        ExplicitWidth = 562
-      end
-      object Splitter7: TSplitter
-        Left = 793
-        Top = 219
-        Height = 478
-        ExplicitLeft = 816
-        ExplicitTop = 264
-        ExplicitHeight = 100
-      end
-      object Panel14: TPanel
-        Left = 0
-        Top = 219
-        Width = 793
-        Height = 478
+    ExplicitLeft = 96
+    ExplicitTop = 87
+    ExplicitWidth = 1114
+    ExplicitHeight = 66
+    object Panel9: TPanel
+      Left = 1
+      Top = 1
+      Width = 1528
+      Height = 74
+      Align = alTop
+      TabOrder = 0
+      ExplicitLeft = 2
+      ExplicitTop = 9
+      ExplicitWidth = 1509
+      object Panel24: TPanel
+        Left = 1
+        Top = 1
+        Width = 501
+        Height = 72
         Align = alLeft
-        Caption = 'Panel14'
         TabOrder = 0
-        object Splitter9: TSplitter
-          Left = 313
+        object Panel27: TPanel
+          Left = 22
           Top = 1
-          Height = 476
-          ExplicitLeft = 416
-          ExplicitTop = 176
-          ExplicitHeight = 100
-        end
-        object Splitter4: TSplitter
-          Left = 561
-          Top = 1
-          Height = 476
-          ExplicitLeft = 576
-          ExplicitTop = 200
-          ExplicitHeight = 100
-        end
-        object Panel17: TPanel
-          Left = 1
-          Top = 1
-          Width = 312
-          Height = 476
-          Align = alLeft
-          Caption = 'Panel17'
+          Width = 457
+          Height = 67
+          BevelOuter = bvNone
           TabOrder = 0
-          object Splitter5: TSplitter
-            Left = 1
-            Top = 209
-            Width = 310
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 271
-            ExplicitWidth = 338
+          object Image1: TImage
+            Left = 23
+            Top = 12
+            Width = 32
+            Height = 32
+            AutoSize = True
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+              0020080300000044A48AC60000000467414D410000B18F0BFC6105000000BD50
+              4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000
+              8AC5987E0000003D74524E53002A8ED7F8D60694FD9809BBBD952BFCDA520E8F
+              D810F90CF2F366F478EF350D3650F7FB40CE5C0FB8B95BE4F56F029176F1322C
+              9375CA6A1213E6E74A262E17AC00000001624B47440088051D48000000097048
+              597300000B1200000B1201D2DD7EFC000001404944415478DAD592ED4BC25014
+              C69FD36C41A430CB94A2A8A86451624685A3FEFA60F44209F62282985FECD526
+              48484EE6E9EE36749BC3BE053D30EEF3ECFC386CE71E824F24047298FDEF4656
+              253A94E68AA81B01A8D385A12FD9F63810CFFB1A5FF6C68004E5805BF10DCC7B
+              40993B61607E07A8D0BB7029D681878F30A018C05D5B5A6D17309D30B09805EE
+              2D69D3DB40F52D0C9C8AE72CC2FF2F20B315F8CDDA7310482BB41118549D9DD7
+              11309BA435F7349372D496E186065B5D0F586D1A5EBF8A934047D1BD64AE3424
+              B04ECB6E7C5AF25DF74F68F2A300363BE216F022B62D35ACB7064A3F23CE6AA2
+              46E98524D0262A43D5ABDECA652B3672CC1A60B5281F073EE946560EA8241666
+              9FAF652AF01CF0454733807D81281DAB408F6245A07F1E0914636E73FF58C372
+              6B7F054CD2EF80A14CAC0FE884A726D42DED1B97816DB9F36014B40000000049
+              454E44AE426082}
+            Transparent = True
           end
-          object Splitter10: TSplitter
-            Left = 1
-            Top = 353
-            Width = 310
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 413
-            ExplicitWidth = 196
+          object Label13: TLabel
+            Left = 73
+            Top = 4
+            Width = 73
+            Height = 16
+            Caption = 'Yesterday:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object Splitter26: TSplitter
-            Left = 1
-            Top = 449
-            Width = 310
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 561
-            ExplicitWidth = 80
+          object Label14: TLabel
+            Left = 102
+            Top = 26
+            Width = 44
+            Height = 16
+            Caption = 'Today:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object ChartViews: TChart
-            Left = 1
-            Top = 1
-            Width = 310
-            Height = 208
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Views')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            OnMouseDown = dailyViewsMouseDown
-            OnMouseUp = dailyViewsMouseUp
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 18
-            object LineSeries4: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object LabelTodayViews: TLabel
+            Left = 151
+            Top = 26
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object totalPhotos: TChart
-            Left = 1
-            Top = 452
-            Width = 310
-            Height = 23
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Photos')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alClient
-            Color = 13135884
-            TabOrder = 1
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries1: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object LabelYesterdayViews: TLabel
+            Left = 151
+            Top = 4
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object ChartLikes: TChart
-            Left = 1
-            Top = 212
-            Width = 310
-            Height = 141
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Likes')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 2
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries7: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object upgreen1: TImage
+            Left = 211
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
           end
-          object chartComments: TChart
-            Left = 1
-            Top = 356
-            Width = 310
-            Height = 93
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Comments')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 3
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries18: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object labelArrow1: TLabel
+            Left = 245
+            Top = 17
+            Width = 61
+            Height = 16
+            Caption = '+99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-        end
-        object Panel18: TPanel
-          Left = 316
-          Top = 1
-          Width = 245
-          Height = 476
-          Align = alLeft
-          Caption = 'Panel18'
-          TabOrder = 1
-          object Splitter11: TSplitter
-            Left = 1
-            Top = 145
-            Width = 243
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 249
-            ExplicitWidth = 360
+          object LabelViewsPhoto: TLabel
+            Left = 172
+            Top = 51
+            Width = 119
+            Height = 13
+            Caption = '999,999 views/photo'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object Splitter12: TSplitter
-            Left = 1
-            Top = 305
-            Width = 243
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 406
-            ExplicitWidth = 203
+          object Label16: TLabel
+            Left = 322
+            Top = 4
+            Width = 36
+            Height = 16
+            Caption = 'Rate:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object Splitter20: TSplitter
-            Left = 1
-            Top = 433
-            Width = 243
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 486
-            ExplicitWidth = 162
+          object LabelViewsYesterdayRate: TLabel
+            Left = 364
+            Top = 4
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object mostviewschart: TChart
-            Left = 1
-            Top = 148
-            Width = 243
-            Height = 157
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Most Viewed Pictures per day')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object BarSeries3: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
+          object LabelViewsTodayRate: TLabel
+            Left = 364
+            Top = 26
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
           end
-          object mostlikeschart: TChart
-            Left = 1
-            Top = 308
-            Width = 243
-            Height = 125
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Most Liked Pictures per day')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 1
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object BarSeries4: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
+          object upgreen11: TImage
+            Left = 424
+            Top = 5
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
           end
-          object executionTime: TChart
-            Left = 1
-            Top = 1
-            Width = 243
-            Height = 144
-            Border.Fill.Gradient.Balance = 53
-            Border.Fill.Gradient.Direction = gdBottomTop
-            Border.Fill.Gradient.EndColor = clNavy
-            Border.Fill.Gradient.MidColor = 16744576
-            Border.Fill.Gradient.StartColor = 16777088
-            Border.Fill.Gradient.Visible = True
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Execution time (min)')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            View3DWalls = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 2
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries3: TAreaSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              AreaChartBrush.Color = clGray
-              AreaChartBrush.BackColor = clDefault
-              DrawArea = True
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              Pointer.Visible = False
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object downred1: TImage
+            Left = 211
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
           end
-          object chartfollowing: TChart
-            Left = 1
-            Top = 436
-            Width = 243
-            Height = 39
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Contacts')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alClient
-            Color = 13135884
-            TabOrder = 3
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object BarSeries6: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-          end
-        end
-        object Panel20: TPanel
-          Left = 564
-          Top = 1
-          Width = 228
-          Height = 476
-          Align = alClient
-          Caption = 'Panel20'
-          TabOrder = 2
-          object Splitter15: TSplitter
-            Left = 1
-            Top = 145
-            Width = 226
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 217
-            ExplicitWidth = 392
-          end
-          object Splitter16: TSplitter
-            Left = 1
-            Top = 305
-            Width = 226
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 350
-            ExplicitWidth = 259
-          end
-          object Splitter19: TSplitter
-            Left = 1
-            Top = 433
-            Width = 226
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitLeft = 3
-            ExplicitTop = 474
-            ExplicitWidth = 280
-          end
-          object organicViews: TChart
-            Left = 1
-            Top = 1
-            Width = 226
-            Height = 144
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Organic Views (%)')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object Series7: THorizBarSeries
-              BarBrush.Gradient.Direction = gdLeftRight
-              BarBrush.Gradient.EndColor = 10708548
-              BarBrush.Gradient.Visible = True
-              Marks.Visible = False
-              Gradient.Direction = gdLeftRight
-              Gradient.EndColor = 10708548
-              Gradient.Visible = True
-              MultiBar = mbStacked100
-              XValues.Name = 'Bar'
-              XValues.Order = loNone
-              YValues.Name = 'Y'
-              YValues.Order = loAscending
-            end
-          end
-          object organicLikes: TChart
-            Left = 1
-            Top = 148
-            Width = 226
-            Height = 157
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Organic Likes (%)')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 1
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries5: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
-          end
-          object groupspread: TChart
-            Left = 1
-            Top = 436
-            Width = 226
-            Height = 39
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Group Spread')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alClient
-            Color = 13135884
-            TabOrder = 2
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries6: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
-          end
-          object organicComments: TChart
-            Left = 1
-            Top = 308
-            Width = 226
-            Height = 125
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Organic Comments (%)')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 3
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object LineSeries8: TLineSeries
-              Marks.Shadow.Color = 8487297
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              Brush.BackColor = clDefault
-              LinePen.Color = 10708548
-              Pointer.Brush.Gradient.EndColor = 10708548
-              Pointer.Gradient.EndColor = 10708548
-              Pointer.InflateMargins = True
-              Pointer.Style = psRectangle
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Y'
-              YValues.Order = loNone
-            end
+          object downred11: TImage
+            Left = 424
+            Top = 5
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
           end
         end
       end
-      object Panel15: TPanel
-        Left = 796
-        Top = 219
-        Width = 707
-        Height = 478
-        Align = alClient
-        Caption = 'Panel15'
+      object Panel25: TPanel
+        Left = 502
+        Top = 1
+        Width = 501
+        Height = 72
+        Align = alLeft
         TabOrder = 1
-        object Splitter8: TSplitter
-          Left = 529
+        object Panel28: TPanel
+          Left = 8
           Top = 1
+          Width = 463
+          Height = 67
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Image2: TImage
+            Left = 23
+            Top = 12
+            Width = 32
+            Height = 32
+            AutoSize = True
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+              0020080300000044A48AC60000000467414D410000B18F0BFC61050000013250
+              4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000002D6967480000006474524E
+              530001499BDCF9F4CD7D14DD30CAEF5A5955F58FF640FC949208DAAA3F0B0526
+              6EE9E7AB0765FE6417BB97F12A0F0E03E6044AE40211F8D44645D89A44F3CE88
+              502EB80AD31EEEB1A65489877B817EBD9896090DC4B9C0D9AFF766B09C7AFD4E
+              F24F292B9FA32778D100000001624B47440088051D4800000009704859730000
+              0B1200000B1201D2DD7EFC0000020E4944415478DA7592FF4B536114C69F4388
+              2C2B37105DC63233759ADE146D98ABA643FA362CD040512882FEAC8AFAA12808
+              A568D50F691A9A2886B6617E09591AD1B0C029D990C8D7F3BEBBEFDD9DDD0EEC
+              D939EFF3B9F73D3B3B040ED29196155C82236F9B457AFC29A05E65E0096DB216
+              EEF464CAC7624B016EEA868E817578BAAC6AF06F8A8122BA866C3CA74E5BF54C
+              FC242F45387B99E9A1431D0FEDC826F2C39C46F7D389366094969453FDB58FF5
+              916F51555522048C90FF2C303E6FBED27D9DE569CAAC6A82C018D5B6021373E6
+              515D0BCB64DCAC4E9E01DED36DCEA662BAAB53A73194D085119073A8E48BA667
+              F55963CA236674E1BBA881BB024ED1D4280179C51D3887F45493B3D38E7E7303
+              F0910206109F74045AEA80396AADE5F9AE3902C557814F14AC01163EA41D7C57
+              931F98279CAB0696DE3900E7AB80C53142A81278101CF9C76F1BBF097C1EE57D
+              68AF0062E9F81E3F4CE5C0F25BB9301D5406AC2663393E5DF0012BE28D5AB94B
+              CB3CCD6FAF72802BA5BC0515AF333B89CB4758BE476D7EE430CC671460788FB2
+              265F587E6709F4AD0A803750CCFA2391E9C3385EC4BAB66F1016802EF2B0A6BE
+              C83FA5F9989B755D0CC006A0DE5FC81ADDDC4241E410671B0BE6EFD600BCA183
+              ACBF08E2007FFF1E4E620F00A3DE65E5E9B835952C00EAA77C956C8B87D915B3
+              01C00DCA63FD43F7ED23CD99DFADD57224CAEEE1BF00C20C0CE79CEC025C3993
+              2E557226C40000000049454E44AE426082}
+          end
+          object Label12: TLabel
+            Left = 69
+            Top = 4
+            Width = 73
+            Height = 16
+            Caption = 'Yesterday:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelYesterdayLikes: TLabel
+            Left = 146
+            Top = 4
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label15: TLabel
+            Left = 96
+            Top = 25
+            Width = 44
+            Height = 16
+            Caption = 'Today:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelTodayLikes: TLabel
+            Left = 146
+            Top = 25
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object upgreen2: TImage
+            Left = 205
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object LabelArrow2: TLabel
+            Left = 237
+            Top = 17
+            Width = 61
+            Height = 16
+            Caption = '+99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelLikesPhoto: TLabel
+            Left = 199
+            Top = 51
+            Width = 106
+            Height = 13
+            Caption = '99,999 likes/photo'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label46: TLabel
+            Left = 325
+            Top = 4
+            Width = 36
+            Height = 16
+            Caption = 'Rate:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelLikesYesterdayRate: TLabel
+            Left = 367
+            Top = 4
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelLikesTodayRate: TLabel
+            Left = 367
+            Top = 25
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object downred22: TImage
+            Left = 428
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object downred2: TImage
+            Left = 205
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object upgreen22: TImage
+            Left = 428
+            Top = 4
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+        end
+      end
+      object Panel26: TPanel
+        Left = 1003
+        Top = 1
+        Width = 524
+        Height = 72
+        Align = alClient
+        TabOrder = 2
+        ExplicitWidth = 505
+        object Panel29: TPanel
+          Left = 22
+          Top = 1
+          Width = 441
+          Height = 67
+          BevelOuter = bvNone
+          TabOrder = 0
+          object Image3: TImage
+            Left = 13
+            Top = 12
+            Width = 32
+            Height = 32
+            AutoSize = True
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
+              0020080300000044A48AC60000000467414D410000B18F0BFC6105000000DE50
+              4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+              FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000
+              00F22757980000004874524E53002676BCE6F93FC20898FE12C60AC8BD662406
+              9BD740C00DC30F2F3881BBBE65BF23F7E422BA605D80B9822BDCD639FD1193DD
+              4399C40B28B213078B097FF64CC5FAE777EA56AB169F52932700000001624B47
+              440088051D48000000097048597300000B1200000B1201D2DD7EFC0000019249
+              44415478DA7D920B4B024110C767402592A0CC505333533333A4A2844482E841
+              1F59A908A494D24222E94124F620CB47844A6AD6367B9E79A79B7FB8BBD9DBDF
+              CCCECE0C822CE4DA94CC03C6D5F9DFFEE87003D43A64CD2E3084B80EBD8A3156
+              97013D8641A423569380110CF1658272284B1B06C62ADBDC88B30A07C657C94E
+              6141E53DC156E89D2C11A0D3D0F9E7F8DA13DFC496298F5613C1BC48FEDA97BE
+              0C2C5F14239DC7C9008163CF821CADEF14FA026D0B009947E12DEC7E804B9C9A
+              07B8CA0901870FE01A355B00375921E0F402ECA396EA7F5A16028620F5056766
+              018E2B0300970720CA8480DBCD8FF0B800EE6F8580D7C9939C9BA6367C08019F
+              03E001FD76A9A2FF170A78219EB2B5FE521BAD52A921801632CC6961B3F4056A
+              F79289D66F78A68EDFE0ED2EA6F83C18BED7F8AF52B2B319C4FC708ECFA03C30
+              602A4AF313A19B1B471551E2FE843CB421AC521E9130E270773BC634BCC0F2D8
+              EFD2F359B229DCEB99F60C2A803F35F0CE533D91176AA0857BBDE550013F1885
+              0180C05D0588DC1580D8BD0BEC88DD49BF13967DED208B2ABC0000000049454E
+              44AE426082}
+          end
+          object Label41: TLabel
+            Left = 69
+            Top = 4
+            Width = 73
+            Height = 16
+            Caption = 'Yesterday:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelYesterdayComments: TLabel
+            Left = 145
+            Top = 4
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label42: TLabel
+            Left = 98
+            Top = 26
+            Width = 44
+            Height = 16
+            Caption = 'Today:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelTodayComments: TLabel
+            Left = 145
+            Top = 26
+            Width = 52
+            Height = 16
+            Caption = '999,999'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object downred3: TImage
+            Left = 205
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object LabelArrow3: TLabel
+            Left = 236
+            Top = 17
+            Width = 61
+            Height = 16
+            Caption = '+99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelCommentsPhoto: TLabel
+            Left = 188
+            Top = 51
+            Width = 147
+            Height = 13
+            Caption = '999,999 comments/photo'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label47: TLabel
+            Left = 309
+            Top = 4
+            Width = 36
+            Height = 16
+            Caption = 'Rate:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelCommentsYesterdayRate: TLabel
+            Left = 351
+            Top = 4
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object LabelCommentsTodayRate: TLabel
+            Left = 351
+            Top = 26
+            Width = 50
+            Height = 16
+            Caption = '99.99%'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object downred33: TImage
+            Left = 409
+            Top = 6
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
+              4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
+              E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
+              F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
+              C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
+              A100000001624B47440088051D48000000097048597300000B1200000B1201D2
+              DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
+              A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
+              F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
+              637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
+              E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
+              0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
+              0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
+              7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
+              DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
+              0000000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object upgreen3: TImage
+            Left = 205
+            Top = 4
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+          object upgreen33: TImage
+            Left = 409
+            Top = 4
+            Width = 29
+            Height = 32
+            Picture.Data = {
+              0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
+              00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
+              4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
+              FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
+              00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
+              0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
+              0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
+              A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
+              11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
+              01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
+              0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
+              9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
+              28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
+              346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
+              E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
+              030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
+              0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
+              3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
+              000049454E44AE426082}
+            Transparent = True
+            Visible = False
+          end
+        end
+      end
+    end
+    object PageControl1: TPageControl
+      Left = 1
+      Top = 75
+      Width = 1528
+      Height = 723
+      ActivePage = Dashboard
+      Align = alClient
+      TabOrder = 1
+      ExplicitLeft = 0
+      ExplicitTop = 232
+      ExplicitWidth = 1511
+      ExplicitHeight = 622
+      object Dashboard: TTabSheet
+        Caption = 'Dashboard'
+        ExplicitWidth = 1501
+        ExplicitHeight = 594
+        object Splitter6: TSplitter
+          Left = 0
+          Top = 216
+          Width = 1520
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+          OnMoved = Splitter6Moved
+          ExplicitTop = 152
+          ExplicitWidth = 562
+        end
+        object Splitter7: TSplitter
+          Left = 793
+          Top = 219
           Height = 476
-          ExplicitLeft = 408
-          ExplicitTop = 104
+          ExplicitLeft = 816
+          ExplicitTop = 264
           ExplicitHeight = 100
         end
-        object Panel16: TPanel
-          Left = 1
-          Top = 1
-          Width = 528
+        object Panel14: TPanel
+          Left = 0
+          Top = 219
+          Width = 793
           Height = 476
           Align = alLeft
-          Caption = 'Panel16'
+          Caption = 'Panel14'
           TabOrder = 0
-          object Splitter13: TSplitter
-            Left = 1
-            Top = 194
-            Width = 526
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 201
-            ExplicitWidth = 408
+          ExplicitHeight = 375
+          object Splitter9: TSplitter
+            Left = 313
+            Top = 1
+            Height = 474
+            ExplicitLeft = 416
+            ExplicitTop = 176
+            ExplicitHeight = 100
           end
-          object Splitter14: TSplitter
-            Left = 1
-            Top = 388
-            Width = 526
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 333
-            ExplicitWidth = 276
+          object Splitter4: TSplitter
+            Left = 561
+            Top = 1
+            Height = 474
+            ExplicitLeft = 576
+            ExplicitTop = 200
+            ExplicitHeight = 100
           end
-          object dailyLikes: TChart
-            Left = 1
-            Top = 197
-            Width = 526
-            Height = 191
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Likes')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alTop
-            Color = 13135884
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object BarSeries1: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-          end
-          object dailyComments: TChart
-            Left = 1
-            Top = 391
-            Width = 526
-            Height = 84
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Total Comments')
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            Align = alClient
-            Color = 13135884
-            TabOrder = 1
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object BarSeries5: TBarSeries
-              BarBrush.BackColor = clDefault
-              BarPen.Color = 10708548
-              Marks.Shadow.Color = 8487297
-              Marks.Visible = False
-              Marks.Callout.Length = 8
-              Marks.DrawEvery = 10
-              Title = 'Flickr Stats'
-              XValues.DateTime = True
-              XValues.Name = 'X'
-              XValues.Order = loAscending
-              YValues.Name = 'Bar'
-              YValues.Order = loNone
-            end
-          end
-          object Panel30: TPanel
+          object Panel17: TPanel
             Left = 1
             Top = 1
-            Width = 526
-            Height = 193
-            Align = alTop
-            Caption = 'Panel30'
-            TabOrder = 2
-            object Splitter27: TSplitter
-              Left = 257
-              Top = 1
-              Height = 191
-              ExplicitLeft = 240
-              ExplicitTop = 24
-              ExplicitHeight = 100
+            Width = 312
+            Height = 474
+            Align = alLeft
+            Caption = 'Panel17'
+            TabOrder = 0
+            ExplicitHeight = 373
+            object Splitter5: TSplitter
+              Left = 1
+              Top = 209
+              Width = 310
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 271
+              ExplicitWidth = 338
             end
-            object chartStreamViews: TChart
+            object Splitter10: TSplitter
+              Left = 1
+              Top = 353
+              Width = 310
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 413
+              ExplicitWidth = 196
+            end
+            object Splitter26: TSplitter
+              Left = 1
+              Top = 449
+              Width = 310
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 561
+              ExplicitWidth = 80
+            end
+            object ChartViews: TChart
               Left = 1
               Top = 1
-              Width = 256
-              Height = 191
+              Width = 310
+              Height = 208
               Legend.Visible = False
               Title.Font.Color = clWhite
               Title.Text.Strings = (
-                'Stream Views')
+                'Total Views')
               BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
               BottomAxis.Grid.Width = 0
               BottomAxis.Grid.ZPosition = 1.000000000000000000
-              BottomAxis.Increment = 0.000000011574074074
+              BottomAxis.Increment = 1.000000000000000000
               BottomAxis.LabelsFormat.Font.Color = clWhite
               BottomAxis.LabelsMultiLine = True
-              BottomAxis.LabelsSeparation = 0
               BottomAxis.MinimumOffset = 16
               BottomAxis.MinorTickCount = 16
               BottomAxis.EndPosition = 98.000000000000000000
               BottomAxis.PositionPercent = -1.000000000000000000
-              BottomAxis.TickLength = 0
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
               BottomAxis.Title.Font.Color = clLime
               DepthAxis.Title.Font.Color = clLime
               DepthTopAxis.Title.Font.Color = clLime
@@ -1872,45 +1734,57 @@ object frmFlickrMain: TfrmFlickrMain
               RightAxis.Title.Font.Color = clLime
               TopAxis.Title.Font.Color = clLime
               View3D = False
-              Align = alLeft
+              Align = alTop
               Color = 13135884
               TabOrder = 0
               OnDblClick = ChartViewsDblClick
+              OnMouseDown = dailyViewsMouseDown
+              OnMouseUp = dailyViewsMouseUp
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
-                44
+                7
                 15
-                44)
-              ColorPaletteIndex = 13
-              object Series4: TBarSeries
+                7)
+              ColorPaletteIndex = 18
+              object LineSeries4: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                XValues.DateTime = True
                 XValues.Name = 'X'
                 XValues.Order = loAscending
-                YValues.Name = 'Bar'
+                YValues.Name = 'Y'
                 YValues.Order = loNone
               end
             end
-            object ChartAlbumViews: TChart
-              Left = 260
-              Top = 1
-              Width = 265
-              Height = 191
+            object totalPhotos: TChart
+              Left = 1
+              Top = 452
+              Width = 310
+              Height = 21
               Legend.Visible = False
               Title.Font.Color = clWhite
               Title.Text.Strings = (
-                'Album Views')
+                'Total Photos')
               BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
               BottomAxis.Grid.Width = 0
               BottomAxis.Grid.ZPosition = 1.000000000000000000
-              BottomAxis.Increment = 0.000000011574074074
+              BottomAxis.Increment = 1.000000000000000000
               BottomAxis.LabelsFormat.Font.Color = clWhite
               BottomAxis.LabelsMultiLine = True
-              BottomAxis.LabelsSeparation = 0
               BottomAxis.MinimumOffset = 16
               BottomAxis.MinorTickCount = 16
               BottomAxis.EndPosition = 98.000000000000000000
               BottomAxis.PositionPercent = -1.000000000000000000
-              BottomAxis.TickLength = 0
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
               BottomAxis.Title.Font.Color = clLime
               DepthAxis.Title.Font.Color = clLime
               DepthTopAxis.Title.Font.Color = clLime
@@ -1927,1173 +1801,391 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 1
               OnDblClick = ChartViewsDblClick
+              ExplicitHeight = 0
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
-                44
+                7
                 15
-                44)
+                7)
               ColorPaletteIndex = 13
-              object BarSeries9: TBarSeries
+              object LineSeries1: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+            end
+            object ChartLikes: TChart
+              Left = 1
+              Top = 212
+              Width = 310
+              Height = 141
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Total Likes')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 2
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries7: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+            end
+            object chartComments: TChart
+              Left = 1
+              Top = 356
+              Width = 310
+              Height = 93
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Total Comments')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 3
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries18: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+            end
+          end
+          object Panel18: TPanel
+            Left = 316
+            Top = 1
+            Width = 245
+            Height = 474
+            Align = alLeft
+            Caption = 'Panel18'
+            TabOrder = 1
+            ExplicitHeight = 373
+            object Splitter11: TSplitter
+              Left = 1
+              Top = 145
+              Width = 243
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 249
+              ExplicitWidth = 360
+            end
+            object Splitter12: TSplitter
+              Left = 1
+              Top = 305
+              Width = 243
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 406
+              ExplicitWidth = 203
+            end
+            object Splitter20: TSplitter
+              Left = 1
+              Top = 433
+              Width = 243
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 486
+              ExplicitWidth = 162
+            end
+            object mostviewschart: TChart
+              Left = 1
+              Top = 148
+              Width = 243
+              Height = 157
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Most Viewed Pictures per day')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 0
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object BarSeries3: TBarSeries
+                BarBrush.BackColor = clDefault
+                BarPen.Color = 10708548
+                Marks.Shadow.Color = 8487297
+                Marks.Visible = False
+                Marks.Callout.Length = 8
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                XValues.DateTime = True
                 XValues.Name = 'X'
                 XValues.Order = loAscending
                 YValues.Name = 'Bar'
                 YValues.Order = loNone
               end
             end
-          end
-        end
-        object Panel19: TPanel
-          Left = 532
-          Top = 1
-          Width = 174
-          Height = 476
-          Align = alClient
-          Caption = 'Panel19'
-          TabOrder = 1
-          object Splitter17: TSplitter
-            Left = 1
-            Top = 217
-            Width = 172
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 193
-            ExplicitWidth = 416
-          end
-          object Splitter18: TSplitter
-            Left = 1
-            Top = 387
-            Width = 172
-            Height = 3
-            Cursor = crVSplit
-            Align = alTop
-            ExplicitTop = 349
-            ExplicitWidth = 260
-          end
-          object ChartHallLikes: TChart
-            Left = 1
-            Top = 390
-            Width = 172
-            Height = 85
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Likes')
-            OnClickSeries = ChartHallLikesClickSeries
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            View3DOptions.Elevation = 315
-            View3DOptions.Orthogonal = False
-            View3DOptions.Perspective = 0
-            View3DOptions.Rotation = 360
-            Align = alClient
-            Color = 13135884
-            TabOrder = 0
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object PieSeries1: TPieSeries
-              XValues.Order = loAscending
-              YValues.Name = 'Pie'
-              YValues.Order = loNone
-              Frame.InnerBrush.BackColor = clRed
-              Frame.InnerBrush.Gradient.EndColor = clGray
-              Frame.InnerBrush.Gradient.MidColor = clWhite
-              Frame.InnerBrush.Gradient.StartColor = 4210752
-              Frame.InnerBrush.Gradient.Visible = True
-              Frame.MiddleBrush.BackColor = clYellow
-              Frame.MiddleBrush.Gradient.EndColor = 8553090
-              Frame.MiddleBrush.Gradient.MidColor = clWhite
-              Frame.MiddleBrush.Gradient.StartColor = clGray
-              Frame.MiddleBrush.Gradient.Visible = True
-              Frame.OuterBrush.BackColor = clGreen
-              Frame.OuterBrush.Gradient.EndColor = 4210752
-              Frame.OuterBrush.Gradient.MidColor = clWhite
-              Frame.OuterBrush.Gradient.StartColor = clSilver
-              Frame.OuterBrush.Gradient.Visible = True
-              Frame.Width = 4
-              OtherSlice.Legend.Visible = False
-            end
-          end
-          object chartAlbum: TChart
-            Left = 1
-            Top = 1
-            Width = 172
-            Height = 216
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Albums')
-            OnClickSeries = chartAlbumClickSeries
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            View3DOptions.Elevation = 315
-            View3DOptions.Orthogonal = False
-            View3DOptions.Perspective = 0
-            View3DOptions.Rotation = 360
-            Align = alTop
-            Color = 13135884
-            ParentShowHint = False
-            ShowHint = True
-            TabOrder = 1
-            OnDblClick = ChartViewsDblClick
-            OnMouseMove = chartAlbumMouseMove
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object Series5: TPieSeries
-              XValues.Order = loAscending
-              YValues.Name = 'Pie'
-              YValues.Order = loNone
-              Frame.InnerBrush.BackColor = clRed
-              Frame.InnerBrush.Gradient.EndColor = clGray
-              Frame.InnerBrush.Gradient.MidColor = clWhite
-              Frame.InnerBrush.Gradient.StartColor = 4210752
-              Frame.InnerBrush.Gradient.Visible = True
-              Frame.MiddleBrush.BackColor = clYellow
-              Frame.MiddleBrush.Gradient.EndColor = 8553090
-              Frame.MiddleBrush.Gradient.MidColor = clWhite
-              Frame.MiddleBrush.Gradient.StartColor = clGray
-              Frame.MiddleBrush.Gradient.Visible = True
-              Frame.OuterBrush.BackColor = clGreen
-              Frame.OuterBrush.Gradient.EndColor = 4210752
-              Frame.OuterBrush.Gradient.MidColor = clWhite
-              Frame.OuterBrush.Gradient.StartColor = clSilver
-              Frame.OuterBrush.Gradient.Visible = True
-              Frame.Width = 4
-              OtherSlice.Legend.Visible = False
-            end
-          end
-          object chartHallViews: TChart
-            Left = 1
-            Top = 220
-            Width = 172
-            Height = 167
-            Legend.Visible = False
-            Title.Font.Color = clWhite
-            Title.Text.Strings = (
-              'Views')
-            OnClickSeries = chartHallViewsClickSeries
-            BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-            BottomAxis.Grid.Width = 0
-            BottomAxis.Grid.ZPosition = 1.000000000000000000
-            BottomAxis.Increment = 1.000000000000000000
-            BottomAxis.LabelsFormat.Font.Color = clWhite
-            BottomAxis.LabelsMultiLine = True
-            BottomAxis.MinimumOffset = 16
-            BottomAxis.MinorTickCount = 16
-            BottomAxis.EndPosition = 98.000000000000000000
-            BottomAxis.PositionPercent = -1.000000000000000000
-            BottomAxis.TickLength = 2
-            BottomAxis.Ticks.Width = 0
-            BottomAxis.Title.Font.Color = clLime
-            DepthAxis.Title.Font.Color = clLime
-            DepthTopAxis.Title.Font.Color = clLime
-            LeftAxis.Grid.Width = 0
-            LeftAxis.LabelsFormat.Font.Color = clWhite
-            LeftAxis.MinorTicks.Width = 0
-            LeftAxis.Ticks.Width = 0
-            LeftAxis.TicksInner.Width = 0
-            LeftAxis.Title.Font.Color = clLime
-            RightAxis.Title.Font.Color = clLime
-            TopAxis.Title.Font.Color = clLime
-            View3D = False
-            View3DOptions.Elevation = 315
-            View3DOptions.Orthogonal = False
-            View3DOptions.Perspective = 0
-            View3DOptions.Rotation = 360
-            Align = alTop
-            Color = 13135884
-            TabOrder = 2
-            OnDblClick = ChartViewsDblClick
-            DefaultCanvas = 'TGDIPlusCanvas'
-            PrintMargins = (
-              15
-              7
-              15
-              7)
-            ColorPaletteIndex = 13
-            object PieSeries2: TPieSeries
-              XValues.Order = loAscending
-              YValues.Name = 'Pie'
-              YValues.Order = loNone
-              Frame.InnerBrush.BackColor = clRed
-              Frame.InnerBrush.Gradient.EndColor = clGray
-              Frame.InnerBrush.Gradient.MidColor = clWhite
-              Frame.InnerBrush.Gradient.StartColor = 4210752
-              Frame.InnerBrush.Gradient.Visible = True
-              Frame.MiddleBrush.BackColor = clYellow
-              Frame.MiddleBrush.Gradient.EndColor = 8553090
-              Frame.MiddleBrush.Gradient.MidColor = clWhite
-              Frame.MiddleBrush.Gradient.StartColor = clGray
-              Frame.MiddleBrush.Gradient.Visible = True
-              Frame.OuterBrush.BackColor = clGreen
-              Frame.OuterBrush.Gradient.EndColor = 4210752
-              Frame.OuterBrush.Gradient.MidColor = clWhite
-              Frame.OuterBrush.Gradient.StartColor = clSilver
-              Frame.OuterBrush.Gradient.Visible = True
-              Frame.Width = 4
-              OtherSlice.Legend.Visible = False
-            end
-          end
-        end
-      end
-      object dailyViews: TChart
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 216
-        Legend.Visible = False
-        MarginTop = 10
-        Title.Font.Color = clWhite
-        Title.Text.Strings = (
-          'Total Views')
-        BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-        BottomAxis.Grid.Width = 0
-        BottomAxis.Grid.ZPosition = 1.000000000000000000
-        BottomAxis.Increment = 1.000000000000000000
-        BottomAxis.LabelsFormat.Font.Color = clWhite
-        BottomAxis.LabelsMultiLine = True
-        BottomAxis.MinimumOffset = 16
-        BottomAxis.MinorTickCount = 16
-        BottomAxis.EndPosition = 98.000000000000000000
-        BottomAxis.PositionPercent = -1.000000000000000000
-        BottomAxis.TickLength = 2
-        BottomAxis.Ticks.Width = 0
-        BottomAxis.Title.Font.Color = clLime
-        DepthAxis.Title.Font.Color = clLime
-        DepthTopAxis.Title.Font.Color = clLime
-        LeftAxis.Grid.Width = 0
-        LeftAxis.LabelsFormat.Font.Color = clWhite
-        LeftAxis.MinorTicks.Width = 0
-        LeftAxis.Ticks.Width = 0
-        LeftAxis.TicksInner.Width = 0
-        LeftAxis.Title.Font.Color = clLime
-        RightAxis.Title.Font.Color = clLime
-        TopAxis.Title.Font.Color = clLime
-        View3D = False
-        Align = alTop
-        Color = 13135884
-        TabOrder = 2
-        OnDblClick = ChartViewsDblClick
-        OnMouseDown = dailyViewsMouseDown
-        OnMouseUp = dailyViewsMouseUp
-        DefaultCanvas = 'TGDIPlusCanvas'
-        PrintMargins = (
-          15
-          7
-          15
-          7)
-        ColorPaletteIndex = 13
-        object LineSeries2: TBarSeries
-          BarBrush.BackColor = clDefault
-          BarPen.Color = 10708548
-          Marks.Shadow.Color = 8487297
-          Marks.Visible = False
-          Marks.Callout.Length = 8
-          Marks.DrawEvery = 10
-          Title = 'Flickr Stats'
-          XValues.DateTime = True
-          XValues.Name = 'X'
-          XValues.Order = loAscending
-          YValues.Name = 'Bar'
-          YValues.Order = loNone
-        end
-      end
-    end
-    object TabSheet2: TTabSheet
-      Caption = 'Processing'
-      ImageIndex = 1
-      object Splitter1: TSplitter
-        Left = 0
-        Top = 441
-        Width = 1503
-        Height = 3
-        Cursor = crVSplit
-        Align = alTop
-        OnMoved = Splitter1Moved
-        ExplicitTop = 329
-        ExplicitWidth = 454
-      end
-      object Panel2: TPanel
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 441
-        Align = alTop
-        TabOrder = 0
-        object listPhotos: TListView
-          Left = 1
-          Top = 58
-          Width = 1501
-          Height = 382
-          Align = alClient
-          Checkboxes = True
-          Columns = <
-            item
-              Caption = ' ID'
-              Width = 100
-            end
-            item
-              Caption = ' Title'
-              Width = 250
-            end
-            item
-              Caption = ' Views'
-              Width = 60
-            end
-            item
-              Caption = ' Likes'
-            end
-            item
-              Caption = ' Comments'
-              Width = 80
-            end
-            item
-              Caption = ' Last Update'
-              Width = 80
-            end
-            item
-              Caption = ' Taken'
-              Width = 120
-            end
-            item
-              Caption = ' Albums'
-              Width = 60
-            end
-            item
-              Caption = ' Groups'
-              Width = 60
-            end
-            item
-              Caption = 'Tags'
-              Width = 200
-            end
-            item
-              Caption = ' Affection'
-              Width = 80
-            end
-            item
-              Caption = 'Banned'
-            end
-            item
-              Caption = 'Trend Today'
-              Width = 100
-            end
-            item
-              Caption = 'Banned Groups'
-              Width = 200
-            end>
-          FlatScrollBars = True
-          GridLines = True
-          ReadOnly = True
-          RowSelect = True
-          PopupMenu = PopupMenu1
-          SortType = stData
-          TabOrder = 0
-          ViewStyle = vsReport
-          OnCustomDrawSubItem = listPhotosCustomDrawSubItem
-          OnItemChecked = listPhotosItemChecked
-        end
-        object Panel5: TPanel
-          Left = 1
-          Top = 1
-          Width = 1501
-          Height = 57
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 1
-          object Label2: TLabel
-            Left = 55
-            Top = 2
-            Width = 52
-            Height = 13
-            Caption = 'Photo ID:'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentFont = False
-            OnDblClick = Label2DblClick
-          end
-          object Label3: TLabel
-            Left = 362
-            Top = 12
-            Width = 49
-            Height = 13
-            Caption = 'Filtering:'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label31: TLabel
-            Left = 3
-            Top = 41
-            Width = 98
-            Height = 13
-            Caption = 'Number of Items:'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Process: TLabel
-            Left = 316
-            Top = 41
-            Width = 64
-            Height = 13
-            Caption = 'Processing:'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentFont = False
-          end
-          object Label36: TLabel
-            Left = 944
-            Top = 13
-            Width = 92
-            Height = 13
-            Caption = 'Filter is enabled!'
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Font.Style = [fsBold]
-            ParentFont = False
-            Visible = False
-          end
-          object photoId: TEdit
-            Left = 55
-            Top = 18
-            Width = 138
-            Height = 21
-            TabOrder = 0
-            OnChange = photoIdChange
-          end
-          object btnAdd: TButton
-            Left = 2
-            Top = 1
-            Width = 50
-            Height = 38
-            Caption = 'Add'
-            Enabled = False
-            ImageAlignment = iaTop
-            ImageIndex = 45
-            ImageMargins.Top = 5
-            ImageMargins.Bottom = -6
-            Images = ImageList1
-            TabOrder = 1
-            OnClick = btnAddClick
-            OnMouseEnter = btnAddMouseEnter
-          end
-          object batchUpdate: TButton
-            Left = 199
-            Top = 1
-            Width = 50
-            Height = 38
-            Caption = 'Update'
-            ImageAlignment = iaTop
-            ImageIndex = 187
-            ImageMargins.Top = 5
-            ImageMargins.Bottom = -6
-            Images = ImageList1
-            TabOrder = 2
-            OnClick = batchUpdateClick
-            OnMouseEnter = batchUpdateMouseEnter
-          end
-          object btnExcel: TButton
-            Left = 301
-            Top = 1
-            Width = 50
-            Height = 38
-            Caption = 'Export'
-            ImageAlignment = iaTop
-            ImageIndex = 234
-            ImageMargins.Top = 5
-            ImageMargins.Bottom = -6
-            Images = ImageList1
-            TabOrder = 3
-            OnClick = btnExcelClick
-            OnMouseEnter = btnExcelMouseEnter
-          end
-          object edtfilter: TEdit
-            Left = 635
-            Top = 9
-            Width = 231
-            Height = 21
-            TabOrder = 4
-          end
-          object btnAddFilter: TButton
-            Left = 869
-            Top = 7
-            Width = 34
-            Height = 25
-            ImageIndex = 218
-            ImageMargins.Left = 5
-            Images = ImageList1
-            TabOrder = 5
-            OnClick = btnAddFilterClick
-          end
-          object btnResetFilter: TButton
-            Left = 904
-            Top = 7
-            Width = 34
-            Height = 25
-            ImageIndex = 63
-            ImageMargins.Left = 5
-            Images = ImageList1
-            TabOrder = 6
-            OnClick = btnResetFilterClick
-          end
-          object ComboBox2: TComboBox
-            Left = 422
-            Top = 9
-            Width = 128
-            Height = 21
-            Style = csDropDownList
-            ItemIndex = 0
-            TabOrder = 7
-            Text = 'ID'
-            Items.Strings = (
-              'ID'
-              'Title'
-              'Views'
-              'Likes'
-              'Comments'
-              'Last Update'
-              'Taken'
-              'Albums'
-              'Groups'
-              'Tags'
-              'Affection'
-              'Banned'
-              'Trend Today'
-              'Banned Groups')
-          end
-          object ComboBox3: TComboBox
-            Left = 554
-            Top = 9
-            Width = 75
-            Height = 21
-            Style = csDropDownList
-            ItemIndex = 0
-            TabOrder = 8
-            Text = '='
-            Items.Strings = (
-              '='
-              '<'
-              '>'
-              '<='
-              '>='
-              '<>'
-              'Contains')
-          end
-          object Button4: TButton
-            Left = 250
-            Top = 1
-            Width = 50
-            Height = 38
-            Caption = 'Stop'
-            ImageAlignment = iaTop
-            ImageIndex = 183
-            ImageMargins.Top = 5
-            ImageMargins.Bottom = -6
-            Images = ImageList1
-            TabOrder = 9
-            OnClick = Button4Click
-            OnMouseEnter = Button4MouseEnter
-          end
-        end
-      end
-      object PageControl2: TPageControl
-        Left = 0
-        Top = 444
-        Width = 1503
-        Height = 253
-        ActivePage = Statistics
-        Align = alClient
-        TabOrder = 1
-        object Statistics: TTabSheet
-          Caption = 'Statistics'
-          object Panel4: TPanel
-            Left = 0
-            Top = 0
-            Width = 1495
-            Height = 225
-            Align = alClient
-            TabOrder = 0
-            object Splitter21: TSplitter
-              Left = 377
-              Top = 1
-              Height = 223
-              ExplicitLeft = 265
-              ExplicitTop = 0
-              ExplicitHeight = 712
-            end
-            object Splitter23: TSplitter
-              Left = 737
-              Top = 1
-              Height = 223
-              ExplicitLeft = 539
-              ExplicitTop = 6
-              ExplicitHeight = 712
-            end
-            object Splitter25: TSplitter
-              Left = 1089
-              Top = 1
-              Height = 223
-              ExplicitLeft = 1416
-              ExplicitTop = 48
-              ExplicitHeight = 100
-            end
-            object Panel11: TPanel
-              Left = 740
-              Top = 1
-              Width = 349
-              Height = 223
-              Align = alLeft
-              Caption = 'Panel11'
-              TabOrder = 0
-              object Splitter2: TSplitter
-                Left = 1
-                Top = 156
-                Width = 347
-                Height = 3
-                Cursor = crVSplit
-                Align = alTop
-                ExplicitTop = 305
-                ExplicitWidth = 406
-              end
-              object chartItemComments: TChart
-                Left = 1
-                Top = 1
-                Width = 347
-                Height = 155
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Comments')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alTop
-                Color = 13135884
-                TabOrder = 0
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object Series1: TLineSeries
-                  Marks.Shadow.Color = 8487297
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  Brush.BackColor = clDefault
-                  LinePen.Color = 10708548
-                  Pointer.Brush.Gradient.EndColor = 10708548
-                  Pointer.Gradient.EndColor = 10708548
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object Series2: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Pointer.Visible = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object Series3: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Stairs = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-              end
-              object chartItemCommentsH: TChart
-                Left = 1
-                Top = 159
-                Width = 347
-                Height = 63
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Comments Histogram')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alClient
-                Color = 13135884
-                TabOrder = 1
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object BarSeries2: TBarSeries
-                  BarBrush.BackColor = clDefault
-                  BarPen.Color = 10708548
-                  Marks.Shadow.Color = 8487297
-                  Marks.Visible = False
-                  Marks.Callout.Length = 8
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Bar'
-                  YValues.Order = loNone
-                end
-              end
-            end
-            object Panel22: TPanel
+            object mostlikeschart: TChart
               Left = 1
-              Top = 1
-              Width = 376
-              Height = 223
-              Align = alLeft
-              Caption = 'Panel11'
-              TabOrder = 1
-              object Splitter22: TSplitter
-                Left = 1
-                Top = 156
-                Width = 374
-                Height = 3
-                Cursor = crVSplit
-                Align = alTop
-                ExplicitTop = 305
-                ExplicitWidth = 406
-              end
-              object chartItemViews: TChart
-                Left = 1
-                Top = 1
-                Width = 374
-                Height = 155
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Views')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alTop
-                Color = 13135884
-                TabOrder = 0
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object LineSeries9: TLineSeries
-                  Marks.Shadow.Color = 8487297
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  Brush.BackColor = clDefault
-                  LinePen.Color = 10708548
-                  Pointer.Brush.Gradient.EndColor = 10708548
-                  Pointer.Gradient.EndColor = 10708548
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object LineSeries10: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Pointer.Visible = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object LineSeries11: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Stairs = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-              end
-              object ChartItemViewsH: TChart
-                Left = 1
-                Top = 159
-                Width = 374
-                Height = 63
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Views Histogram')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alClient
-                Color = 13135884
-                TabOrder = 1
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object BarSeries7: TBarSeries
-                  BarBrush.BackColor = clDefault
-                  BarPen.Color = 10708548
-                  Marks.Shadow.Color = 8487297
-                  Marks.Visible = False
-                  Marks.Callout.Length = 8
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Bar'
-                  YValues.Order = loNone
-                end
-              end
-            end
-            object Panel23: TPanel
-              Left = 380
-              Top = 1
-              Width = 357
-              Height = 223
-              Align = alLeft
-              Caption = 'Panel11'
-              TabOrder = 2
-              object Splitter24: TSplitter
-                Left = 1
-                Top = 156
-                Width = 355
-                Height = 3
-                Cursor = crVSplit
-                Align = alTop
-                ExplicitTop = 305
-                ExplicitWidth = 406
-              end
-              object chartItemLikes: TChart
-                Left = 1
-                Top = 1
-                Width = 355
-                Height = 155
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Likes')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alTop
-                Color = 13135884
-                TabOrder = 0
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object LineSeries12: TLineSeries
-                  Marks.Shadow.Color = 8487297
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  Brush.BackColor = clDefault
-                  LinePen.Color = 10708548
-                  Pointer.Brush.Gradient.EndColor = 10708548
-                  Pointer.Gradient.EndColor = 10708548
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object LineSeries13: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Pointer.Visible = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-                object LineSeries14: TLineSeries
-                  Brush.BackColor = clDefault
-                  Pointer.InflateMargins = True
-                  Pointer.Style = psRectangle
-                  Stairs = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Y'
-                  YValues.Order = loNone
-                end
-              end
-              object chartitemLikesH: TChart
-                Left = 1
-                Top = 159
-                Width = 355
-                Height = 63
-                Legend.Visible = False
-                Title.Font.Color = clWhite
-                Title.Text.Strings = (
-                  'Total Likes Histogram')
-                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-                BottomAxis.Grid.Width = 0
-                BottomAxis.Grid.ZPosition = 1.000000000000000000
-                BottomAxis.Increment = 1.000000000000000000
-                BottomAxis.LabelsFormat.Font.Color = clWhite
-                BottomAxis.LabelsMultiLine = True
-                BottomAxis.MinimumOffset = 16
-                BottomAxis.MinorTickCount = 16
-                BottomAxis.EndPosition = 98.000000000000000000
-                BottomAxis.PositionPercent = -1.000000000000000000
-                BottomAxis.TickLength = 2
-                BottomAxis.Ticks.Width = 0
-                BottomAxis.Title.Font.Color = clLime
-                DepthAxis.Title.Font.Color = clLime
-                DepthTopAxis.Title.Font.Color = clLime
-                LeftAxis.Grid.Width = 0
-                LeftAxis.LabelsFormat.Font.Color = clWhite
-                LeftAxis.MinorTicks.Width = 0
-                LeftAxis.Ticks.Width = 0
-                LeftAxis.TicksInner.Width = 0
-                LeftAxis.Title.Font.Color = clLime
-                RightAxis.Title.Font.Color = clLime
-                TopAxis.Title.Font.Color = clLime
-                View3D = False
-                Align = alClient
-                Color = 13135884
-                TabOrder = 1
-                OnDblClick = ChartViewsDblClick
-                DefaultCanvas = 'TGDIPlusCanvas'
-                PrintMargins = (
-                  15
-                  7
-                  15
-                  7)
-                ColorPaletteIndex = 13
-                object BarSeries8: TBarSeries
-                  BarBrush.BackColor = clDefault
-                  BarPen.Color = 10708548
-                  Marks.Shadow.Color = 8487297
-                  Marks.Visible = False
-                  Marks.Callout.Length = 8
-                  Marks.DrawEvery = 10
-                  Title = 'Flickr Stats'
-                  XValues.DateTime = True
-                  XValues.Name = 'X'
-                  XValues.Order = loAscending
-                  YValues.Name = 'Bar'
-                  YValues.Order = loNone
-                end
-              end
-            end
-            object totalGroups: TChart
-              Left = 1092
-              Top = 1
-              Width = 402
-              Height = 223
+              Top = 308
+              Width = 243
+              Height = 125
               Legend.Visible = False
               Title.Font.Color = clWhite
               Title.Text.Strings = (
-                'Total Groups')
+                'Most Liked Pictures per day')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 1
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object BarSeries4: TBarSeries
+                BarBrush.BackColor = clDefault
+                BarPen.Color = 10708548
+                Marks.Shadow.Color = 8487297
+                Marks.Visible = False
+                Marks.Callout.Length = 8
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
+            end
+            object executionTime: TChart
+              Left = 1
+              Top = 1
+              Width = 243
+              Height = 144
+              Border.Fill.Gradient.Balance = 53
+              Border.Fill.Gradient.Direction = gdBottomTop
+              Border.Fill.Gradient.EndColor = clNavy
+              Border.Fill.Gradient.MidColor = 16744576
+              Border.Fill.Gradient.StartColor = 16777088
+              Border.Fill.Gradient.Visible = True
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Execution time (min)')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              View3DWalls = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 2
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries3: TAreaSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                AreaChartBrush.Color = clGray
+                AreaChartBrush.BackColor = clDefault
+                DrawArea = True
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
+                Pointer.InflateMargins = True
+                Pointer.Style = psRectangle
+                Pointer.Visible = False
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Y'
+                YValues.Order = loNone
+              end
+            end
+            object chartfollowing: TChart
+              Left = 1
+              Top = 436
+              Width = 243
+              Height = 37
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Contacts')
               BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
               BottomAxis.Grid.Width = 0
               BottomAxis.Grid.ZPosition = 1.000000000000000000
@@ -3122,7 +2214,7 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 3
               OnDblClick = ChartViewsDblClick
-              ExplicitLeft = 1094
+              ExplicitHeight = 16
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -3130,7 +2222,166 @@ object frmFlickrMain: TfrmFlickrMain
                 15
                 7)
               ColorPaletteIndex = 13
-              object LineSeries15: TLineSeries
+              object BarSeries6: TBarSeries
+                BarBrush.BackColor = clDefault
+                BarPen.Color = 10708548
+                Marks.Shadow.Color = 8487297
+                Marks.Visible = False
+                Marks.Callout.Length = 8
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
+            end
+          end
+          object Panel20: TPanel
+            Left = 564
+            Top = 1
+            Width = 228
+            Height = 474
+            Align = alClient
+            Caption = 'Panel20'
+            TabOrder = 2
+            ExplicitHeight = 373
+            object Splitter15: TSplitter
+              Left = 1
+              Top = 145
+              Width = 226
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 217
+              ExplicitWidth = 392
+            end
+            object Splitter16: TSplitter
+              Left = 1
+              Top = 305
+              Width = 226
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 350
+              ExplicitWidth = 259
+            end
+            object Splitter19: TSplitter
+              Left = 1
+              Top = 433
+              Width = 226
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitLeft = 3
+              ExplicitTop = 474
+              ExplicitWidth = 280
+            end
+            object organicViews: TChart
+              Left = 1
+              Top = 1
+              Width = 226
+              Height = 144
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Organic Views (%)')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 0
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object Series7: THorizBarSeries
+                BarBrush.Gradient.Direction = gdLeftRight
+                BarBrush.Gradient.EndColor = 10708548
+                BarBrush.Gradient.Visible = True
+                Marks.Visible = False
+                Gradient.Direction = gdLeftRight
+                Gradient.EndColor = 10708548
+                Gradient.Visible = True
+                MultiBar = mbStacked100
+                XValues.Name = 'Bar'
+                XValues.Order = loNone
+                YValues.Name = 'Y'
+                YValues.Order = loAscending
+              end
+            end
+            object organicLikes: TChart
+              Left = 1
+              Top = 148
+              Width = 226
+              Height = 157
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Organic Likes (%)')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 1
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries5: TLineSeries
                 Marks.Shadow.Color = 8487297
                 Marks.DrawEvery = 10
                 Title = 'Flickr Stats'
@@ -3146,21 +2397,124 @@ object frmFlickrMain: TfrmFlickrMain
                 YValues.Name = 'Y'
                 YValues.Order = loNone
               end
-              object LineSeries16: TLineSeries
+            end
+            object groupspread: TChart
+              Left = 1
+              Top = 436
+              Width = 226
+              Height = 37
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Group Spread')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alClient
+              Color = 13135884
+              TabOrder = 2
+              OnDblClick = ChartViewsDblClick
+              ExplicitHeight = 16
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries6: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
                 Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
                 Pointer.InflateMargins = True
                 Pointer.Style = psRectangle
-                Pointer.Visible = True
+                XValues.DateTime = True
                 XValues.Name = 'X'
                 XValues.Order = loAscending
                 YValues.Name = 'Y'
                 YValues.Order = loNone
               end
-              object LineSeries17: TLineSeries
+            end
+            object organicComments: TChart
+              Left = 1
+              Top = 308
+              Width = 226
+              Height = 125
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Organic Comments (%)')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
+              TabOrder = 3
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object LineSeries8: TLineSeries
+                Marks.Shadow.Color = 8487297
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
                 Brush.BackColor = clDefault
+                LinePen.Color = 10708548
+                Pointer.Brush.Gradient.EndColor = 10708548
+                Pointer.Gradient.EndColor = 10708548
                 Pointer.InflateMargins = True
                 Pointer.Style = psRectangle
-                Stairs = True
+                XValues.DateTime = True
                 XValues.Name = 'X'
                 XValues.Order = loAscending
                 YValues.Name = 'Y'
@@ -3169,104 +2523,740 @@ object frmFlickrMain: TfrmFlickrMain
             end
           end
         end
-        object TabSheet3: TTabSheet
-          Caption = 'Flickr Photo List'
-          ImageIndex = 2
-          object Panel6: TPanel
-            Left = 0
-            Top = 0
-            Width = 1495
-            Height = 55
-            Align = alTop
-            BevelOuter = bvNone
+        object Panel15: TPanel
+          Left = 796
+          Top = 219
+          Width = 724
+          Height = 476
+          Align = alClient
+          Caption = 'Panel15'
+          TabOrder = 1
+          ExplicitWidth = 705
+          ExplicitHeight = 375
+          object Splitter8: TSplitter
+            Left = 529
+            Top = 1
+            Height = 474
+            ExplicitLeft = 408
+            ExplicitTop = 104
+            ExplicitHeight = 100
+          end
+          object Panel16: TPanel
+            Left = 1
+            Top = 1
+            Width = 528
+            Height = 474
+            Align = alLeft
+            Caption = 'Panel16'
             TabOrder = 0
-            object Label34: TLabel
-              Left = 0
-              Top = 38
-              Width = 98
-              Height = 13
-              Caption = 'Number of Items:'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
+            ExplicitHeight = 373
+            object Splitter13: TSplitter
+              Left = 1
+              Top = 194
+              Width = 526
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 201
+              ExplicitWidth = 408
             end
-            object btnGetList: TButton
-              Left = -1
-              Top = -1
-              Width = 50
-              Height = 38
-              Caption = 'Get List'
-              ImageAlignment = iaTop
-              ImageIndex = 86
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
+            object Splitter14: TSplitter
+              Left = 1
+              Top = 388
+              Width = 526
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 333
+              ExplicitWidth = 276
+            end
+            object dailyLikes: TChart
+              Left = 1
+              Top = 197
+              Width = 526
+              Height = 191
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Total Likes')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alTop
+              Color = 13135884
               TabOrder = 0
-              OnClick = btnGetListClick
-              OnMouseEnter = btnGetListMouseEnter
+              OnDblClick = ChartViewsDblClick
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object BarSeries1: TBarSeries
+                BarBrush.BackColor = clDefault
+                BarPen.Color = 10708548
+                Marks.Shadow.Color = 8487297
+                Marks.Visible = False
+                Marks.Callout.Length = 8
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
             end
-            object btnAddItems: TButton
-              Left = 49
-              Top = -1
-              Width = 50
-              Height = 38
-              Caption = 'Import'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 6
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
+            object dailyComments: TChart
+              Left = 1
+              Top = 391
+              Width = 526
+              Height = 82
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Total Comments')
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              Align = alClient
+              Color = 13135884
               TabOrder = 1
-              OnClick = btnAddItemsClick
-              OnMouseEnter = btnAddItemsMouseEnter
+              OnDblClick = ChartViewsDblClick
+              ExplicitHeight = 5
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object BarSeries5: TBarSeries
+                BarBrush.BackColor = clDefault
+                BarPen.Color = 10708548
+                Marks.Shadow.Color = 8487297
+                Marks.Visible = False
+                Marks.Callout.Length = 8
+                Marks.DrawEvery = 10
+                Title = 'Flickr Stats'
+                XValues.DateTime = True
+                XValues.Name = 'X'
+                XValues.Order = loAscending
+                YValues.Name = 'Bar'
+                YValues.Order = loNone
+              end
+            end
+            object Panel30: TPanel
+              Left = 1
+              Top = 1
+              Width = 526
+              Height = 193
+              Align = alTop
+              Caption = 'Panel30'
+              TabOrder = 2
+              object Splitter27: TSplitter
+                Left = 257
+                Top = 1
+                Height = 191
+                ExplicitLeft = 240
+                ExplicitTop = 24
+                ExplicitHeight = 100
+              end
+              object chartStreamViews: TChart
+                Left = 1
+                Top = 1
+                Width = 256
+                Height = 191
+                Legend.Visible = False
+                Title.Font.Color = clWhite
+                Title.Text.Strings = (
+                  'Stream Views')
+                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                BottomAxis.Grid.Width = 0
+                BottomAxis.Grid.ZPosition = 1.000000000000000000
+                BottomAxis.Increment = 0.000000011574074074
+                BottomAxis.LabelsFormat.Font.Color = clWhite
+                BottomAxis.LabelsMultiLine = True
+                BottomAxis.LabelsSeparation = 0
+                BottomAxis.MinimumOffset = 16
+                BottomAxis.MinorTickCount = 16
+                BottomAxis.EndPosition = 98.000000000000000000
+                BottomAxis.PositionPercent = -1.000000000000000000
+                BottomAxis.TickLength = 0
+                BottomAxis.Title.Font.Color = clLime
+                DepthAxis.Title.Font.Color = clLime
+                DepthTopAxis.Title.Font.Color = clLime
+                LeftAxis.Grid.Width = 0
+                LeftAxis.LabelsFormat.Font.Color = clWhite
+                LeftAxis.MinorTicks.Width = 0
+                LeftAxis.Ticks.Width = 0
+                LeftAxis.TicksInner.Width = 0
+                LeftAxis.Title.Font.Color = clLime
+                RightAxis.Title.Font.Color = clLime
+                TopAxis.Title.Font.Color = clLime
+                View3D = False
+                Align = alLeft
+                Color = 13135884
+                TabOrder = 0
+                OnDblClick = ChartViewsDblClick
+                DefaultCanvas = 'TGDIPlusCanvas'
+                PrintMargins = (
+                  15
+                  44
+                  15
+                  44)
+                ColorPaletteIndex = 13
+                object Series4: TBarSeries
+                  XValues.Name = 'X'
+                  XValues.Order = loAscending
+                  YValues.Name = 'Bar'
+                  YValues.Order = loNone
+                end
+              end
+              object ChartAlbumViews: TChart
+                Left = 260
+                Top = 1
+                Width = 265
+                Height = 191
+                Legend.Visible = False
+                Title.Font.Color = clWhite
+                Title.Text.Strings = (
+                  'Album Views')
+                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                BottomAxis.Grid.Width = 0
+                BottomAxis.Grid.ZPosition = 1.000000000000000000
+                BottomAxis.Increment = 0.000000011574074074
+                BottomAxis.LabelsFormat.Font.Color = clWhite
+                BottomAxis.LabelsMultiLine = True
+                BottomAxis.LabelsSeparation = 0
+                BottomAxis.MinimumOffset = 16
+                BottomAxis.MinorTickCount = 16
+                BottomAxis.EndPosition = 98.000000000000000000
+                BottomAxis.PositionPercent = -1.000000000000000000
+                BottomAxis.TickLength = 0
+                BottomAxis.Title.Font.Color = clLime
+                DepthAxis.Title.Font.Color = clLime
+                DepthTopAxis.Title.Font.Color = clLime
+                LeftAxis.Grid.Width = 0
+                LeftAxis.LabelsFormat.Font.Color = clWhite
+                LeftAxis.MinorTicks.Width = 0
+                LeftAxis.Ticks.Width = 0
+                LeftAxis.TicksInner.Width = 0
+                LeftAxis.Title.Font.Color = clLime
+                RightAxis.Title.Font.Color = clLime
+                TopAxis.Title.Font.Color = clLime
+                View3D = False
+                Align = alClient
+                Color = 13135884
+                TabOrder = 1
+                OnDblClick = ChartViewsDblClick
+                DefaultCanvas = 'TGDIPlusCanvas'
+                PrintMargins = (
+                  15
+                  44
+                  15
+                  44)
+                ColorPaletteIndex = 13
+                object BarSeries9: TBarSeries
+                  XValues.Name = 'X'
+                  XValues.Order = loAscending
+                  YValues.Name = 'Bar'
+                  YValues.Order = loNone
+                end
+              end
             end
           end
-          object listPhotosUser: TListView
-            Left = 0
-            Top = 55
-            Width = 1495
-            Height = 170
+          object Panel19: TPanel
+            Left = 532
+            Top = 1
+            Width = 191
+            Height = 474
+            Align = alClient
+            Caption = 'Panel19'
+            TabOrder = 1
+            ExplicitWidth = 172
+            ExplicitHeight = 373
+            object Splitter17: TSplitter
+              Left = 1
+              Top = 217
+              Width = 189
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 193
+              ExplicitWidth = 416
+            end
+            object Splitter18: TSplitter
+              Left = 1
+              Top = 387
+              Width = 189
+              Height = 3
+              Cursor = crVSplit
+              Align = alTop
+              ExplicitTop = 349
+              ExplicitWidth = 260
+            end
+            object ChartHallLikes: TChart
+              Left = 1
+              Top = 390
+              Width = 189
+              Height = 83
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Likes')
+              OnClickSeries = ChartHallLikesClickSeries
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              View3DOptions.Elevation = 315
+              View3DOptions.Orthogonal = False
+              View3DOptions.Perspective = 0
+              View3DOptions.Rotation = 360
+              Align = alClient
+              Color = 13135884
+              TabOrder = 0
+              OnDblClick = ChartViewsDblClick
+              ExplicitWidth = 170
+              ExplicitHeight = 6
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object PieSeries1: TPieSeries
+                XValues.Order = loAscending
+                YValues.Name = 'Pie'
+                YValues.Order = loNone
+                Frame.InnerBrush.BackColor = clRed
+                Frame.InnerBrush.Gradient.EndColor = clGray
+                Frame.InnerBrush.Gradient.MidColor = clWhite
+                Frame.InnerBrush.Gradient.StartColor = 4210752
+                Frame.InnerBrush.Gradient.Visible = True
+                Frame.MiddleBrush.BackColor = clYellow
+                Frame.MiddleBrush.Gradient.EndColor = 8553090
+                Frame.MiddleBrush.Gradient.MidColor = clWhite
+                Frame.MiddleBrush.Gradient.StartColor = clGray
+                Frame.MiddleBrush.Gradient.Visible = True
+                Frame.OuterBrush.BackColor = clGreen
+                Frame.OuterBrush.Gradient.EndColor = 4210752
+                Frame.OuterBrush.Gradient.MidColor = clWhite
+                Frame.OuterBrush.Gradient.StartColor = clSilver
+                Frame.OuterBrush.Gradient.Visible = True
+                Frame.Width = 4
+                OtherSlice.Legend.Visible = False
+              end
+            end
+            object chartAlbum: TChart
+              Left = 1
+              Top = 1
+              Width = 189
+              Height = 216
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Albums')
+              OnClickSeries = chartAlbumClickSeries
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              View3DOptions.Elevation = 315
+              View3DOptions.Orthogonal = False
+              View3DOptions.Perspective = 0
+              View3DOptions.Rotation = 360
+              Align = alTop
+              Color = 13135884
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 1
+              OnDblClick = ChartViewsDblClick
+              OnMouseMove = chartAlbumMouseMove
+              ExplicitWidth = 170
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object Series5: TPieSeries
+                XValues.Order = loAscending
+                YValues.Name = 'Pie'
+                YValues.Order = loNone
+                Frame.InnerBrush.BackColor = clRed
+                Frame.InnerBrush.Gradient.EndColor = clGray
+                Frame.InnerBrush.Gradient.MidColor = clWhite
+                Frame.InnerBrush.Gradient.StartColor = 4210752
+                Frame.InnerBrush.Gradient.Visible = True
+                Frame.MiddleBrush.BackColor = clYellow
+                Frame.MiddleBrush.Gradient.EndColor = 8553090
+                Frame.MiddleBrush.Gradient.MidColor = clWhite
+                Frame.MiddleBrush.Gradient.StartColor = clGray
+                Frame.MiddleBrush.Gradient.Visible = True
+                Frame.OuterBrush.BackColor = clGreen
+                Frame.OuterBrush.Gradient.EndColor = 4210752
+                Frame.OuterBrush.Gradient.MidColor = clWhite
+                Frame.OuterBrush.Gradient.StartColor = clSilver
+                Frame.OuterBrush.Gradient.Visible = True
+                Frame.Width = 4
+                OtherSlice.Legend.Visible = False
+              end
+            end
+            object chartHallViews: TChart
+              Left = 1
+              Top = 220
+              Width = 189
+              Height = 167
+              Legend.Visible = False
+              Title.Font.Color = clWhite
+              Title.Text.Strings = (
+                'Views')
+              OnClickSeries = chartHallViewsClickSeries
+              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+              BottomAxis.Grid.Width = 0
+              BottomAxis.Grid.ZPosition = 1.000000000000000000
+              BottomAxis.Increment = 1.000000000000000000
+              BottomAxis.LabelsFormat.Font.Color = clWhite
+              BottomAxis.LabelsMultiLine = True
+              BottomAxis.MinimumOffset = 16
+              BottomAxis.MinorTickCount = 16
+              BottomAxis.EndPosition = 98.000000000000000000
+              BottomAxis.PositionPercent = -1.000000000000000000
+              BottomAxis.TickLength = 2
+              BottomAxis.Ticks.Width = 0
+              BottomAxis.Title.Font.Color = clLime
+              DepthAxis.Title.Font.Color = clLime
+              DepthTopAxis.Title.Font.Color = clLime
+              LeftAxis.Grid.Width = 0
+              LeftAxis.LabelsFormat.Font.Color = clWhite
+              LeftAxis.MinorTicks.Width = 0
+              LeftAxis.Ticks.Width = 0
+              LeftAxis.TicksInner.Width = 0
+              LeftAxis.Title.Font.Color = clLime
+              RightAxis.Title.Font.Color = clLime
+              TopAxis.Title.Font.Color = clLime
+              View3D = False
+              View3DOptions.Elevation = 315
+              View3DOptions.Orthogonal = False
+              View3DOptions.Perspective = 0
+              View3DOptions.Rotation = 360
+              Align = alTop
+              Color = 13135884
+              TabOrder = 2
+              OnDblClick = ChartViewsDblClick
+              ExplicitWidth = 170
+              DefaultCanvas = 'TGDIPlusCanvas'
+              PrintMargins = (
+                15
+                7
+                15
+                7)
+              ColorPaletteIndex = 13
+              object PieSeries2: TPieSeries
+                XValues.Order = loAscending
+                YValues.Name = 'Pie'
+                YValues.Order = loNone
+                Frame.InnerBrush.BackColor = clRed
+                Frame.InnerBrush.Gradient.EndColor = clGray
+                Frame.InnerBrush.Gradient.MidColor = clWhite
+                Frame.InnerBrush.Gradient.StartColor = 4210752
+                Frame.InnerBrush.Gradient.Visible = True
+                Frame.MiddleBrush.BackColor = clYellow
+                Frame.MiddleBrush.Gradient.EndColor = 8553090
+                Frame.MiddleBrush.Gradient.MidColor = clWhite
+                Frame.MiddleBrush.Gradient.StartColor = clGray
+                Frame.MiddleBrush.Gradient.Visible = True
+                Frame.OuterBrush.BackColor = clGreen
+                Frame.OuterBrush.Gradient.EndColor = 4210752
+                Frame.OuterBrush.Gradient.MidColor = clWhite
+                Frame.OuterBrush.Gradient.StartColor = clSilver
+                Frame.OuterBrush.Gradient.Visible = True
+                Frame.Width = 4
+                OtherSlice.Legend.Visible = False
+              end
+            end
+          end
+        end
+        object dailyViews: TChart
+          Left = 0
+          Top = 0
+          Width = 1520
+          Height = 216
+          Legend.Visible = False
+          MarginTop = 10
+          Title.Font.Color = clWhite
+          Title.Text.Strings = (
+            'Total Views')
+          BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+          BottomAxis.Grid.Width = 0
+          BottomAxis.Grid.ZPosition = 1.000000000000000000
+          BottomAxis.Increment = 1.000000000000000000
+          BottomAxis.LabelsFormat.Font.Color = clWhite
+          BottomAxis.LabelsMultiLine = True
+          BottomAxis.MinimumOffset = 16
+          BottomAxis.MinorTickCount = 16
+          BottomAxis.EndPosition = 98.000000000000000000
+          BottomAxis.PositionPercent = -1.000000000000000000
+          BottomAxis.TickLength = 2
+          BottomAxis.Ticks.Width = 0
+          BottomAxis.Title.Font.Color = clLime
+          DepthAxis.Title.Font.Color = clLime
+          DepthTopAxis.Title.Font.Color = clLime
+          LeftAxis.Grid.Width = 0
+          LeftAxis.LabelsFormat.Font.Color = clWhite
+          LeftAxis.MinorTicks.Width = 0
+          LeftAxis.Ticks.Width = 0
+          LeftAxis.TicksInner.Width = 0
+          LeftAxis.Title.Font.Color = clLime
+          RightAxis.Title.Font.Color = clLime
+          TopAxis.Title.Font.Color = clLime
+          View3D = False
+          Align = alTop
+          Color = 13135884
+          TabOrder = 2
+          OnDblClick = ChartViewsDblClick
+          OnMouseDown = dailyViewsMouseDown
+          OnMouseUp = dailyViewsMouseUp
+          ExplicitWidth = 1501
+          DefaultCanvas = 'TGDIPlusCanvas'
+          PrintMargins = (
+            15
+            7
+            15
+            7)
+          ColorPaletteIndex = 13
+          object LineSeries2: TBarSeries
+            BarBrush.BackColor = clDefault
+            BarPen.Color = 10708548
+            Marks.Shadow.Color = 8487297
+            Marks.Visible = False
+            Marks.Callout.Length = 8
+            Marks.DrawEvery = 10
+            Title = 'Flickr Stats'
+            XValues.DateTime = True
+            XValues.Name = 'X'
+            XValues.Order = loAscending
+            YValues.Name = 'Bar'
+            YValues.Order = loNone
+          end
+        end
+      end
+      object TabSheet2: TTabSheet
+        Caption = 'Processing'
+        ImageIndex = 1
+        ExplicitLeft = 0
+        ExplicitTop = 0
+        ExplicitWidth = 0
+        ExplicitHeight = 697
+        object Splitter1: TSplitter
+          Left = 0
+          Top = 441
+          Width = 1520
+          Height = 3
+          Cursor = crVSplit
+          Align = alTop
+          OnMoved = Splitter1Moved
+          ExplicitTop = 329
+          ExplicitWidth = 454
+        end
+        object Panel2: TPanel
+          Left = 0
+          Top = 0
+          Width = 1520
+          Height = 441
+          Align = alTop
+          TabOrder = 0
+          ExplicitWidth = 1503
+          object listPhotos: TListView
+            Left = 1
+            Top = 58
+            Width = 1518
+            Height = 382
             Align = alClient
             Checkboxes = True
             Columns = <
               item
-                Caption = 'ID'
+                Caption = ' ID'
                 Width = 100
               end
               item
-                Caption = 'Title'
-                Width = 300
+                Caption = ' Title'
+                Width = 250
+              end
+              item
+                Caption = ' Views'
+                Width = 60
+              end
+              item
+                Caption = ' Likes'
+              end
+              item
+                Caption = ' Comments'
+                Width = 80
+              end
+              item
+                Caption = ' Last Update'
+                Width = 80
+              end
+              item
+                Caption = ' Taken'
+                Width = 120
+              end
+              item
+                Caption = ' Albums'
+                Width = 60
+              end
+              item
+                Caption = ' Groups'
+                Width = 60
+              end
+              item
+                Caption = 'Tags'
+                Width = 200
+              end
+              item
+                Caption = ' Affection'
+                Width = 80
+              end
+              item
+                Caption = 'Banned'
+              end
+              item
+                Caption = 'Trend Today'
+                Width = 100
+              end
+              item
+                Caption = 'Banned Groups'
+                Width = 200
               end>
+            FlatScrollBars = True
             GridLines = True
             ReadOnly = True
             RowSelect = True
-            PopupMenu = PopupMenu3
-            TabOrder = 1
+            PopupMenu = PopupMenu1
+            SortType = stData
+            TabOrder = 0
             ViewStyle = vsReport
-            OnItemChecked = listPhotosUserItemChecked
+            OnCustomDrawSubItem = listPhotosCustomDrawSubItem
+            OnItemChecked = listPhotosItemChecked
+            ExplicitWidth = 1499
           end
-        end
-        object TabSheet5: TTabSheet
-          Caption = 'Flickr Groups Manager'
-          ImageIndex = 3
-          object Panel8: TPanel
-            Left = 0
-            Top = 0
-            Width = 1495
-            Height = 83
+          object Panel5: TPanel
+            Left = 1
+            Top = 1
+            Width = 1518
+            Height = 57
             Align = alTop
             BevelOuter = bvNone
-            TabOrder = 0
-            object Label5: TLabel
-              Left = 413
-              Top = 63
-              Width = 77
+            TabOrder = 1
+            ExplicitWidth = 1501
+            object Label2: TLabel
+              Left = 55
+              Top = 2
+              Width = 52
               Height = 13
-              Caption = 'Title Filtering:'
+              Caption = 'Photo ID:'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+              OnDblClick = Label2DblClick
+            end
+            object Label3: TLabel
+              Left = 362
+              Top = 12
+              Width = 49
+              Height = 13
+              Caption = 'Filtering:'
               Font.Charset = DEFAULT_CHARSET
               Font.Color = clWindowText
               Font.Height = -11
@@ -3274,9 +3264,9 @@ object frmFlickrMain: TfrmFlickrMain
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label11: TLabel
-              Left = 1
-              Top = 68
+            object Label31: TLabel
+              Left = 3
+              Top = 41
               Width = 98
               Height = 13
               Caption = 'Number of Items:'
@@ -3287,9 +3277,22 @@ object frmFlickrMain: TfrmFlickrMain
               Font.Style = [fsBold]
               ParentFont = False
             end
-            object Label37: TLabel
-              Left = 879
-              Top = 63
+            object Process: TLabel
+              Left = 316
+              Top = 41
+              Width = 64
+              Height = 13
+              Caption = 'Processing:'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -11
+              Font.Name = 'Tahoma'
+              Font.Style = [fsBold]
+              ParentFont = False
+            end
+            object Label36: TLabel
+              Left = 944
+              Top = 13
               Width = 92
               Height = 13
               Caption = 'Filter is enabled!'
@@ -3301,25 +3304,48 @@ object frmFlickrMain: TfrmFlickrMain
               ParentFont = False
               Visible = False
             end
-            object btnGetGroups: TButton
-              Left = 1
-              Top = 2
+            object photoId: TEdit
+              Left = 55
+              Top = 18
+              Width = 138
+              Height = 21
+              TabOrder = 0
+              OnChange = photoIdChange
+            end
+            object btnAdd: TButton
+              Left = 2
+              Top = 1
               Width = 50
               Height = 38
-              Caption = 'Load'
+              Caption = 'Add'
               Enabled = False
               ImageAlignment = iaTop
-              ImageIndex = 188
+              ImageIndex = 45
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
-              TabOrder = 0
-              OnClick = btnGetGroupsClick
-              OnMouseEnter = btnGetGroupsMouseEnter
+              TabOrder = 1
+              OnClick = btnAddClick
+              OnMouseEnter = btnAddMouseEnter
             end
-            object Button2: TButton
-              Left = 103
-              Top = 2
+            object batchUpdate: TButton
+              Left = 199
+              Top = 1
+              Width = 50
+              Height = 38
+              Caption = 'Update'
+              ImageAlignment = iaTop
+              ImageIndex = 187
+              ImageMargins.Top = 5
+              ImageMargins.Bottom = -6
+              Images = ImageList1
+              TabOrder = 2
+              OnClick = batchUpdateClick
+              OnMouseEnter = batchUpdateMouseEnter
+            end
+            object btnExcel: TButton
+              Left = 301
+              Top = 1
               Width = 50
               Height = 38
               Caption = 'Export'
@@ -3328,2098 +3354,2182 @@ object frmFlickrMain: TfrmFlickrMain
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
-              TabOrder = 1
-              OnClick = Button2Click
-              OnMouseEnter = Button2MouseEnter
-            end
-            object btnAddPhotos: TButton
-              Left = 154
-              Top = 2
-              Width = 50
-              Height = 38
-              Caption = 'Add'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 117
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
-              TabOrder = 2
-              OnClick = btnAddPhotosClick
-              OnMouseEnter = btnAddPhotosMouseEnter
-            end
-            object edtFilterGroup: TEdit
-              Left = 496
-              Top = 60
-              Width = 306
-              Height = 21
               TabOrder = 3
+              OnClick = btnExcelClick
+              OnMouseEnter = btnExcelMouseEnter
             end
-            object Profiles: TGroupBox
-              Left = 413
-              Top = 0
-              Width = 838
-              Height = 57
-              Caption = 'Profiles'
-              TabOrder = 6
-              object Label6: TLabel
-                Left = 10
-                Top = 17
-                Width = 66
-                Height = 13
-                Caption = 'Select Profile:'
-              end
-              object Label7: TLabel
-                Left = 460
-                Top = 16
-                Width = 34
-                Height = 13
-                Caption = 'Profile:'
-              end
-              object ComboBox1: TComboBox
-                Left = 82
-                Top = 13
-                Width = 198
-                Height = 21
-                Style = csDropDownList
-                TabOrder = 0
-                OnChange = ComboBox1Change
-              end
-              object btnLoadProfile: TButton
-                Left = 283
-                Top = 11
-                Width = 66
-                Height = 25
-                Caption = 'Load'
-                Enabled = False
-                ImageIndex = 53
-                ImageMargins.Left = 5
-                Images = ImageList1
-                TabOrder = 1
-                OnClick = btnLoadProfileClick
-                OnMouseEnter = btnLoadProfileMouseEnter
-              end
-              object edtProfile: TEdit
-                Left = 496
-                Top = 13
-                Width = 177
-                Height = 21
-                TabOrder = 2
-                OnChange = edtProfileChange
-              end
-              object btnSaveProfile: TButton
-                Left = 678
-                Top = 11
-                Width = 61
-                Height = 25
-                CustomHint = BalloonHint1
-                Caption = 'Save'
-                Enabled = False
-                ImageIndex = 174
-                ImageMargins.Left = 5
-                Images = ImageList1
-                TabOrder = 3
-                OnClick = btnSaveProfileClick
-                OnMouseEnter = btnSaveProfileMouseEnter
-              end
-              object chkReplaceProfile: TCheckBox
-                Left = 496
-                Top = 35
-                Width = 127
-                Height = 17
-                Caption = 'Override Profile'
-                TabOrder = 4
-              end
-              object chkDisplayOnly: TCheckBox
-                Left = 82
-                Top = 35
-                Width = 127
-                Height = 17
-                Caption = 'Display only selected'
-                TabOrder = 5
-              end
-              object btnDeleteProfile: TButton
-                Left = 349
-                Top = 11
-                Width = 66
-                Height = 25
-                Caption = 'Delete'
-                Enabled = False
-                ImageIndex = 199
-                ImageMargins.Left = 5
-                Images = ImageList1
-                TabOrder = 6
-                OnClick = btnDeleteProfileClick
-                OnMouseEnter = btnDeleteProfileMouseEnter
-              end
-              object btnRemoveProfile: TButton
-                Left = 739
-                Top = 11
-                Width = 70
-                Height = 25
-                CustomHint = BalloonHint1
-                Caption = 'Remove'
-                Enabled = False
-                ImageIndex = 80
-                ImageMargins.Left = 5
-                Images = ImageList1
-                TabOrder = 7
-                OnClick = btnRemoveProfileClick
-                OnMouseEnter = btnRemoveProfileMouseEnter
-              end
+            object edtfilter: TEdit
+              Left = 635
+              Top = 9
+              Width = 231
+              Height = 21
+              TabOrder = 4
             end
-            object btnRemovePhoto: TButton
-              Left = 205
-              Top = 2
-              Width = 50
-              Height = 38
-              Caption = 'Remove'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 64
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
-              TabOrder = 7
-              OnClick = btnRemovePhotoClick
-              OnMouseEnter = btnRemovePhotoMouseEnter
-            end
-            object btnFilterOK: TButton
-              Left = 804
-              Top = 58
+            object btnAddFilter: TButton
+              Left = 869
+              Top = 7
               Width = 34
               Height = 25
               ImageIndex = 218
               ImageMargins.Left = 5
               Images = ImageList1
-              TabOrder = 4
-              OnClick = btnFilterOKClick
+              TabOrder = 5
+              OnClick = btnAddFilterClick
             end
-            object btnFilterCancel: TButton
-              Left = 839
-              Top = 58
+            object btnResetFilter: TButton
+              Left = 904
+              Top = 7
               Width = 34
               Height = 25
               ImageIndex = 63
               ImageMargins.Left = 5
               Images = ImageList1
-              TabOrder = 5
-              OnClick = btnFilterCancelClick
+              TabOrder = 6
+              OnClick = btnResetFilterClick
             end
-            object btnBanGroups: TButton
-              Left = 256
-              Top = 2
-              Width = 50
-              Height = 38
-              Caption = 'Ban'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 137
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
+            object ComboBox2: TComboBox
+              Left = 422
+              Top = 9
+              Width = 128
+              Height = 21
+              Style = csDropDownList
+              ItemIndex = 0
+              TabOrder = 7
+              Text = 'ID'
+              Items.Strings = (
+                'ID'
+                'Title'
+                'Views'
+                'Likes'
+                'Comments'
+                'Last Update'
+                'Taken'
+                'Albums'
+                'Groups'
+                'Tags'
+                'Affection'
+                'Banned'
+                'Trend Today'
+                'Banned Groups')
+            end
+            object ComboBox3: TComboBox
+              Left = 554
+              Top = 9
+              Width = 75
+              Height = 21
+              Style = csDropDownList
+              ItemIndex = 0
               TabOrder = 8
-              OnClick = btnBanGroupsClick
-              OnMouseEnter = btnBanGroupsMouseEnter
+              Text = '='
+              Items.Strings = (
+                '='
+                '<'
+                '>'
+                '<='
+                '>='
+                '<>'
+                'Contains')
             end
-            object Button5: TButton
-              Left = 52
-              Top = 2
+            object Button4: TButton
+              Left = 250
+              Top = 1
               Width = 50
               Height = 38
               Caption = 'Stop'
-              Enabled = False
               ImageAlignment = iaTop
               ImageIndex = 183
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
               TabOrder = 9
-              OnClick = Button5Click
-              OnMouseEnter = Button5MouseEnter
-            end
-            object btnUnbanGroups: TButton
-              Left = 306
-              Top = 2
-              Width = 50
-              Height = 38
-              Caption = 'Unban'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 140
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
-              TabOrder = 10
-              OnClick = btnUnbanGroupsClick
-              OnMouseEnter = btnUnbanGroupsMouseEnter
+              OnClick = Button4Click
+              OnMouseEnter = Button4MouseEnter
             end
           end
-          object PageControl3: TPageControl
-            Left = 0
-            Top = 83
-            Width = 1495
-            Height = 142
-            ActivePage = tabList
-            Align = alClient
-            TabOrder = 1
-            object tabList: TTabSheet
-              Caption = 'List'
-              object listGroups: TListView
-                Left = 0
-                Top = 0
-                Width = 1487
-                Height = 114
-                Align = alClient
-                Checkboxes = True
-                Columns = <
-                  item
-                    Caption = 'ID'
-                    Width = 130
-                  end
-                  item
-                    Caption = 'Title'
-                    Width = 280
-                  end
-                  item
-                    Caption = 'Photos'
-                    Width = 80
-                  end
-                  item
-                    Caption = 'Members'
-                    Width = 80
-                  end
-                  item
-                    Caption = 'Description'
-                    Width = 200
-                  end
-                  item
-                    Caption = 'Moderated'
-                    Width = 70
-                  end
-                  item
-                    Caption = 'Count'
-                  end
-                  item
-                    Caption = 'Mode'
-                  end
-                  item
-                    Caption = 'Remaining'
-                    Width = 70
-                  end
-                  item
-                    Caption = 'PhotosOK'
-                    Width = 60
-                  end
-                  item
-                    Caption = 'VideosOK'
-                    Width = 60
-                  end
-                  item
-                    Caption = 'ImgOK'
-                  end
-                  item
-                    Caption = 'ScreenOK'
-                    Width = 60
-                  end
-                  item
-                    Caption = 'ArtOK'
-                  end
-                  item
-                    Caption = 'SafeOK'
-                  end
-                  item
-                    Caption = 'ModerateOK'
-                    Width = 80
-                  end
-                  item
-                    Caption = 'RestrictedOK'
-                    Width = 80
-                  end
-                  item
-                    Caption = 'Geo'
-                  end>
-                GridLines = True
-                ReadOnly = True
-                RowSelect = True
-                PopupMenu = PopupMenu2
-                TabOrder = 0
-                ViewStyle = vsReport
-                OnCustomDrawItem = listGroupsCustomDrawItem
-                OnItemChecked = listGroupsItemChecked
+        end
+        object PageControl2: TPageControl
+          Left = 0
+          Top = 444
+          Width = 1520
+          Height = 251
+          ActivePage = Statistics
+          Align = alClient
+          TabOrder = 1
+          ExplicitWidth = 1503
+          ExplicitHeight = 253
+          object Statistics: TTabSheet
+            Caption = 'Statistics'
+            ExplicitWidth = 1493
+            object Panel4: TPanel
+              Left = 0
+              Top = 0
+              Width = 1512
+              Height = 223
+              Align = alClient
+              TabOrder = 0
+              ExplicitWidth = 1493
+              object Splitter21: TSplitter
+                Left = 377
+                Top = 1
+                Height = 221
+                ExplicitLeft = 265
+                ExplicitTop = 0
+                ExplicitHeight = 712
               end
-            end
-            object tabStatus: TTabSheet
-              Caption = 'Status'
-              ImageIndex = 1
-              object Panel10: TPanel
-                Left = 0
-                Top = 0
-                Width = 1487
-                Height = 114
-                Align = alClient
+              object Splitter23: TSplitter
+                Left = 737
+                Top = 1
+                Height = 221
+                ExplicitLeft = 539
+                ExplicitTop = 6
+                ExplicitHeight = 712
+              end
+              object Splitter25: TSplitter
+                Left = 1089
+                Top = 1
+                Height = 221
+                ExplicitLeft = 1416
+                ExplicitTop = 48
+                ExplicitHeight = 100
+              end
+              object Panel11: TPanel
+                Left = 740
+                Top = 1
+                Width = 349
+                Height = 221
+                Align = alLeft
+                Caption = 'Panel11'
                 TabOrder = 0
-                object mStatus: TMemo
+                object Splitter2: TSplitter
+                  Left = 1
+                  Top = 156
+                  Width = 347
+                  Height = 3
+                  Cursor = crVSplit
+                  Align = alTop
+                  ExplicitTop = 305
+                  ExplicitWidth = 406
+                end
+                object chartItemComments: TChart
                   Left = 1
                   Top = 1
-                  Width = 1485
+                  Width = 347
+                  Height = 155
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Comments')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alTop
+                  Color = 13135884
+                  TabOrder = 0
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object Series1: TLineSeries
+                    Marks.Shadow.Color = 8487297
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    Brush.BackColor = clDefault
+                    LinePen.Color = 10708548
+                    Pointer.Brush.Gradient.EndColor = 10708548
+                    Pointer.Gradient.EndColor = 10708548
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object Series2: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Pointer.Visible = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object Series3: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Stairs = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                end
+                object chartItemCommentsH: TChart
+                  Left = 1
+                  Top = 159
+                  Width = 347
+                  Height = 61
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Comments Histogram')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alClient
+                  Color = 13135884
+                  TabOrder = 1
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object BarSeries2: TBarSeries
+                    BarBrush.BackColor = clDefault
+                    BarPen.Color = 10708548
+                    Marks.Shadow.Color = 8487297
+                    Marks.Visible = False
+                    Marks.Callout.Length = 8
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Bar'
+                    YValues.Order = loNone
+                  end
+                end
+              end
+              object Panel22: TPanel
+                Left = 1
+                Top = 1
+                Width = 376
+                Height = 221
+                Align = alLeft
+                Caption = 'Panel11'
+                TabOrder = 1
+                object Splitter22: TSplitter
+                  Left = 1
+                  Top = 156
+                  Width = 374
+                  Height = 3
+                  Cursor = crVSplit
+                  Align = alTop
+                  ExplicitTop = 305
+                  ExplicitWidth = 406
+                end
+                object chartItemViews: TChart
+                  Left = 1
+                  Top = 1
+                  Width = 374
+                  Height = 155
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Views')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alTop
+                  Color = 13135884
+                  TabOrder = 0
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object LineSeries9: TLineSeries
+                    Marks.Shadow.Color = 8487297
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    Brush.BackColor = clDefault
+                    LinePen.Color = 10708548
+                    Pointer.Brush.Gradient.EndColor = 10708548
+                    Pointer.Gradient.EndColor = 10708548
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object LineSeries10: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Pointer.Visible = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object LineSeries11: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Stairs = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                end
+                object ChartItemViewsH: TChart
+                  Left = 1
+                  Top = 159
+                  Width = 374
+                  Height = 61
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Views Histogram')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alClient
+                  Color = 13135884
+                  TabOrder = 1
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object BarSeries7: TBarSeries
+                    BarBrush.BackColor = clDefault
+                    BarPen.Color = 10708548
+                    Marks.Shadow.Color = 8487297
+                    Marks.Visible = False
+                    Marks.Callout.Length = 8
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Bar'
+                    YValues.Order = loNone
+                  end
+                end
+              end
+              object Panel23: TPanel
+                Left = 380
+                Top = 1
+                Width = 357
+                Height = 221
+                Align = alLeft
+                Caption = 'Panel11'
+                TabOrder = 2
+                object Splitter24: TSplitter
+                  Left = 1
+                  Top = 156
+                  Width = 355
+                  Height = 3
+                  Cursor = crVSplit
+                  Align = alTop
+                  ExplicitTop = 305
+                  ExplicitWidth = 406
+                end
+                object chartItemLikes: TChart
+                  Left = 1
+                  Top = 1
+                  Width = 355
+                  Height = 155
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Likes')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alTop
+                  Color = 13135884
+                  TabOrder = 0
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object LineSeries12: TLineSeries
+                    Marks.Shadow.Color = 8487297
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    Brush.BackColor = clDefault
+                    LinePen.Color = 10708548
+                    Pointer.Brush.Gradient.EndColor = 10708548
+                    Pointer.Gradient.EndColor = 10708548
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object LineSeries13: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Pointer.Visible = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                  object LineSeries14: TLineSeries
+                    Brush.BackColor = clDefault
+                    Pointer.InflateMargins = True
+                    Pointer.Style = psRectangle
+                    Stairs = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Y'
+                    YValues.Order = loNone
+                  end
+                end
+                object chartitemLikesH: TChart
+                  Left = 1
+                  Top = 159
+                  Width = 355
+                  Height = 61
+                  Legend.Visible = False
+                  Title.Font.Color = clWhite
+                  Title.Text.Strings = (
+                    'Total Likes Histogram')
+                  BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                  BottomAxis.Grid.Width = 0
+                  BottomAxis.Grid.ZPosition = 1.000000000000000000
+                  BottomAxis.Increment = 1.000000000000000000
+                  BottomAxis.LabelsFormat.Font.Color = clWhite
+                  BottomAxis.LabelsMultiLine = True
+                  BottomAxis.MinimumOffset = 16
+                  BottomAxis.MinorTickCount = 16
+                  BottomAxis.EndPosition = 98.000000000000000000
+                  BottomAxis.PositionPercent = -1.000000000000000000
+                  BottomAxis.TickLength = 2
+                  BottomAxis.Ticks.Width = 0
+                  BottomAxis.Title.Font.Color = clLime
+                  DepthAxis.Title.Font.Color = clLime
+                  DepthTopAxis.Title.Font.Color = clLime
+                  LeftAxis.Grid.Width = 0
+                  LeftAxis.LabelsFormat.Font.Color = clWhite
+                  LeftAxis.MinorTicks.Width = 0
+                  LeftAxis.Ticks.Width = 0
+                  LeftAxis.TicksInner.Width = 0
+                  LeftAxis.Title.Font.Color = clLime
+                  RightAxis.Title.Font.Color = clLime
+                  TopAxis.Title.Font.Color = clLime
+                  View3D = False
+                  Align = alClient
+                  Color = 13135884
+                  TabOrder = 1
+                  OnDblClick = ChartViewsDblClick
+                  DefaultCanvas = 'TGDIPlusCanvas'
+                  PrintMargins = (
+                    15
+                    7
+                    15
+                    7)
+                  ColorPaletteIndex = 13
+                  object BarSeries8: TBarSeries
+                    BarBrush.BackColor = clDefault
+                    BarPen.Color = 10708548
+                    Marks.Shadow.Color = 8487297
+                    Marks.Visible = False
+                    Marks.Callout.Length = 8
+                    Marks.DrawEvery = 10
+                    Title = 'Flickr Stats'
+                    XValues.DateTime = True
+                    XValues.Name = 'X'
+                    XValues.Order = loAscending
+                    YValues.Name = 'Bar'
+                    YValues.Order = loNone
+                  end
+                end
+              end
+              object totalGroups: TChart
+                Left = 1092
+                Top = 1
+                Width = 419
+                Height = 221
+                Legend.Visible = False
+                Title.Font.Color = clWhite
+                Title.Text.Strings = (
+                  'Total Groups')
+                BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
+                BottomAxis.Grid.Width = 0
+                BottomAxis.Grid.ZPosition = 1.000000000000000000
+                BottomAxis.Increment = 1.000000000000000000
+                BottomAxis.LabelsFormat.Font.Color = clWhite
+                BottomAxis.LabelsMultiLine = True
+                BottomAxis.MinimumOffset = 16
+                BottomAxis.MinorTickCount = 16
+                BottomAxis.EndPosition = 98.000000000000000000
+                BottomAxis.PositionPercent = -1.000000000000000000
+                BottomAxis.TickLength = 2
+                BottomAxis.Ticks.Width = 0
+                BottomAxis.Title.Font.Color = clLime
+                DepthAxis.Title.Font.Color = clLime
+                DepthTopAxis.Title.Font.Color = clLime
+                LeftAxis.Grid.Width = 0
+                LeftAxis.LabelsFormat.Font.Color = clWhite
+                LeftAxis.MinorTicks.Width = 0
+                LeftAxis.Ticks.Width = 0
+                LeftAxis.TicksInner.Width = 0
+                LeftAxis.Title.Font.Color = clLime
+                RightAxis.Title.Font.Color = clLime
+                TopAxis.Title.Font.Color = clLime
+                View3D = False
+                Align = alClient
+                Color = 13135884
+                TabOrder = 3
+                OnDblClick = ChartViewsDblClick
+                ExplicitWidth = 400
+                DefaultCanvas = 'TGDIPlusCanvas'
+                PrintMargins = (
+                  15
+                  7
+                  15
+                  7)
+                ColorPaletteIndex = 13
+                object LineSeries15: TLineSeries
+                  Marks.Shadow.Color = 8487297
+                  Marks.DrawEvery = 10
+                  Title = 'Flickr Stats'
+                  Brush.BackColor = clDefault
+                  LinePen.Color = 10708548
+                  Pointer.Brush.Gradient.EndColor = 10708548
+                  Pointer.Gradient.EndColor = 10708548
+                  Pointer.InflateMargins = True
+                  Pointer.Style = psRectangle
+                  XValues.DateTime = True
+                  XValues.Name = 'X'
+                  XValues.Order = loAscending
+                  YValues.Name = 'Y'
+                  YValues.Order = loNone
+                end
+                object LineSeries16: TLineSeries
+                  Brush.BackColor = clDefault
+                  Pointer.InflateMargins = True
+                  Pointer.Style = psRectangle
+                  Pointer.Visible = True
+                  XValues.Name = 'X'
+                  XValues.Order = loAscending
+                  YValues.Name = 'Y'
+                  YValues.Order = loNone
+                end
+                object LineSeries17: TLineSeries
+                  Brush.BackColor = clDefault
+                  Pointer.InflateMargins = True
+                  Pointer.Style = psRectangle
+                  Stairs = True
+                  XValues.Name = 'X'
+                  XValues.Order = loAscending
+                  YValues.Name = 'Y'
+                  YValues.Order = loNone
+                end
+              end
+            end
+          end
+          object TabSheet3: TTabSheet
+            Caption = 'Flickr Photo List'
+            ImageIndex = 2
+            ExplicitWidth = 1493
+            object Panel6: TPanel
+              Left = 0
+              Top = 0
+              Width = 1512
+              Height = 55
+              Align = alTop
+              BevelOuter = bvNone
+              TabOrder = 0
+              ExplicitWidth = 1493
+              object Label34: TLabel
+                Left = 0
+                Top = 38
+                Width = 98
+                Height = 13
+                Caption = 'Number of Items:'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object btnGetList: TButton
+                Left = -1
+                Top = -1
+                Width = 50
+                Height = 38
+                Caption = 'Get List'
+                ImageAlignment = iaTop
+                ImageIndex = 86
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 0
+                OnClick = btnGetListClick
+                OnMouseEnter = btnGetListMouseEnter
+              end
+              object btnAddItems: TButton
+                Left = 49
+                Top = -1
+                Width = 50
+                Height = 38
+                Caption = 'Import'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 6
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 1
+                OnClick = btnAddItemsClick
+                OnMouseEnter = btnAddItemsMouseEnter
+              end
+            end
+            object listPhotosUser: TListView
+              Left = 0
+              Top = 55
+              Width = 1512
+              Height = 168
+              Align = alClient
+              Checkboxes = True
+              Columns = <
+                item
+                  Caption = 'ID'
+                  Width = 100
+                end
+                item
+                  Caption = 'Title'
+                  Width = 300
+                end>
+              GridLines = True
+              ReadOnly = True
+              RowSelect = True
+              PopupMenu = PopupMenu3
+              TabOrder = 1
+              ViewStyle = vsReport
+              OnItemChecked = listPhotosUserItemChecked
+              ExplicitWidth = 1493
+            end
+          end
+          object TabSheet5: TTabSheet
+            Caption = 'Flickr Groups Manager'
+            ImageIndex = 3
+            ExplicitLeft = 0
+            ExplicitTop = 0
+            ExplicitWidth = 0
+            ExplicitHeight = 225
+            object Panel8: TPanel
+              Left = 0
+              Top = 0
+              Width = 1512
+              Height = 83
+              Align = alTop
+              BevelOuter = bvNone
+              TabOrder = 0
+              ExplicitWidth = 1493
+              object Label5: TLabel
+                Left = 413
+                Top = 63
+                Width = 77
+                Height = 13
+                Caption = 'Title Filtering:'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label11: TLabel
+                Left = 1
+                Top = 68
+                Width = 98
+                Height = 13
+                Caption = 'Number of Items:'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+              end
+              object Label37: TLabel
+                Left = 879
+                Top = 63
+                Width = 92
+                Height = 13
+                Caption = 'Filter is enabled!'
+                Font.Charset = DEFAULT_CHARSET
+                Font.Color = clWindowText
+                Font.Height = -11
+                Font.Name = 'Tahoma'
+                Font.Style = [fsBold]
+                ParentFont = False
+                Visible = False
+              end
+              object btnGetGroups: TButton
+                Left = 1
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Load'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 188
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 0
+                OnClick = btnGetGroupsClick
+                OnMouseEnter = btnGetGroupsMouseEnter
+              end
+              object Button2: TButton
+                Left = 103
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Export'
+                ImageAlignment = iaTop
+                ImageIndex = 234
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 1
+                OnClick = Button2Click
+                OnMouseEnter = Button2MouseEnter
+              end
+              object btnAddPhotos: TButton
+                Left = 154
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Add'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 117
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 2
+                OnClick = btnAddPhotosClick
+                OnMouseEnter = btnAddPhotosMouseEnter
+              end
+              object edtFilterGroup: TEdit
+                Left = 496
+                Top = 60
+                Width = 306
+                Height = 21
+                TabOrder = 3
+              end
+              object Profiles: TGroupBox
+                Left = 413
+                Top = 0
+                Width = 838
+                Height = 57
+                Caption = 'Profiles'
+                TabOrder = 6
+                object Label6: TLabel
+                  Left = 10
+                  Top = 17
+                  Width = 66
+                  Height = 13
+                  Caption = 'Select Profile:'
+                end
+                object Label7: TLabel
+                  Left = 460
+                  Top = 16
+                  Width = 34
+                  Height = 13
+                  Caption = 'Profile:'
+                end
+                object ComboBox1: TComboBox
+                  Left = 82
+                  Top = 13
+                  Width = 198
+                  Height = 21
+                  Style = csDropDownList
+                  TabOrder = 0
+                  OnChange = ComboBox1Change
+                end
+                object btnLoadProfile: TButton
+                  Left = 283
+                  Top = 11
+                  Width = 66
+                  Height = 25
+                  Caption = 'Load'
+                  Enabled = False
+                  ImageIndex = 53
+                  ImageMargins.Left = 5
+                  Images = ImageList1
+                  TabOrder = 1
+                  OnClick = btnLoadProfileClick
+                  OnMouseEnter = btnLoadProfileMouseEnter
+                end
+                object edtProfile: TEdit
+                  Left = 496
+                  Top = 13
+                  Width = 177
+                  Height = 21
+                  TabOrder = 2
+                  OnChange = edtProfileChange
+                end
+                object btnSaveProfile: TButton
+                  Left = 678
+                  Top = 11
+                  Width = 61
+                  Height = 25
+                  CustomHint = BalloonHint1
+                  Caption = 'Save'
+                  Enabled = False
+                  ImageIndex = 174
+                  ImageMargins.Left = 5
+                  Images = ImageList1
+                  TabOrder = 3
+                  OnClick = btnSaveProfileClick
+                  OnMouseEnter = btnSaveProfileMouseEnter
+                end
+                object chkReplaceProfile: TCheckBox
+                  Left = 496
+                  Top = 35
+                  Width = 127
+                  Height = 17
+                  Caption = 'Override Profile'
+                  TabOrder = 4
+                end
+                object chkDisplayOnly: TCheckBox
+                  Left = 82
+                  Top = 35
+                  Width = 127
+                  Height = 17
+                  Caption = 'Display only selected'
+                  TabOrder = 5
+                end
+                object btnDeleteProfile: TButton
+                  Left = 349
+                  Top = 11
+                  Width = 66
+                  Height = 25
+                  Caption = 'Delete'
+                  Enabled = False
+                  ImageIndex = 199
+                  ImageMargins.Left = 5
+                  Images = ImageList1
+                  TabOrder = 6
+                  OnClick = btnDeleteProfileClick
+                  OnMouseEnter = btnDeleteProfileMouseEnter
+                end
+                object btnRemoveProfile: TButton
+                  Left = 739
+                  Top = 11
+                  Width = 70
+                  Height = 25
+                  CustomHint = BalloonHint1
+                  Caption = 'Remove'
+                  Enabled = False
+                  ImageIndex = 80
+                  ImageMargins.Left = 5
+                  Images = ImageList1
+                  TabOrder = 7
+                  OnClick = btnRemoveProfileClick
+                  OnMouseEnter = btnRemoveProfileMouseEnter
+                end
+              end
+              object btnRemovePhoto: TButton
+                Left = 205
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Remove'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 64
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 7
+                OnClick = btnRemovePhotoClick
+                OnMouseEnter = btnRemovePhotoMouseEnter
+              end
+              object btnFilterOK: TButton
+                Left = 804
+                Top = 58
+                Width = 34
+                Height = 25
+                ImageIndex = 218
+                ImageMargins.Left = 5
+                Images = ImageList1
+                TabOrder = 4
+                OnClick = btnFilterOKClick
+              end
+              object btnFilterCancel: TButton
+                Left = 839
+                Top = 58
+                Width = 34
+                Height = 25
+                ImageIndex = 63
+                ImageMargins.Left = 5
+                Images = ImageList1
+                TabOrder = 5
+                OnClick = btnFilterCancelClick
+              end
+              object btnBanGroups: TButton
+                Left = 256
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Ban'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 137
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 8
+                OnClick = btnBanGroupsClick
+                OnMouseEnter = btnBanGroupsMouseEnter
+              end
+              object Button5: TButton
+                Left = 52
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Stop'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 183
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 9
+                OnClick = Button5Click
+                OnMouseEnter = Button5MouseEnter
+              end
+              object btnUnbanGroups: TButton
+                Left = 306
+                Top = 2
+                Width = 50
+                Height = 38
+                Caption = 'Unban'
+                Enabled = False
+                ImageAlignment = iaTop
+                ImageIndex = 140
+                ImageMargins.Top = 5
+                ImageMargins.Bottom = -6
+                Images = ImageList1
+                TabOrder = 10
+                OnClick = btnUnbanGroupsClick
+                OnMouseEnter = btnUnbanGroupsMouseEnter
+              end
+            end
+            object PageControl3: TPageControl
+              Left = 0
+              Top = 83
+              Width = 1512
+              Height = 140
+              ActivePage = tabList
+              Align = alClient
+              TabOrder = 1
+              ExplicitWidth = 1495
+              ExplicitHeight = 142
+              object tabList: TTabSheet
+                Caption = 'List'
+                ExplicitWidth = 1485
+                object listGroups: TListView
+                  Left = 0
+                  Top = 0
+                  Width = 1504
                   Height = 112
                   Align = alClient
-                  Font.Charset = DEFAULT_CHARSET
-                  Font.Color = clLime
-                  Font.Height = -11
-                  Font.Name = 'Tahoma'
-                  Font.Style = []
-                  ParentFont = False
-                  ScrollBars = ssBoth
+                  Checkboxes = True
+                  Columns = <
+                    item
+                      Caption = 'ID'
+                      Width = 130
+                    end
+                    item
+                      Caption = 'Title'
+                      Width = 280
+                    end
+                    item
+                      Caption = 'Photos'
+                      Width = 80
+                    end
+                    item
+                      Caption = 'Members'
+                      Width = 80
+                    end
+                    item
+                      Caption = 'Description'
+                      Width = 200
+                    end
+                    item
+                      Caption = 'Moderated'
+                      Width = 70
+                    end
+                    item
+                      Caption = 'Count'
+                    end
+                    item
+                      Caption = 'Mode'
+                    end
+                    item
+                      Caption = 'Remaining'
+                      Width = 70
+                    end
+                    item
+                      Caption = 'PhotosOK'
+                      Width = 60
+                    end
+                    item
+                      Caption = 'VideosOK'
+                      Width = 60
+                    end
+                    item
+                      Caption = 'ImgOK'
+                    end
+                    item
+                      Caption = 'ScreenOK'
+                      Width = 60
+                    end
+                    item
+                      Caption = 'ArtOK'
+                    end
+                    item
+                      Caption = 'SafeOK'
+                    end
+                    item
+                      Caption = 'ModerateOK'
+                      Width = 80
+                    end
+                    item
+                      Caption = 'RestrictedOK'
+                      Width = 80
+                    end
+                    item
+                      Caption = 'Geo'
+                    end>
+                  GridLines = True
+                  ReadOnly = True
+                  RowSelect = True
+                  PopupMenu = PopupMenu2
                   TabOrder = 0
-                  WordWrap = False
+                  ViewStyle = vsReport
+                  OnCustomDrawItem = listGroupsCustomDrawItem
+                  OnItemChecked = listGroupsItemChecked
+                  ExplicitWidth = 1485
+                end
+              end
+              object tabStatus: TTabSheet
+                Caption = 'Status'
+                ImageIndex = 1
+                ExplicitWidth = 1485
+                object Panel10: TPanel
+                  Left = 0
+                  Top = 0
+                  Width = 1504
+                  Height = 112
+                  Align = alClient
+                  TabOrder = 0
+                  ExplicitWidth = 1485
+                  object mStatus: TMemo
+                    Left = 1
+                    Top = 1
+                    Width = 1502
+                    Height = 110
+                    Align = alClient
+                    Font.Charset = DEFAULT_CHARSET
+                    Font.Color = clLime
+                    Font.Height = -11
+                    Font.Name = 'Tahoma'
+                    Font.Style = []
+                    ParentFont = False
+                    ScrollBars = ssBoth
+                    TabOrder = 0
+                    WordWrap = False
+                    ExplicitWidth = 1483
+                  end
                 end
               end
             end
           end
         end
       end
-    end
-    object TabSheet1: TTabSheet
-      Caption = 'Hall of Fame'
-      ImageIndex = 2
-      object Panel12: TPanel
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 40
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-        object btnLoadHall: TButton
+      object TabSheet1: TTabSheet
+        Caption = 'Hall of Fame'
+        ImageIndex = 2
+        ExplicitWidth = 1501
+        object Panel12: TPanel
           Left = 0
           Top = 0
-          Width = 50
-          Height = 38
-          Caption = 'Load'
-          Enabled = False
-          ImageAlignment = iaTop
-          ImageIndex = 117
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
+          Width = 1520
+          Height = 40
+          Align = alTop
+          BevelOuter = bvNone
           TabOrder = 0
-          OnClick = btnLoadHallClick
-          OnMouseEnter = btnLoadHallMouseEnter
+          ExplicitWidth = 1501
+          object btnLoadHall: TButton
+            Left = 0
+            Top = 0
+            Width = 50
+            Height = 38
+            Caption = 'Load'
+            Enabled = False
+            ImageAlignment = iaTop
+            ImageIndex = 117
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
+            TabOrder = 0
+            OnClick = btnLoadHallClick
+            OnMouseEnter = btnLoadHallMouseEnter
+          end
         end
-      end
-      object Memo1: TMemo
-        Left = 0
-        Top = 40
-        Width = 1503
-        Height = 657
-        Align = alClient
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssVertical
-        TabOrder = 1
-      end
-    end
-    object TabSheet4: TTabSheet
-      Caption = 'Albums'
-      ImageIndex = 3
-      object Splitter3: TSplitter
-        Left = 0
-        Top = 321
-        Width = 1503
-        Height = 4
-        Cursor = crVSplit
-        Align = alTop
-        ExplicitLeft = 18
-        ExplicitTop = 348
-      end
-      object Panel13: TPanel
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 41
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-        object lblTotalAlbum: TLabel
-          Left = 121
-          Top = 20
-          Width = 81
-          Height = 19
-          Caption = 'Total Items'
-          Font.Charset = DEFAULT_CHARSET
+        object Memo1: TMemo
+          Left = 0
+          Top = 40
+          Width = 1520
+          Height = 655
+          Align = alClient
+          Font.Charset = ANSI_CHARSET
           Font.Color = clWindowText
-          Font.Height = -16
-          Font.Name = 'Tahoma'
+          Font.Height = -11
+          Font.Name = 'Courier New'
           Font.Style = []
           ParentFont = False
-        end
-        object Button9: TButton
-          Left = 0
-          Top = 1
-          Width = 50
-          Height = 38
-          Caption = 'Load'
-          Enabled = False
-          ImageAlignment = iaTop
-          ImageIndex = 117
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
-          TabOrder = 0
-          OnClick = Button9Click
-          OnMouseEnter = Button9MouseEnter
-        end
-        object Button10: TButton
-          Left = 51
-          Top = 1
-          Width = 63
-          Height = 38
-          Caption = 'Organise'
-          Enabled = False
-          ImageAlignment = iaTop
-          ImageIndex = 163
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
+          ReadOnly = True
+          ScrollBars = ssVertical
           TabOrder = 1
-          OnClick = Button10Click
-          OnMouseEnter = Button10MouseEnter
+          ExplicitWidth = 1501
         end
       end
-      object Memo2: TMemo
-        Left = 0
-        Top = 325
-        Width = 1503
-        Height = 372
-        Align = alClient
-        Font.Charset = ANSI_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'Courier New'
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssVertical
-        TabOrder = 1
-      end
-      object lvAlbums: TListView
-        Left = 0
-        Top = 41
-        Width = 1503
-        Height = 280
-        Align = alTop
-        Columns = <
-          item
-            Caption = 'Id'
-            Width = 150
-          end
-          item
-            Caption = 'Title'
-            Width = 150
-          end
-          item
-            Caption = 'Photos'
-            Width = 100
-          end
-          item
-            Caption = 'Views'
-            Width = 100
-          end>
-        ReadOnly = True
-        RowSelect = True
-        PopupMenu = PopupMenu4
-        TabOrder = 2
-        ViewStyle = vsReport
-      end
-    end
-    object TabSheet6: TTabSheet
-      Caption = 'Logs'
-      ImageIndex = 4
-      object mLogs: TMemo
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 697
-        Align = alClient
-        ScrollBars = ssBoth
-        TabOrder = 0
-        WordWrap = False
-      end
-    end
-    object TabSheet7: TTabSheet
-      Caption = 'Options'
-      ImageIndex = 5
-      OnExit = TabSheet7Exit
-      object Panel3: TPanel
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 40
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-        object btnLoadOptions: TButton
+      object TabSheet4: TTabSheet
+        Caption = 'Albums'
+        ImageIndex = 3
+        ExplicitWidth = 1501
+        object Splitter3: TSplitter
+          Left = 0
+          Top = 321
+          Width = 1520
+          Height = 4
+          Cursor = crVSplit
+          Align = alTop
+          ExplicitLeft = 18
+          ExplicitTop = 348
+          ExplicitWidth = 1503
+        end
+        object Panel13: TPanel
           Left = 0
           Top = 0
-          Width = 50
-          Height = 38
-          Caption = 'Load'
-          ImageAlignment = iaTop
-          ImageIndex = 53
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
+          Width = 1520
+          Height = 41
+          Align = alTop
+          BevelOuter = bvNone
           TabOrder = 0
-          OnClick = btnLoadOptionsClick
-          OnMouseEnter = btnLoadOptionsMouseEnter
-        end
-        object btnSaveOptions: TButton
-          Left = 51
-          Top = 0
-          Width = 50
-          Height = 38
-          Caption = 'Save'
-          ImageAlignment = iaTop
-          ImageIndex = 174
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
-          TabOrder = 1
-          OnClick = btnSaveOptionsClick
-          OnMouseEnter = btnSaveOptionsMouseEnter
-        end
-      end
-      object Panel7: TPanel
-        Left = 0
-        Top = 40
-        Width = 1503
-        Height = 657
-        Align = alClient
-        TabOrder = 1
-        object Label9: TLabel
-          Left = 16
-          Top = 11
-          Width = 139
-          Height = 13
-          Caption = 'Max items list of globals:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label1: TLabel
-          Left = 16
-          Top = 109
-          Width = 78
-          Height = 13
-          Caption = 'Flickr Api Key:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label30: TLabel
-          Left = 16
-          Top = 218
-          Width = 82
-          Height = 13
-          Caption = 'eMail Address:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label21: TLabel
-          Left = 16
-          Top = 36
-          Width = 137
-          Height = 13
-          Caption = 'Max number of lines log:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label8: TLabel
-          Left = 16
-          Top = 136
-          Width = 73
-          Height = 13
-          Caption = 'Flickr Secret:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label22: TLabel
-          Left = 768
-          Top = 38
-          Width = 90
-          Height = 13
-          Caption = 'Albums (views):'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label23: TLabel
-          Left = 928
-          Top = 38
-          Width = 34
-          Height = 13
-          Caption = 'Value:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label24: TLabel
-          Left = 1087
-          Top = 38
-          Width = 55
-          Height = 13
-          Caption = 'Album ID:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label26: TLabel
-          Left = 928
-          Top = 313
-          Width = 34
-          Height = 13
-          Caption = 'Value:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label27: TLabel
-          Left = 1087
-          Top = 313
-          Width = 55
-          Height = 13
-          Caption = 'Album ID:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label25: TLabel
-          Left = 768
-          Top = 313
-          Width = 84
-          Height = 13
-          Caption = 'Albums (likes):'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label35: TLabel
-          Left = 16
-          Top = 163
-          Width = 87
-          Height = 13
-          Caption = 'Flickr Url Name:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label4: TLabel
-          Left = 16
-          Top = 190
-          Width = 77
-          Height = 13
-          Caption = 'Flickr User Id:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label10: TLabel
-          Left = 16
-          Top = 62
-          Width = 66
-          Height = 13
-          Caption = 'Workspace:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label17: TLabel
-          Left = 16
-          Top = 246
-          Width = 71
-          Height = 13
-          Caption = 'Last backup:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label18: TLabel
-          Left = 16
-          Top = 85
-          Width = 81
-          Height = 13
-          Caption = 'Application Id:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object edtMax: TEdit
-          Left = 176
-          Top = 8
-          Width = 89
-          Height = 21
-          TabOrder = 0
-          Text = '80'
-          OnChange = edtMaxChange
-        end
-        object apikey: TEdit
-          Left = 176
-          Top = 106
-          Width = 233
-          Height = 21
-          TabOrder = 1
-          OnChange = apikeyChange
-        end
-        object edtEmail: TEdit
-          Left = 176
-          Top = 215
-          Width = 233
-          Height = 21
-          TabOrder = 2
-          OnChange = edtEmailChange
-        end
-        object showMarks: TCheckBox
-          Left = 176
-          Top = 270
-          Width = 169
-          Height = 17
-          Caption = 'Show Marks in Graphs'
-          TabOrder = 3
-          OnClick = showMarksClick
-        end
-        object chkPending: TCheckBox
-          Left = 176
-          Top = 293
-          Width = 169
-          Height = 17
-          Caption = 'Consider Pending Queue items'
-          Checked = True
-          State = cbChecked
-          TabOrder = 4
-          OnClick = chkPendingClick
-        end
-        object chkRealTime: TCheckBox
-          Left = 176
-          Top = 316
-          Width = 169
-          Height = 17
-          Caption = 'Update counts real time'
-          TabOrder = 5
-          OnClick = chkRealTimeClick
-        end
-        object chksorting: TCheckBox
-          Left = 176
-          Top = 427
-          Width = 201
-          Height = 17
-          Caption = 'Enable Sorting'
-          Checked = True
-          State = cbChecked
-          TabOrder = 6
-          OnClick = chksortingClick
-        end
-        object GroupBox1: TGroupBox
-          Left = 191
-          Top = 450
-          Width = 209
-          Height = 100
-          Caption = 'List Sorting'
-          TabOrder = 7
-          object RadioButton1: TRadioButton
-            Left = 15
-            Top = 16
-            Width = 113
-            Height = 17
-            Caption = 'Id'
-            TabOrder = 0
-            OnClick = RadioButton1Click
-          end
-          object RadioButton2: TRadioButton
-            Left = 15
-            Top = 36
-            Width = 113
-            Height = 17
-            Caption = 'Views'
-            Checked = True
-            TabOrder = 1
-            TabStop = True
-            OnClick = RadioButton1Click
-          end
-          object RadioButton3: TRadioButton
-            Left = 15
-            Top = 56
-            Width = 113
-            Height = 17
-            Caption = 'Likes'
-            TabOrder = 2
-            OnClick = RadioButton1Click
-          end
-          object RadioButton4: TRadioButton
-            Left = 103
-            Top = 36
-            Width = 113
-            Height = 17
-            Caption = 'Albums'
-            TabOrder = 3
-            OnClick = RadioButton1Click
-          end
-          object RadioButton5: TRadioButton
-            Left = 103
-            Top = 16
-            Width = 113
-            Height = 17
-            Caption = 'Taken'
-            TabOrder = 4
-            OnClick = RadioButton1Click
-          end
-          object RadioButton6: TRadioButton
-            Left = 15
-            Top = 77
-            Width = 113
-            Height = 17
-            Caption = 'Comments'
-            TabOrder = 5
-            OnClick = RadioButton1Click
-          end
-          object RadioButton7: TRadioButton
-            Left = 103
-            Top = 56
-            Width = 113
-            Height = 17
-            Caption = 'Groups'
-            TabOrder = 6
-            OnClick = RadioButton1Click
-          end
-          object RadioButton10: TRadioButton
-            Left = 103
-            Top = 77
-            Width = 113
-            Height = 17
-            Caption = 'Trend'
-            TabOrder = 7
-            OnClick = RadioButton1Click
-          end
-        end
-        object edtMaxLog: TEdit
-          Left = 176
-          Top = 35
-          Width = 89
-          Height = 21
-          TabOrder = 8
-          Text = '30000'
-          OnChange = edtMaxLogChange
-        end
-        object chkResponses: TCheckBox
-          Left = 176
-          Top = 362
-          Width = 201
-          Height = 17
-          Caption = 'Display only successful responses'
-          Checked = True
-          State = cbChecked
-          TabOrder = 9
-          OnClick = chkResponsesClick
-        end
-        object chkRejected: TCheckBox
-          Left = 176
-          Top = 339
-          Width = 169
-          Height = 17
-          Caption = 'Keep Rejected list alive'
-          Checked = True
-          State = cbChecked
-          TabOrder = 10
-          OnClick = chkRejectedClick
-        end
-        object secret: TEdit
-          Left = 176
-          Top = 133
-          Width = 233
-          Height = 21
-          TabOrder = 11
-          OnChange = secretChange
-        end
-        object Button1: TButton
-          Left = 415
-          Top = 106
-          Width = 90
-          Height = 48
-          Caption = 'Test REST Login'
-          ImageAlignment = iaTop
-          ImageIndex = 11
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
-          TabOrder = 12
-          OnClick = Button1Click
-          OnMouseEnter = Button1MouseEnter
-        end
-        object listValuesViewsAlbums: TMemo
-          Left = 928
-          Top = 57
-          Width = 153
-          Height = 240
-          ScrollBars = ssBoth
-          TabOrder = 13
-          WordWrap = False
-          OnChange = listValuesViewsAlbumsChange
-        end
-        object listValuesViewsAlbumsID: TMemo
-          Left = 1087
-          Top = 57
-          Width = 296
-          Height = 240
-          ScrollBars = ssBoth
-          TabOrder = 14
-          WordWrap = False
-          OnChange = listValuesViewsAlbumsIDChange
-        end
-        object listValuesLikesAlbums: TMemo
-          Left = 928
-          Top = 332
-          Width = 153
-          Height = 237
-          ScrollBars = ssBoth
-          TabOrder = 15
-          WordWrap = False
-          OnChange = listValuesLikesAlbumsChange
-        end
-        object listValuesLikesAlbumsID: TMemo
-          Left = 1087
-          Top = 332
-          Width = 296
-          Height = 237
-          ScrollBars = ssBoth
-          TabOrder = 16
-          WordWrap = False
-          OnChange = listValuesLikesAlbumsIDChange
-        end
-        object edtUrlName: TEdit
-          Left = 176
-          Top = 160
-          Width = 233
-          Height = 21
-          TabOrder = 17
-          OnChange = edtUrlNameChange
-        end
-        object edtUserId: TEdit
-          Left = 176
-          Top = 187
-          Width = 233
-          Height = 21
-          TabOrder = 18
-          OnChange = edtUserIdChange
-        end
-        object chkUpdateCollections: TCheckBox
-          Left = 176
-          Top = 384
-          Width = 144
-          Height = 17
-          Caption = 'Update Collections'
-          Checked = True
-          State = cbChecked
-          TabOrder = 19
-          OnClick = chkUpdateCollectionsClick
-        end
-        object chkAddItem: TCheckBox
-          Left = 176
-          Top = 407
-          Width = 127
-          Height = 17
-          Caption = 'Disable Graph Display'
-          TabOrder = 20
-          OnClick = chkAddItemClick
-        end
-        object GroupBox2: TGroupBox
-          Left = 406
-          Top = 450
-          Width = 209
-          Height = 80
-          Caption = 'Group Sorting'
-          TabOrder = 21
-          object RadioButton8: TRadioButton
-            Left = 17
-            Top = 15
-            Width = 113
+          ExplicitWidth = 1501
+          object lblTotalAlbum: TLabel
+            Left = 121
+            Top = 20
+            Width = 81
             Height = 19
-            Caption = 'Sort by Members'
-            Checked = True
+            Caption = 'Total Items'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -16
+            Font.Name = 'Tahoma'
+            Font.Style = []
+            ParentFont = False
+          end
+          object Button9: TButton
+            Left = 0
+            Top = 1
+            Width = 50
+            Height = 38
+            Caption = 'Load'
+            Enabled = False
+            ImageAlignment = iaTop
+            ImageIndex = 117
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
             TabOrder = 0
-            TabStop = True
-            OnClick = RadioButton8Click
+            OnClick = Button9Click
+            OnMouseEnter = Button9MouseEnter
           end
-          object RadioButton9: TRadioButton
-            Left = 17
-            Top = 32
-            Width = 153
-            Height = 24
-            Caption = 'Sort by Number of Photos'
+          object Button10: TButton
+            Left = 51
+            Top = 1
+            Width = 63
+            Height = 38
+            Caption = 'Organise'
+            Enabled = False
+            ImageAlignment = iaTop
+            ImageIndex = 163
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
             TabOrder = 1
-            OnClick = RadioButton8Click
-          end
-          object RadioButton11: TRadioButton
-            Left = 17
-            Top = 53
-            Width = 153
-            Height = 24
-            Caption = 'Sort by Remaining'
-            TabOrder = 2
-            OnClick = RadioButton8Click
+            OnClick = Button10Click
+            OnMouseEnter = Button10MouseEnter
           end
         end
-        object edtWorkspace: TEdit
-          Left = 176
-          Top = 59
-          Width = 209
-          Height = 21
-          TabOrder = 22
-          OnChange = edtWorkspaceChange
-        end
-        object btnLoadDirectory: TButton
-          Left = 384
-          Top = 59
-          Width = 25
-          Height = 21
-          Caption = '...'
-          TabOrder = 23
-          OnClick = btnLoadDirectoryClick
-        end
-        object chkShowButtonHint: TCheckBox
-          Left = 176
-          Top = 551
-          Width = 169
-          Height = 17
-          Caption = 'Show Button Hints'
-          TabOrder = 24
-          OnClick = chkShowButtonHintClick
-        end
-        object edtBackup: TEdit
-          Left = 176
-          Top = 243
-          Width = 233
-          Height = 21
-          ReadOnly = True
-          TabOrder = 25
-          OnChange = edtEmailChange
-        end
-        object edtAppId: TEdit
-          Left = 176
-          Top = 82
-          Width = 233
-          Height = 21
-          ReadOnly = True
-          TabOrder = 26
-          OnChange = apikeyChange
-        end
-      end
-    end
-    object TabSheet8: TTabSheet
-      Caption = 'Report'
-      ImageIndex = 6
-      object Panel21: TPanel
-        Left = 0
-        Top = 0
-        Width = 1503
-        Height = 38
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-        object btnShowReport: TButton
+        object Memo2: TMemo
           Left = 0
-          Top = -1
-          Width = 50
-          Height = 38
-          Caption = 'Show'
-          Enabled = False
-          ImageAlignment = iaTop
-          ImageIndex = 188
-          ImageMargins.Top = 5
-          ImageMargins.Bottom = -6
-          Images = ImageList1
-          TabOrder = 0
-          OnClick = btnShowReportClick
-          OnMouseEnter = btnShowReportMouseEnter
+          Top = 325
+          Width = 1520
+          Height = 370
+          Align = alClient
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Courier New'
+          Font.Style = []
+          ParentFont = False
+          ReadOnly = True
+          ScrollBars = ssVertical
+          TabOrder = 1
+          ExplicitWidth = 1501
+        end
+        object lvAlbums: TListView
+          Left = 0
+          Top = 41
+          Width = 1520
+          Height = 280
+          Align = alTop
+          Columns = <
+            item
+              Caption = 'Id'
+              Width = 150
+            end
+            item
+              Caption = 'Title'
+              Width = 150
+            end
+            item
+              Caption = 'Photos'
+              Width = 100
+            end
+            item
+              Caption = 'Views'
+              Width = 100
+            end>
+          ReadOnly = True
+          RowSelect = True
+          PopupMenu = PopupMenu4
+          TabOrder = 2
+          ViewStyle = vsReport
+          ExplicitWidth = 1501
         end
       end
-      object WebBrowser2: TWebBrowser
-        Left = 0
-        Top = 38
-        Width = 1503
-        Height = 659
-        Align = alClient
-        TabOrder = 1
-        ExplicitHeight = 663
-        ControlData = {
-          4C000000579B00001C4400000000000000000000000000000000000000000000
-          000000004C000000000000000000000001000000E0D057007335CF11AE690800
-          2B2E126208000000000000004C0000000114020000000000C000000000000046
-          8000000000000000000000000000000000000000000000000000000000000000
-          00000000000000000100000000000000000000000000000000000000}
+      object TabSheet6: TTabSheet
+        Caption = 'Logs'
+        ImageIndex = 4
+        ExplicitWidth = 1501
+        object mLogs: TMemo
+          Left = 0
+          Top = 0
+          Width = 1520
+          Height = 695
+          Align = alClient
+          ScrollBars = ssBoth
+          TabOrder = 0
+          WordWrap = False
+          ExplicitWidth = 1501
+        end
+      end
+      object TabSheet7: TTabSheet
+        Caption = 'Options'
+        ImageIndex = 5
+        OnExit = TabSheet7Exit
+        ExplicitWidth = 1501
+        object Panel3: TPanel
+          Left = 0
+          Top = 0
+          Width = 1520
+          Height = 40
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          ExplicitWidth = 1501
+          object btnLoadOptions: TButton
+            Left = 0
+            Top = 0
+            Width = 50
+            Height = 38
+            Caption = 'Load'
+            ImageAlignment = iaTop
+            ImageIndex = 53
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
+            TabOrder = 0
+            OnClick = btnLoadOptionsClick
+            OnMouseEnter = btnLoadOptionsMouseEnter
+          end
+          object btnSaveOptions: TButton
+            Left = 51
+            Top = 0
+            Width = 50
+            Height = 38
+            Caption = 'Save'
+            ImageAlignment = iaTop
+            ImageIndex = 174
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
+            TabOrder = 1
+            OnClick = btnSaveOptionsClick
+            OnMouseEnter = btnSaveOptionsMouseEnter
+          end
+        end
+        object Panel7: TPanel
+          Left = 0
+          Top = 40
+          Width = 1520
+          Height = 655
+          Align = alClient
+          TabOrder = 1
+          ExplicitWidth = 1501
+          object Label9: TLabel
+            Left = 16
+            Top = 11
+            Width = 139
+            Height = 13
+            Caption = 'Max items list of globals:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label1: TLabel
+            Left = 16
+            Top = 109
+            Width = 78
+            Height = 13
+            Caption = 'Flickr Api Key:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label30: TLabel
+            Left = 16
+            Top = 218
+            Width = 82
+            Height = 13
+            Caption = 'eMail Address:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label21: TLabel
+            Left = 16
+            Top = 36
+            Width = 137
+            Height = 13
+            Caption = 'Max number of lines log:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label8: TLabel
+            Left = 16
+            Top = 136
+            Width = 73
+            Height = 13
+            Caption = 'Flickr Secret:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label22: TLabel
+            Left = 768
+            Top = 38
+            Width = 90
+            Height = 13
+            Caption = 'Albums (views):'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label23: TLabel
+            Left = 928
+            Top = 38
+            Width = 34
+            Height = 13
+            Caption = 'Value:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label24: TLabel
+            Left = 1087
+            Top = 38
+            Width = 55
+            Height = 13
+            Caption = 'Album ID:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label26: TLabel
+            Left = 928
+            Top = 313
+            Width = 34
+            Height = 13
+            Caption = 'Value:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label27: TLabel
+            Left = 1087
+            Top = 313
+            Width = 55
+            Height = 13
+            Caption = 'Album ID:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label25: TLabel
+            Left = 768
+            Top = 313
+            Width = 84
+            Height = 13
+            Caption = 'Albums (likes):'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label35: TLabel
+            Left = 16
+            Top = 163
+            Width = 87
+            Height = 13
+            Caption = 'Flickr Url Name:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label4: TLabel
+            Left = 16
+            Top = 190
+            Width = 77
+            Height = 13
+            Caption = 'Flickr User Id:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label10: TLabel
+            Left = 16
+            Top = 62
+            Width = 66
+            Height = 13
+            Caption = 'Workspace:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label17: TLabel
+            Left = 16
+            Top = 246
+            Width = 71
+            Height = 13
+            Caption = 'Last backup:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object Label18: TLabel
+            Left = 16
+            Top = 85
+            Width = 81
+            Height = 13
+            Caption = 'Application Id:'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentFont = False
+          end
+          object edtMax: TEdit
+            Left = 176
+            Top = 8
+            Width = 89
+            Height = 21
+            TabOrder = 0
+            Text = '80'
+            OnChange = edtMaxChange
+          end
+          object apikey: TEdit
+            Left = 176
+            Top = 106
+            Width = 233
+            Height = 21
+            TabOrder = 1
+            OnChange = apikeyChange
+          end
+          object edtEmail: TEdit
+            Left = 176
+            Top = 215
+            Width = 233
+            Height = 21
+            TabOrder = 2
+            OnChange = edtEmailChange
+          end
+          object showMarks: TCheckBox
+            Left = 176
+            Top = 270
+            Width = 169
+            Height = 17
+            Caption = 'Show Marks in Graphs'
+            TabOrder = 3
+            OnClick = showMarksClick
+          end
+          object chkPending: TCheckBox
+            Left = 176
+            Top = 293
+            Width = 169
+            Height = 17
+            Caption = 'Consider Pending Queue items'
+            Checked = True
+            State = cbChecked
+            TabOrder = 4
+            OnClick = chkPendingClick
+          end
+          object chkRealTime: TCheckBox
+            Left = 176
+            Top = 316
+            Width = 169
+            Height = 17
+            Caption = 'Update counts real time'
+            TabOrder = 5
+            OnClick = chkRealTimeClick
+          end
+          object chksorting: TCheckBox
+            Left = 176
+            Top = 427
+            Width = 201
+            Height = 17
+            Caption = 'Enable Sorting'
+            Checked = True
+            State = cbChecked
+            TabOrder = 6
+            OnClick = chksortingClick
+          end
+          object GroupBox1: TGroupBox
+            Left = 191
+            Top = 450
+            Width = 209
+            Height = 100
+            Caption = 'List Sorting'
+            TabOrder = 7
+            object RadioButton1: TRadioButton
+              Left = 15
+              Top = 16
+              Width = 113
+              Height = 17
+              Caption = 'Id'
+              TabOrder = 0
+              OnClick = RadioButton1Click
+            end
+            object RadioButton2: TRadioButton
+              Left = 15
+              Top = 36
+              Width = 113
+              Height = 17
+              Caption = 'Views'
+              Checked = True
+              TabOrder = 1
+              TabStop = True
+              OnClick = RadioButton1Click
+            end
+            object RadioButton3: TRadioButton
+              Left = 15
+              Top = 56
+              Width = 113
+              Height = 17
+              Caption = 'Likes'
+              TabOrder = 2
+              OnClick = RadioButton1Click
+            end
+            object RadioButton4: TRadioButton
+              Left = 103
+              Top = 36
+              Width = 113
+              Height = 17
+              Caption = 'Albums'
+              TabOrder = 3
+              OnClick = RadioButton1Click
+            end
+            object RadioButton5: TRadioButton
+              Left = 103
+              Top = 16
+              Width = 113
+              Height = 17
+              Caption = 'Taken'
+              TabOrder = 4
+              OnClick = RadioButton1Click
+            end
+            object RadioButton6: TRadioButton
+              Left = 15
+              Top = 77
+              Width = 113
+              Height = 17
+              Caption = 'Comments'
+              TabOrder = 5
+              OnClick = RadioButton1Click
+            end
+            object RadioButton7: TRadioButton
+              Left = 103
+              Top = 56
+              Width = 113
+              Height = 17
+              Caption = 'Groups'
+              TabOrder = 6
+              OnClick = RadioButton1Click
+            end
+            object RadioButton10: TRadioButton
+              Left = 103
+              Top = 77
+              Width = 113
+              Height = 17
+              Caption = 'Trend'
+              TabOrder = 7
+              OnClick = RadioButton1Click
+            end
+          end
+          object edtMaxLog: TEdit
+            Left = 176
+            Top = 35
+            Width = 89
+            Height = 21
+            TabOrder = 8
+            Text = '30000'
+            OnChange = edtMaxLogChange
+          end
+          object chkResponses: TCheckBox
+            Left = 176
+            Top = 362
+            Width = 201
+            Height = 17
+            Caption = 'Display only successful responses'
+            Checked = True
+            State = cbChecked
+            TabOrder = 9
+            OnClick = chkResponsesClick
+          end
+          object chkRejected: TCheckBox
+            Left = 176
+            Top = 339
+            Width = 169
+            Height = 17
+            Caption = 'Keep Rejected list alive'
+            Checked = True
+            State = cbChecked
+            TabOrder = 10
+            OnClick = chkRejectedClick
+          end
+          object secret: TEdit
+            Left = 176
+            Top = 133
+            Width = 233
+            Height = 21
+            TabOrder = 11
+            OnChange = secretChange
+          end
+          object Button1: TButton
+            Left = 415
+            Top = 106
+            Width = 90
+            Height = 48
+            Caption = 'Test REST Login'
+            ImageAlignment = iaTop
+            ImageIndex = 11
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
+            TabOrder = 12
+            OnClick = Button1Click
+            OnMouseEnter = Button1MouseEnter
+          end
+          object listValuesViewsAlbums: TMemo
+            Left = 928
+            Top = 57
+            Width = 153
+            Height = 240
+            ScrollBars = ssBoth
+            TabOrder = 13
+            WordWrap = False
+            OnChange = listValuesViewsAlbumsChange
+          end
+          object listValuesViewsAlbumsID: TMemo
+            Left = 1087
+            Top = 57
+            Width = 296
+            Height = 240
+            ScrollBars = ssBoth
+            TabOrder = 14
+            WordWrap = False
+            OnChange = listValuesViewsAlbumsIDChange
+          end
+          object listValuesLikesAlbums: TMemo
+            Left = 928
+            Top = 332
+            Width = 153
+            Height = 237
+            ScrollBars = ssBoth
+            TabOrder = 15
+            WordWrap = False
+            OnChange = listValuesLikesAlbumsChange
+          end
+          object listValuesLikesAlbumsID: TMemo
+            Left = 1087
+            Top = 332
+            Width = 296
+            Height = 237
+            ScrollBars = ssBoth
+            TabOrder = 16
+            WordWrap = False
+            OnChange = listValuesLikesAlbumsIDChange
+          end
+          object edtUrlName: TEdit
+            Left = 176
+            Top = 160
+            Width = 233
+            Height = 21
+            TabOrder = 17
+            OnChange = edtUrlNameChange
+          end
+          object edtUserId: TEdit
+            Left = 176
+            Top = 187
+            Width = 233
+            Height = 21
+            TabOrder = 18
+            OnChange = edtUserIdChange
+          end
+          object chkUpdateCollections: TCheckBox
+            Left = 176
+            Top = 384
+            Width = 144
+            Height = 17
+            Caption = 'Update Collections'
+            Checked = True
+            State = cbChecked
+            TabOrder = 19
+            OnClick = chkUpdateCollectionsClick
+          end
+          object chkAddItem: TCheckBox
+            Left = 176
+            Top = 407
+            Width = 127
+            Height = 17
+            Caption = 'Disable Graph Display'
+            TabOrder = 20
+            OnClick = chkAddItemClick
+          end
+          object GroupBox2: TGroupBox
+            Left = 406
+            Top = 450
+            Width = 209
+            Height = 80
+            Caption = 'Group Sorting'
+            TabOrder = 21
+            object RadioButton8: TRadioButton
+              Left = 17
+              Top = 15
+              Width = 113
+              Height = 19
+              Caption = 'Sort by Members'
+              Checked = True
+              TabOrder = 0
+              TabStop = True
+              OnClick = RadioButton8Click
+            end
+            object RadioButton9: TRadioButton
+              Left = 17
+              Top = 32
+              Width = 153
+              Height = 24
+              Caption = 'Sort by Number of Photos'
+              TabOrder = 1
+              OnClick = RadioButton8Click
+            end
+            object RadioButton11: TRadioButton
+              Left = 17
+              Top = 53
+              Width = 153
+              Height = 24
+              Caption = 'Sort by Remaining'
+              TabOrder = 2
+              OnClick = RadioButton8Click
+            end
+          end
+          object edtWorkspace: TEdit
+            Left = 176
+            Top = 59
+            Width = 209
+            Height = 21
+            TabOrder = 22
+            OnChange = edtWorkspaceChange
+          end
+          object btnLoadDirectory: TButton
+            Left = 384
+            Top = 59
+            Width = 25
+            Height = 21
+            Caption = '...'
+            TabOrder = 23
+            OnClick = btnLoadDirectoryClick
+          end
+          object chkShowButtonHint: TCheckBox
+            Left = 176
+            Top = 551
+            Width = 169
+            Height = 17
+            Caption = 'Show Button Hints'
+            TabOrder = 24
+            OnClick = chkShowButtonHintClick
+          end
+          object edtBackup: TEdit
+            Left = 176
+            Top = 243
+            Width = 233
+            Height = 21
+            ReadOnly = True
+            TabOrder = 25
+            OnChange = edtEmailChange
+          end
+          object edtAppId: TEdit
+            Left = 176
+            Top = 82
+            Width = 233
+            Height = 21
+            ReadOnly = True
+            TabOrder = 26
+            OnChange = apikeyChange
+          end
+        end
+      end
+      object TabSheet8: TTabSheet
+        Caption = 'Report'
+        ImageIndex = 6
+        ExplicitWidth = 1501
+        object Panel21: TPanel
+          Left = 0
+          Top = 0
+          Width = 1520
+          Height = 38
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          ExplicitWidth = 1501
+          object btnShowReport: TButton
+            Left = 0
+            Top = -1
+            Width = 50
+            Height = 38
+            Caption = 'Show'
+            Enabled = False
+            ImageAlignment = iaTop
+            ImageIndex = 188
+            ImageMargins.Top = 5
+            ImageMargins.Bottom = -6
+            Images = ImageList1
+            TabOrder = 0
+            OnClick = btnShowReportClick
+            OnMouseEnter = btnShowReportMouseEnter
+          end
+        end
+        object WebBrowser2: TWebBrowser
+          Left = 0
+          Top = 38
+          Width = 1520
+          Height = 657
+          Align = alClient
+          TabOrder = 1
+          ExplicitWidth = 1503
+          ExplicitHeight = 556
+          ControlData = {
+            4C000000199D0000E74300000000000000000000000000000000000000000000
+            000000004C000000000000000000000001000000E0D057007335CF11AE690800
+            2B2E126208000000000000004C0000000114020000000000C000000000000046
+            8000000000000000000000000000000000000000000000000000000000000000
+            00000000000000000100000000000000000000000000000000000000}
+        end
       end
     end
   end
-  object Panel9: TPanel
+  object splitview: TSplitView
     Left = 0
     Top = 55
-    Width = 1511
-    Height = 74
-    Align = alTop
+    Width = 83
+    Height = 799
+    OpenedWidth = 200
+    Placement = svpLeft
     TabOrder = 2
-    object Panel24: TPanel
-      Left = 1
-      Top = 1
-      Width = 501
-      Height = 72
-      Align = alLeft
+    object btnLoad: TButton
+      Left = 4
+      Top = 6
+      Width = 75
+      Height = 38
+      Caption = 'Open'
+      ImageAlignment = iaTop
+      ImageIndex = 58
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
       TabOrder = 0
-      object Panel27: TPanel
-        Left = 22
-        Top = 1
-        Width = 457
-        Height = 67
-        BevelOuter = bvNone
-        TabOrder = 0
-        object Image1: TImage
-          Left = 23
-          Top = 12
-          Width = 32
-          Height = 32
-          AutoSize = True
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
-            0020080300000044A48AC60000000467414D410000B18F0BFC6105000000BD50
-            4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000
-            8AC5987E0000003D74524E53002A8ED7F8D60694FD9809BBBD952BFCDA520E8F
-            D810F90CF2F366F478EF350D3650F7FB40CE5C0FB8B95BE4F56F029176F1322C
-            9375CA6A1213E6E74A262E17AC00000001624B47440088051D48000000097048
-            597300000B1200000B1201D2DD7EFC000001404944415478DAD592ED4BC25014
-            C69FD36C41A430CB94A2A8A86451624685A3FEFA60F44209F62282985FECD526
-            48484EE6E9EE36749BC3BE053D30EEF3ECFC386CE71E824F24047298FDEF4656
-            253A94E68AA81B01A8D385A12FD9F63810CFFB1A5FF6C68004E5805BF10DCC7B
-            40993B61607E07A8D0BB7029D681878F30A018C05D5B5A6D17309D30B09805EE
-            2D69D3DB40F52D0C9C8AE72CC2FF2F20B315F8CDDA7310482BB41118549D9DD7
-            11309BA435F7349372D496E186065B5D0F586D1A5EBF8A934047D1BD64AE3424
-            B04ECB6E7C5AF25DF74F68F2A300363BE216F022B62D35ACB7064A3F23CE6AA2
-            46E98524D0262A43D5ABDECA652B3672CC1A60B5281F073EE946560EA8241666
-            9FAF652AF01CF0454733807D81281DAB408F6245A07F1E0914636E73FF58C372
-            6B7F054CD2EF80A14CAC0FE884A726D42DED1B97816DB9F36014B40000000049
-            454E44AE426082}
-          Transparent = True
-        end
-        object Label13: TLabel
-          Left = 73
-          Top = 4
-          Width = 73
-          Height = 16
-          Caption = 'Yesterday:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label14: TLabel
-          Left = 102
-          Top = 26
-          Width = 44
-          Height = 16
-          Caption = 'Today:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelTodayViews: TLabel
-          Left = 151
-          Top = 26
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelYesterdayViews: TLabel
-          Left = 151
-          Top = 4
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object upgreen1: TImage
-          Left = 211
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object labelArrow1: TLabel
-          Left = 245
-          Top = 17
-          Width = 61
-          Height = 16
-          Caption = '+99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelViewsPhoto: TLabel
-          Left = 172
-          Top = 51
-          Width = 119
-          Height = 13
-          Caption = '999,999 views/photo'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label16: TLabel
-          Left = 322
-          Top = 4
-          Width = 36
-          Height = 16
-          Caption = 'Rate:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelViewsYesterdayRate: TLabel
-          Left = 364
-          Top = 4
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelViewsTodayRate: TLabel
-          Left = 364
-          Top = 26
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object upgreen11: TImage
-          Left = 419
-          Top = 5
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object downred1: TImage
-          Left = 211
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object downred11: TImage
-          Left = 419
-          Top = 5
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-      end
+      OnClick = btnLoadClick
+      OnMouseEnter = btnLoadMouseEnter
     end
-    object Panel25: TPanel
-      Left = 502
-      Top = 1
-      Width = 501
-      Height = 72
-      Align = alLeft
+    object btnSave: TButton
+      Left = 4
+      Top = 43
+      Width = 75
+      Height = 38
+      Caption = 'Save'
+      Enabled = False
+      ImageAlignment = iaTop
+      ImageIndex = 221
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
       TabOrder = 1
-      object Panel28: TPanel
-        Left = 8
-        Top = 1
-        Width = 463
-        Height = 67
-        BevelOuter = bvNone
-        TabOrder = 0
-        object Image2: TImage
-          Left = 23
-          Top = 12
-          Width = 32
-          Height = 32
-          AutoSize = True
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
-            0020080300000044A48AC60000000467414D410000B18F0BFC61050000013250
-            4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000002D6967480000006474524E
-            530001499BDCF9F4CD7D14DD30CAEF5A5955F58FF640FC949208DAAA3F0B0526
-            6EE9E7AB0765FE6417BB97F12A0F0E03E6044AE40211F8D44645D89A44F3CE88
-            502EB80AD31EEEB1A65489877B817EBD9896090DC4B9C0D9AFF766B09C7AFD4E
-            F24F292B9FA32778D100000001624B47440088051D4800000009704859730000
-            0B1200000B1201D2DD7EFC0000020E4944415478DA7592FF4B536114C69F4388
-            2C2B37105DC63233759ADE146D98ABA643FA362CD040512882FEAC8AFAA12808
-            A568D50F691A9A2886B6617E09591AD1B0C029D990C8D7F3BEBBEFDD9DDD0EEC
-            D939EFF3B9F73D3B3B040ED29196155C82236F9B457AFC29A05E65E0096DB216
-            EEF464CAC7624B016EEA868E817578BAAC6AF06F8A8122BA866C3CA74E5BF54C
-            FC242F45387B99E9A1431D0FEDC826F2C39C46F7D389366094969453FDB58FF5
-            916F51555522048C90FF2C303E6FBED27D9DE569CAAC6A82C018D5B6021373E6
-            515D0BCB64DCAC4E9E01DED36DCEA662BAAB53A73194D085119073A8E48BA667
-            F55963CA236674E1BBA881BB024ED1D4280179C51D3887F45493B3D38E7E7303
-            F0910206109F74045AEA80396AADE5F9AE3902C557814F14AC01163EA41D7C57
-            931F98279CAB0696DE3900E7AB80C53142A81278101CF9C76F1BBF097C1EE57D
-            68AF0062E9F81E3F4CE5C0F25BB9301D5406AC2663393E5DF0012BE28D5AB94B
-            CB3CCD6FAF72802BA5BC0515AF333B89CB4758BE476D7EE430CC671460788FB2
-            265F587E6709F4AD0A803750CCFA2391E9C3385EC4BAB66F1016802EF2B0A6BE
-            C83FA5F9989B755D0CC006A0DE5FC81ADDDC4241E410671B0BE6EFD600BCA183
-            ACBF08E2007FFF1E4E620F00A3DE65E5E9B835952C00EAA77C956C8B87D915B3
-            01C00DCA63FD43F7ED23CD99DFADD57224CAEEE1BF00C20C0CE79CEC025C3993
-            2E557226C40000000049454E44AE426082}
-        end
-        object Label12: TLabel
-          Left = 69
-          Top = 4
-          Width = 73
-          Height = 16
-          Caption = 'Yesterday:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelYesterdayLikes: TLabel
-          Left = 146
-          Top = 4
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label15: TLabel
-          Left = 96
-          Top = 25
-          Width = 44
-          Height = 16
-          Caption = 'Today:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelTodayLikes: TLabel
-          Left = 146
-          Top = 25
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object upgreen2: TImage
-          Left = 205
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object LabelArrow2: TLabel
-          Left = 237
-          Top = 17
-          Width = 61
-          Height = 16
-          Caption = '+99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelLikesPhoto: TLabel
-          Left = 199
-          Top = 51
-          Width = 106
-          Height = 13
-          Caption = '99,999 likes/photo'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label46: TLabel
-          Left = 325
-          Top = 4
-          Width = 36
-          Height = 16
-          Caption = 'Rate:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelLikesYesterdayRate: TLabel
-          Left = 367
-          Top = 4
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelLikesTodayRate: TLabel
-          Left = 367
-          Top = 25
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object downred22: TImage
-          Left = 428
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object downred2: TImage
-          Left = 205
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object upgreen22: TImage
-          Left = 428
-          Top = 4
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-      end
+      OnClick = btnSaveClick
+      OnMouseEnter = btnSaveMouseEnter
     end
-    object Panel26: TPanel
-      Left = 1003
-      Top = 1
-      Width = 507
-      Height = 72
-      Align = alClient
+    object btnBackup: TButton
+      Left = 4
+      Top = 80
+      Width = 75
+      Height = 38
+      Caption = 'Backup'
+      Enabled = False
+      ImageAlignment = iaTop
+      ImageIndex = 28
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
       TabOrder = 2
-      object Panel29: TPanel
-        Left = 22
-        Top = 1
-        Width = 441
-        Height = 67
-        BevelOuter = bvNone
-        TabOrder = 0
-        object Image3: TImage
-          Left = 13
-          Top = 12
-          Width = 32
-          Height = 32
-          AutoSize = True
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000200000
-            0020080300000044A48AC60000000467414D410000B18F0BFC6105000000DE50
-            4C5445000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-            FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000
-            00F22757980000004874524E53002676BCE6F93FC20898FE12C60AC8BD662406
-            9BD740C00DC30F2F3881BBBE65BF23F7E422BA605D80B9822BDCD639FD1193DD
-            4399C40B28B213078B097FF64CC5FAE777EA56AB169F52932700000001624B47
-            440088051D48000000097048597300000B1200000B1201D2DD7EFC0000019249
-            44415478DA7D920B4B024110C767402592A0CC505333533333A4A2844482E841
-            1F59A908A494D24222E94124F620CB47844A6AD6367B9E79A79B7FB8BBD9DBDF
-            CCCECE0C822CE4DA94CC03C6D5F9DFFEE87003D43A64CD2E3084B80EBD8A3156
-            97013D8641A423569380110CF1658272284B1B06C62ADBDC88B30A07C657C94E
-            6141E53DC156E89D2C11A0D3D0F9E7F8DA13DFC496298F5613C1BC48FEDA97BE
-            0C2C5F14239DC7C9008163CF821CADEF14FA026D0B009947E12DEC7E804B9C9A
-            07B8CA0901870FE01A355B00375921E0F402ECA396EA7F5A16028620F5056766
-            018E2B0300970720CA8480DBCD8FF0B800EE6F8580D7C9939C9BA6367C08019F
-            03E001FD76A9A2FF170A78219EB2B5FE521BAD52A921801632CC6961B3F4056A
-            F79289D66F78A68EDFE0ED2EA6F83C18BED7F8AF52B2B319C4FC708ECFA03C30
-            602A4AF313A19B1B471551E2FE843CB421AC521E9130E270773BC634BCC0F2D8
-            EFD2F359B229DCEB99F60C2A803F35F0CE533D91176AA0857BBDE550013F1885
-            0180C05D0588DC1580D8BD0BEC88DD49BF13967DED208B2ABC0000000049454E
-            44AE426082}
-        end
-        object Label41: TLabel
-          Left = 69
-          Top = 4
-          Width = 73
-          Height = 16
-          Caption = 'Yesterday:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelYesterdayComments: TLabel
-          Left = 145
-          Top = 4
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label42: TLabel
-          Left = 98
-          Top = 26
-          Width = 44
-          Height = 16
-          Caption = 'Today:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelTodayComments: TLabel
-          Left = 145
-          Top = 26
-          Width = 52
-          Height = 16
-          Caption = '999,999'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object downred3: TImage
-          Left = 205
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object LabelArrow3: TLabel
-          Left = 236
-          Top = 17
-          Width = 61
-          Height = 16
-          Caption = '+99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelCommentsPhoto: TLabel
-          Left = 188
-          Top = 51
-          Width = 147
-          Height = 13
-          Caption = '999,999 comments/photo'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object Label47: TLabel
-          Left = 309
-          Top = 4
-          Width = 36
-          Height = 16
-          Caption = 'Rate:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelCommentsYesterdayRate: TLabel
-          Left = 351
-          Top = 4
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object LabelCommentsTodayRate: TLabel
-          Left = 351
-          Top = 26
-          Width = 50
-          Height = 16
-          Caption = '99.99%'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -13
-          Font.Name = 'Tahoma'
-          Font.Style = [fsBold]
-          ParentFont = False
-        end
-        object downred33: TImage
-          Left = 409
-          Top = 6
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000FC50
-            4C5445000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF000000000044
-            E8E3000000005274524E53008FFDFB830E081E4B5A50746CEDFEEEE4E7F72D2E
-            F8DE61D409D55D62959667A94D4EAF10E0EB19E3123BFCBB01407F8603C3F932
-            C8051FEFD80BD7F222569B9A5C9D5352A41D1CDDC006BE38CA7ABA18CC982B37
-            A100000001624B47440088051D48000000097048597300000B1200000B1201D2
-            DD7EFC000001114944415478DA6364606060640C6040021B19FF00C5181858FF
-            A2080325987F81C4D9BDB7FD4016E6F4DCFA7360C5777CC32EBEFD3BFDC5B97F
-            F833A08B336CE464E4756540176765FCC2CB28C8C8F896010D883032328AFF66
-            637C8E2A2CC9F883939141C6ECF46354713993B30F81EE5178277C1F5958E98D
-            E85D903B5580A6DD4408ABFF6762BC0E1267D0024A5C8609EBFEFFCF7C091CEF
-            0C0CFACA3BBFC2C4B9DDEF5D60808A1B02359C81089B004D3905136730074A1C
-            0331AC808CC30C7071063B91B70741B483D0FBFD0C48E20C4E021FF73230B8F0
-            7DDECD80226EF5FF8AE52EF763D67B7FA38A032D146364DCE1B985014D1CE8C0
-            DFAC7F36316088EB2A317F7F711E539C2180F1EB2E380700ECD9716EC950C478
-            0000000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object upgreen3: TImage
-          Left = 205
-          Top = 4
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-        object upgreen33: TImage
-          Left = 409
-          Top = 4
-          Width = 29
-          Height = 32
-          Picture.Data = {
-            0954506E67496D61676589504E470D0A1A0A0000000D49484452000000170000
-            00200803000000CE8B13870000000467414D410000B18F0BFC6105000000F950
-            4C544500000000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000
-            FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00
-            00FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF
-            0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000000092C76B50
-            0000005174524E53001FD91C03C2BE7FC5793AFCBC02BBFA3710DFEC19EBDC0D
-            A74EFEA25F965A25F3D50AF12106CAF82FC60488708343FDB7013F13E5E818E1
-            11B14B4CAB699293645DD308F7632CE7E36CF9731EFB0C858E21161BBF000000
-            01624B47440088051D48000000097048597300000B1200000B1201D2DD7EFC00
-            0000F34944415478DA636480034646C6BF080E9CC5C2E8B3F5DF1F4C7176AFED
-            9E3BBE6388733182C107347141A0D81B1120F112555CC2F2C47306064946C6A7
-            28E232A6671E83685993B38F90C4E58106DC033194FE3331DE818BAB02856F40
-            346A0025AEC1C4B5D56E5F81B94B47F5CE65A8B81E50F97998B8E1FFDBEAE7C0
-            E2C640E15388E030039A7402286EC8F150E1180312B0BEAF7404286E2BF2F610
-            030AB0177A7F80D1F19934E35E547167A0498C42464CBB18D080DB3F66460F4E
-            0606A81FA140CE9881E110A327233BA6F83D19A03B7D58D1C57F6F611815878B
-            3B73B1A006F33DF94DE078F7FF872271D26C030303009E476B0BD0DBDF340000
-            000049454E44AE426082}
-          Transparent = True
-          Visible = False
-        end
-      end
+      OnClick = backup1Click
+      OnMouseEnter = btnSaveMouseEnter
+    end
+    object Authenticate: TButton
+      Left = 4
+      Top = 117
+      Width = 75
+      Height = 38
+      Caption = 'Authenticate'
+      ImageAlignment = iaTop
+      ImageIndex = 26
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
+      TabOrder = 3
+      OnClick = AuthenticateClick
+      OnMouseEnter = AuthenticateMouseEnter
+    end
+    object btnAbout: TButton
+      Left = 4
+      Top = 154
+      Width = 75
+      Height = 38
+      Caption = 'About'
+      ImageAlignment = iaTop
+      ImageIndex = 3
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
+      TabOrder = 4
+      OnClick = btnAboutClick
+    end
+    object Button3: TButton
+      Left = 4
+      Top = 191
+      Width = 75
+      Height = 38
+      Caption = 'Help'
+      ImageAlignment = iaTop
+      ImageIndex = 157
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
+      TabOrder = 5
+      OnClick = Button3Click
+      OnMouseEnter = Button3MouseEnter
     end
   end
   object IdHTTP1: TIdHTTP
@@ -13486,8 +13596,6 @@ object frmFlickrMain: TfrmFlickrMain
     end
   end
   object TeeGDIPlus1: TTeeGDIPlus
-    Active = True
-    TeePanel = dailyLikes
     Left = 1426
     Top = 302
   end
