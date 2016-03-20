@@ -70,7 +70,7 @@ type
 implementation
 
 uses
-  Sysutils;
+  Sysutils, WinApi.ActiveX;
 
 { TUserTracking }
 
@@ -124,32 +124,37 @@ var
   iXMLRootNode, iNode2: IXMLNode;
   userFave : IUserFave;
 begin
-  if fileExists(path) then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(path);
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        if iNode2.NodeName = 'Added' then
+  CoInitialize(nil);
+  try
+    if fileExists(path) then
+    begin
+      Document := TXMLDocument.Create(nil);
+      try
+        Document.LoadFromFile(path);
+        iXMLRootNode := Document.ChildNodes.first;
+        iNode2 := iXMLRootNode.ChildNodes.first;
+        while iNode2 <> nil do
         begin
-          userFave := TUserFave.Create;
-          userFave.Load(iNode2);
-          FAdded.Add(userFave.Id, userFave);
+          if iNode2.NodeName = 'Added' then
+          begin
+            userFave := TUserFave.Create;
+            userFave.Load(iNode2);
+            FAdded.Add(userFave.Id, userFave);
+          end;
+          if iNode2.NodeName = 'Removed' then
+          begin
+            userFave := TUserFave.Create;
+            userFave.Load(iNode2);
+            FRemoved.Add(userFave.Id, userFave);
+          end;
+          iNode2 := iNode2.NextSibling;
         end;
-        if iNode2.NodeName = 'Removed' then
-        begin
-          userFave := TUserFave.Create;
-          userFave.Load(iNode2);
-          FRemoved.Add(userFave.Id, userFave);
-        end;
-        iNode2 := iNode2.NextSibling;
+      finally
+        Document := nil;
       end;
-    finally
-      Document := nil;
     end;
+  finally
+    CoUninitialize;
   end;
 end;
 
@@ -160,37 +165,42 @@ var
   existing : IUserFave;
   Item: TPair<string, IUserFave>;
 begin
-  // Create the XML file
-  XMLDoc := TXMLDocument.Create(nil);
-  XMLDoc.Active := true;
-  iNode := XMLDoc.AddChild('Users');
+  CoInitialize(nil);
+  try
+    // Create the XML file
+    XMLDoc := TXMLDocument.Create(nil);
+    XMLDoc.Active := true;
+    iNode := XMLDoc.AddChild('Users');
 
-  for Item in FAdded do
-  begin
-    if Item.Value.Marked then
+    for Item in FAdded do
     begin
-      iNode2 := iNode.AddChild('Added');
-      Item.Value.Save(iNode2);
-    end
-    else
+      if Item.Value.Marked then
+      begin
+        iNode2 := iNode.AddChild('Added');
+        Item.Value.Save(iNode2);
+      end
+      else
+      begin
+        if not ExistsRemoved(Item.Value, existing) then
+        begin
+          iNode2 := iNode.AddChild('Removed');
+          Item.Value.Save(iNode2);
+        end;
+      end;
+    end;
+
+    for Item in FRemoved do
     begin
-      if not ExistsRemoved(Item.Value, existing) then
+      if not ExistsAdded(Item.Value, existing) then
       begin
         iNode2 := iNode.AddChild('Removed');
         Item.Value.Save(iNode2);
       end;
     end;
+    XMLDoc.SaveToFile(path);
+  finally
+    CoUninitialize;
   end;
-
-  for Item in FRemoved do
-  begin
-    if not ExistsAdded(Item.Value, existing) then
-    begin
-      iNode2 := iNode.AddChild('Removed');
-      Item.Value.Save(iNode2);
-    end;
-  end;
-  XMLDoc.SaveToFile(path)
 end;
 
 procedure TUserTracking.SetAdded(value: TDictionary<string, IUserFave>);

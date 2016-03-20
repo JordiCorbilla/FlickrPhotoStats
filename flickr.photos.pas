@@ -766,20 +766,25 @@ var
   XMLDoc: TXMLDocument;
   album : TPair<string, IAlbum>;
 begin
-  // Create the XML file
-  XMLDoc := TXMLDocument.Create(nil);
-  XMLDoc.Active := true;
-  iNode := XMLDoc.AddChild('Albums');
-  for album in FAlbums do
-  begin
-    iNode2 := iNode.AddChild('Set');
-    iNode2.Attributes['id'] := album.value.Id;
-    iNode2.Attributes['title'] := album.value.Title;
+  CoInitialize(nil);
+  try
+    // Create the XML file
+    XMLDoc := TXMLDocument.Create(nil);
+    XMLDoc.Active := true;
+    iNode := XMLDoc.AddChild('Albums');
+    for album in FAlbums do
+    begin
+      iNode2 := iNode.AddChild('Set');
+      iNode2.Attributes['id'] := album.value.Id;
+      iNode2.Attributes['title'] := album.value.Title;
+    end;
+    if DirectoryExists(FFolder + 'Albums') then
+      XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')
+    else
+      raise Exception.Create('Directory can''t be found: ' + FFolder + 'Albums');
+  finally
+    CoUninitialize;
   end;
-  if DirectoryExists(FFolder + 'Albums') then
-    XMLDoc.SaveToFile(FFolder + 'Albums\'+ FId + '.xml')
-  else
-    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Albums');
 end;
 
 procedure TPhoto.SaveGroups;
@@ -788,21 +793,26 @@ var
   XMLDoc: TXMLDocument;
   item : TPair<string, IPool>;
 begin
-  // Create the XML file
-  XMLDoc := TXMLDocument.Create(nil);
-  XMLDoc.Active := true;
-  iNode := XMLDoc.AddChild('Groups');
-  for Item in FGroups do
-  begin
-    iNode2 := iNode.AddChild('Pool');
-    iNode2.Attributes['id'] := Item.Value.Id;
-    iNode2.Attributes['title'] := Item.Value.Title;
-    iNode2.Attributes['added'] := Item.Value.Added;
+  CoInitialize(nil);
+  try
+    // Create the XML file
+    XMLDoc := TXMLDocument.Create(nil);
+    XMLDoc.Active := true;
+    iNode := XMLDoc.AddChild('Groups');
+    for Item in FGroups do
+    begin
+      iNode2 := iNode.AddChild('Pool');
+      iNode2.Attributes['id'] := Item.Value.Id;
+      iNode2.Attributes['title'] := Item.Value.Title;
+      iNode2.Attributes['added'] := Item.Value.Added;
+    end;
+    if DirectoryExists(FFolder + 'Groups') then
+      XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
+    else
+      raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
+  finally
+    CoUninitialize;
   end;
-  if DirectoryExists(FFolder + 'Groups') then
-    XMLDoc.SaveToFile(FFolder + 'Groups\'+ FId + '.xml')
-  else
-    raise Exception.Create('Directory can''t be found: ' + FFolder + 'Groups');
 end;
 
 procedure TPhoto.SaveHistory;
@@ -811,18 +821,23 @@ var
   iNode: IXMLNode;
   XMLDoc: TXMLDocument;
 begin
-  // Create the XML file
-  XMLDoc := TXMLDocument.Create(nil);
-  XMLDoc.Active := true;
-  iNode := XMLDoc.AddChild('History');
-  for i := 0 to FStats.count - 1 do
-  begin
-    FStats[i].Save(iNode);
+  CoInitialize(nil);
+  try
+    // Create the XML file
+    XMLDoc := TXMLDocument.Create(nil);
+    XMLDoc.Active := true;
+    iNode := XMLDoc.AddChild('History');
+    for i := 0 to FStats.count - 1 do
+    begin
+      FStats[i].Save(iNode);
+    end;
+    if DirectoryExists(FFolder + 'History') then
+      XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
+    else
+      raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
+  finally
+    CoUninitialize;
   end;
-  if DirectoryExists(FFolder + 'History') then
-    XMLDoc.SaveToFile(FFolder + 'History\'+ FId + '.xml')
-  else
-    raise Exception.Create('Directory can''t be found: ' + FFolder + 'History');
 end;
 
 procedure TPhoto.SetAlbums(Value: TAlbumList);
