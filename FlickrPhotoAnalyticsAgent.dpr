@@ -133,6 +133,7 @@ begin
     try
       st := TStopWatch.Create;
       st.Start;
+      repository.version := TUtils.GetVersion;
       repository.Load(options.Workspace + '\flickrRepository.xml');
       st.Stop;
       WriteLn('Loaded repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
@@ -197,6 +198,7 @@ begin
           try
             st.Start;
             WriteLn('The agent will now determine the number of threads to use for ' + repository.photos.count.ToString() + ' photos');
+            Writeln('Number of threads: ' + CPUCount.ToString() + 'x8');
             TParallel.ForEach(0, repository.photos.count - 1,
               procedure(index: Integer; threadId: Integer)
               begin

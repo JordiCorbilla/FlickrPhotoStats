@@ -30,7 +30,7 @@ unit flickr.photos;
 interface
 
 uses
-  Contnrs, Generics.Collections, flickr.stats, XMLDoc, xmldom, XMLIntf, flickr.pools,
+  System.Contnrs, Generics.Collections, flickr.stats, xml.XMLDoc, xml.xmldom, xml.XMLIntf, flickr.pools,
   flickr.albums, flickr.pools.list, winapi.msxml, flickr.albums.list, flickr.user.faves,
   flickr.user.tracking;
 
@@ -246,7 +246,7 @@ implementation
 { TPhoto }
 
 uses
-  SysUtils, System.Variants, DateUtils, flickr.xml.helper;
+  SysUtils, System.Variants, System.DateUtils, flickr.xml.helper, WinApi.ActiveX;
 
 procedure TPhoto.AddCollections(albums: TAlbumList; groups: TPoolList);
 begin
@@ -536,22 +536,27 @@ var
   Document: IXMLDocument;
   iXMLRootNode: IXMLNode;
 begin
-  FAlbums.Clear;
-  if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(FFolder + 'Albums\'+ FId + '.xml');
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        FAlbums.AddItem(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
-        iNode2 := iNode2.NextSibling;
+  CoInitialize(nil);
+  try
+    FAlbums.Clear;
+    if fileExists(FFolder + 'Albums\'+ FId + '.xml') then
+    begin
+      Document := TXMLDocument.Create(nil);
+      try
+        Document.LoadFromFile(FFolder + 'Albums\'+ FId + '.xml');
+        iXMLRootNode := Document.ChildNodes.first;
+        iNode2 := iXMLRootNode.ChildNodes.first;
+        while iNode2 <> nil do
+        begin
+          FAlbums.AddItem(TAlbum.create(iNode2.attributes['id'], iNode2.attributes['title']));
+          iNode2 := iNode2.NextSibling;
+        end;
+      finally
+        Document := nil;
       end;
-    finally
-      Document := nil;
     end;
+  finally
+    CoUninitialize;
   end;
 end;
 
@@ -564,28 +569,33 @@ var
   groupid : string;
   groupTitle : string;
 begin
-  FGroups.Clear;
-  if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(FFolder + 'Groups\'+ FId + '.xml');
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        groupid := iNode2.attributes['id'];
-        groupTitle := iNode2.attributes['title'];
-        if iNode2.attributes['added'] <> null then
-          added := StrToDate(iNode2.attributes['added'])
-        else
-          added := Yesterday;
-        FGroups.AddItem(TPool.create(groupid, groupTitle, added));
-        iNode2 := iNode2.NextSibling;
+  CoInitialize(nil);
+  try
+    FGroups.Clear;
+    if fileExists(FFolder + 'Groups\'+ FId + '.xml') then
+    begin
+      Document := TXMLDocument.Create(nil);
+      try
+        Document.LoadFromFile(FFolder + 'Groups\'+ FId + '.xml');
+        iXMLRootNode := Document.ChildNodes.first;
+        iNode2 := iXMLRootNode.ChildNodes.first;
+        while iNode2 <> nil do
+        begin
+          groupid := iNode2.attributes['id'];
+          groupTitle := iNode2.attributes['title'];
+          if iNode2.attributes['added'] <> null then
+            added := StrToDate(iNode2.attributes['added'])
+          else
+            added := Yesterday;
+          FGroups.AddItem(TPool.create(groupid, groupTitle, added));
+          iNode2 := iNode2.NextSibling;
+        end;
+      finally
+        Document := nil;
       end;
-    finally
-      Document := nil;
     end;
+  finally
+    CoUninitialize;
   end;
 end;
 
@@ -616,24 +626,29 @@ var
   Document: IXMLDocument;
   iXMLRootNode: IXMLNode;
 begin
-  FStats.Clear;
-  if fileExists(FFolder + 'History\'+ FId + '.xml') then
-  begin
-    Document := TXMLDocument.Create(nil);
-    try
-      Document.LoadFromFile(FFolder + 'History\'+ FId + '.xml');
-      iXMLRootNode := Document.ChildNodes.first;
-      iNode2 := iXMLRootNode.ChildNodes.first;
-      while iNode2 <> nil do
-      begin
-        stat := TStat.Create();
-        stat.Load(iNode2);
-        FStats.Add(stat);
-        iNode2 := iNode2.NextSibling;
+  CoInitialize(nil);
+  try
+    FStats.Clear;
+    if fileExists(FFolder + 'History\'+ FId + '.xml') then
+    begin
+      Document := TXMLDocument.Create(nil);
+      try
+        Document.LoadFromFile(FFolder + 'History\'+ FId + '.xml');
+        iXMLRootNode := Document.ChildNodes.first;
+        iNode2 := iXMLRootNode.ChildNodes.first;
+        while iNode2 <> nil do
+        begin
+          stat := TStat.Create();
+          stat.Load(iNode2);
+          FStats.Add(stat);
+          iNode2 := iNode2.NextSibling;
+        end;
+      finally
+        Document := nil;
       end;
-    finally
-      Document := nil;
     end;
+  finally
+    CoUninitialize;
   end;
 end;
 
