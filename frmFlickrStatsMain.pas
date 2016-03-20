@@ -98,18 +98,6 @@ type
     CheckAll2: TMenuItem;
     UncheckAll3: TMenuItem;
     N7: TMenuItem;
-    MainMenu1: TMainMenu;
-    File1: TMenuItem;
-    Open1: TMenuItem;
-    Save1: TMenuItem;
-    Authenticate1: TMenuItem;
-    About1: TMenuItem;
-    Help1: TMenuItem;
-    AboutFlickrPhotoAnalytics1: TMenuItem;
-    OnlineHelp1: TMenuItem;
-    N8: TMenuItem;
-    Exit1: TMenuItem;
-    AuthenticateSession1: TMenuItem;
     BalloonHint1: TBalloonHint;
     Shape1: TShape;
     Shape2: TShape;
@@ -128,8 +116,6 @@ type
     Image4: TImage;
     Image5: TImage;
     Image10: TImage;
-    backup1: TMenuItem;
-    N9: TMenuItem;
     PopupMenu4: TPopupMenu;
     ShowGraph1: TMenuItem;
     ShowFavesList1: TMenuItem;
@@ -429,6 +415,7 @@ type
     btnAbout: TButton;
     Button3: TButton;
     Image6: TImage;
+    btnLeave: TButton;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -569,6 +556,9 @@ type
     procedure dailyViewsMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure Image6Click(Sender: TObject);
+    procedure Panel31Resize(Sender: TObject);
+    procedure btnLeaveMouseEnter(Sender: TObject);
+    procedure btnLeaveClick(Sender: TObject);
   private
     procedure LoadForms(repository: IFlickrRepository);
     function ExistPhotoInList(id: string; var Item: TListItem): Boolean;
@@ -1411,6 +1401,16 @@ begin
   UpdateLabel;
   if not FAvoidMessage then
     showMessage('Photo '+ id +' has been added');
+end;
+
+procedure TfrmFlickrMain.btnLeaveClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmFlickrMain.btnLeaveMouseEnter(Sender: TObject);
+begin
+  ShowHint('Close application', Sender);
 end;
 
 procedure TfrmFlickrMain.btnLoadClick(Sender: TObject);
@@ -3989,6 +3989,38 @@ begin
   finally
     frmFlickrPhotoSet.Free;
   end;
+end;
+
+procedure TfrmFlickrMain.Panel31Resize(Sender: TObject);
+begin
+  //Resize additional components
+  ResizeChartsDashBoard();
+
+  panel24.Width := round(panel9.Width / 3);
+  panel25.Width := round(panel9.Width / 3);
+
+  panel27.Left := (panel24.Width-panel27.Width) div 2;
+  panel28.Left := (panel25.Width-panel28.Width) div 2;
+  panel29.Left := (panel26.Width-panel29.Width) div 2;
+  //Second page
+  panel2.Height := round (tabsheet2.Height * 0.6);
+  if (tabsheet2.Height - panel2.Height - splitter1.Height) > 0 then
+    pagecontrol2.Height := tabsheet2.Height - panel2.Height - splitter1.Height;
+  chartItemViews.Height := round(panel4.Height / 2);
+  chartItemLikes.Height := round(panel4.Height / 2);
+  chartItemComments.Height := round(panel4.Height / 2);
+  panel22.Width := round(panel4.Width / 4);
+  panel23.Width := round(panel4.Width / 4);
+  panel11.Width := round(panel4.Width / 4);
+  totalGroups.Width := round(panel4.Width / 4);
+
+  chartItemViews.Height := round(panel4.Height / 2);
+  chartItemLikes.Height := round(panel4.Height / 2);
+  chartItemComments.Height := round(panel4.Height / 2);
+  panel22.Width := round(panel4.Width / 4);
+  panel23.Width := round(panel4.Width / 4);
+  panel11.Width := round(panel4.Width / 4);
+  totalGroups.Width := round(panel4.Width / 4);
 end;
 
 procedure TfrmFlickrMain.ChartViewsDblClick(Sender: TObject);
