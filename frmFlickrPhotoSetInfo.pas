@@ -52,17 +52,14 @@ type
     Panel4: TPanel;
     Panel24: TPanel;
     Panel27: TPanel;
-    Image1: TImage;
     Label14: TLabel;
     LabelTodayViews: TLabel;
     Panel26: TPanel;
     Panel29: TPanel;
-    Image3: TImage;
     Label42: TLabel;
     LabelTodayComments: TLabel;
     Panel25: TPanel;
     Panel28: TPanel;
-    Image2: TImage;
     Label15: TLabel;
     LabelTodayLikes: TLabel;
     Label1: TLabel;
@@ -70,6 +67,9 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Shape1: TShape;
+    Image1: TImage;
+    Image2: TImage;
+    Image3: TImage;
     procedure FormResize(Sender: TObject);
   private
     { Private declarations }

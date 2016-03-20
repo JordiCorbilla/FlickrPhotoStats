@@ -3443,7 +3443,7 @@ object frmFlickrMain: TfrmFlickrMain
           Top = 444
           Width = 1508
           Height = 369
-          ActivePage = Statistics
+          ActivePage = TabSheet5
           Align = alClient
           TabOrder = 1
           ExplicitHeight = 340
@@ -4306,7 +4306,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnMouseEnter = btnSaveProfileMouseEnter
                 end
                 object chkReplaceProfile: TCheckBox
-                  Left = 496
+                  Left = 495
                   Top = 35
                   Width = 127
                   Height = 17
@@ -4314,7 +4314,7 @@ object frmFlickrMain: TfrmFlickrMain
                   TabOrder = 4
                 end
                 object chkDisplayOnly: TCheckBox
-                  Left = 82
+                  Left = 81
                   Top = 35
                   Width = 127
                   Height = 17
@@ -4322,7 +4322,7 @@ object frmFlickrMain: TfrmFlickrMain
                   TabOrder = 5
                 end
                 object btnDeleteProfile: TButton
-                  Left = 349
+                  Left = 350
                   Top = 11
                   Width = 66
                   Height = 25
@@ -4336,7 +4336,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnMouseEnter = btnDeleteProfileMouseEnter
                 end
                 object btnRemoveProfile: TButton
-                  Left = 739
+                  Left = 740
                   Top = 11
                   Width = 70
                   Height = 25
@@ -4422,7 +4422,7 @@ object frmFlickrMain: TfrmFlickrMain
                 OnMouseEnter = Button5MouseEnter
               end
               object btnUnbanGroups: TButton
-                Left = 306
+                Left = 307
                 Top = 2
                 Width = 50
                 Height = 38
@@ -4532,7 +4532,6 @@ object frmFlickrMain: TfrmFlickrMain
                   ViewStyle = vsReport
                   OnCustomDrawItem = listGroupsCustomDrawItem
                   OnItemChecked = listGroupsItemChecked
-                  ExplicitHeight = 201
                 end
               end
               object tabStatus: TTabSheet

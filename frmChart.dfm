@@ -50,7 +50,7 @@ object frmChartViewer: TfrmChartViewer
     TopAxis.Title.Font.Color = clLime
     View3D = False
     Align = alClient
-    Color = 2763306
+    Color = 13135884
     TabOrder = 0
     DefaultCanvas = 'TGDIPlusCanvas'
     PrintMargins = (
