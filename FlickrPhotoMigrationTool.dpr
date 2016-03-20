@@ -38,7 +38,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Carbon');
+  TStyleManager.TrySetStyle('Windows10 Blue');
   Application.CreateForm(TfrmMigration, frmMigration);
   Application.Run;
 end.

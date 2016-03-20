@@ -5423,7 +5423,7 @@ object frmFlickrMain: TfrmFlickrMain
     Width = 200
     Height = 908
     AnimationDelay = 10
-    AnimationStep = 15
+    AnimationStep = 50
     OpenedWidth = 200
     Placement = svpLeft
     TabOrder = 2
