@@ -28,7 +28,8 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **New Dashboard (Windows 10 support) **:
 
-![](https://1.bp.blogspot.com/-zA1VpaRuKcA/Vu2GadESm9I/AAAAAAAAFRQ/E6wPisd-Si07PCjNgzHOnNtLfPJbRspPQ/s1600/FlickrPhotoAnalytics482.png)
+![](https://2.bp.blogspot.com/-ql-HbGKMdZE/Vu5o7rpKUtI/AAAAAAAAFRk/tT1gKhZlSuYljz96dQN5FoeWaijQfrbwA/s1600/analytics.png)
+![](https://4.bp.blogspot.com/-mSFE5FcGv4U/Vu5o7Oxpu2I/AAAAAAAAFRg/TcEy8ukRRcw2MPXapq-I4XZCX1yw_MEvA/s1600/Updating.png)
 
 **Dashboard**:
 
@@ -63,6 +64,7 @@ Use **Batch Update** to easily update all the values and keep a good track recor
 
 Version 4.8.0.2 (Beta): *Note: this is still under development.
 - [FlickrPhotoStats(x64) v4.8.0.2](https://app.box.com/s/mrotr9368pw70d2aly84kouo9v4d72th).
+- [FlickrPhotoStats(x64) v4.8.0.2 Win10](https://app.box.com/s/4hqidfta4trlqgq2cu2pevwy1x1bnpyf).
  
 Version 4.8.0.1 (RC stable):
 - [FlickrPhotoStats(x64) v4.8.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
