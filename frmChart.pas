@@ -80,7 +80,7 @@ end;
 
 procedure TfrmChartViewer.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Self.destroy;
+  Action := caFree;
 end;
 
 procedure TfrmChartViewer.FormCreate(Sender: TObject);

@@ -48,6 +48,7 @@ type
     ShowUser2: TMenuItem;
     procedure ShowUser1Click(Sender: TObject);
     procedure ShowUser2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -65,6 +66,11 @@ uses
   Contnrs, Generics.Collections, flickr.user.faves, XMLDoc, xmldom, XMLIntf, msxmldom, frmFlickrStatsMain, Shellapi;
 
 { TfrmUserList }
+
+procedure TfrmUserList.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
 
 procedure TfrmUserList.PopulateList(folder, id: string);
 var

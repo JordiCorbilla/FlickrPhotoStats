@@ -14,6 +14,7 @@ object frmUserList: TfrmUserList
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter2: TSplitter

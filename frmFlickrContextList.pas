@@ -36,6 +36,7 @@ uses
 type
   TfrmFlickrContext = class(TForm)
     ListView1: TListView;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -69,6 +70,11 @@ begin
   item.Caption := id;
   item.SubItems.Add(title);
   item.SubItems.Add(Added);
+end;
+
+procedure TfrmFlickrContext.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
 end;
 
 end.

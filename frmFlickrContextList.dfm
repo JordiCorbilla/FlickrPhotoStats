@@ -14,6 +14,7 @@ object frmFlickrContext: TfrmFlickrContext
   Font.Style = []
   OldCreateOrder = False
   Position = poOwnerFormCenter
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 13
   object ListView1: TListView
@@ -38,6 +39,5 @@ object frmFlickrContext: TfrmFlickrContext
     RowSelect = True
     TabOrder = 0
     ViewStyle = vsReport
-    ExplicitWidth = 467
   end
 end
