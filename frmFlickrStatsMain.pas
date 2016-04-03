@@ -3073,6 +3073,7 @@ begin
   edtFilterGroup.Text := '';
   label37.Visible := false;
   listGroups.Visible := true;
+  btnFilterOk.Enabled := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
@@ -3114,6 +3115,7 @@ begin
   end;
   listGroups.Visible := true;
   label37.Visible := true;
+  btnFilterOk.Enabled := false;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
