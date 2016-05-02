@@ -40,8 +40,8 @@ package FlickrPhotoAnalyticsLib;
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
 {$OPTIMIZATION ON}
-{$OVERFLOWCHECKS ON}
-{$RANGECHECKS ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
 {$REFERENCEINFO OFF}
 {$SAFEDIVIDE OFF}
 {$STACKFRAMES OFF}
@@ -63,7 +63,8 @@ requires
   IndyProtocols,
   IndyCore,
   Tee,
-  soaprtl;
+  soaprtl,
+  DbxCommonDriver;
 
 contains
   flickr.access.token in 'flickr.access.token.pas',
@@ -130,5 +131,6 @@ contains
   flickr.lib.parallel.photos in 'flickr.lib.parallel.photos.pas';
 
 end.
+
 
 

@@ -4,7 +4,7 @@
         <MainSource>FlickrPhotoAnalytics.dpr</MainSource>
         <ProjectVersion>18.0</ProjectVersion>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -106,9 +106,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
-        <DCC_RangeChecking>true</DCC_RangeChecking>
-        <DCC_IntegerOverflowCheck>true</DCC_IntegerOverflowCheck>
-        <DCC_Optimize>true</DCC_Optimize>
         <VerInfo_Build>2</VerInfo_Build>
         <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>

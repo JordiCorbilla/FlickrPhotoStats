@@ -4224,7 +4224,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnChange = ComboBox1Change
                 end
                 object btnLoadProfile: TButton
-                  Left = 283
+                  Left = 281
                   Top = 11
                   Width = 66
                   Height = 25
@@ -4246,7 +4246,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnChange = edtProfileChange
                 end
                 object btnSaveProfile: TButton
-                  Left = 678
+                  Left = 676
                   Top = 11
                   Width = 61
                   Height = 25
@@ -4277,7 +4277,7 @@ object frmFlickrMain: TfrmFlickrMain
                   TabOrder = 5
                 end
                 object btnDeleteProfile: TButton
-                  Left = 350
+                  Left = 348
                   Top = 11
                   Width = 66
                   Height = 25
@@ -4291,7 +4291,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnMouseEnter = btnDeleteProfileMouseEnter
                 end
                 object btnRemoveProfile: TButton
-                  Left = 740
+                  Left = 738
                   Top = 11
                   Width = 70
                   Height = 25
@@ -5497,7 +5497,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 1076
     Top = 302
     Bitmap = {
-      494C0101ED002001B00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001BC0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

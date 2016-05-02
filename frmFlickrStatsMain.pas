@@ -1650,6 +1650,7 @@ var
   totalViews, totalViewsacc: Integer;
   totalLikes, totalLikesacc: Integer;
   totalComments, totalCommentsacc: Integer;
+  photo : IPhoto;
 begin
   totalViewsacc := 0;
   totalLikesacc := 0;
@@ -1661,28 +1662,29 @@ begin
   for i := 0 to repository.photos.Count - 1 do
   begin
     Item := listPhotos.Items.Add;
-    Item.Caption := repository.photos[i].id;
-    Item.SubItems.Add(repository.photos[i].title);
-    totalViews := repository.photos[i].TotalViews;
+    photo := repository.photos[i];
+    Item.Caption := photo.id;
+    Item.SubItems.Add(photo.title);
+    totalViews := photo.TotalViews;
     totalViewsacc := totalViewsacc + totalViews;
     Item.SubItems.Add(IntToStr(totalViews));
-    totalLikes := repository.photos[i].TotalLikes;
+    totalLikes := photo.TotalLikes;
     totalLikesacc := totalLikesacc + totalLikes;
     Item.SubItems.Add(IntToStr(totalLikes));
-    totalComments := repository.photos[i].TotalComments;
+    totalComments := photo.TotalComments;
     totalCommentsacc := totalCommentsacc + totalComments;
     Item.SubItems.Add(IntToStr(totalComments));
-    Item.SubItems.Add(DateToStr(repository.photos[i].LastUpdate));
-    Item.SubItems.Add(repository.photos[i].taken); //taken
-    Item.SubItems.Add(repository.photos[i].TotalAlbums.ToString()); //albums
-    Item.SubItems.Add(repository.photos[i].TotalGroups.ToString()); //groups
+    Item.SubItems.Add(DateToStr(photo.LastUpdate));
+    Item.SubItems.Add(photo.taken); //taken
+    Item.SubItems.Add(photo.TotalAlbums.ToString()); //albums
+    Item.SubItems.Add(photo.TotalGroups.ToString()); //groups
     if totalViews = 0 then
       totalViews := 1;
-    Item.SubItems.Add(repository.photos[i].tags);
+    Item.SubItems.Add(photo.tags);
     Item.SubItems.Add(FormatFloat('0.##%', (totalLikes / totalViews) * 100.0));
-    Item.SubItems.Add(repository.photos[i].banned.ToString());
-    Item.SubItems.Add(repository.photos[i].getTrend.ToString());
-    Item.SubItems.Add(repository.photos[i].OmitGroups);
+    Item.SubItems.Add(photo.banned.ToString());
+    Item.SubItems.Add(photo.getTrend.ToString());
+    Item.SubItems.Add(photo.OmitGroups);
   end;
 
   listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
@@ -2569,6 +2571,7 @@ begin
     repository.version := TUtils.GetVersion;
     repository.DateSaved := Now;
     repository.save(apikey.text, secret.text, edtUserId.text, options.Workspace + '\flickrRepository.xml');
+    repository.saveJSon(apikey.text, secret.text, edtUserId.text, options.Workspace + '\flickrRepository.xml');
     st.Stop;
     log('Saving repository flickrRepository: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
@@ -2865,6 +2868,7 @@ var
   add : boolean;
   value : string;
   Item : TListItem;
+  photo : IPhoto;
 begin
   listPhotos.Items.Clear;
   filterEnabled := true;
@@ -2874,106 +2878,108 @@ begin
   startMark := -1;
   endMark := -1;
   value := edtFilter.text;
+  edtFilter.Enabled := false;
   for i := 0 to repository.photos.count-1 do
   begin
     add := false;
+    photo := repository.photos[i];
     case Combobox2.ItemIndex of
           0: //ID
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].Id = value;
-              1: add := repository.photos[i].Id.ToExtended < value.ToExtended;
-              2: add := repository.photos[i].Id.ToExtended > value.ToExtended;
-              3: add := repository.photos[i].Id.ToExtended <= value.ToExtended;
-              4: add := repository.photos[i].Id.ToExtended >= value.ToExtended;
-              5: add := repository.photos[i].Id <> value;
-              6: add := repository.photos[i].Id.ToLower.Contains(value.ToLower);
+              0: add := photo.Id = value;
+              1: add := photo.Id.ToExtended < value.ToExtended;
+              2: add := photo.Id.ToExtended > value.ToExtended;
+              3: add := photo.Id.ToExtended <= value.ToExtended;
+              4: add := photo.Id.ToExtended >= value.ToExtended;
+              5: add := photo.Id <> value;
+              6: add := photo.Id.ToLower.Contains(value.ToLower);
             end;
           end;
           1: //Title
           begin
             case combobox3.ItemIndex of
-              0,1,2,3,4: add := repository.photos[i].title = value;
-              5: add := repository.photos[i].title <> edtfilter.Text;
-              6: add := repository.photos[i].title.ToLower.Contains(value.ToLower);
+              0,1,2,3,4: add := photo.title = value;
+              5: add := photo.title <> edtfilter.Text;
+              6: add := photo.title.ToLower.Contains(value.ToLower);
             end;
           end;
           2: //Views
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring = value;
-              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views < value.Tointeger;
-              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views > value.Tointeger;
-              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <= value.Tointeger;
-              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views >= value.Tointeger;
-              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].views.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.stats[photo.stats.Count-1].views.tostring = value;
+              1: add := photo.stats[photo.stats.Count-1].views < value.Tointeger;
+              2: add := photo.stats[photo.stats.Count-1].views > value.Tointeger;
+              3: add := photo.stats[photo.stats.Count-1].views <= value.Tointeger;
+              4: add := photo.stats[photo.stats.Count-1].views >= value.Tointeger;
+              5: add := photo.stats[photo.stats.Count-1].views <> value.ToInteger;
+              6: add := photo.stats[photo.stats.Count-1].views.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           3: //Likes
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring = value;
-              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes < value.Tointeger;
-              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes > value.Tointeger;
-              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <= value.Tointeger;
-              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes >= value.Tointeger;
-              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.stats[photo.stats.Count-1].likes.tostring = value;
+              1: add := photo.stats[photo.stats.Count-1].likes < value.Tointeger;
+              2: add := photo.stats[photo.stats.Count-1].likes > value.Tointeger;
+              3: add := photo.stats[photo.stats.Count-1].likes <= value.Tointeger;
+              4: add := photo.stats[photo.stats.Count-1].likes >= value.Tointeger;
+              5: add := photo.stats[photo.stats.Count-1].likes <> value.ToInteger;
+              6: add := photo.stats[photo.stats.Count-1].likes.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           4: //Comments
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.tostring = value;
-              1: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments < value.Tointeger;
-              2: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments > value.Tointeger;
-              3: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments <= value.Tointeger;
-              4: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments >= value.Tointeger;
-              5: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments <> value.ToInteger;
-              6: add := repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.stats[photo.stats.Count-1].Comments.tostring = value;
+              1: add := photo.stats[photo.stats.Count-1].Comments < value.Tointeger;
+              2: add := photo.stats[photo.stats.Count-1].Comments > value.Tointeger;
+              3: add := photo.stats[photo.stats.Count-1].Comments <= value.Tointeger;
+              4: add := photo.stats[photo.stats.Count-1].Comments >= value.Tointeger;
+              5: add := photo.stats[photo.stats.Count-1].Comments <> value.ToInteger;
+              6: add := photo.stats[photo.stats.Count-1].Comments.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           5: //Last Update
           begin
             case combobox3.ItemIndex of
-              0,1,2,3,4,5,6: add := FormatDateTime('dd/mm/yyyy', repository.photos[i].LastUpdate).ToLower.Contains(value.ToLower);
+              0,1,2,3,4,5,6: add := FormatDateTime('dd/mm/yyyy', photo.LastUpdate).ToLower.Contains(value.ToLower);
             end;
           end;
           6: //Taken
           begin
             case combobox3.ItemIndex of
-              0,1,2,3,4,5,6: add := repository.photos[i].Taken.ToLower.Contains(value.ToLower);
+              0,1,2,3,4,5,6: add := photo.Taken.ToLower.Contains(value.ToLower);
             end;
           end;
           7: //Albums
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].Albums.count.ToString = value;
-              1: add := repository.photos[i].Albums.count < value.ToInteger;
-              2: add := repository.photos[i].Albums.count > value.ToInteger;
-              3: add := repository.photos[i].Albums.count <= value.ToInteger;
-              4: add := repository.photos[i].Albums.count >= value.ToInteger;
-              5: add := repository.photos[i].Albums.count <> value.ToInteger;
-              6: add := repository.photos[i].Albums.count.ToString.ToLower.Contains(value.ToLower);
+              0: add := photo.Albums.count.ToString = value;
+              1: add := photo.Albums.count < value.ToInteger;
+              2: add := photo.Albums.count > value.ToInteger;
+              3: add := photo.Albums.count <= value.ToInteger;
+              4: add := photo.Albums.count >= value.ToInteger;
+              5: add := photo.Albums.count <> value.ToInteger;
+              6: add := photo.Albums.count.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           8: //Groups
           begin
             case combobox3.ItemIndex of
-              0: add := repository.photos[i].Groups.count.ToString = value;
-              1: add := repository.photos[i].Groups.count < value.ToInteger;
-              2: add := repository.photos[i].Groups.count > value.ToInteger;
-              3: add := repository.photos[i].Groups.count <= value.ToInteger;
-              4: add := repository.photos[i].Groups.count >= value.ToInteger;
-              5: add := repository.photos[i].Groups.count <> value.ToInteger;
-              6: add := repository.photos[i].Groups.count.ToString.ToLower.Contains(value.ToLower);
+              0: add := photo.Groups.count.ToString = value;
+              1: add := photo.Groups.count < value.ToInteger;
+              2: add := photo.Groups.count > value.ToInteger;
+              3: add := photo.Groups.count <= value.ToInteger;
+              4: add := photo.Groups.count >= value.ToInteger;
+              5: add := photo.Groups.count <> value.ToInteger;
+              6: add := photo.Groups.count.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           9: //Tags
           begin
             case combobox3.ItemIndex of
-              0,1,2,3,4,5,6: add := repository.photos[i].tags.ToLower.Contains(value.ToLower);
+              0,1,2,3,4,5,6: add := photo.tags.ToLower.Contains(value.ToLower);
             end;
           end;
           10: //Affection
@@ -2985,19 +2991,23 @@ begin
       begin
         Item := frmFlickrMain.listPhotos.Items.Add;
         Item.Caption := repository.photos[i].Id;
-        Item.SubItems.Add(repository.photos[i].Title);
-        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].views.toString);
-        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].likes.toString);
-        Item.SubItems.Add(repository.photos[i].stats[repository.photos[i].stats.Count-1].Comments.toString);
-        Item.SubItems.Add((DateToStr(repository.photos[i].stats[repository.photos[i].stats.Count-1].date)));
-        Item.SubItems.Add(repository.photos[i].Taken);
-        Item.SubItems.Add(repository.photos[i].Albums.Count.ToString());
-        Item.SubItems.Add(repository.photos[i].Groups.Count.ToString());
-        Item.SubItems.Add(repository.photos[i].Tags);
-        Item.SubItems.Add(FormatFloat('0.##%', (repository.photos[i].stats[repository.photos[i].stats.Count-1].likes / repository.photos[i].stats[repository.photos[i].stats.Count-1].views) * 100.0));
-        Item.SubItems.Add(repository.photos[i].banned.ToString());
-        Item.SubItems.Add(repository.photos[i].getTrend.ToString());
-        Item.SubItems.Add(repository.photos[i].OmitGroups);
+        photo.LoadStats;
+        photo := repository.GetPhoto(photo.Id);
+        Item.SubItems.Add(photo.Title);
+        Item.SubItems.Add(photo.stats[photo.stats.Count-1].views.toString);
+        Item.SubItems.Add(photo.stats[photo.stats.Count-1].likes.toString);
+        Item.SubItems.Add(photo.stats[photo.stats.Count-1].Comments.toString);
+        Item.SubItems.Add((DateToStr(photo.stats[photo.stats.Count-1].date)));
+        Item.SubItems.Add(photo.Taken);
+        photo.LoadAlbums;
+        Item.SubItems.Add(photo.Albums.Count.ToString());
+        photo.LoadGroups;
+        Item.SubItems.Add(photo.Groups.Count.ToString());
+        Item.SubItems.Add(photo.Tags);
+        Item.SubItems.Add(FormatFloat('0.##%', (photo.stats[photo.stats.Count-1].likes / photo.stats[photo.stats.Count-1].views) * 100.0));
+        Item.SubItems.Add(photo.banned.ToString());
+        Item.SubItems.Add(photo.getTrend.ToString());
+        Item.SubItems.Add(photo.OmitGroups);
       end;
       Label31.Caption := 'Number of items: ' + InttoStr(listphotos.Items.Count) + ' (0) selected';
   end;
@@ -3030,6 +3040,7 @@ begin
   chartItemViewsH.SeriesList.Clear;
   chartItemLikesH.SeriesList.Clear;
   chartItemCommentsH.SeriesList.Clear;
+  edtFilter.Enabled := true;
   label36.Visible := false;
 end;
 
@@ -3074,6 +3085,7 @@ begin
   label37.Visible := false;
   listGroups.Visible := true;
   btnFilterOk.Enabled := true;
+  edtFilterGroup.Enabled := true;
   Label11.Caption := 'Number of items: ' + InttoStr(listgroups.Items.Count) + ' (0) selected';
 end;
 
@@ -3088,6 +3100,7 @@ begin
   listGroups.Items.Clear;
   FilteredGroupList.sort;
   description := edtFilterGroup.text;
+  edtFilterGroup.Enabled := false;
   for i := 0 to FilteredGroupList.list.Count - 1 do
   begin
     if FilteredGroupList.list[i].title.ToUpper.Contains(description.ToUpper) then

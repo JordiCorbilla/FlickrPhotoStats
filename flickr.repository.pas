@@ -45,6 +45,7 @@ type
     procedure SetSecret(value: string);
     function GetSecret(): string;
     procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
+    procedure SaveJson(ApiKey: string; Secret: string; UserId: string; FileName: string);
     procedure Load(FileName: string);
     procedure DeletePhoto(id : string);
     function Getsorted(): boolean;
@@ -107,6 +108,7 @@ type
     destructor Destroy(); override;
     function getTotalSpreadGroups() : integer;
     procedure Save(ApiKey: string; Secret: string; UserId: string; FileName: string);
+    procedure SaveJson(ApiKey: string; Secret: string; UserId: string; FileName: string);
     property ApiKey: string read GetApiKey write SetApiKey;
     property UserId: string read GetUserId write SetUserId;
     property photos: TList<IPhoto>read GetPhotos write SetPhotos;
@@ -122,7 +124,8 @@ implementation
 { TFlickrRepository }
 
 uses
-  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants, Generics.defaults, flickr.xml.helper;
+  XMLDoc, xmldom, XMLIntf, SysUtils, Vcl.Dialogs, flickr.top.stats, variants, Generics.defaults, flickr.xml.helper; //,
+//  System.JSON, Data.DBXJSON, Data.DBXJSONReflect, System.Classes, Data.DBXCommonResStrs, Data.DBXPlatform, Data.DBXClassRegistry;
 
 procedure TFlickrRepository.AddPhoto(photo: IPhoto);
 begin
@@ -371,6 +374,24 @@ begin
     raise Exception.Create('Can''t save this version!');
 
   XMLDoc.SaveToFile(FileName);
+end;
+
+procedure TFlickrRepository.SaveJson(ApiKey, Secret, UserId, FileName: string);
+//var
+//  m: TJSONMarshal;
+//  JSONString: String;
+//  JSonFile : TStringList;
+begin
+//  m := TJSONMarshal.Create(TJSONConverter.Create);
+//
+//  JSONString := m.Marshal(Self).ToString;
+//  JSonFile:= TStringlist.create;
+//    try
+//      JSonFile.Add(JSONString);
+//      JSonFile.SaveToFile(ExtractFilePath(FileName) + 'repo.json');
+//    finally
+//      JSonFile.Free
+//    end;
 end;
 
 procedure TFlickrRepository.SetApiKey(value: string);
