@@ -36,21 +36,21 @@ package FlickrPhotoAnalyticsLib;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS OFF}
+{$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
 {$OPTIMIZATION ON}
 {$OVERFLOWCHECKS OFF}
 {$RANGECHECKS OFF}
-{$REFERENCEINFO OFF}
+{$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE RELEASE}
+{$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$IMPLICITBUILD ON}
 
@@ -67,38 +67,29 @@ requires
   DbxCommonDriver;
 
 contains
-  flickr.access.token in 'flickr.access.token.pas',
   flickr.albums in 'flickr.albums.pas',
   flickr.base in 'flickr.base.pas',
-  flickr.call.methods in 'flickr.call.methods.pas',
   flickr.charts in 'flickr.charts.pas',
   flickr.filtered.list in 'flickr.filtered.list.pas',
   flickr.globals in 'flickr.globals.pas',
   flickr.lib.integerlist in 'flickr.lib.integerlist.pas',
   flickr.lib.parallel in 'flickr.lib.parallel.pas',
-  flickr.oauth in 'flickr.oauth.pas',
   flickr.photos in 'flickr.photos.pas',
   flickr.pools in 'flickr.pools.pas',
   flickr.profile in 'flickr.profile.pas',
   flickr.profiles in 'flickr.profiles.pas',
   flickr.rejected in 'flickr.rejected.pas',
   flickr.repository in 'flickr.repository.pas',
-  flickr.rest in 'flickr.rest.pas',
-  flickr.signature in 'flickr.signature.pas',
   flickr.stats in 'flickr.stats.pas',
   flickr.tendency in 'flickr.tendency.pas',
   flickr.top.stats in 'flickr.top.stats.pas',
   flickr.url.attributes in 'flickr.url.attributes.pas',
   flickr.time in 'flickr.time.pas',
-  flickr.lib.logging in 'flickr.lib.logging.pas',
   flickr.organic in 'flickr.organic.pas',
   flickr.organic.stats in 'flickr.organic.stats.pas',
-  flickr.lib.response in 'flickr.lib.response.pas',
   flickr.lib.email in 'flickr.lib.email.pas',
   flickr.lib.options in 'flickr.lib.options.pas',
   flickr.lib.email.html in 'flickr.lib.email.html.pas',
-  flickr.lib.options.agent in 'flickr.lib.options.agent.pas',
-  flickr.lib.encoding in 'flickr.lib.encoding.pas',
   flickr.lib.utils in 'flickr.lib.utils.pas',
   flickr.lib.doublelist in 'flickr.lib.doublelist.pas',
   flickr.pools.list in 'flickr.pools.list.pas',
@@ -114,7 +105,6 @@ contains
   flickr.lib.backup in 'flickr.lib.backup.pas',
   flickr.lib.rates in 'flickr.lib.rates.pas',
   flickr.repository.rest in 'flickr.repository.rest.pas',
-  flickr.xml.helper in 'flickr.xml.helper.pas',
   flickr.lib.photos.load in 'flickr.lib.photos.load.pas',
   flickr.lib.parse in 'flickr.lib.parse.pas',
   flickr.user.tracking in 'flickr.user.tracking.pas',
@@ -123,14 +113,13 @@ contains
   flickr.users.info in 'flickr.users.info.pas',
   flickr.stats.global in 'flickr.stats.global.pas',
   flickr.album.categoriser in 'flickr.album.categoriser.pas',
-  flickr.http.lib in 'flickr.http.lib.pas',
   flickr.pool.details in 'flickr.pool.details.pas',
-  flickr.lib.procedures in 'flickr.lib.procedures.pas',
   flickr.lib.parallel.albums in 'flickr.lib.parallel.albums.pas',
   flickr.lib.parallel.groups.load in 'flickr.lib.parallel.groups.load.pas',
   flickr.lib.parallel.photos in 'flickr.lib.parallel.photos.pas';
 
 end.
+
 
 
 

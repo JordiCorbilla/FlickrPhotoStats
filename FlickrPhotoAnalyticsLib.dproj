@@ -186,38 +186,29 @@
         <DCCReference Include="Tee.dcp"/>
         <DCCReference Include="soaprtl.dcp"/>
         <DCCReference Include="DbxCommonDriver.dcp"/>
-        <DCCReference Include="flickr.access.token.pas"/>
         <DCCReference Include="flickr.albums.pas"/>
         <DCCReference Include="flickr.base.pas"/>
-        <DCCReference Include="flickr.call.methods.pas"/>
         <DCCReference Include="flickr.charts.pas"/>
         <DCCReference Include="flickr.filtered.list.pas"/>
         <DCCReference Include="flickr.globals.pas"/>
         <DCCReference Include="flickr.lib.integerlist.pas"/>
         <DCCReference Include="flickr.lib.parallel.pas"/>
-        <DCCReference Include="flickr.oauth.pas"/>
         <DCCReference Include="flickr.photos.pas"/>
         <DCCReference Include="flickr.pools.pas"/>
         <DCCReference Include="flickr.profile.pas"/>
         <DCCReference Include="flickr.profiles.pas"/>
         <DCCReference Include="flickr.rejected.pas"/>
         <DCCReference Include="flickr.repository.pas"/>
-        <DCCReference Include="flickr.rest.pas"/>
-        <DCCReference Include="flickr.signature.pas"/>
         <DCCReference Include="flickr.stats.pas"/>
         <DCCReference Include="flickr.tendency.pas"/>
         <DCCReference Include="flickr.top.stats.pas"/>
         <DCCReference Include="flickr.url.attributes.pas"/>
         <DCCReference Include="flickr.time.pas"/>
-        <DCCReference Include="flickr.lib.logging.pas"/>
         <DCCReference Include="flickr.organic.pas"/>
         <DCCReference Include="flickr.organic.stats.pas"/>
-        <DCCReference Include="flickr.lib.response.pas"/>
         <DCCReference Include="flickr.lib.email.pas"/>
         <DCCReference Include="flickr.lib.options.pas"/>
         <DCCReference Include="flickr.lib.email.html.pas"/>
-        <DCCReference Include="flickr.lib.options.agent.pas"/>
-        <DCCReference Include="flickr.lib.encoding.pas"/>
         <DCCReference Include="flickr.lib.utils.pas"/>
         <DCCReference Include="flickr.lib.doublelist.pas"/>
         <DCCReference Include="flickr.pools.list.pas"/>
@@ -233,7 +224,6 @@
         <DCCReference Include="flickr.lib.backup.pas"/>
         <DCCReference Include="flickr.lib.rates.pas"/>
         <DCCReference Include="flickr.repository.rest.pas"/>
-        <DCCReference Include="flickr.xml.helper.pas"/>
         <DCCReference Include="flickr.lib.photos.load.pas"/>
         <DCCReference Include="flickr.lib.parse.pas"/>
         <DCCReference Include="flickr.user.tracking.pas"/>
@@ -242,9 +232,7 @@
         <DCCReference Include="flickr.users.info.pas"/>
         <DCCReference Include="flickr.stats.global.pas"/>
         <DCCReference Include="flickr.album.categoriser.pas"/>
-        <DCCReference Include="flickr.http.lib.pas"/>
         <DCCReference Include="flickr.pool.details.pas"/>
-        <DCCReference Include="flickr.lib.procedures.pas"/>
         <DCCReference Include="flickr.lib.parallel.albums.pas"/>
         <DCCReference Include="flickr.lib.parallel.groups.load.pas"/>
         <DCCReference Include="flickr.lib.parallel.photos.pas"/>
@@ -274,6 +262,12 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="2">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\Win64\FlickrPhotoAnalyticsLib.bpl" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>FlickrPhotoAnalyticsLib.bpl</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\17.0\Bpl\FlickrPhotoAnalyticsLib.bpl" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>FlickrPhotoAnalyticsLib.bpl</RemoteName>

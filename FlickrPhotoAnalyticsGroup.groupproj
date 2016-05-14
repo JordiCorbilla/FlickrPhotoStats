@@ -3,8 +3,11 @@
         <ProjectGuid>{D535442B-F35B-47CD-A1D0-06A517D654E9}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="FlickrPhotoAnalyticsLib.dproj">
+        <Projects Include="DelphiFlickrAPI.dproj">
             <Dependencies/>
+        </Projects>
+        <Projects Include="FlickrPhotoAnalyticsLib.dproj">
+            <Dependencies>DelphiFlickrAPI.dproj</Dependencies>
         </Projects>
         <Projects Include="FlickrPhotoAnalytics.dproj">
             <Dependencies>FlickrPhotoAnalyticsLib.dproj</Dependencies>
@@ -29,13 +32,22 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="FlickrPhotoAnalyticsLib">
+    <Target Name="DelphiFlickrAPI">
+        <MSBuild Projects="DelphiFlickrAPI.dproj"/>
+    </Target>
+    <Target Name="DelphiFlickrAPI:Clean">
+        <MSBuild Projects="DelphiFlickrAPI.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DelphiFlickrAPI:Make">
+        <MSBuild Projects="DelphiFlickrAPI.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="FlickrPhotoAnalyticsLib" DependsOnTargets="DelphiFlickrAPI">
         <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj"/>
     </Target>
-    <Target Name="FlickrPhotoAnalyticsLib:Clean">
+    <Target Name="FlickrPhotoAnalyticsLib:Clean" DependsOnTargets="DelphiFlickrAPI:Clean">
         <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="FlickrPhotoAnalyticsLib:Make">
+    <Target Name="FlickrPhotoAnalyticsLib:Make" DependsOnTargets="DelphiFlickrAPI:Make">
         <MSBuild Projects="FlickrPhotoAnalyticsLib.dproj" Targets="Make"/>
     </Target>
     <Target Name="FlickrPhotoAnalytics" DependsOnTargets="FlickrPhotoAnalyticsLib">
@@ -84,13 +96,13 @@
         <MSBuild Projects="FlickrPhotoThreadMonitor.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsMetropolisUI;FlickrPhotoMigrationTool;FlickrPhotoThreadMonitor"/>
+        <CallTarget Targets="DelphiFlickrAPI;FlickrPhotoAnalyticsLib;FlickrPhotoAnalytics;FlickrPhotoAnalyticsAgent;FlickrPhotoAnalyticsMetropolisUI;FlickrPhotoMigrationTool;FlickrPhotoThreadMonitor"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean;FlickrPhotoMigrationTool:Clean;FlickrPhotoThreadMonitor:Clean"/>
+        <CallTarget Targets="DelphiFlickrAPI:Clean;FlickrPhotoAnalyticsLib:Clean;FlickrPhotoAnalytics:Clean;FlickrPhotoAnalyticsAgent:Clean;FlickrPhotoAnalyticsMetropolisUI:Clean;FlickrPhotoMigrationTool:Clean;FlickrPhotoThreadMonitor:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsMetropolisUI:Make;FlickrPhotoMigrationTool:Make;FlickrPhotoThreadMonitor:Make"/>
+        <CallTarget Targets="DelphiFlickrAPI:Make;FlickrPhotoAnalyticsLib:Make;FlickrPhotoAnalytics:Make;FlickrPhotoAnalyticsAgent:Make;FlickrPhotoAnalyticsMetropolisUI:Make;FlickrPhotoMigrationTool:Make;FlickrPhotoThreadMonitor:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
