@@ -87,12 +87,24 @@ begin
     Setpriorityclass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
     TLogger.LogFile('');
     TLogger.LogFile('Starting Batch Update ' + TUtils.GetVersion);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN or FOREGROUND_INTENSITY);
+    WriteLn('    _________      __        ____  __          __        ___                __      __  _');
+    WriteLn('   / ____/ (_)____/ /_______/ __ \/ /_  ____  / /_____  /   |  ____  ____ _/ /_  __/ /_(_)_________');
+    WriteLn('  / /_  / / / ___/ //_/ ___/ /_/ / __ \/ __ \/ __/ __ \/ /| | / __ \/ __ `/ / / / / __/ / ___/ ___/');
+    WriteLn(' / __/ / / / /__/ ,< / /  / ____/ / / / /_/ / /_/ /_/ / ___ |/ / / / /_/ / / /_/ / /_/ / /__(__  )');
+    WriteLn('/_/   /_/_/\___/_/|_/_/  /_/   /_/ /_/\____/\__/\____/_/  |_/_/ /_/\__,_/_/\__, /\__/_/\___/____/');
+    WriteLn('                                                                          /____/');
+    WriteLn('                                                                    _    ____ _____ _   _ _____');
+    WriteLn('                                                                   / \  / ___| ____| \ | |_   _|');
+    WriteLn('                                                                  / _ \| |  _|  _| |  \| | | |');
+    WriteLn('                                                                 / ___ \ |_| | |___| |\  | | |');
+    WriteLn('                                                                /_/   \_\____|_____|_| \_| |_|');
+    WriteLn('');
+    WriteLn('Copyright (C) 2016 Jordi Corbilla');
+    WriteLn('Version ' + TUtils.GetVersion);
+    WriteLn('Free - (Non-commercial only)');
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED or FOREGROUND_GREEN or FOREGROUND_BLUE);
-    WriteLn('###################################################');
-    WriteLn('# Welcome to Flickr Photo Analytics Agent         #');
-    WriteLn('# Free - (Non-commercial only)                    #');
-    WriteLn('# version ' + TUtils.GetVersion + ' @author: Jordi Corbilla         #');
-    WriteLn('###################################################');
+    WriteLn('');
     verbosity := false;
     if (paramstr(1) = '-v') or (paramstr(2) = '-v') or (paramstr(3) = '-v') or (paramstr(4) = '-v') then
     begin
@@ -123,6 +135,18 @@ begin
       WriteLn('loademail argument detected');
       TLogger.LogFile('loademail argument detected');
       loademail := true;
+    end;
+
+    if ((not verbosity) and (not loadrepository) and (not loadglobals)) then
+    begin
+      WriteLn('Please specify the options:');
+      WriteLn('-v     verbosity');
+      WriteLn('-r     Load repository');
+      WriteLn('-g     Load globals');
+      WriteLn('');
+      WriteLn('Example: ');
+      WriteLn('  FlickrPhotoAnalyticsAgent -v -r -g');
+      exit;
     end;
 
     // Load repository
