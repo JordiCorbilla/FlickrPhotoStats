@@ -53,7 +53,7 @@ type
 implementation
 
 uses
-  flickr.signature, HTTPApp, NetEncoding;
+  flickr.signature, HTTPApp, NetEncoding, flickr.Dictionary.sorting;
 
 { TCallMethod }
 
@@ -120,6 +120,7 @@ var
   TokenSecret : string;
   timeStamp : string;
   keys : string;
+  sortedArray : TArray<String>;
 begin
   //Generate request access token needs to generate:
 
@@ -135,10 +136,10 @@ begin
   paramURL := paramURL + '&oauth_timestamp=' + timeStamp;
   paramURL := paramURL + '&oauth_token=' + Fauth_token;
   paramURL := paramURL + '&oauth_version=1.0';
-  for keys in params.keys do
-  begin
+
+  sortedArray := TDictionarySorting.getSortedKey(params);
+  for keys in sortedArray do
     paramURL := paramURL + '&' + keys + '=' + params.Items[keys];
-  end;
 
   paramURL := String(TNetEncoding.URL.Encode(paramURL));
 
@@ -161,10 +162,9 @@ begin
   returnURL := returnURL + '&oauth_version=1.0';
   returnURL := returnURL + '&oauth_token=' + Fauth_token;
   returnURL := returnURL + '&oauth_signature=' + TSignature.getOAuthSignature(encodedURL, ConsumerSecret);
-  for keys in params.keys do
-  begin
+  for keys in sortedArray do
     returnURL := returnURL + '&' + keys + '=' + params.Items[keys];
-  end;
+
   returnURL := returnURL + '&method=' + method;
 
   result := returnURL;

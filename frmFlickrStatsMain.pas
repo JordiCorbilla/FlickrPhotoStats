@@ -666,7 +666,7 @@ uses
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
   flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib, flickr.lib.parallel.albums,
-  flickr.lib.parallel.groups.load;
+  flickr.lib.parallel.groups.load, flickr.listview.model;
 
 {$R *.dfm}
 
@@ -4327,6 +4327,7 @@ var
   comparer : TCompareType;
   threadExec : TParallelGroupLoad;
   threads: array of TParallelGroupLoad;
+  list : TPhotoListViewModel;
 begin
   if (apikey.text = '') or (userToken = '') then
   begin
@@ -4381,6 +4382,7 @@ begin
     threadExec.Free;
   end;
   Application.ProcessMessages;
+  sleep(300);
   // Load the remaining pages
   numPages := pages.ToInteger;
   SetLength(threads, numPages - 1);
@@ -4396,6 +4398,7 @@ begin
     threads[i-2].Start;
   end;
   Application.ProcessMessages;
+  sleep(300);
   for i := 2 to numPages do
   begin
     threads[i-2].WaitFor;
@@ -4416,28 +4419,38 @@ begin
   st.Start;
   listGroups.OnItemChecked := nil;
   listgroups.OnCustomDrawItem := nil;
-  for i := 0 to FilteredGroupList.list.Count - 1 do
-  begin
-    Item := listGroups.Items.Add;
-    Item.Caption := FilteredGroupList.list[i].id;
-    Item.SubItems.Add(FilteredGroupList.list[i].title);
-    Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].Description);
-    Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
-    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
-    Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
+
+  list := TPhotoListViewModel.Create();
+  try
+    for i := 0 to FilteredGroupList.list.Count - 1 do
+    begin
+      list.AddItemsView(listGroups, FilteredGroupList.list[i]);
+    end;
+  finally
+    list.Free;
   end;
+//  for i := 0 to FilteredGroupList.list.Count - 1 do
+//  begin
+//    Item := listGroups.Items.Add;
+//    Item.Caption := FilteredGroupList.list[i].id;
+//    Item.SubItems.Add(FilteredGroupList.list[i].title);
+//    Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].Description);
+//    Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
+//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
+//    Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
+//  end;
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
   st.Stop;

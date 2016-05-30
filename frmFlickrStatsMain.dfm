@@ -4334,7 +4334,7 @@ object frmFlickrMain: TfrmFlickrMain
                 OnClick = btnFilterOKClick
               end
               object btnFilterCancel: TButton
-                Left = 839
+                Left = 840
                 Top = 58
                 Width = 34
                 Height = 25
