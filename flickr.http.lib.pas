@@ -41,6 +41,7 @@ type
     class procedure Post(getString : string; node : TNodeProcedure); overload;
     class procedure Post(getString : string; messageFilter : boolean; responseFilter : boolean; node : TNodeProcedure); overload;
     class procedure Post(getString : string; arguments : string; log : TLogProcedure) overload;
+    class function Get(url : string) : string;
   end;
 
 implementation
@@ -144,6 +145,45 @@ begin
   finally
     CoUninitialize;
   end;
+end;
+
+class function THttpRest.Get(url: string): string;
+var
+  response: string;
+  IdHTTP: TIdHTTP;
+  IdIOHandler: TIdSSLIOHandlerSocketOpenSSL;
+  timedout: Boolean;
+begin
+  CoInitialize(nil);
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      timedout := false;
+      while (not timedout) do
+      begin
+        try
+          response := IdHTTP.Get(url);
+          timedout := true;
+        except
+          on e: exception do
+          begin
+            sleep(200);
+            timedout := false;
+          end;
+        end;
+      end;
+    finally
+      IdIOHandler.Free;
+      IdHTTP.Free;
+    end;
+  finally
+    CoUninitialize;
+  end;
+  result := response;
 end;
 
 class procedure THttpRest.Post(getString : string; arguments : string; log : TLogProcedure);

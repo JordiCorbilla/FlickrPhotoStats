@@ -37,7 +37,7 @@ type
   public
     procedure AddItemsView(list: TListView; base : IBase);
     constructor Create();
-    Destructor Destroy();
+    Destructor Destroy(); override;
   end;
 
 implementation

@@ -56,9 +56,6 @@ type
   TViewType = (TotalViews, TotalLikes, TotalComments, TotalViewsHistogram, TotalLikesHistogram);
 
   TfrmFlickrMain = class(TForm)
-    IdHTTP1: TIdHTTP;
-    IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL;
-    XMLDocument1: TXMLDocument;
     Panel1: TPanel;
     ImageList1: TImageList;
     Taskbar1: TTaskbar;
@@ -709,7 +706,7 @@ begin
   // oauth_token=72157650113637896-43aba062d96def83&
   // oauth_token_secret=153e53c592649722
   Log('Calling OAuth URL ' + OAuthUrl);
-  response := IdHTTP1.Get(OAuthUrl);
+  response := THttpRest.Get(OAuthUrl);
   Log('OAuth URL response ' + response);
 
   // Parsing response
@@ -982,10 +979,9 @@ end;
 procedure TfrmFlickrMain.UpdateTotals(onlyLabels : boolean);
 var
   i: Integer;
-  Item: TListItem;
-  totalViews, totalViewsacc: Integer;
-  totalLikes, totalLikesacc: Integer;
-  totalComments, totalCommentsacc: Integer;
+  totalViewsacc: Integer;
+  totalLikesacc: Integer;
+  totalCommentsacc: Integer;
   statGlobal: IStatGlobal;
   totalAlbumViews : integer;
   totalStreamViews : integer;
@@ -2826,7 +2822,7 @@ var
   response: string;
 begin
   urlGroups := TFlickrRest.New(optionsAgent).getTestLogin();
-  response := IdHTTP1.Get(urlGroups);
+  response := THttpRest.Get(urlGroups);
   showmessage(response);
 end;
 
@@ -3244,7 +3240,7 @@ begin
                 while (not timedout) do
                 begin
                   try
-                    response := IdHTTP1.Get(urlAdd);
+                    response := THttpRest.Get(urlAdd);
                     if response.Contains('Photo limit reached') or response.Contains('Maximum') then
                     begin
                       mStatus.Lines.Add('Adding group : ' + base.Id + ' to the rejected list');
@@ -3592,19 +3588,7 @@ begin
           if (repository.isPhotoInGroup(photoId, groupId, resultPhoto)) then
           begin
             urlAdd := TFlickrRest.New(optionsAgent).getPoolsRemove(photoId, groupId);
-            while (not timedout) do
-            begin
-              try
-                response := IdHTTP1.Get(urlAdd);
-                timedout := true;
-              except
-                on e: exception do
-                begin
-                  sleep(timeout);
-                  timedout := false;
-                end;
-              end;
-            end;
+            response := THttpRest.Get(urlAdd);
           end;
           inc(k);
           progressbar1.position := k;
@@ -4322,7 +4306,6 @@ end;
 
 procedure TfrmFlickrMain.btnGetGroupsClick(Sender: TObject);
 var
-  Item: TListItem;
   pages: string;
   numPages: Integer;
   i, j: Integer;
@@ -4432,28 +4415,7 @@ begin
   finally
     list.Free;
   end;
-//  for i := 0 to FilteredGroupList.list.Count - 1 do
-//  begin
-//    Item := listGroups.Items.Add;
-//    Item.Caption := FilteredGroupList.list[i].id;
-//    Item.SubItems.Add(FilteredGroupList.list[i].title);
-//    Item.SubItems.Add(FilteredGroupList.list[i].Photos.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].Members.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].Description);
-//    Item.SubItems.Add(FilteredGroupList.list[i].IsModerated.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleCount.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleMode);
-//    Item.SubItems.Add(FilteredGroupList.list[i].ThrottleRemaining.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].photos_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].videos_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].images_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].screens_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].art_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].safe_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].moderate_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].restricted_ok.ToString());
-//    Item.SubItems.Add(FilteredGroupList.list[i].has_geo.ToString());
-//  end;
+
   listGroups.OnItemChecked := listGroupsItemChecked;
   listgroups.OnCustomDrawItem := listGroupsCustomDrawItem;
   st.Stop;

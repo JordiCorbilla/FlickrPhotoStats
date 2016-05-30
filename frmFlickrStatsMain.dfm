@@ -1597,7 +1597,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = TabSheet2
+      ActivePage = Dashboard
       Align = alClient
       TabOrder = 1
       object Dashboard: TTabSheet
@@ -3175,11 +3175,11 @@ object frmFlickrMain: TfrmFlickrMain
               end
               item
                 Caption = 'Banned Groups'
-                Width = 200
+                Width = 100
               end
               item
                 Caption = 'Trend Log'
-                Width = 250
+                Width = 350
               end>
             FlatScrollBars = True
             GridLines = True
@@ -3191,6 +3191,8 @@ object frmFlickrMain: TfrmFlickrMain
             ViewStyle = vsReport
             OnCustomDrawSubItem = listPhotosCustomDrawSubItem
             OnItemChecked = listPhotosItemChecked
+            ExplicitLeft = 73
+            ExplicitTop = 56
           end
           object Panel5: TPanel
             Left = 1
@@ -5462,46 +5464,13 @@ object frmFlickrMain: TfrmFlickrMain
       OnMouseEnter = btnLeaveMouseEnter
     end
   end
-  object IdHTTP1: TIdHTTP
-    IOHandler = IdSSLIOHandlerSocketOpenSSL1
-    AllowCookies = True
-    ProxyParams.BasicAuthentication = False
-    ProxyParams.ProxyPort = 0
-    Request.ContentLength = -1
-    Request.ContentRangeEnd = -1
-    Request.ContentRangeStart = -1
-    Request.ContentRangeInstanceLength = -1
-    Request.Accept = 'text/html, */*'
-    Request.BasicAuthentication = False
-    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
-    Request.Ranges.Units = 'bytes'
-    Request.Ranges = <>
-    HTTPOptions = [hoForceEncodeParams]
-    Left = 936
-    Top = 302
-  end
-  object IdSSLIOHandlerSocketOpenSSL1: TIdSSLIOHandlerSocketOpenSSL
-    MaxLineAction = maException
-    Port = 0
-    DefaultPort = 0
-    SSLOptions.Mode = sslmUnassigned
-    SSLOptions.VerifyMode = []
-    SSLOptions.VerifyDepth = 0
-    Left = 1216
-    Top = 302
-  end
-  object XMLDocument1: TXMLDocument
-    Left = 866
-    Top = 302
-    DOMVendorDesc = 'MSXML'
-  end
   object ImageList1: TImageList
     BlendColor = clWhite
     DrawingStyle = dsTransparent
-    Left = 1076
+    Left = 820
     Top = 302
     Bitmap = {
-      494C0101ED002001CC0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001D00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
@@ -13434,16 +13403,16 @@ object frmFlickrMain: TfrmFlickrMain
       end>
     ProgressState = Normal
     TabProperties = []
-    Left = 1356
+    Left = 1028
     Top = 302
   end
   object ActionList1: TActionList
-    Left = 1006
+    Left = 750
     Top = 302
   end
   object PopupMenu1: TPopupMenu
     Images = ImageList1
-    Left = 1146
+    Left = 890
     Top = 302
     object MarkGroups1: TMenuItem
       Caption = 'Mark Groups'
@@ -13526,12 +13495,14 @@ object frmFlickrMain: TfrmFlickrMain
     end
   end
   object TeeGDIPlus1: TTeeGDIPlus
-    Left = 1426
+    Active = True
+    TeePanel = dailyViews
+    Left = 1090
     Top = 302
   end
   object PopupMenu2: TPopupMenu
     Images = ImageList1
-    Left = 1286
+    Left = 958
     Top = 302
     object ShowonFlickr2: TMenuItem
       Caption = 'Show on Flickr'
@@ -13554,7 +13525,7 @@ object frmFlickrMain: TfrmFlickrMain
   end
   object PopupMenu3: TPopupMenu
     Images = ImageList1
-    Left = 796
+    Left = 676
     Top = 302
     object MenuItem1: TMenuItem
       Caption = 'Check All'
@@ -13570,7 +13541,7 @@ object frmFlickrMain: TfrmFlickrMain
   object BalloonHint1: TBalloonHint
     Delay = 300
     HideAfter = 2000
-    Left = 656
+    Left = 600
     Top = 302
   end
   object PopupMenu4: TPopupMenu
