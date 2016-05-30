@@ -993,18 +993,26 @@ begin
   totalViewsacc := 0;
   totalLikesacc := 0;
   totalCommentsacc := 0;
-  for i := 0 to listPhotos.Items.Count - 1 do
+
+  for i := 0 to repository.photos.Count -1 do
   begin
-    Item := listPhotos.Items[i];
-    totalViews := StrToInt(Item.SubItems.Strings[1]);
-    totalViewsacc := totalViewsacc + totalViews;
-
-    totalLikes := StrToInt(Item.SubItems.Strings[2]);;
-    totalLikesacc := totalLikesacc + totalLikes;
-
-    totalComments := StrToInt(Item.SubItems.Strings[3]);;
-    totalCommentsacc := totalCommentsacc + totalComments;
+    totalViewsacc := totalViewsacc + repository.photos[i].TotalViews;
+    totalLikesacc := totalLikesacc + repository.photos[i].TotalLikes;
+    totalCommentsacc := totalCommentsacc + repository.photos[i].TotalComments;
   end;
+
+//  for i := 0 to listPhotos.Items.Count - 1 do
+//  begin
+//    Item := listPhotos.Items[i];
+//    totalViews := StrToInt(Item.SubItems.Strings[1]);
+//    totalViewsacc := totalViewsacc + totalViews;
+//
+//    totalLikes := StrToInt(Item.SubItems.Strings[2]);;
+//    totalLikesacc := totalLikesacc + totalLikes;
+//
+//    totalComments := StrToInt(Item.SubItems.Strings[3]);;
+//    totalCommentsacc := totalCommentsacc + totalComments;
+//  end;
 
   totalAlbumViews := getTotalAlbumsCounts();
   totalStreamViews := getTotalStreamViews();
@@ -1204,6 +1212,7 @@ var
   Groups: TPoolList;
   tags : string;
   photoGroups : IPhoto;
+  diff1, diff2, diff3, diff4, diff5 : integer;
 begin
   CoInitialize(nil);
   try
@@ -1340,17 +1349,22 @@ begin
     else
     begin
       itemExisting.Caption := id;
+      diff1 := views.ToInteger() - itemExisting.SubItems.Strings[1].ToInteger();
+      diff2 := likes.ToInteger() - itemExisting.SubItems.Strings[2].ToInteger();
+      diff3 := comments.ToInteger() - itemExisting.SubItems.Strings[3].ToInteger();
+      diff4 := photo.TotalAlbums - itemExisting.SubItems.Strings[6].ToInteger();
+      diff5 := photo.TotalGroups - itemExisting.SubItems.Strings[7].ToInteger();
       itemExisting.SubItems.Clear;
       itemExisting.SubItems.Add(title);
-      itemExisting.SubItems.Add(views);
-      itemExisting.SubItems.Add(likes);
-      itemExisting.SubItems.Add(comments);
+      itemExisting.SubItems.Add(views); // + ' ('+ diff1.ToString() + ')'
+      itemExisting.SubItems.Add(likes); // + ' ('+ diff2.ToString() + ')'
+      itemExisting.SubItems.Add(comments); // + ' ('+ diff3.ToString() + ')'
       itemExisting.SubItems.Add(DateToStr(Date));
       if views = '0' then
         views := '1';
       itemExisting.SubItems.Add(taken);
-      itemExisting.SubItems.Add(photo.TotalAlbums.ToString());
-      itemExisting.SubItems.Add(photo.TotalGroups.ToString());
+      itemExisting.SubItems.Add(photo.TotalAlbums.ToString()); // + ' ('+ diff4.ToString() + ')'
+      itemExisting.SubItems.Add(photo.TotalGroups.ToString()); // + ' ('+ diff5.ToString() + ')'
       itemExisting.SubItems.Add(tags);
       itemExisting.SubItems.Add(FormatFloat('0.##%', (likes.ToInteger / views.ToInteger) * 100.0));
       itemExisting.SubItems.Add(photo.banned.ToString());
