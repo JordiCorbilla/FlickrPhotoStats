@@ -240,13 +240,10 @@ type
     Panel2: TPanel;
     listPhotos: TListView;
     Panel5: TPanel;
-    Label2: TLabel;
     Label3: TLabel;
     Label31: TLabel;
     Process: TLabel;
     Label36: TLabel;
-    photoId: TEdit;
-    btnAdd: TButton;
     batchUpdate: TButton;
     btnExcel: TButton;
     edtfilter: TEdit;
@@ -476,7 +473,6 @@ type
     procedure UncheckAll2Click(Sender: TObject);
     procedure CheckAll2Click(Sender: TObject);
     procedure UncheckAll3Click(Sender: TObject);
-    procedure photoIdChange(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -643,6 +639,7 @@ type
     FViewsP : TColor;
     FLikesP : TColor;
     FCommentsP : TColor;
+    FPhotoId : string;
     procedure Log(s: string);
   end;
 
@@ -845,11 +842,6 @@ begin
   listPhotosUser.OnItemChecked := listPhotosItemChecked;
 end;
 
-procedure TfrmFlickrMain.photoIdChange(Sender: TObject);
-begin
-  btnAdd.Enabled := photoId.Text <> '';
-end;
-
 procedure TfrmFlickrMain.batchUpdateClick(Sender: TObject);
 var
   i: Integer;
@@ -883,8 +875,6 @@ begin
     btnLoad.Enabled := false;
     btnGetList.Enabled := false;
     ProgressBar1.Visible := true;
-    photoId.Enabled := false;
-    btnAdd.Enabled := false;
     Process.Visible := true;
     Taskbar1.ProgressState := TTaskBarProgressState.Normal;
     Taskbar1.ProgressMaxValue := listPhotos.Items.Count;
@@ -954,9 +944,7 @@ begin
     listPhotos.OnCustomDrawSubItem := listPhotosCustomDrawSubItem;
     btnSave.Enabled := true;
     btnBackup.Enabled := true;
-    photoId.Enabled := true;
     btnLoad.Enabled := true;
-    btnAdd.Enabled := true;
     Taskbar1.ProgressValue := 0;
     btnGetList.Enabled := true;
     batchUpdate.Enabled := true;
@@ -1326,7 +1314,7 @@ begin
     if not ExistPhotoInList(id, itemExisting) then
     begin
       Item := frmFlickrMain.listPhotos.Items.Add;
-      Item.Caption := frmFlickrMain.photoId.text;
+      Item.Caption := FPhotoId;
       Item.SubItems.Add(title);
       Item.SubItems.Add(views);
       Item.SubItems.Add(likes);
@@ -1403,9 +1391,9 @@ begin
   end;
   listPhotos.OnItemChecked := nil;
   listPhotos.OnCustomDrawSubItem := nil;
-  RequestInformation_REST_Flickr(photoId.text, nil);
-  id := photoId.text;
-  photoId.text := '';
+  RequestInformation_REST_Flickr(FPhotoId, nil);
+  id := FPhotoId;
+  FPhotoId := '';
   UpdateTotals(false);
   btnSave.Enabled := true;
   btnBackup.Enabled := true;
@@ -4343,7 +4331,6 @@ begin
   batchUpdate.Enabled := false;
   pagecontrol3.TabIndex := 0;
   btnLoad.Enabled := false;
-  btnAdd.Enabled := false;
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listGroups.Visible := false;
@@ -4428,7 +4415,6 @@ begin
   log('Saving repository flickrGroups: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
   btnLoad.Enabled := true;
-  btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddPhotos.Enabled := true;
   btnRemovePhoto.Enabled := true;
@@ -4557,7 +4543,6 @@ begin
     exit;
   end;
   btnLoad.Enabled := false;
-  btnAdd.Enabled := false;
   btnAddItems.Enabled := false;
   batchUpdate.Enabled := false;
   listPhotosUser.Visible := false;
@@ -4680,7 +4665,6 @@ begin
     end;
   end;
   btnLoad.Enabled := true;
-  btnAdd.Enabled := true;
   batchUpdate.Enabled := true;
   btnAddItems.Enabled := true;
   progressbar1.Visible := false;
@@ -4701,8 +4685,6 @@ var
 begin
   btnAddItems.Enabled := false;
   ProgressBar1.Visible := true;
-  photoId.Enabled := false;
-  btnAdd.Enabled := false;
   batchUpdate.Enabled := false;
   Process.Visible := true;
   ProgressBar1.Min := 0;
@@ -4717,14 +4699,14 @@ begin
 
       if not ExistPhotoInList(listPhotosUser.Items[i].Caption, Item) then
       begin
-        photoId.text := listPhotosUser.Items[i].Caption;
+        FPhotoId := listPhotosUser.Items[i].Caption;
         FAvoidMessage := true;
         btnAddClick(Sender);
         FAvoidMessage := false;
       end;
     end;
   end;
-  photoId.text := '';
+  FPhotoId := '';
   ProgressBar1.Visible := false;
   Process.Visible := false;
   UpdateTotals(false);
@@ -4732,8 +4714,6 @@ begin
   btnSave.Enabled := true;
   btnBackup.Enabled := true;
   batchUpdate.Enabled := true;
-  photoId.Enabled := true;
-  btnAdd.Enabled := true;
   btnAddItems.Enabled := true;
   showMessage('Photos have been added to the main list');
 end;

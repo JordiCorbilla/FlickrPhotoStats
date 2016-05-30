@@ -1597,7 +1597,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = Dashboard
+      ActivePage = TabSheet2
       Align = alClient
       TabOrder = 1
       object Dashboard: TTabSheet
@@ -3202,22 +3202,8 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alTop
             BevelOuter = bvNone
             TabOrder = 1
-            object Label2: TLabel
-              Left = 55
-              Top = 2
-              Width = 52
-              Height = 13
-              Caption = 'Photo ID:'
-              Font.Charset = DEFAULT_CHARSET
-              Font.Color = clWindowText
-              Font.Height = -11
-              Font.Name = 'Tahoma'
-              Font.Style = [fsBold]
-              ParentFont = False
-              OnDblClick = Label2DblClick
-            end
             object Label3: TLabel
-              Left = 362
+              Left = 160
               Top = 12
               Width = 49
               Height = 13
@@ -3256,7 +3242,7 @@ object frmFlickrMain: TfrmFlickrMain
               ParentFont = False
             end
             object Label36: TLabel
-              Left = 944
+              Left = 742
               Top = 13
               Width = 92
               Height = 13
@@ -3269,32 +3255,8 @@ object frmFlickrMain: TfrmFlickrMain
               ParentFont = False
               Visible = False
             end
-            object photoId: TEdit
-              Left = 55
-              Top = 18
-              Width = 138
-              Height = 21
-              TabOrder = 0
-              OnChange = photoIdChange
-            end
-            object btnAdd: TButton
-              Left = 2
-              Top = 1
-              Width = 50
-              Height = 38
-              Caption = 'Add'
-              Enabled = False
-              ImageAlignment = iaTop
-              ImageIndex = 45
-              ImageMargins.Top = 5
-              ImageMargins.Bottom = -6
-              Images = ImageList1
-              TabOrder = 1
-              OnClick = btnAddClick
-              OnMouseEnter = btnAddMouseEnter
-            end
             object batchUpdate: TButton
-              Left = 199
+              Left = 1
               Top = 1
               Width = 50
               Height = 38
@@ -3304,12 +3266,12 @@ object frmFlickrMain: TfrmFlickrMain
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
-              TabOrder = 2
+              TabOrder = 0
               OnClick = batchUpdateClick
               OnMouseEnter = batchUpdateMouseEnter
             end
             object btnExcel: TButton
-              Left = 301
+              Left = 103
               Top = 1
               Width = 50
               Height = 38
@@ -3319,47 +3281,47 @@ object frmFlickrMain: TfrmFlickrMain
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
-              TabOrder = 3
+              TabOrder = 1
               OnClick = btnExcelClick
               OnMouseEnter = btnExcelMouseEnter
             end
             object edtfilter: TEdit
-              Left = 635
+              Left = 433
               Top = 9
               Width = 231
               Height = 21
-              TabOrder = 4
+              TabOrder = 2
             end
             object btnAddFilter: TButton
-              Left = 869
+              Left = 667
               Top = 7
               Width = 34
               Height = 25
               ImageIndex = 218
               ImageMargins.Left = 5
               Images = ImageList1
-              TabOrder = 5
+              TabOrder = 3
               OnClick = btnAddFilterClick
             end
             object btnResetFilter: TButton
-              Left = 904
+              Left = 702
               Top = 7
               Width = 34
               Height = 25
               ImageIndex = 63
               ImageMargins.Left = 5
               Images = ImageList1
-              TabOrder = 6
+              TabOrder = 4
               OnClick = btnResetFilterClick
             end
             object ComboBox2: TComboBox
-              Left = 422
+              Left = 220
               Top = 9
               Width = 128
               Height = 21
               Style = csDropDownList
               ItemIndex = 0
-              TabOrder = 7
+              TabOrder = 5
               Text = 'ID'
               Items.Strings = (
                 'ID'
@@ -3378,13 +3340,13 @@ object frmFlickrMain: TfrmFlickrMain
                 'Banned Groups')
             end
             object ComboBox3: TComboBox
-              Left = 554
+              Left = 352
               Top = 9
               Width = 75
               Height = 21
               Style = csDropDownList
               ItemIndex = 0
-              TabOrder = 8
+              TabOrder = 6
               Text = '='
               Items.Strings = (
                 '='
@@ -3396,7 +3358,7 @@ object frmFlickrMain: TfrmFlickrMain
                 'Contains')
             end
             object Button4: TButton
-              Left = 250
+              Left = 52
               Top = 1
               Width = 50
               Height = 38
@@ -3406,7 +3368,7 @@ object frmFlickrMain: TfrmFlickrMain
               ImageMargins.Top = 5
               ImageMargins.Bottom = -6
               Images = ImageList1
-              TabOrder = 9
+              TabOrder = 7
               OnClick = Button4Click
               OnMouseEnter = Button4MouseEnter
             end
@@ -3417,7 +3379,7 @@ object frmFlickrMain: TfrmFlickrMain
           Top = 444
           Width = 1508
           Height = 369
-          ActivePage = TabSheet5
+          ActivePage = TabSheet3
           Align = alClient
           TabOrder = 1
           object Statistics: TTabSheet
@@ -4053,7 +4015,7 @@ object frmFlickrMain: TfrmFlickrMain
                 OnMouseEnter = btnGetListMouseEnter
               end
               object btnAddItems: TButton
-                Left = 49
+                Left = 50
                 Top = -1
                 Width = 50
                 Height = 38
