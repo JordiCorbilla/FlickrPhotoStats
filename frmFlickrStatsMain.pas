@@ -1213,6 +1213,7 @@ var
   tags : string;
   photoGroups : IPhoto;
   diff1, diff2, diff3, diff4, diff5 : integer;
+  trendLog : string;
 begin
   CoInitialize(nil);
   try
@@ -1370,6 +1371,8 @@ begin
       itemExisting.SubItems.Add(photo.banned.ToString());
       itemExisting.SubItems.Add(photo.getTrend.ToString());
       itemExisting.SubItems.Add(photo.OmitGroups);
+      trendLog := 'Views: ' + diff1.ToString() + ' Likes: ' + diff2.ToString() + ' Comments: ' + diff3.ToString() + ' Albums: ' + diff4.ToString() + ' Groups: ' + diff5.ToString();
+      itemExisting.SubItems.Add(trendLog);
     end;
     if chkRealTime.Checked then
       UpdateTotals(true);
