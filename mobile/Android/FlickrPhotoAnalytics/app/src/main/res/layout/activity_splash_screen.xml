@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:adjustViewBounds="true"
+        android:gravity="center_vertical"
+        android:scaleType="fitXY"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_x="0dp"
+        android:layout_y="0dp"
+        android:src="@drawable/splash" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="28dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:text="Analytics for Flickr v1.0"
+        android:textColorHighlight="#222222"
+        android:background="#000000"/>
+
+</RelativeLayout>

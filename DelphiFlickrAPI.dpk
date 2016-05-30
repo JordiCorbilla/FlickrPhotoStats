@@ -1,0 +1,59 @@
+package DelphiFlickrAPI;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  xmlrtl,
+  vcl,
+  inet,
+  IndySystem,
+  IndyProtocols,
+  IndyCore,
+  Tee,
+  soaprtl,
+  DbxCommonDriver;
+
+contains
+  flickr.rest in 'flickr.rest.pas',
+  flickr.lib.options.agent in 'flickr.lib.options.agent.pas',
+  flickr.signature in 'flickr.signature.pas',
+  flickr.call.methods in 'flickr.call.methods.pas',
+  flickr.lib.encoding in 'flickr.lib.encoding.pas',
+  flickr.http.lib in 'flickr.http.lib.pas',
+  flickr.lib.procedures in 'flickr.lib.procedures.pas',
+  flickr.lib.response in 'flickr.lib.response.pas',
+  flickr.lib.logging in 'flickr.lib.logging.pas',
+  flickr.access.token in 'flickr.access.token.pas',
+  flickr.oauth in 'flickr.oauth.pas',
+  flickr.xml.helper in 'flickr.xml.helper.pas',
+  flickr.Dictionary.sorting in 'flickr.Dictionary.sorting.pas';
+
+end.
+
+
