@@ -15,17 +15,17 @@
     <Transaction>2016/05/14 19:22:44.000.590,C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.oauth.pas=</Transaction>
     <Transaction>2016/05/14 19:23:44.000.791,C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.xml.helper.pas=</Transaction>
     <Transaction>2016/05/30 11:01:46.000.566,=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas</Transaction>
-    <Transaction>2016/05/30 11:02:06.000.933,C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.listview.model.pas=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas</Transaction>
-    <Transaction>2016/05/30 19:33:05.205,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.xml.helper.pas</Transaction>
-    <Transaction>2016/05/30 19:34:26.868,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.call.methods.pas</Transaction>
-    <Transaction>2016/05/30 19:34:26.893,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.Dictionary.sorting.pas</Transaction>
-    <Transaction>2016/05/30 19:34:26.918,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.http.lib.pas</Transaction>
-    <Transaction>2016/05/30 19:34:26.947,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.encoding.pas</Transaction>
-    <Transaction>2016/05/30 19:34:26.994,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.logging.pas</Transaction>
-    <Transaction>2016/05/30 19:34:27.044,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.procedures.pas</Transaction>
-    <Transaction>2016/05/30 19:34:27.065,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.response.pas</Transaction>
-    <Transaction>2016/05/30 19:34:27.089,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.rest.pas</Transaction>
-    <Transaction>2016/05/30 19:34:27.114,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.signature.pas</Transaction>
-    <Transaction>2016/05/30 19:36:46.584,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.options.agent.pas</Transaction>
+    <Transaction>2016/05/30 11:02:06.000.933,C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.listview.model.pas</Transaction>
+    <Transaction>2016/05/30 19:33:05.000.205,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.xml.helper.pas</Transaction>
+    <Transaction>2016/05/30 19:34:26.000.893,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.Dictionary.sorting.pas</Transaction>
+    <Transaction>2016/05/30 19:34:26.000.918,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.http.lib.pas</Transaction>
+    <Transaction>2016/05/30 19:34:26.000.868,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.call.methods.pas</Transaction>
+    <Transaction>2016/05/30 19:34:26.000.994,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.logging.pas</Transaction>
+    <Transaction>2016/05/30 19:34:26.000.947,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.encoding.pas</Transaction>
+    <Transaction>2016/05/30 19:34:27.000.089,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.rest.pas</Transaction>
+    <Transaction>2016/05/30 19:34:27.000.065,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.response.pas</Transaction>
+    <Transaction>2016/05/30 19:34:27.000.044,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.procedures.pas</Transaction>
+    <Transaction>2016/05/30 19:34:27.000.114,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.signature.pas</Transaction>
+    <Transaction>2016/05/30 19:36:46.000.584,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.options.agent.pas</Transaction>
   </Transactions>
 </BorlandProject>

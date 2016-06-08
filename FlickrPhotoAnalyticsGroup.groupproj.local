@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2015/06/10 21:09:22.000.715,C:\Desk\Source code\FlickrPhotoStats\trunk\FlickrPhotoAnalyticsGroup.groupproj=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\ProjectGroup1.groupproj</Transaction>
+    <Transaction>2015/06/10 21:09:22.000.715,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\ProjectGroup1.groupproj=C:\Desk\Source code\FlickrPhotoStats\trunk\FlickrPhotoAnalyticsGroup.groupproj</Transaction>
   </Transactions>
 	<Default.Personality>
-		<Projects ActiveProject="C:\Desk\Source code\FlickrPhotoStats\trunk\FlickrPhotoAnalytics.dproj"/>
+		<Projects ActiveProject="C:\Users\thund\Source\Repos\FlickrPhotoStats\DelphiFlickrAPI.dproj"/>
 	</Default.Personality>
 </BorlandProject>

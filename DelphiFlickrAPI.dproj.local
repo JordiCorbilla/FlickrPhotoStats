@@ -2,10 +2,10 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2016/05/14 18:53:33.000.347,=rtl.dcp</Transaction>
-    <Transaction>2016/05/14 18:54:43.000.992,C:\Desk\Source code\Delphi-Flickr-API\trunk\DelphiFlickrAPI.dproj=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Package1.dproj</Transaction>
+    <Transaction>2016/05/14 18:54:43.000.992,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Package1.dproj=C:\Desk\Source code\Delphi-Flickr-API\trunk\DelphiFlickrAPI.dproj</Transaction>
     <Transaction>2016/05/14 19:01:36.000.479,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.rest.pas</Transaction>
     <Transaction>2016/05/14 19:01:53.000.546,C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.rest.pas=</Transaction>
-    <Transaction>2016/05/14 19:08:13.000.611,C:\Desk\Source code\FlickrPhotoStats\trunk\DelphiFlickrAPI.dproj=C:\Desk\Source code\Delphi-Flickr-API\trunk\DelphiFlickrAPI.dproj</Transaction>
+    <Transaction>2016/05/14 19:08:13.000.611,C:\Desk\Source code\Delphi-Flickr-API\trunk\DelphiFlickrAPI.dproj=C:\Desk\Source code\FlickrPhotoStats\trunk\DelphiFlickrAPI.dproj</Transaction>
     <Transaction>2016/05/14 19:12:56.000.859,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.rest.pas</Transaction>
     <Transaction>2016/05/14 19:13:05.000.708,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.lib.options.agent.pas</Transaction>
     <Transaction>2016/05/14 19:13:23.000.765,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.signature.pas</Transaction>
@@ -18,7 +18,7 @@
     <Transaction>2016/05/14 19:21:57.000.636,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.access.token.pas</Transaction>
     <Transaction>2016/05/14 19:22:39.000.685,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.oauth.pas</Transaction>
     <Transaction>2016/05/14 19:23:38.000.443,=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.xml.helper.pas</Transaction>
-    <Transaction>2016/05/30 12:59:08.252,=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas</Transaction>
-    <Transaction>2016/05/30 12:59:27.493,C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.Dictionary.sorting.pas=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas</Transaction>
+    <Transaction>2016/05/30 12:59:08.000.252,=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas</Transaction>
+    <Transaction>2016/05/30 12:59:27.000.493,C:\Desk\Source code\FlickrPhotoStats\trunk\Unit1.pas=C:\Desk\Source code\FlickrPhotoStats\trunk\flickr.Dictionary.sorting.pas</Transaction>
   </Transactions>
 </BorlandProject>
