@@ -155,6 +155,16 @@ begin
     options := TOptions.New().Load;
     optionsAgent := ToptionsAgent.New().Load;
     try
+      if optionsAgent.userToken = '' then
+      begin
+        WriteLn('Options Agent: User Token is empty');
+        Exit;
+      end;
+      if optionsAgent.userTokenSecret = '' then
+      begin
+        WriteLn('Options Agent: User Token Secret is empty');
+        Exit;
+      end;
       st := TStopWatch.Create;
       st.Start;
       repository.version := TUtils.GetVersion;
@@ -325,11 +335,16 @@ begin
     end;
 
     //Add the items in the albums
+    WriteLn('Categorising photos:');
+    st := TStopWatch.Create;
+    st.Start;
     TAlbumCategoriser.AutoAdd(repository, options, optionsAgent, procedure (value : string)
       begin
         WriteLn(value);
         TLogger.LogFile(value);
       end);
+    st.Stop;
+    WriteLn('Categorising photos finished in: ' + TTime.GetAdjustedTime(st.ElapsedMilliseconds));
 
     //Update Parse
     try
