@@ -206,7 +206,7 @@ begin
             WriteLn('New item found: ' + PhotosList[i]);
             TLogger.LogFile('New Photo Added ' + PhotosList[i]);
             stat := TStat.Create(Date, 0, 0, 0);
-            photo := TPhoto.Create(PhotosList[i], 'New', '', '');
+            photo := TPhoto.Create(PhotosList[i], 'New', '2016-03-02 15:57:24', '');
             photo.Folder := ExtractFilePath(options.Workspace + '\flickrRepository.xml');
             photo.AddStats(stat);
             photo.LastUpdate := Date;

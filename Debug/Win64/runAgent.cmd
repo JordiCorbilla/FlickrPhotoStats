@@ -1,0 +1,1 @@
+FlickrPhotoAnalyticsAgent.exe -v -r -g -e

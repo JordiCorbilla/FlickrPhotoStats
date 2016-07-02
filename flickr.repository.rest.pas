@@ -140,6 +140,19 @@ begin
       end;
     end);
 
+  EnterCriticalSection(CritSect);
+  if photoGroups <> nil then
+  begin
+    photoGroups.SaveGroups;
+    photoGroups.SaveAlbums;
+  end
+  else
+  begin
+    photo.SaveGroups;
+    photo.SaveAlbums;
+  end;
+  LeaveCriticalSection(CritSect);
+
   st := TStopWatch.Create;
   st.Start;
   TTracking.TrackPhoto(options.Workspace, id, '1', '50', optionsAgent);

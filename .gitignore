@@ -7,3 +7,8 @@
 *.rsm
 *.exe
 /__history
+/Debug/Win64/FlickrAnalytics.ini
+/Debug/Win64/FlickrAnalyticsAgent.ini
+/Debug/Win64/libeay32.dll
+/Debug/Win64/ssleay32.dll
+/Debug/Win64/Flickr.log.txt
