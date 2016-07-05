@@ -815,7 +815,7 @@ begin
       listgroups.OnCustomDrawItem := nil;
       id := listPhotos.Items[listPhotos.ItemIndex].Caption;
       photo := repository.GetPhoto(id);
-
+      photo.LoadGroups;
       for j := 0 to listgroups.Items.count-1 do
       begin
         if photo.Groups.Exists(listgroups.Items[j].caption, pool) then
