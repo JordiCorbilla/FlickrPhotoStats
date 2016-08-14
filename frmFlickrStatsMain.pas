@@ -2908,37 +2908,37 @@ begin
           2: //Views
           begin
             case combobox3.ItemIndex of
-              0: add := photo.stats[photo.stats.Count-1].views.tostring = value;
-              1: add := photo.stats[photo.stats.Count-1].views < value.Tointeger;
-              2: add := photo.stats[photo.stats.Count-1].views > value.Tointeger;
-              3: add := photo.stats[photo.stats.Count-1].views <= value.Tointeger;
-              4: add := photo.stats[photo.stats.Count-1].views >= value.Tointeger;
-              5: add := photo.stats[photo.stats.Count-1].views <> value.ToInteger;
-              6: add := photo.stats[photo.stats.Count-1].views.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.TotalViews.tostring = value;
+              1: add := photo.TotalViews < value.Tointeger;
+              2: add := photo.TotalViews > value.Tointeger;
+              3: add := photo.TotalViews <= value.Tointeger;
+              4: add := photo.TotalViews >= value.Tointeger;
+              5: add := photo.TotalViews <> value.ToInteger;
+              6: add := photo.TotalViews.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           3: //Likes
           begin
             case combobox3.ItemIndex of
-              0: add := photo.stats[photo.stats.Count-1].likes.tostring = value;
-              1: add := photo.stats[photo.stats.Count-1].likes < value.Tointeger;
-              2: add := photo.stats[photo.stats.Count-1].likes > value.Tointeger;
-              3: add := photo.stats[photo.stats.Count-1].likes <= value.Tointeger;
-              4: add := photo.stats[photo.stats.Count-1].likes >= value.Tointeger;
-              5: add := photo.stats[photo.stats.Count-1].likes <> value.ToInteger;
-              6: add := photo.stats[photo.stats.Count-1].likes.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.TotalLikes.tostring = value;
+              1: add := photo.TotalLikes < value.Tointeger;
+              2: add := photo.TotalLikes > value.Tointeger;
+              3: add := photo.TotalLikes <= value.Tointeger;
+              4: add := photo.TotalLikes >= value.Tointeger;
+              5: add := photo.TotalLikes <> value.ToInteger;
+              6: add := photo.TotalLikes.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           4: //Comments
           begin
             case combobox3.ItemIndex of
-              0: add := photo.stats[photo.stats.Count-1].Comments.tostring = value;
-              1: add := photo.stats[photo.stats.Count-1].Comments < value.Tointeger;
-              2: add := photo.stats[photo.stats.Count-1].Comments > value.Tointeger;
-              3: add := photo.stats[photo.stats.Count-1].Comments <= value.Tointeger;
-              4: add := photo.stats[photo.stats.Count-1].Comments >= value.Tointeger;
-              5: add := photo.stats[photo.stats.Count-1].Comments <> value.ToInteger;
-              6: add := photo.stats[photo.stats.Count-1].Comments.tostring.ToLower.Contains(value.ToLower);
+              0: add := photo.TotalComments.tostring = value;
+              1: add := photo.TotalComments < value.Tointeger;
+              2: add := photo.TotalComments > value.Tointeger;
+              3: add := photo.TotalComments <= value.Tointeger;
+              4: add := photo.TotalComments >= value.Tointeger;
+              5: add := photo.TotalComments <> value.ToInteger;
+              6: add := photo.TotalComments.tostring.ToLower.Contains(value.ToLower);
             end;
           end;
           5: //Last Update
@@ -2956,25 +2956,25 @@ begin
           7: //Albums
           begin
             case combobox3.ItemIndex of
-              0: add := photo.Albums.count.ToString = value;
-              1: add := photo.Albums.count < value.ToInteger;
-              2: add := photo.Albums.count > value.ToInteger;
-              3: add := photo.Albums.count <= value.ToInteger;
-              4: add := photo.Albums.count >= value.ToInteger;
-              5: add := photo.Albums.count <> value.ToInteger;
-              6: add := photo.Albums.count.ToString.ToLower.Contains(value.ToLower);
+              0: add := photo.TotalAlbums.ToString = value;
+              1: add := photo.TotalAlbums < value.ToInteger;
+              2: add := photo.TotalAlbums > value.ToInteger;
+              3: add := photo.TotalAlbums <= value.ToInteger;
+              4: add := photo.TotalAlbums >= value.ToInteger;
+              5: add := photo.TotalAlbums <> value.ToInteger;
+              6: add := photo.TotalAlbums.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           8: //Groups
           begin
             case combobox3.ItemIndex of
-              0: add := photo.Groups.count.ToString = value;
-              1: add := photo.Groups.count < value.ToInteger;
-              2: add := photo.Groups.count > value.ToInteger;
-              3: add := photo.Groups.count <= value.ToInteger;
-              4: add := photo.Groups.count >= value.ToInteger;
-              5: add := photo.Groups.count <> value.ToInteger;
-              6: add := photo.Groups.count.ToString.ToLower.Contains(value.ToLower);
+              0: add := photo.TotalGroups.ToString = value;
+              1: add := photo.TotalGroups < value.ToInteger;
+              2: add := photo.TotalGroups > value.ToInteger;
+              3: add := photo.TotalGroups <= value.ToInteger;
+              4: add := photo.TotalGroups >= value.ToInteger;
+              5: add := photo.TotalGroups <> value.ToInteger;
+              6: add := photo.TotalGroups.ToString.ToLower.Contains(value.ToLower);
             end;
           end;
           9: //Tags
@@ -2992,8 +2992,8 @@ begin
       begin
         Item := frmFlickrMain.listPhotos.Items.Add;
         Item.Caption := repository.photos[i].Id;
-        photo.LoadStats;
         photo := repository.GetPhoto(photo.Id);
+        photo.LoadStats;
         Item.SubItems.Add(photo.Title);
         Item.SubItems.Add(photo.stats[photo.stats.Count-1].views.toString);
         Item.SubItems.Add(photo.stats[photo.stats.Count-1].likes.toString);
