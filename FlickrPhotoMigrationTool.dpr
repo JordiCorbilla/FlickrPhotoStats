@@ -39,7 +39,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.Title := 'Flickr Photo Migration Tool';
-  TStyleManager.TrySetStyle('Windows10 Blue');
+  TStyleManager.TrySetStyle('Metropolis UI Blue');
   Application.CreateForm(TfrmMigration, frmMigration);
   Application.Run;
 end.

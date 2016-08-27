@@ -59,7 +59,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <Custom_Styles>&quot;Iceberg Classico|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\IcebergClassico.vsf&quot;;Windows10|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\Windows10.vsf;&quot;Windows10 Dark|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\Windows10Dark.vsf&quot;</Custom_Styles>
+        <Custom_Styles>&quot;Iceberg Classico|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\IcebergClassico.vsf&quot;;&quot;Metropolis UI Blue|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\MetropolisUIBlue.vsf&quot;;Windows10|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\Windows10.vsf;&quot;Windows10 Dark|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\Windows10Dark.vsf&quot;</Custom_Styles>
         <SanitizedProjectName>FlickrPhotoAnalytics</SanitizedProjectName>
         <VCL_Custom_Styles>Carbon|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\Carbon.vsf;&quot;Metropolis UI Black|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\MetropolisUIBlack.vsf&quot;;&quot;Metropolis UI Dark|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\MetropolisUIDark.vsf&quot;;&quot;Ruby Graphite|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\RubyGraphite.vsf&quot;</VCL_Custom_Styles>
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;VclTee;Xml.Win;$(DCC_Namespace)</DCC_Namespace>

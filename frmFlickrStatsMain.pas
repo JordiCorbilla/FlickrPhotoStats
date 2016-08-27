@@ -791,7 +791,38 @@ end;
 procedure TfrmFlickrMain.AddColourCharts;
 begin
 //$00C8700C
-  if (TStyleManager.ActiveStyle.Name = 'Windows10 Blue') then
+//$1373A9
+  if (TStyleManager.ActiveStyle.Name = 'Metropolis UI Blue') then
+  begin
+    ChartStreamViews.color := $00A97313;
+    ChartAlbumViews.color := $00A97313;
+    ChartViews.color := $00A97313;
+    totalPhotos.color := $00A97313;
+    ChartLikes.color := $00A97313;
+    ChartComments.color := $00A97313;
+    executionTime.color := $00A97313;
+    mostviewschart.color := $00A97313;
+    mostlikeschart.color := $00A97313;
+    chartfollowing.color := $00A97313;
+    organicViews.color := $00A97313;
+    organicLikes.color := $00A97313;
+    organicComments.color := $00A97313;
+    groupspread.color := $00A97313;
+    dailyViews.color := $00A97313;
+    dailyLikes.color := $00A97313;
+    dailyComments.color := $00A97313;
+    chartAlbum.color := $00A97313;
+    chartHallViews.color := $00A97313;
+    ChartHallLikes.color := $00A97313;
+    chartItemViews.color := $00A97313;
+    chartItemLikes.color := $00A97313;
+    totalGroups.color := $00A97313;
+    chartItemComments.color := $00A97313;
+    chartItemViewsH.color := $00A97313;
+    chartItemLikesH.color := $00A97313;
+    chartItemCommentsH.color := $00A97313;
+  end
+  else if (TStyleManager.ActiveStyle.Name = 'Windows10 Blue') then
   begin
     ChartStreamViews.color := $00C8700C;
     ChartAlbumViews.color := $00C8700C;
@@ -1840,9 +1871,9 @@ end;
 
 procedure TfrmFlickrMain.LoadForms(repository: IFlickrRepository);
 begin
-  apikey.text := repository.apikey;
-  secret.text := repository.secret;
-  edtUserId.text := repository.UserId;
+  //apikey.text := repository.apikey;
+  //secret.text := repository.secret;
+  //edtUserId.text := repository.UserId;
   authenticate.Enabled := true;
   listPhotos.Clear;
   UpdateCounts();

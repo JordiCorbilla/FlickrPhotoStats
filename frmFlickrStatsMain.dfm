@@ -1597,7 +1597,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = Dashboard
+      ActivePage = TabSheet7
       Align = alClient
       TabOrder = 1
       object Dashboard: TTabSheet

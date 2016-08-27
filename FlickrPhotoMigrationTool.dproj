@@ -52,7 +52,7 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <Custom_Styles>&quot;Windows10 Blue|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10Blue.vsf&quot;</Custom_Styles>
+        <Custom_Styles>&quot;Metropolis UI Blue|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\MetropolisUIBlue.vsf&quot;;&quot;Windows10 Blue|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\17.0\Styles\Windows10Blue.vsf&quot;</Custom_Styles>
         <VCL_Custom_Styles>Carbon|VCLSTYLE|$(PUBLIC)\Documents\Embarcadero\Studio\14.0\Styles\Carbon.vsf</VCL_Custom_Styles>
         <SanitizedProjectName>FlickrPhotoMigrationTool</SanitizedProjectName>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
