@@ -130,6 +130,10 @@ begin
   if chartItemCommentsH.SeriesList.Count > 0 then
     chartItemCommentsH.RemoveAllSeries;
 
+  ChartItemViewsH.Color := $00A97313;
+  chartitemLikesH.Color := $00A97313;
+  chartItemCommentsH.Color := $00A97313;
+
   ListPhotos := TList<string>.create();
   try
     THttpRest.Post(TFlickrRest.New(optionsAgent).getPhotosPhotoSet(photosetId, '1', '500'), procedure (iXMLRootNode : IXMLNode)

@@ -5210,6 +5210,7 @@ begin
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
     photo := repository.GetPhoto(id);
+    photo.LoadAlbums;
     for album in photo.Albums do
     begin
       ListDisplay.AddItem(album.value.id, album.value.title);
@@ -5229,6 +5230,7 @@ begin
   begin
     id := listPhotos.Items[listPhotos.ItemIndex].Caption;
     photo := repository.GetPhoto(id);
+    photo.LoadGroups;
     for Item in photo.Groups do
     begin
       ListDisplay.AddItem(Item.Value.id, Item.Value.title, DateToStr(Item.Value.Added));

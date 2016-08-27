@@ -165,6 +165,21 @@ begin
         WriteLn('Options Agent: User Token Secret is empty');
         Exit;
       end;
+      if optionsAgent.flickrApiKey = '' then
+      begin
+        WriteLn('Options Agent: flickrApiKey is empty');
+        Exit;
+      end;
+      if optionsAgent.secret = '' then
+      begin
+        WriteLn('Options Agent: secret is empty');
+        Exit;
+      end;
+      if optionsAgent.flickrUserId = '' then
+      begin
+        WriteLn('Options Agent: flickrUserId is empty');
+        Exit;
+      end;
       st := TStopWatch.Create;
       st.Start;
       repository.version := TUtils.GetVersion;
@@ -177,9 +192,9 @@ begin
         // Use parallel looping
         st := TStopWatch.Create;
         st.Start;
-        apikey := repository.apikey;
-        secret := repository.secret;
-        userId := repository.userId;
+        apikey := optionsAgent.flickrApiKey;
+        secret := optionsAgent.secret;
+        userId := optionsAgent.flickrUserId;
 
         //Now I need to add the new items in the list.
         PhotosList := nil;
