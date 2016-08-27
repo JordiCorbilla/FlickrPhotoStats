@@ -5,7 +5,7 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Downloads](https://img.shields.io/badge/lines-46k-green.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Stable Release](https://img.shields.io/badge/version-4.8.0.1rc-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u) [![Delphi version](https://img.shields.io/badge/delphi-10.1Berlin-red.svg)](https://app.box.com/s/5wc31kr7oxgn4d4j060q5sks6q2cow3u)
+[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Downloads](https://img.shields.io/badge/lines-47k-green.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Stable Release](https://img.shields.io/badge/version-4.8.0.2rc-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Delphi version](https://img.shields.io/badge/delphi-10.1Berlin-red.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
@@ -62,9 +62,8 @@ Code convention:
  
 Use **Batch Update** to easily update all the values and keep a good track record of your flickr stream.
 
-Version 4.8.0.2 (Beta): *Note: this is still under development.
-- [FlickrPhotoStats(x64) v4.8.0.2](https://app.box.com/s/mrotr9368pw70d2aly84kouo9v4d72th).
-- [FlickrPhotoStats(x64) v4.8.0.2 Win10](https://app.box.com/s/4hqidfta4trlqgq2cu2pevwy1x1bnpyf).
+Version 4.8.0.2 (RC stable):
+- [FlickrPhotoStats(x64) v4.8.0.2](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2).
  
 Version 4.8.0.1 (RC stable):
 - [FlickrPhotoStats(x64) v4.8.0.1](https://app.box.com/s/fm0qqguhzbpt31fj97uori8ydgtcjkly).
@@ -155,7 +154,7 @@ Source code is available here.
 
 The application can now use **OAuth** authentication using REST. The application itself can validate the user tokens and provide all the flow within the application. I will write a post about this in my blog.
 
-Developed with Delphi XE6 and C# and using [OpenSSL](https://www.openssl.org/) libraries.
+Developed with Delphi 10.1 Berlin and C# and using [OpenSSL](https://www.openssl.org/) libraries.
 
 ## Roadmap
 ### Version 4.4:
