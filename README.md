@@ -28,8 +28,8 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **New Dashboard v4.8.0.2 (Windows 10 support) **:
 
-![](https://github.com/JordiCorbilla/FlickrPhotoStats/blob/master/dashboard.png)
-![](https://github.com/JordiCorbilla/FlickrPhotoStats/blob/master/dashboard2.png)
+![](https://github.com/JordiCorbilla/FlickrPhotoStats/raw/master/dashboard.png)
+![](https://github.com/JordiCorbilla/FlickrPhotoStats/raw/master/dashboard2.png)
 
 **Dashboard (previous versions)**:
 
