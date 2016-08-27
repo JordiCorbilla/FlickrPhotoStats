@@ -26,12 +26,12 @@ Additional info can be found in the following [**post**](http://thundaxsoftware.
 
 **Example of the app**:
 
-**New Dashboard (Windows 10 support) **:
+**New Dashboard v4.8.0.2 (Windows 10 support) **:
 
-![](https://2.bp.blogspot.com/-ql-HbGKMdZE/Vu5o7rpKUtI/AAAAAAAAFRk/tT1gKhZlSuYljz96dQN5FoeWaijQfrbwA/s1600/analytics.png)
-![](https://4.bp.blogspot.com/-mSFE5FcGv4U/Vu5o7Oxpu2I/AAAAAAAAFRg/TcEy8ukRRcw2MPXapq-I4XZCX1yw_MEvA/s1600/Updating.png)
+![](https://github.com/JordiCorbilla/FlickrPhotoStats/raw/master/dashboard.png)
+![](https://github.com/JordiCorbilla/FlickrPhotoStats/raw/master/dashboard2.png)
 
-**Dashboard**:
+**Dashboard (previous versions)**:
 
 ![](http://3.bp.blogspot.com/-fFx_AXjkKjk/VhkkWW1GF-I/AAAAAAAAFIE/aosoNiSmji0/s640/10102015Image.png)
 
