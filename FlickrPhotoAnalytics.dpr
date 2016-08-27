@@ -70,8 +70,8 @@ begin
   Application.Initialize;
   ReportMemoryLeaksOnShutdown := true;
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Windows10 Dark');
   Application.Title := 'Flickr Photo Analytics';
-  TStyleManager.TrySetStyle('Windows10 Blue');
   Application.CreateForm(TfrmFlickrMain, frmFlickrMain);
   Application.Run;
 end.

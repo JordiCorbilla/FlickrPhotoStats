@@ -583,6 +583,7 @@ type
     procedure UpdateLabelPhotos;
     procedure ResizeChartsDashBoard;
     procedure ClearAllCharts;
+    procedure AddColourCharts;
     procedure LoadOptions;
     procedure ShowHint(description : string; Sender: TObject);
     procedure InitialiseDashboardTrend;
@@ -660,7 +661,7 @@ uses
   flickr.pools.histogram, flickr.lib.item, flickr.lib.item.list, flickr.photos.histogram,
   flickr.lib.email, flickr.lib.math, flickr.lib.backup, flickr.xml.helper, frmFlickrPhotoSetInfo,
   flickr.lib.parse, flickr.stats.global, flickr.users.info, flickr.http.lib, flickr.lib.parallel.albums,
-  flickr.lib.parallel.groups.load, flickr.listview.model;
+  flickr.lib.parallel.groups.load, flickr.listview.model, Vcl.Themes, vcltee.TeCanvas;
 
 {$R *.dfm}
 
@@ -785,6 +786,210 @@ begin
   if mLogs.Lines.Count > max.ToInteger then
     mLogs.Lines.Clear;
   mLogs.Lines.Add(DateTimeToStr(Now) + ' ' + s);
+end;
+
+procedure TfrmFlickrMain.AddColourCharts;
+begin
+//$00C8700C
+  if (TStyleManager.ActiveStyle.Name = 'Windows10 Blue') then
+  begin
+    ChartStreamViews.color := $00C8700C;
+    ChartAlbumViews.color := $00C8700C;
+    ChartViews.color := $00C8700C;
+    totalPhotos.color := $00C8700C;
+    ChartLikes.color := $00C8700C;
+    ChartComments.color := $00C8700C;
+    executionTime.color := $00C8700C;
+    mostviewschart.color := $00C8700C;
+    mostlikeschart.color := $00C8700C;
+    chartfollowing.color := $00C8700C;
+    organicViews.color := $00C8700C;
+    organicLikes.color := $00C8700C;
+    organicComments.color := $00C8700C;
+    groupspread.color := $00C8700C;
+    dailyViews.color := $00C8700C;
+    dailyLikes.color := $00C8700C;
+    dailyComments.color := $00C8700C;
+    chartAlbum.color := $00C8700C;
+    chartHallViews.color := $00C8700C;
+    ChartHallLikes.color := $00C8700C;
+    chartItemViews.color := $00C8700C;
+    chartItemLikes.color := $00C8700C;
+    totalGroups.color := $00C8700C;
+    chartItemComments.color := $00C8700C;
+    chartItemViewsH.color := $00C8700C;
+    chartItemLikesH.color := $00C8700C;
+    chartItemCommentsH.color := $00C8700C;
+  end
+  else if (TStyleManager.ActiveStyle.Name = 'Windows10 Dark') then
+  begin
+    ChartStreamViews.color := clBlack;
+    ChartAlbumViews.color := clBlack;
+    ChartViews.color := clBlack;
+    totalPhotos.color := clBlack;
+    ChartLikes.color := clBlack;
+    ChartComments.color := clBlack;
+    executionTime.color := clBlack;
+    mostviewschart.color := clBlack;
+    mostlikeschart.color := clBlack;
+    chartfollowing.color := clBlack;
+    organicViews.color := clBlack;
+    organicLikes.color := clBlack;
+    organicComments.color := clBlack;
+    groupspread.color := clBlack;
+    dailyViews.color := clBlack;
+    dailyLikes.color := clBlack;
+    dailyComments.color := clBlack;
+    chartAlbum.color := clBlack;
+    chartHallViews.color := clBlack;
+    ChartHallLikes.color := clBlack;
+    chartItemViews.color := clBlack;
+    chartItemLikes.color := clBlack;
+    totalGroups.color := clBlack;
+    chartItemComments.color := clBlack;
+    chartItemViewsH.color := clBlack;
+    chartItemLikesH.color := clBlack;
+    chartItemCommentsH.color := clBlack;
+  end
+  else
+  begin
+    ChartStreamViews.color := clBtnFace;
+    ChartStreamViews.Title.Color := clblack;
+    chartStreamViews.LeftAxis.LabelsFont.Color := clblack;
+    chartStreamViews.BottomAxis.LabelsFont.Color := clblack;
+
+    ChartAlbumViews.color := clBtnFace;
+    ChartAlbumViews.Title.Color := clblack;
+    ChartAlbumViews.LeftAxis.LabelsFont.Color := clblack;
+    ChartAlbumViews.BottomAxis.LabelsFont.Color := clblack;
+
+    ChartViews.color := clBtnFace;
+    ChartViews.Title.Color := clblack;
+    ChartViews.LeftAxis.LabelsFont.Color := clblack;
+    ChartViews.BottomAxis.LabelsFont.Color := clblack;
+
+    totalPhotos.color := clBtnFace;
+    totalPhotos.Title.Color := clblack;
+    totalPhotos.LeftAxis.LabelsFont.Color := clblack;
+    totalPhotos.BottomAxis.LabelsFont.Color := clblack;
+
+    ChartLikes.color := clBtnFace;
+    ChartLikes.Title.Color := clblack;
+    ChartLikes.LeftAxis.LabelsFont.Color := clblack;
+    ChartLikes.BottomAxis.LabelsFont.Color := clblack;
+
+    ChartComments.color := clBtnFace;
+    ChartComments.Title.Color := clblack;
+    ChartComments.LeftAxis.LabelsFont.Color := clblack;
+    ChartComments.BottomAxis.LabelsFont.Color := clblack;
+
+    executionTime.color := clBtnFace;
+    executionTime.Title.Color := clblack;
+    executionTime.LeftAxis.LabelsFont.Color := clblack;
+    executionTime.BottomAxis.LabelsFont.Color := clblack;
+
+    mostviewschart.color := clBtnFace;
+    mostviewschart.Title.Color := clblack;
+    mostviewschart.LeftAxis.LabelsFont.Color := clblack;
+    mostviewschart.BottomAxis.LabelsFont.Color := clblack;
+
+    mostlikeschart.color := clBtnFace;
+    mostlikeschart.Title.Color := clblack;
+    mostlikeschart.LeftAxis.LabelsFont.Color := clblack;
+    mostlikeschart.BottomAxis.LabelsFont.Color := clblack;
+
+    chartfollowing.color := clBtnFace;
+    chartfollowing.Title.Color := clblack;
+    chartfollowing.LeftAxis.LabelsFont.Color := clblack;
+    chartfollowing.BottomAxis.LabelsFont.Color := clblack;
+
+    organicViews.color := clBtnFace;
+    organicViews.Title.Color := clblack;
+    organicViews.LeftAxis.LabelsFont.Color := clblack;
+    organicViews.BottomAxis.LabelsFont.Color := clblack;
+
+    organicLikes.color := clBtnFace;
+    organicLikes.Title.Color := clblack;
+    organicLikes.LeftAxis.LabelsFont.Color := clblack;
+    organicLikes.BottomAxis.LabelsFont.Color := clblack;
+
+    organicComments.color := clBtnFace;
+    organicComments.Title.Color := clblack;
+    organicComments.LeftAxis.LabelsFont.Color := clblack;
+    organicComments.BottomAxis.LabelsFont.Color := clblack;
+
+    groupspread.color := clBtnFace;
+    groupspread.Title.Color := clblack;
+    groupspread.LeftAxis.LabelsFont.Color := clblack;
+    groupspread.BottomAxis.LabelsFont.Color := clblack;
+
+    dailyViews.color := clBtnFace;
+    dailyViews.Title.Color := clblack;
+    dailyViews.LeftAxis.LabelsFont.Color := clblack;
+    dailyViews.BottomAxis.LabelsFont.Color := clblack;
+
+    dailyLikes.color := clBtnFace;
+    dailyLikes.Title.Color := clblack;
+    dailyLikes.LeftAxis.LabelsFont.Color := clblack;
+    dailyLikes.BottomAxis.LabelsFont.Color := clblack;
+
+    dailyComments.color := clBtnFace;
+    dailyComments.Title.Color := clblack;
+    dailyComments.LeftAxis.LabelsFont.Color := clblack;
+    dailyComments.BottomAxis.LabelsFont.Color := clblack;
+
+    chartAlbum.color := clBtnFace;
+    chartAlbum.Title.Color := clblack;
+    chartAlbum.LeftAxis.LabelsFont.Color := clblack;
+    chartAlbum.BottomAxis.LabelsFont.Color := clblack;
+
+    chartHallViews.color := clBtnFace;
+    chartHallViews.Title.Color := clblack;
+    chartHallViews.LeftAxis.LabelsFont.Color := clblack;
+    chartHallViews.BottomAxis.LabelsFont.Color := clblack;
+
+    ChartHallLikes.color := clBtnFace;
+    ChartHallLikes.Title.Color := clblack;
+    ChartHallLikes.LeftAxis.LabelsFont.Color := clblack;
+    ChartHallLikes.BottomAxis.LabelsFont.Color := clblack;
+
+    chartItemViews.color := clBtnFace;
+    chartItemViews.Title.Color := clblack;
+    chartItemViews.LeftAxis.LabelsFont.Color := clblack;
+    chartItemViews.BottomAxis.LabelsFont.Color := clblack;
+
+
+    chartItemLikes.color := clBtnFace;
+    chartItemLikes.Title.Color := clblack;
+    chartItemLikes.LeftAxis.LabelsFont.Color := clblack;
+    chartItemLikes.BottomAxis.LabelsFont.Color := clblack;
+
+    totalGroups.color := clBtnFace;
+    totalGroups.Title.Color := clblack;
+    totalGroups.LeftAxis.LabelsFont.Color := clblack;
+    totalGroups.BottomAxis.LabelsFont.Color := clblack;
+
+    chartItemComments.color := clBtnFace;
+    chartItemComments.Title.Color := clblack;
+    chartItemComments.LeftAxis.LabelsFont.Color := clblack;
+    chartItemComments.BottomAxis.LabelsFont.Color := clblack;
+
+    chartItemViewsH.color := clBtnFace;
+    chartItemViewsH.Title.Color := clblack;
+    chartItemViewsH.LeftAxis.LabelsFont.Color := clblack;
+    chartItemViewsH.BottomAxis.LabelsFont.Color := clblack;
+
+    chartItemLikesH.color := clBtnFace;
+    chartItemLikesH.Title.Color := clblack;
+    chartItemLikesH.LeftAxis.LabelsFont.Color := clblack;
+    chartItemLikesH.BottomAxis.LabelsFont.Color := clblack;
+
+    chartItemCommentsH.color := clBtnFace;
+    chartItemCommentsH.Title.Color := clblack;
+    chartItemCommentsH.LeftAxis.LabelsFont.Color := clblack;
+    chartItemCommentsH.BottomAxis.LabelsFont.Color := clblack;
+
+  end;
 end;
 
 procedure TfrmFlickrMain.AlbumLog(s: string);
@@ -5135,6 +5340,7 @@ begin
   frmFlickrMain.Caption := 'Flickr Photo Analytics ' + TUtils.GetVersion + ' - Free (non-commercial use only)';
   RepositoryLoaded := false;
   ClearAllCharts();
+  AddColourCharts();
   FDirtyOptions := false;
   FAvoidMessage := false;
 
@@ -5306,7 +5512,7 @@ begin
   chartItemComments.RemoveAllSeries;
   chartItemViewsH.RemoveAllSeries;
   chartItemLikesH.RemoveAllSeries;
-  chartItemCommentsH.RemoveAllSeries
+  chartItemCommentsH.RemoveAllSeries;
 end;
 
 procedure TfrmFlickrMain.FormDestroy(Sender: TObject);

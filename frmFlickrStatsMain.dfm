@@ -1597,7 +1597,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = TabSheet2
+      ActivePage = Dashboard
       Align = alClient
       TabOrder = 1
       object Dashboard: TTabSheet
@@ -3061,7 +3061,8 @@ object frmFlickrMain: TfrmFlickrMain
           LeftAxis.MinorTicks.Width = 0
           LeftAxis.Ticks.Width = 0
           LeftAxis.TicksInner.Width = 0
-          LeftAxis.Title.Font.Color = clLime
+          LeftAxis.Title.Font.Style = [fsBold]
+          LeftAxis.Title.Color = clBlack
           RightAxis.Title.Font.Color = clLime
           TopAxis.Title.Font.Color = clLime
           View3D = False
@@ -3377,7 +3378,7 @@ object frmFlickrMain: TfrmFlickrMain
           Top = 444
           Width = 1508
           Height = 369
-          ActivePage = TabSheet3
+          ActivePage = Statistics
           Align = alClient
           TabOrder = 1
           object Statistics: TTabSheet
@@ -5430,7 +5431,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 820
     Top = 302
     Bitmap = {
-      494C0101ED002001D80210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001E00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

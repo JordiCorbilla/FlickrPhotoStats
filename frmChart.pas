@@ -55,7 +55,7 @@ implementation
 {$R *.dfm}
 
 uses
-  flickr.charts;
+  flickr.charts, VCLTee.TeCanvas;
 
 { TfrmChartViewer }
 
@@ -66,6 +66,10 @@ var
   Series : TChartSeries;
 begin
   chartViewer.Title := chartSender.Title;
+  chartViewer.color := chartSender.color;
+  chartViewer.Title.Color := chartSender.Title.Color;
+  chartViewer.LeftAxis.LabelsFont.Color := chartSender.LeftAxis.LabelsFont.Color;
+  chartViewer.BottomAxis.LabelsFont.Color := chartSender.BottomAxis.LabelsFont.Color;
   for i := 0 to chartSender.SeriesList.Count-1 do
   begin
     flickrChart := TFlickrChart.create;

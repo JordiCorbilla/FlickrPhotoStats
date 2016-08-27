@@ -136,7 +136,7 @@
         <Debugger_RunParams>-v -r -g -e</Debugger_RunParams>
         <VerInfo_MinorVer>8</VerInfo_MinorVer>
         <DCC_DcuOutput>dcu\</DCC_DcuOutput>
-        <DCC_ExeOutput>C:\Desk\Source code\FlickrPhotoStats\trunk\Debug\Win64\</DCC_ExeOutput>
+        <DCC_ExeOutput>C:\Users\thund\Source\Repos\FlickrPhotoStats\Debug\Win64</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>None</Manifest_File>
         <VerInfo_Keys>CompanyName=Jordi Corbilla;FileDescription=Flickr Photo Analytics Agent v4.8;FileVersion=4.8.0.2;InternalName=Flickr Photo Analytics Agent v4.8;LegalCopyright=Jordi Corbilla;LegalTrademarks=Jordi Corbilla;OriginalFilename=Flickr Photo Analytics Agent v4.8;ProductName=Flickr Photo Analytics Agent v4.8;ProductVersion=4.8.0.2;Comments=Flickr Photo Analytics Agent v4.8</VerInfo_Keys>
@@ -215,16 +215,7 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployClass Name="DependencyModule">
-                    <Platform Name="Win32">
-                        <Operation>0</Operation>
-                        <Extensions>.dll;.bpl</Extensions>
-                    </Platform>
-                    <Platform Name="OSX32">
-                        <Operation>1</Operation>
-                        <Extensions>.dylib</Extensions>
-                    </Platform>
-                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
                 <DeployClass Name="ProjectOSXResource">
                     <Platform Name="OSX32">
                         <RemoteDir>Contents\Resources</RemoteDir>
@@ -538,7 +529,16 @@
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
-                <DeployClass Name="ProjectiOSDeviceResourceRules"/>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
                 <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
                 <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
                 <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
