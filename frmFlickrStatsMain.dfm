@@ -3378,7 +3378,7 @@ object frmFlickrMain: TfrmFlickrMain
           Top = 444
           Width = 1508
           Height = 369
-          ActivePage = Statistics
+          ActivePage = TabSheet5
           Align = alClient
           TabOrder = 1
           object Statistics: TTabSheet
@@ -4228,7 +4228,7 @@ object frmFlickrMain: TfrmFlickrMain
                   OnMouseEnter = btnSaveProfileMouseEnter
                 end
                 object chkReplaceProfile: TCheckBox
-                  Left = 495
+                  Left = 497
                   Top = 35
                   Width = 127
                   Height = 17
@@ -4236,9 +4236,9 @@ object frmFlickrMain: TfrmFlickrMain
                   TabOrder = 4
                 end
                 object chkDisplayOnly: TCheckBox
-                  Left = 81
+                  Left = 83
                   Top = 35
-                  Width = 127
+                  Width = 129
                   Height = 17
                   Caption = 'Display only selected'
                   TabOrder = 5
@@ -5431,7 +5431,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 820
     Top = 302
     Bitmap = {
-      494C0101ED002001E00210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001E40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

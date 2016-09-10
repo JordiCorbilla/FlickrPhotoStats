@@ -1759,6 +1759,8 @@ begin
   //Send that the app has been started
   SendParseUpdate();
   showMessage('Repository has been loaded');
+  listPhotosUser.Clear;
+  btnAddItems.Enabled := false;
 end;
 
 procedure TfrmFlickrMain.AutoZooming();
