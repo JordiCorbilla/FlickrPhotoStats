@@ -5476,12 +5476,14 @@ begin
   arrow2.Visible := false;
   arrow3.Visible := false;
   arrow4.Visible := false;
-  if valueYesterday = 0 then
-    valueYesterday := valueToday;
+
   if valueYesterday < valueToday then //green
   begin
     arrow1.visible := true;
-    value := ((valueToday / valueYesterday) -1 )* 100.0;
+    if valueYesterday = 0 then
+      value := 100.0
+    else
+      value := ((valueToday / valueYesterday) -1 )* 100.0;
     if (valueToday > 0) and (value < 0) then
       value := value * -1;
     if value > 0 then
@@ -5497,7 +5499,10 @@ begin
   if valueYesterday > valueToday then //red
   begin
     arrow2.visible := true;
-    value := ((valueToday / valueYesterday) -1 )* 100.0;
+    if valueYesterday = 0 then
+      value := 100.0
+    else
+      value := ((valueToday / valueYesterday) -1 )* 100.0;
     if value > 0 then
       label1.caption := '+' + Format('%n',[value]).Replace('.00','') + '%'
     else
