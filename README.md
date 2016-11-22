@@ -5,7 +5,7 @@ Flickr Photo stats provides you with the ability to request information from you
 
 Download the latest version here:
 
-[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Downloads](https://img.shields.io/badge/lines-47k-green.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Stable Release](https://img.shields.io/badge/version-4.8.0.2rc-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Delphi version](https://img.shields.io/badge/delphi-10.1Berlin-red.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2)
+[![Downloads](https://img.shields.io/badge/downloads-1.2k-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Downloads](https://img.shields.io/badge/lines-47k-green.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Stable Release](https://img.shields.io/badge/version-4.8.0.2rc-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2) [![Delphi version](https://img.shields.io/badge/delphi-10.1BerlinUpdate2-red.svg)](https://github.com/JordiCorbilla/FlickrPhotoStats/releases/tag/4.8.0.2)
 
 **Additional libraries required:**
 The application requires SSL authentication and for that it uses the libraries provided by OpenSSL.
