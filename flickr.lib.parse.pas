@@ -59,31 +59,30 @@ var
   response : string;
   JsonToSend: TStringStream;
 begin
-  result := true;
-//  JsonToSend := TStringStream.Create('{}');
-//  try
-//    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-//    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-//    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-//    IdHTTP := TIdHTTP.Create(nil);
-//    try
-//      IdHTTP.IOHandler := IdIOHandler;
-//      IdHTTP.Request.Connection := 'Keep-Alive';
-//      IdIOHandler.SSLOptions.Method := sslvSSLv23;
-//      IdHTTP.Request.CustomHeaders.Clear;
-//      IdHTTP.Request.CustomHeaders.Values['X-Parse-Application-Id'] := 'At6aTGG3g32CIyOo8PiGxhNagGrSp3UObhTaOv4T';
-//      IdHTTP.Request.CustomHeaders.Values['X-Parse-REST-API-Key'] := 'uA27SEsZOirgYWuUFzuqTHnuWm32qXKIJgWflTQ9';
-//      IdHTTP.Request.ContentType := 'application/json';
-//      response := IdHTTP.Post('https://api.parse.com/1/events/AppOpened', JsonToSend);
-//      response := response.Replace(AnsiChar(#10), '');
-//      result := (response = '{}');
-//    finally
-//      IdHTTP.Free;
-//    end;
-//  finally
-//    IdIOHandler.Free;
-//    JsonToSend.Free;
-//  end;
+  JsonToSend := TStringStream.Create('{}');
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      IdHTTP.Request.Connection := 'Keep-Alive';
+      IdIOHandler.SSLOptions.Method := sslvSSLv23;
+      IdHTTP.Request.CustomHeaders.Clear;
+      IdHTTP.Request.CustomHeaders.Values['X-Parse-Application-Id'] := 'At6aTGG3g32CIyOo8PiGxhNagGrSp3UObhTaOv4T';
+      IdHTTP.Request.CustomHeaders.Values['X-Parse-REST-API-Key'] := 'uA27SEsZOirgYWuUFzuqTHnuWm32qXKIJgWflTQ9';
+      IdHTTP.Request.ContentType := 'application/json';
+      response := IdHTTP.Post('https://api.parse.com/1/events/AppOpened', JsonToSend);
+      response := response.Replace(AnsiChar(#10), '');
+      result := (response = '{}');
+    finally
+      IdHTTP.Free;
+    end;
+  finally
+    IdIOHandler.Free;
+    JsonToSend.Free;
+  end;
 end;
 
 class function TParseAnalyticsAPI.UpdateClient(id: string; photos, views, likes, comments: integer; version: string): boolean;
@@ -93,31 +92,30 @@ var
   response : string;
   JsonToSend: TStringStream;
 begin
-  result := true;
-//  JsonToSend := TStringStream.Create('{"version":"'+version+'","Id":"'+id+'","photos":'+photos.ToString+',"views":'+views.ToString+',"likes":'+likes.ToString+',"comments":'+comments.ToString+'}');
-//  try
-//    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
-//    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
-//    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
-//    IdHTTP := TIdHTTP.Create(nil);
-//    try
-//      IdHTTP.IOHandler := IdIOHandler;
-//      IdHTTP.Request.Connection := 'Keep-Alive';
-//      IdIOHandler.SSLOptions.Method := sslvSSLv23;
-//      IdHTTP.Request.CustomHeaders.Clear;
-//      IdHTTP.Request.CustomHeaders.Values['X-Parse-Application-Id'] := 'At6aTGG3g32CIyOo8PiGxhNagGrSp3UObhTaOv4T';
-//      IdHTTP.Request.CustomHeaders.Values['X-Parse-REST-API-Key'] := 'uA27SEsZOirgYWuUFzuqTHnuWm32qXKIJgWflTQ9';
-//      IdHTTP.Request.ContentType := 'application/json';
-//      response := IdHTTP.Post('https://api.parse.com/1/classes/Instances', JsonToSend);
-//      response := response.Replace(AnsiChar(#10), '');
-//      result := (response.Contains('createdAt'));
-//    finally
-//      IdHTTP.Free;
-//    end;
-//  finally
-//    IdIOHandler.Free;
-//    JsonToSend.Free;
-//  end;
+  JsonToSend := TStringStream.Create('{"version":"'+version+'","Id":"'+id+'","photos":'+photos.ToString+',"views":'+views.ToString+',"likes":'+likes.ToString+',"comments":'+comments.ToString+'}');
+  try
+    IdIOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+    IdIOHandler.ReadTimeout := IdTimeoutInfinite;
+    IdIOHandler.ConnectTimeout := IdTimeoutInfinite;
+    IdHTTP := TIdHTTP.Create(nil);
+    try
+      IdHTTP.IOHandler := IdIOHandler;
+      IdHTTP.Request.Connection := 'Keep-Alive';
+      IdIOHandler.SSLOptions.Method := sslvSSLv23;
+      IdHTTP.Request.CustomHeaders.Clear;
+      IdHTTP.Request.CustomHeaders.Values['X-Parse-Application-Id'] := 'At6aTGG3g32CIyOo8PiGxhNagGrSp3UObhTaOv4T';
+      IdHTTP.Request.CustomHeaders.Values['X-Parse-REST-API-Key'] := 'uA27SEsZOirgYWuUFzuqTHnuWm32qXKIJgWflTQ9';
+      IdHTTP.Request.ContentType := 'application/json';
+      response := IdHTTP.Post('https://api.parse.com/1/classes/Instances', JsonToSend);
+      response := response.Replace(AnsiChar(#10), '');
+      result := (response.Contains('createdAt'));
+    finally
+      IdHTTP.Free;
+    end;
+  finally
+    IdIOHandler.Free;
+    JsonToSend.Free;
+  end;
 end;
 
 end.
