@@ -1597,7 +1597,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = TabSheet2
+      ActivePage = Dashboard
       Align = alClient
       TabOrder = 1
       object Dashboard: TTabSheet
@@ -1655,7 +1655,7 @@ object frmFlickrMain: TfrmFlickrMain
             TabOrder = 0
             object Splitter5: TSplitter
               Left = 1
-              Top = 209
+              Top = 1
               Width = 310
               Height = 3
               Cursor = crVSplit
@@ -1665,7 +1665,7 @@ object frmFlickrMain: TfrmFlickrMain
             end
             object Splitter10: TSplitter
               Left = 1
-              Top = 353
+              Top = 145
               Width = 310
               Height = 3
               Cursor = crVSplit
@@ -1675,7 +1675,7 @@ object frmFlickrMain: TfrmFlickrMain
             end
             object Splitter26: TSplitter
               Left = 1
-              Top = 449
+              Top = 241
               Width = 310
               Height = 3
               Cursor = crVSplit
@@ -1683,74 +1683,11 @@ object frmFlickrMain: TfrmFlickrMain
               ExplicitTop = 561
               ExplicitWidth = 80
             end
-            object ChartViews: TChart
-              Left = 1
-              Top = 1
-              Width = 310
-              Height = 208
-              Legend.Visible = False
-              Title.Font.Color = clWhite
-              Title.Text.Strings = (
-                'Total Views')
-              BottomAxis.DateTimeFormat = 'dd/mm/yyyy'
-              BottomAxis.Grid.Width = 0
-              BottomAxis.Grid.ZPosition = 1.000000000000000000
-              BottomAxis.Increment = 1.000000000000000000
-              BottomAxis.LabelsFormat.Font.Color = clWhite
-              BottomAxis.LabelsMultiLine = True
-              BottomAxis.MinimumOffset = 16
-              BottomAxis.MinorTickCount = 16
-              BottomAxis.EndPosition = 98.000000000000000000
-              BottomAxis.PositionPercent = -1.000000000000000000
-              BottomAxis.TickLength = 2
-              BottomAxis.Ticks.Width = 0
-              BottomAxis.Title.Font.Color = clLime
-              DepthAxis.Title.Font.Color = clLime
-              DepthTopAxis.Title.Font.Color = clLime
-              LeftAxis.Grid.Width = 0
-              LeftAxis.LabelsFormat.Font.Color = clWhite
-              LeftAxis.MinorTicks.Width = 0
-              LeftAxis.Ticks.Width = 0
-              LeftAxis.TicksInner.Width = 0
-              LeftAxis.Title.Font.Color = clLime
-              RightAxis.Title.Font.Color = clLime
-              TopAxis.Title.Font.Color = clLime
-              View3D = False
-              Align = alTop
-              Color = 13135884
-              TabOrder = 0
-              OnDblClick = ChartViewsDblClick
-              OnMouseDown = dailyViewsMouseDown
-              OnMouseUp = dailyViewsMouseUp
-              DefaultCanvas = 'TGDIPlusCanvas'
-              PrintMargins = (
-                15
-                7
-                15
-                7)
-              ColorPaletteIndex = 18
-              object LineSeries4: TLineSeries
-                Marks.Shadow.Color = 8487297
-                Marks.DrawEvery = 10
-                Title = 'Flickr Stats'
-                Brush.BackColor = clDefault
-                LinePen.Color = 10708548
-                Pointer.Brush.Gradient.EndColor = 10708548
-                Pointer.Gradient.EndColor = 10708548
-                Pointer.InflateMargins = True
-                Pointer.Style = psRectangle
-                XValues.DateTime = True
-                XValues.Name = 'X'
-                XValues.Order = loAscending
-                YValues.Name = 'Y'
-                YValues.Order = loNone
-              end
-            end
             object totalPhotos: TChart
               Left = 1
-              Top = 452
+              Top = 244
               Width = 310
-              Height = 139
+              Height = 347
               Legend.Visible = False
               Title.Font.Color = clWhite
               Title.Text.Strings = (
@@ -1781,7 +1718,7 @@ object frmFlickrMain: TfrmFlickrMain
               View3D = False
               Align = alClient
               Color = 13135884
-              TabOrder = 1
+              TabOrder = 0
               OnDblClick = ChartViewsDblClick
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
@@ -1809,7 +1746,7 @@ object frmFlickrMain: TfrmFlickrMain
             end
             object ChartLikes: TChart
               Left = 1
-              Top = 212
+              Top = 4
               Width = 310
               Height = 141
               Legend.Visible = False
@@ -1870,7 +1807,7 @@ object frmFlickrMain: TfrmFlickrMain
             end
             object chartComments: TChart
               Left = 1
-              Top = 356
+              Top = 148
               Width = 310
               Height = 93
               Legend.Visible = False
@@ -1903,7 +1840,7 @@ object frmFlickrMain: TfrmFlickrMain
               View3D = False
               Align = alTop
               Color = 13135884
-              TabOrder = 3
+              TabOrder = 1
               OnDblClick = ChartViewsDblClick
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
@@ -3378,7 +3315,7 @@ object frmFlickrMain: TfrmFlickrMain
           Top = 444
           Width = 1508
           Height = 369
-          ActivePage = TabSheet5
+          ActivePage = Statistics
           Align = alClient
           TabOrder = 1
           object Statistics: TTabSheet
@@ -5431,7 +5368,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 820
     Top = 302
     Bitmap = {
-      494C0101ED002001E40210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001EC0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000

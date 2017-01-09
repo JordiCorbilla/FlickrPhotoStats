@@ -177,8 +177,6 @@ type
     Splitter5: TSplitter;
     Splitter10: TSplitter;
     Splitter26: TSplitter;
-    ChartViews: TChart;
-    LineSeries4: TLineSeries;
     totalPhotos: TChart;
     LineSeries1: TLineSeries;
     ChartLikes: TChart;
@@ -796,7 +794,7 @@ begin
   begin
     ChartStreamViews.color := $00A97313;
     ChartAlbumViews.color := $00A97313;
-    ChartViews.color := $00A97313;
+    //ChartViews.color := $00A97313;
     totalPhotos.color := $00A97313;
     ChartLikes.color := $00A97313;
     ChartComments.color := $00A97313;
@@ -826,7 +824,7 @@ begin
   begin
     ChartStreamViews.color := $00C8700C;
     ChartAlbumViews.color := $00C8700C;
-    ChartViews.color := $00C8700C;
+    //ChartViews.color := $00C8700C;
     totalPhotos.color := $00C8700C;
     ChartLikes.color := $00C8700C;
     ChartComments.color := $00C8700C;
@@ -856,7 +854,7 @@ begin
   begin
     ChartStreamViews.color := clBlack;
     ChartAlbumViews.color := clBlack;
-    ChartViews.color := clBlack;
+    //ChartViews.color := clBlack;
     totalPhotos.color := clBlack;
     ChartLikes.color := clBlack;
     ChartComments.color := clBlack;
@@ -894,10 +892,10 @@ begin
     ChartAlbumViews.LeftAxis.LabelsFont.Color := clblack;
     ChartAlbumViews.BottomAxis.LabelsFont.Color := clblack;
 
-    ChartViews.color := clBtnFace;
-    ChartViews.Title.Color := clblack;
-    ChartViews.LeftAxis.LabelsFont.Color := clblack;
-    ChartViews.BottomAxis.LabelsFont.Color := clblack;
+//    ChartViews.color := clBtnFace;
+//    ChartViews.Title.Color := clblack;
+//    ChartViews.LeftAxis.LabelsFont.Color := clblack;
+//    ChartViews.BottomAxis.LabelsFont.Color := clblack;
 
     totalPhotos.color := clBtnFace;
     totalPhotos.Title.Color := clblack;
@@ -1768,7 +1766,7 @@ begin
   flickrChart.AutoZooming(2/3, dailyviews);
   flickrChart.AutoZooming(2/3, dailylikes);
   flickrChart.AutoZooming(2/3, dailycomments);
-  flickrChart.AutoZooming(2/3, chartViews);
+  //flickrChart.AutoZooming(2/3, chartViews);
   flickrChart.AutoZooming(2/3, chartLikes);
   flickrChart.AutoZooming(2/3, chartComments);
   flickrChart.AutoZooming(2/3, ExecutionTime);
@@ -2188,35 +2186,35 @@ var
   histogram :  TList<IItem>;
   accumulated : integer;
 begin
-  if ChartViews.SeriesList.Count > 0 then
-    ChartViews.RemoveAllSeries;
-
-  chartTendency := TTendency.Create;
-
-  Series := flickrChart.GetNewLineSeries(ChartViews);
-  color := RGB(Random(255), Random(255), Random(255));
-
-  for i := 0 to globalsRepository.globals.Count - 1 do
-  begin
-    chartTendency.AddXY(i, globalsRepository.Globals[i].views);
-    Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].views, '', color);
-  end;
-  ChartViews.AddSeries(Series);
-  chartTendency.Calculate;
-
-  SeriesTendency := flickrChart.GetNewLineSeries(ChartViews);
-
-  //Adding only first and last item
-  viewsTendency := chartTendency.tendencyResult(0);
-  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', FYellow);
-  viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
-  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', FYellow);
+//  if ChartViews.SeriesList.Count > 0 then
+//    ChartViews.RemoveAllSeries;
+//
+//  chartTendency := TTendency.Create;
+//
+//  Series := flickrChart.GetNewLineSeries(ChartViews);
+//  color := RGB(Random(255), Random(255), Random(255));
+//
 //  for i := 0 to globalsRepository.globals.Count - 1 do
 //  begin
-//    viewsTendency := chartTendency.tendencyResult(i);
-//    SeriesTendency.AddXY(globalsRepository.globals[i].Date, viewsTendency, '', color);
+//    chartTendency.AddXY(i, globalsRepository.Globals[i].views);
+//    Series.AddXY(globalsRepository.globals[i].Date, globalsRepository.globals[i].views, '', color);
 //  end;
-  ChartViews.AddSeries(SeriesTendency);
+//  ChartViews.AddSeries(Series);
+//  chartTendency.Calculate;
+//
+//  SeriesTendency := flickrChart.GetNewLineSeries(ChartViews);
+//
+//  //Adding only first and last item
+//  viewsTendency := chartTendency.tendencyResult(0);
+//  SeriesTendency.AddXY(globalsRepository.globals[0].Date, viewsTendency, '', FYellow);
+//  viewsTendency := chartTendency.tendencyResult(globalsRepository.globals.Count - 1);
+//  SeriesTendency.AddXY(globalsRepository.globals[globalsRepository.globals.Count - 1].Date, viewsTendency, '', FYellow);
+////  for i := 0 to globalsRepository.globals.Count - 1 do
+////  begin
+////    viewsTendency := chartTendency.tendencyResult(i);
+////    SeriesTendency.AddXY(globalsRepository.globals[i].Date, viewsTendency, '', color);
+////  end;
+//  ChartViews.AddSeries(SeriesTendency);
 
   if ChartLikes.SeriesList.Count > 0 then
     ChartLikes.RemoveAllSeries;
@@ -4394,7 +4392,7 @@ begin
   flickrChart.VisibleMarks(chartitemLikesH, showMarks.Checked);
   flickrChart.VisibleMarks(chartitemCommentsH, showMarks.Checked);
 //  flickrChart.VisibleMarks(ChartGeneral, showMarks.Checked);
-  flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
+//  flickrChart.VisibleMarks(ChartViews, showMarks.Checked);
   flickrChart.VisibleMarks(totalPhotos, showMarks.Checked);
   flickrChart.VisibleMarks(ChartLikes, showMarks.Checked);
   flickrChart.VisibleMarks(ChartComments, showMarks.Checked);
@@ -5528,7 +5526,7 @@ procedure TfrmFlickrMain.ClearAllCharts();
 begin
   ChartStreamViews.RemoveAllSeries;
   ChartAlbumViews.RemoveAllSeries;
-  ChartViews.RemoveAllSeries;
+//  ChartViews.RemoveAllSeries;
   totalPhotos.RemoveAllSeries;
   ChartLikes.RemoveAllSeries;
   ChartComments.RemoveAllSeries;
@@ -5576,7 +5574,7 @@ begin
   panel17.width := round(panel14.Width * 0.33);
   panel18.width := round(panel14.Width * 0.33);
 
-  chartViews.Height := round(panel17.Height * 0.40);
+//  chartViews.Height := round(panel17.Height * 0.40);
   chartLikes.Height := round(panel17.Height * 0.20);
   chartComments.height := round(panel17.Height * 0.20);
 
