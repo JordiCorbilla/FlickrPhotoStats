@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>2016/01/27 21:18:56.000.577,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\FlickrPhotoMigrationTool.dproj=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
-    <Transaction>2016/01/27 21:19:44.000.481,C:\Desk\Source code\FlickrPhotoStats\trunk\Unit2.dfm=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
-    <Transaction>2016/01/27 21:19:48.000.969,C:\Desk\Source code\FlickrPhotoStats\trunk\FlickrPhotoMigrationTool.dproj=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\FlickrPhotoMigrationTool.dproj</Transaction>
-    <Transaction>2016/01/27 21:20:30.000.172,C:\Desk\Source code\FlickrPhotoStats\trunk\frmMigrationMain.dfm=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit2.dfm</Transaction>
+    <Transaction>2016/01/27 21:18:56.000.577,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\FlickrPhotoMigrationTool.dproj</Transaction>
+    <Transaction>2016/01/27 21:19:44.000.481,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Desk\Source code\FlickrPhotoStats\trunk\Unit2.dfm</Transaction>
+    <Transaction>2016/01/27 21:19:48.000.969,C:\Users\jordi coll\Documents\Embarcadero\Studio\Projects\FlickrPhotoMigrationTool.dproj=C:\Desk\Source code\FlickrPhotoStats\trunk\FlickrPhotoMigrationTool.dproj</Transaction>
+    <Transaction>2016/01/27 21:20:30.000.172,C:\Desk\Source code\FlickrPhotoStats\trunk\Unit2.dfm=C:\Desk\Source code\FlickrPhotoStats\trunk\frmMigrationMain.dfm</Transaction>
   </Transactions>
 </BorlandProject>

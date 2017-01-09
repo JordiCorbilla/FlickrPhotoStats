@@ -1790,7 +1790,7 @@ begin
   count := 0;
   while not success do
   begin
-    success := TParseAnalyticsAPI.Active();
+    success := true; //TParseAnalyticsAPI.Active();
     inc(count);
     if count > 5 then
     begin
