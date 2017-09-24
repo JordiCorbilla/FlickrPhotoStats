@@ -107,12 +107,8 @@ type
     Shape5: TShape;
     Shape6: TShape;
     TotalGroupsRateLabel: TLabel;
-    imagephoto: TImage;
     Label43: TLabel;
     SaveTimeLabel: TLabel;
-    Image4: TImage;
-    Image5: TImage;
-    Image10: TImage;
     PopupMenu4: TPopupMenu;
     ShowGraph1: TMenuItem;
     ShowFavesList1: TMenuItem;
@@ -120,7 +116,6 @@ type
     Panel9: TPanel;
     Panel24: TPanel;
     Panel27: TPanel;
-    Image1: TImage;
     Label13: TLabel;
     Label14: TLabel;
     LabelTodayViews: TLabel;
@@ -136,7 +131,6 @@ type
     downred11: TImage;
     Panel25: TPanel;
     Panel28: TPanel;
-    Image2: TImage;
     Label12: TLabel;
     LabelYesterdayLikes: TLabel;
     Label15: TLabel;
@@ -152,7 +146,6 @@ type
     upgreen22: TImage;
     Panel26: TPanel;
     Panel29: TPanel;
-    Image3: TImage;
     Label41: TLabel;
     LabelYesterdayComments: TLabel;
     Label42: TLabel;
@@ -408,8 +401,15 @@ type
     Authenticate: TButton;
     btnAbout: TButton;
     Button3: TButton;
-    Image6: TImage;
     btnLeave: TButton;
+    Label2: TLabel;
+    Label20: TLabel;
+    Label29: TLabel;
+    Label33: TLabel;
+    Label38: TLabel;
+    Label39: TLabel;
+    Label40: TLabel;
+    Label44: TLabel;
     procedure batchUpdateClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -2749,7 +2749,6 @@ var
   values : double;
 begin
   Label16.Visible := true;
-  imagephoto.Visible := true;
 
   values := totalPhotos.ToDouble;
   PhotosLabel.Caption :=  Format('%n',[values]).Replace('.00','');

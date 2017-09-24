@@ -310,7 +310,7 @@ begin
     begin
       photo := TPhoto.Create();
       photo.folder := ExtractFilePath(FileName);
-      if (FPreviousVersion = '4.8.0.2') and (FVersion = '4.8.0.2') then
+      if ((FPreviousVersion = '4.8.0.2') and (FVersion = '4.8.0.2')) or ((FPreviousVersion = '4.8.0.2') and (FVersion = '4.8.0.3')) or ((FPreviousVersion = '4.8.0.3') and (FVersion = '4.8.0.3')) then
         photo.LoadNew(iNode)
       else if (FPreviousVersion = '4.8.0.1') and (FVersion = '4.8.0.2') then
         photo.Load(iNode)
