@@ -1493,8 +1493,6 @@ object frmFlickrMain: TfrmFlickrMain
       TabOrder = 1
       object Dashboard: TTabSheet
         Caption = #61953' Dashboard'
-        ExplicitTop = 24
-        ExplicitHeight = 813
         object Splitter6: TSplitter
           Left = 0
           Top = 216
@@ -1522,7 +1520,6 @@ object frmFlickrMain: TfrmFlickrMain
           Align = alLeft
           Caption = 'Panel14'
           TabOrder = 0
-          ExplicitHeight = 594
           object Splitter9: TSplitter
             Left = 313
             Top = 1
@@ -1547,7 +1544,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alLeft
             Caption = 'Panel17'
             TabOrder = 0
-            ExplicitHeight = 592
             object Splitter5: TSplitter
               Left = 1
               Top = 209
@@ -1678,7 +1674,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 1
               OnDblClick = ChartViewsDblClick
-              ExplicitHeight = 139
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -1834,7 +1829,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alLeft
             Caption = 'Panel18'
             TabOrder = 1
-            ExplicitHeight = 592
             object Splitter11: TSplitter
               Left = 1
               Top = 145
@@ -2091,7 +2085,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 3
               OnDblClick = ChartViewsDblClick
-              ExplicitHeight = 155
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -2123,7 +2116,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alClient
             Caption = 'Panel20'
             TabOrder = 2
-            ExplicitHeight = 592
             object Splitter15: TSplitter
               Left = 1
               Top = 145
@@ -2312,7 +2304,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 2
               OnDblClick = ChartViewsDblClick
-              ExplicitHeight = 155
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -2408,7 +2399,6 @@ object frmFlickrMain: TfrmFlickrMain
           Align = alClient
           Caption = 'Panel15'
           TabOrder = 1
-          ExplicitHeight = 594
           object Splitter8: TSplitter
             Left = 529
             Top = 1
@@ -2425,7 +2415,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alLeft
             Caption = 'Panel16'
             TabOrder = 0
-            ExplicitHeight = 592
             object Splitter13: TSplitter
               Left = 1
               Top = 194
@@ -2542,7 +2531,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 1
               OnDblClick = ChartViewsDblClick
-              ExplicitHeight = 200
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -2693,7 +2681,6 @@ object frmFlickrMain: TfrmFlickrMain
             Align = alClient
             Caption = 'Panel19'
             TabOrder = 1
-            ExplicitHeight = 592
             object Splitter17: TSplitter
               Left = 1
               Top = 217
@@ -2756,7 +2743,6 @@ object frmFlickrMain: TfrmFlickrMain
               Color = 13135884
               TabOrder = 0
               OnDblClick = ChartViewsDblClick
-              ExplicitHeight = 201
               DefaultCanvas = 'TGDIPlusCanvas'
               PrintMargins = (
                 15
@@ -3003,8 +2989,6 @@ object frmFlickrMain: TfrmFlickrMain
       object TabSheet2: TTabSheet
         Caption = #61752' Processing'
         ImageIndex = 1
-        ExplicitTop = 24
-        ExplicitHeight = 813
         object Splitter1: TSplitter
           Left = 0
           Top = 441
@@ -3288,10 +3272,11 @@ object frmFlickrMain: TfrmFlickrMain
           ActivePage = TabSheet5
           Align = alClient
           TabOrder = 1
-          ExplicitHeight = 365
           object Statistics: TTabSheet
             Caption = 'Statistics'
+            ExplicitLeft = 0
             ExplicitTop = 24
+            ExplicitWidth = 0
             ExplicitHeight = 341
             object Panel4: TPanel
               Left = 0
@@ -3895,7 +3880,9 @@ object frmFlickrMain: TfrmFlickrMain
           object TabSheet3: TTabSheet
             Caption = 'Flickr Photo List'
             ImageIndex = 2
+            ExplicitLeft = 0
             ExplicitTop = 24
+            ExplicitWidth = 0
             ExplicitHeight = 341
             object Panel6: TPanel
               Left = 0
@@ -3979,8 +3966,6 @@ object frmFlickrMain: TfrmFlickrMain
           object TabSheet5: TTabSheet
             Caption = 'Flickr Groups Manager'
             ImageIndex = 3
-            ExplicitTop = 24
-            ExplicitHeight = 341
             object Panel8: TPanel
               Left = 0
               Top = 0
@@ -4294,7 +4279,9 @@ object frmFlickrMain: TfrmFlickrMain
               ExplicitHeight = 250
               object tabList: TTabSheet
                 Caption = 'List'
+                ExplicitLeft = 0
                 ExplicitTop = 24
+                ExplicitWidth = 0
                 ExplicitHeight = 230
                 object listGroups: TListView
                   Left = 0
@@ -4384,7 +4371,9 @@ object frmFlickrMain: TfrmFlickrMain
               object tabStatus: TTabSheet
                 Caption = 'Status'
                 ImageIndex = 1
+                ExplicitLeft = 0
                 ExplicitTop = 24
+                ExplicitWidth = 0
                 ExplicitHeight = 230
                 object Panel10: TPanel
                   Left = 0
@@ -4420,7 +4409,9 @@ object frmFlickrMain: TfrmFlickrMain
       object TabSheet1: TTabSheet
         Caption = #61585' Hall of Fame'
         ImageIndex = 2
+        ExplicitLeft = 0
         ExplicitTop = 24
+        ExplicitWidth = 0
         ExplicitHeight = 813
         object Panel12: TPanel
           Left = 0
@@ -4468,7 +4459,9 @@ object frmFlickrMain: TfrmFlickrMain
       object TabSheet4: TTabSheet
         Caption = #61563' Albums'
         ImageIndex = 3
+        ExplicitLeft = 0
         ExplicitTop = 24
+        ExplicitWidth = 0
         ExplicitHeight = 813
         object Splitter3: TSplitter
           Left = 0
@@ -4585,7 +4578,9 @@ object frmFlickrMain: TfrmFlickrMain
       object TabSheet6: TTabSheet
         Caption = #61686' Logs'
         ImageIndex = 4
+        ExplicitLeft = 0
         ExplicitTop = 24
+        ExplicitWidth = 0
         ExplicitHeight = 813
         object mLogs: TMemo
           Left = 0
@@ -4603,7 +4598,9 @@ object frmFlickrMain: TfrmFlickrMain
         Caption = #61459' Options'
         ImageIndex = 5
         OnExit = TabSheet7Exit
+        ExplicitLeft = 0
         ExplicitTop = 24
+        ExplicitWidth = 0
         ExplicitHeight = 813
         object Panel3: TPanel
           Left = 0
@@ -5223,7 +5220,9 @@ object frmFlickrMain: TfrmFlickrMain
       object TabSheet8: TTabSheet
         Caption = #61474' Report'
         ImageIndex = 6
+        ExplicitLeft = 0
         ExplicitTop = 24
+        ExplicitWidth = 0
         ExplicitHeight = 813
         object Panel21: TPanel
           Left = 0
@@ -5418,7 +5417,7 @@ object frmFlickrMain: TfrmFlickrMain
     Left = 820
     Top = 302
     Bitmap = {
-      494C0101ED002001EC0210001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101ED002001040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000040000000C0030000010020000000000000C0
       03000000000000000000000000000000000000080F260C3360E40B3258C6000D
       193B000000000000000000000000000000000000000000000000000000000000
