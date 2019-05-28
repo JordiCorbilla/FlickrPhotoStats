@@ -48,12 +48,24 @@ type
     Button5: TButton;
     Edit1: TEdit;
     Button3: TButton;
+    Edit2: TEdit;
+    Label1: TLabel;
+    Button1: TButton;
+    Button2: TButton;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Button6: TButton;
     procedure btnCloseClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -67,7 +79,7 @@ var
 implementation
 
 uses
-  System.StrUtils, frmFlickrStatsMain, flickr.access.token;
+  System.StrUtils, frmFlickrStatsMain, flickr.access.token, ShellApi;
 
 {$R *.dfm}
 
@@ -164,6 +176,28 @@ begin
   Self.Close;
 end;
 
+procedure TfrmAuthenticate.Button1Click(Sender: TObject);
+begin
+  Self.Close;
+end;
+
+procedure TfrmAuthenticate.Button2Click(Sender: TObject);
+begin
+  frmFlickrMain.userToken := Edit3.Text;
+  frmFlickrMain.userTokenSecret := Edit4.Text;
+  frmFlickrMain.optionsAgent.userToken := Edit3.Text;
+  frmFlickrMain.optionsAgent.userTokenSecret := Edit4.Text;
+  frmFlickrMain.Button10.Enabled := true;
+  frmFlickrMain.btnGetGroups.Enabled := true;
+  frmFlickrMain.Button5.Enabled := true;
+  frmFlickrMain.btnAddPhotos.Enabled := true;
+  frmFlickrMain.btnRemovePhoto.Enabled := true;
+  frmFlickrMain.btnBanGroups.Enabled := true;
+  frmFlickrMain.btnUnBanGroups.Enabled := true;
+  showmessage('Congratulations, application authenticated with token ' + Edit3.Text);
+  authenticated := true;
+end;
+
 procedure TfrmAuthenticate.Button3Click(Sender: TObject);
 begin
   WebBrowser1.Navigate(Edit1.text);
@@ -183,6 +217,11 @@ begin
 		flags := REFRESH_COMPLETELY;
 		WebBrowser1.Refresh2(flags);
 	end;
+end;
+
+procedure TfrmAuthenticate.Button6Click(Sender: TObject);
+begin
+  ShellExecute(self.WindowHandle,'open',PWideChar(Edit2.Text),nil,nil, SW_SHOWNORMAL);
 end;
 
 procedure TfrmAuthenticate.FormClose(Sender: TObject; var Action: TCloseAction);

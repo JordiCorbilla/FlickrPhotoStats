@@ -737,6 +737,7 @@ begin
   authenticationScreen := TfrmAuthenticate.Create(Application);
   try
     authenticationScreen.NavigationUrl := NavigationUrl;
+    authenticationScreen.Edit2.Text := 'https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write';
     authenticationScreen.WebBrowser1.Navigate('https://www.flickr.com/services/oauth/authorize?oauth_token=' + oauth_token + '&perms=write');
     authenticationScreen.ShowModal;
   finally

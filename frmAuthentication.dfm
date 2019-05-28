@@ -20,15 +20,16 @@ object frmAuthenticate: TfrmAuthenticate
   TextHeight = 13
   object WebBrowser1: TWebBrowser
     Left = 0
-    Top = 41
+    Top = 113
     Width = 961
-    Height = 592
+    Height = 520
     Align = alClient
     TabOrder = 0
+    ExplicitTop = 41
     ExplicitWidth = 647
     ExplicitHeight = 673
     ControlData = {
-      4C000000526300002F3D00000000000000000000000000000000000000000000
+      4C00000052630000BE3500000000000000000000000000000000000000000000
       000000004C000000000000000000000001000000E0D057007335CF11AE690800
       2B2E12620C000000000000004C0000000114020000000000C000000000000046
       8000000000000000000000000000000000000000000000000000000000000000
@@ -38,15 +39,36 @@ object frmAuthenticate: TfrmAuthenticate
     Left = 0
     Top = 0
     Width = 961
-    Height = 41
+    Height = 113
     Align = alTop
     TabOrder = 1
+    object Label1: TLabel
+      Left = 8
+      Top = 58
+      Width = 13
+      Height = 13
+      Caption = 'Url'
+    end
+    object Label2: TLabel
+      Left = 8
+      Top = 85
+      Width = 61
+      Height = 13
+      Caption = 'oauth_token'
+    end
+    object Label3: TLabel
+      Left = 409
+      Top = 85
+      Width = 97
+      Height = 13
+      Caption = 'oauth_token_secret'
+    end
     object btnClose: TButton
-      Left = 894
-      Top = 1
+      Left = 825
+      Top = 4
       Width = 63
       Height = 38
-      Caption = 'Close'
+      Caption = 'Close && Get'
       ImageAlignment = iaTop
       ImageIndex = 63
       ImageMargins.Top = 5
@@ -98,6 +120,59 @@ object frmAuthenticate: TfrmAuthenticate
       Images = ImageList1
       TabOrder = 4
       OnClick = Button3Click
+    end
+    object Edit2: TEdit
+      Left = 27
+      Top = 55
+      Width = 750
+      Height = 21
+      TabOrder = 5
+    end
+    object Button1: TButton
+      Left = 894
+      Top = 4
+      Width = 63
+      Height = 38
+      Caption = 'Close'
+      ImageAlignment = iaTop
+      ImageIndex = 63
+      ImageMargins.Top = 5
+      ImageMargins.Bottom = -6
+      Images = ImageList1
+      TabOrder = 6
+      OnClick = Button1Click
+    end
+    object Button2: TButton
+      Left = 783
+      Top = 80
+      Width = 174
+      Height = 25
+      Caption = 'Save'
+      TabOrder = 7
+      OnClick = Button2Click
+    end
+    object Edit3: TEdit
+      Left = 95
+      Top = 82
+      Width = 289
+      Height = 21
+      TabOrder = 8
+    end
+    object Edit4: TEdit
+      Left = 512
+      Top = 82
+      Width = 265
+      Height = 21
+      TabOrder = 9
+    end
+    object Button6: TButton
+      Left = 783
+      Top = 53
+      Width = 174
+      Height = 25
+      Caption = 'Launch'
+      TabOrder = 10
+      OnClick = Button6Click
     end
   end
   object ImageList1: TImageList
