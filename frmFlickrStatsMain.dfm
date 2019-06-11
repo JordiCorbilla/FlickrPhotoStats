@@ -1482,7 +1482,7 @@ object frmFlickrMain: TfrmFlickrMain
       Top = 66
       Width = 1516
       Height = 841
-      ActivePage = Dashboard
+      ActivePage = TabSheet2
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
